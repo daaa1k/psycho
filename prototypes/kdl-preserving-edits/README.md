@@ -3,7 +3,9 @@
 対象は [KDL の編集試作で保存差分の保証を検証する](https://github.com/daaa1k/psycho/issues/12)。
 `demo.html` をブラウザーで開くと、入力と出力、操作、診断を確認できる。
 製品実装ではなく、有限個の操作を検証して記録した使い捨ての試作である。
-人間による確認と採用判断は未完了。
+2026-09-28 にユーザーが方式の採用を決定した。
+決定の正本は [解決コメント](https://github.com/daaa1k/psycho/issues/12#issuecomment-5870018414) を参照する。
+以下は採用判断に提示した時点の検証記録である。
 
 [対応表](../../referent-table-kdl-edit-prototype.md) を先に保存した。
 SHA256: `008ad495209ad611aa214b02ab92a4f2cf7db03c0089d67a631b0e30438c45f6`。
