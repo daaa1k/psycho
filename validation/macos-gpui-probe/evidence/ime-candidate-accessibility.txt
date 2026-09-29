@@ -1,0 +1,21 @@
+取得日: 2026-09-29
+入力ソース: macOS 標準日本語入力 Kotoeri / RomajiTyping / Hiragana
+操作: タイトル末尾へ nihongohenkan をキーイベントで入力
+
+App=macos-gpui-probe (pid 25049)
+Window: "", App: macos-gpui-probe.
+
+0 dialog
+  1 リスト リスト
+    2 button nihongohenkan
+    3 button ｎｉｈｏｎｇｏｈｅｎｋａｎ
+    4 button ﾆﾎﾝｺﾞﾍﾝｶﾝ
+    5 button ニホンゴヘンカン
+    6 button にほんごへんかん
+    7 button 日本語へんかn
+    8 button 日本語変換
+
+No UI element is currently focused.
+
+この取得では候補一覧のアクセシビリティ要素を確認した。
+候補の選択と確定は行っていない。
