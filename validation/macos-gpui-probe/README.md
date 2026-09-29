@@ -64,9 +64,10 @@ env PATH=/usr/bin:/bin:/usr/sbin:/sbin:$PATH CC=/usr/bin/clang CXX=/usr/bin/clan
 ## 出力
 
 起動するたびに `target/` 内の試験用タイトルと座標ログを初期化する。
-`target/layout-coordinates.csv` は基本座標、配置倍率、画面倍率、論理座標、物理座標を記録する。
+`target/layout-coordinates.csv` はウィンドウと viewport の寸法、基本座標、配置倍率、画面倍率、論理座標、物理座標を記録する。
 `target/ime-candidate-coordinates.csv` は IME に返した候補範囲の座標を記録する。
 確定したタイトルは `target/PROTOTYPE-title.txt` に書く。
+編集サイズを選ぶと maximized 状態を解除してから指定寸法へ変更する。
 
 共有レイアウトと IME 入力処理の実装は `src/layout.rs` と `src/input.rs` にある。
 手順別の観測結果と画面証跡は [`results.md`](results.md) を参照する。

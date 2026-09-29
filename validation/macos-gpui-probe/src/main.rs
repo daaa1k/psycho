@@ -17,7 +17,7 @@ const INITIAL_TITLE: &str = "日本語と English が混在するタイトル";
 const SMALL_SIZE: Size<gpui::Pixels> = size(gpui::px(1024.0), gpui::px(760.0));
 const LARGE_SIZE: Size<gpui::Pixels> = size(gpui::px(1440.0), gpui::px(960.0));
 const TOOLBAR_HEIGHT: f32 = 144.0;
-const FOOTER_HEIGHT: f32 = 54.0;
+const FOOTER_HEIGHT: f32 = 72.0;
 const STATE_FILE: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/target/PROTOTYPE-title.txt");
 const COORDINATE_FILE: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/target/layout-coordinates.csv");
 const IME_COORDINATE_FILE: &str = concat!(
@@ -99,18 +99,27 @@ impl ValidationApp {
     }
 
     fn set_small_size(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
-        self.editor_size = EditorSize::Small;
-        window.resize(SMALL_SIZE);
-        self.last_coordinate_key = None;
-        self.last_action = "編集表示を小さいサイズへ変更しました。".to_owned();
-        cx.notify();
+        self.resize_editor(EditorSize::Small, window, cx);
     }
 
     fn set_large_size(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
-        self.editor_size = EditorSize::Large;
-        window.resize(LARGE_SIZE);
+        self.resize_editor(EditorSize::Large, window, cx);
+    }
+
+    fn resize_editor(&mut self, size: EditorSize, window: &mut Window, cx: &mut Context<Self>) {
+        if window.is_maximized() {
+            window.zoom_window();
+        }
+        window.resize(match size {
+            EditorSize::Small => SMALL_SIZE,
+            EditorSize::Large => LARGE_SIZE,
+        });
+        self.editor_size = size;
         self.last_coordinate_key = None;
-        self.last_action = "編集表示を大きいサイズへ変更しました。".to_owned();
+        self.last_action = match size {
+            EditorSize::Small => "編集表示を小さいサイズへ変更しました。".to_owned(),
+            EditorSize::Large => "編集表示を大きいサイズへ変更しました。".to_owned(),
+        };
         cx.notify();
     }
 
@@ -403,6 +412,8 @@ impl ValidationApp {
         let (enter_count, escape_count, arrow_count) = self.title.read(cx).action_counts();
         let marked = self.title.read(cx).is_marked();
         let focused = self.title.read(cx).has_focus(window);
+        let window_bounds = window.bounds();
+        let viewport = window.viewport_size();
         let status = div()
             .flex()
             .flex_col()
@@ -428,6 +439,14 @@ impl ValidationApp {
                 self.presentation_blocked,
                 self.fullscreen_transitions,
                 self.last_action,
+            ))
+            .child(format!(
+                "GPUI window: {} × {} px / viewport: {} × {} px / maximized: {}",
+                f32::from(window_bounds.size.width),
+                f32::from(window_bounds.size.height),
+                f32::from(viewport.width),
+                f32::from(viewport.height),
+                if window.is_maximized() { "あり" } else { "なし" },
             ));
         div()
             .flex()
@@ -557,6 +576,7 @@ impl ValidationApp {
         elements: &[ElementSpec],
     ) {
         let viewport = window.viewport_size();
+        let window_bounds = window.bounds();
         let mode_name = match mode {
             DisplayMode::Editing => match self.editor_size {
                 EditorSize::Small => "editing-small",
@@ -565,12 +585,16 @@ impl ValidationApp {
             DisplayMode::Presentation => "fullscreen",
         };
         let key = format!(
-            "{mode_name}|{}|{}|{}|{}|{}|{}",
+            "{mode_name}|{}|{}|{}|{}|{}|{}|{}|{}|{}|{}",
             self.current_slide,
             f32::from(viewport.width),
             f32::from(viewport.height),
             f32::from(available.width),
             f32::from(available.height),
+            f32::from(window_bounds.origin.x),
+            f32::from(window_bounds.origin.y),
+            f32::from(window_bounds.size.width),
+            f32::from(window_bounds.size.height),
             self.overflow_fixed,
         );
         if self.last_coordinate_key.as_deref() == Some(&key) {
@@ -586,7 +610,7 @@ impl ValidationApp {
             if is_new {
                 let _ = writeln!(
                     file,
-                    "mode,slide,element,kind,base_x,base_y,base_width,base_height,scale,canvas_x,canvas_y,window_scale,pixel_x,pixel_y,pixel_width,pixel_height"
+                    "mode,slide,viewport_width,viewport_height,window_x,window_y,window_width,window_height,element,kind,base_x,base_y,base_width,base_height,canvas_scale,canvas_x,canvas_y,window_scale,pixel_x,pixel_y,pixel_width,pixel_height"
                 );
             }
             let display_scale = window.scale_factor();
@@ -596,10 +620,16 @@ impl ValidationApp {
                 let y = canvas_top + f32::from(bounds.origin.y);
                 let width = f32::from(bounds.size.width);
                 let height = f32::from(bounds.size.height);
+                let window_x = f32::from(window_bounds.origin.x);
+                let window_y = f32::from(window_bounds.origin.y);
+                let window_width = f32::from(window_bounds.size.width);
+                let window_height = f32::from(window_bounds.size.height);
+                let viewport_width = f32::from(viewport.width);
+                let viewport_height = f32::from(viewport.height);
                 let kind = format!("{:?}", element.kind).to_lowercase();
                 let _ = writeln!(
                     file,
-                    "{mode_name},{},{},{kind},{},{},{},{},{},{x},{y},{display_scale},{},{},{},{}",
+                    "{mode_name},{},{viewport_width},{viewport_height},{window_x},{window_y},{window_width},{window_height},{},{kind},{},{},{},{},{},{x},{y},{display_scale},{},{},{},{}",
                     self.current_slide + 1,
                     element.id,
                     element.x,
@@ -669,7 +699,7 @@ fn main() {
     fs::write(STATE_FILE, INITIAL_TITLE).expect("reset prototype title file");
     fs::write(
         COORDINATE_FILE,
-        "mode,slide,element,kind,base_x,base_y,base_width,base_height,canvas_scale,canvas_x,canvas_y,window_scale,pixel_x,pixel_y,pixel_width,pixel_height\n",
+        "mode,slide,viewport_width,viewport_height,window_x,window_y,window_width,window_height,element,kind,base_x,base_y,base_width,base_height,canvas_scale,canvas_x,canvas_y,window_scale,pixel_x,pixel_y,pixel_width,pixel_height\n",
     )
     .expect("reset layout coordinate log");
     fs::write(
