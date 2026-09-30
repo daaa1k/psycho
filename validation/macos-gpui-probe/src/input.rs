@@ -15,6 +15,50 @@ actions!(
     ]
 );
 
+fn utf8_offset_from_utf16(text: &str, offset: usize) -> usize {
+    let mut utf8_offset = 0;
+    let mut utf16_count = 0;
+    for ch in text.chars() {
+        if utf16_count >= offset {
+            break;
+        }
+        utf16_count += ch.len_utf16();
+        utf8_offset += ch.len_utf8();
+    }
+    utf8_offset
+}
+
+fn utf16_offset_from_utf8(text: &str, offset: usize) -> usize {
+    let mut utf16_offset = 0;
+    let mut utf8_count = 0;
+    for ch in text.chars() {
+        if utf8_count >= offset {
+            break;
+        }
+        utf8_count += ch.len_utf8();
+        utf16_offset += ch.len_utf16();
+    }
+    utf16_offset
+}
+
+fn utf8_range_from_utf16(text: &str, range: &Range<usize>) -> Range<usize> {
+    utf8_offset_from_utf16(text, range.start)..utf8_offset_from_utf16(text, range.end)
+}
+
+fn selection_range_after_marked_text(
+    replacement_range: &Range<usize>,
+    new_text: &str,
+    new_selected_range_utf16: Option<&Range<usize>>,
+) -> Range<usize> {
+    // NSTextInputClient measures selectedRange from the beginning of the inserted string.
+    new_selected_range_utf16
+        .map(|range| utf8_range_from_utf16(new_text, range))
+        .map(|range| replacement_range.start + range.start..replacement_range.start + range.end)
+        .unwrap_or_else(|| {
+            replacement_range.start + new_text.len()..replacement_range.start + new_text.len()
+        })
+}
+
 pub struct TextInputState {
     focus_handle: FocusHandle,
     content: SharedString,
@@ -259,29 +303,11 @@ impl TextInputState {
     }
 
     fn offset_from_utf16(&self, offset: usize) -> usize {
-        let mut utf8_offset = 0;
-        let mut utf16_count = 0;
-        for ch in self.content.chars() {
-            if utf16_count >= offset {
-                break;
-            }
-            utf16_count += ch.len_utf16();
-            utf8_offset += ch.len_utf8();
-        }
-        utf8_offset
+        utf8_offset_from_utf16(&self.content, offset)
     }
 
     fn offset_to_utf16(&self, offset: usize) -> usize {
-        let mut utf16_offset = 0;
-        let mut utf8_count = 0;
-        for ch in self.content.chars() {
-            if utf8_count >= offset {
-                break;
-            }
-            utf8_count += ch.len_utf8();
-            utf16_offset += ch.len_utf16();
-        }
-        utf16_offset
+        utf16_offset_from_utf8(&self.content, offset)
     }
 
     fn range_to_utf16(&self, range: &Range<usize>) -> Range<usize> {
@@ -401,11 +427,8 @@ impl EntityInputHandler for TextInputState {
         } else {
             Some(range.start..range.start + new_text.len())
         };
-        self.selected_range = new_selected_range_utf16
-            .as_ref()
-            .map(|range| self.range_from_utf16(range))
-            .map(|new_range| range.start + new_range.start..range.end + new_range.end)
-            .unwrap_or_else(|| range.start + new_text.len()..range.start + new_text.len());
+        self.selected_range =
+            selection_range_after_marked_text(&range, new_text, new_selected_range_utf16.as_ref());
         cx.notify();
     }
 
@@ -459,6 +482,55 @@ impl EntityInputHandler for TextInputState {
         let line = self.last_layout.as_ref()?;
         let index = line.index_for_x(point.x - line_bounds.x)?;
         Some(self.offset_to_utf16(index))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn marked_text_selection_is_relative_to_replacement_text() {
+        let original = "前題後";
+        let replacement_range = "前".len().."前題".len();
+        let new_text = "にほんごへんかん";
+        let content_after_replacement = format!(
+            "{}{}{}",
+            &original[..replacement_range.start],
+            new_text,
+            &original[replacement_range.end..]
+        );
+        let selected_range_utf16 = new_text.encode_utf16().count()..new_text.encode_utf16().count();
+
+        let selected_range = selection_range_after_marked_text(
+            &replacement_range,
+            new_text,
+            Some(&selected_range_utf16),
+        );
+
+        assert_eq!(
+            selected_range,
+            replacement_range.start + new_text.len()..replacement_range.start + new_text.len()
+        );
+        assert!(selected_range.end <= content_after_replacement.len());
+    }
+
+    #[test]
+    fn marked_text_selection_stays_within_a_fully_replaced_title() {
+        let original = "題";
+        let replacement_range = 0..original.len();
+        let new_text = "にほんごへんかん";
+        let content_after_replacement = new_text.to_owned();
+        let selected_range_utf16 = new_text.encode_utf16().count()..new_text.encode_utf16().count();
+
+        let selected_range = selection_range_after_marked_text(
+            &replacement_range,
+            new_text,
+            Some(&selected_range_utf16),
+        );
+
+        assert_eq!(selected_range, new_text.len()..new_text.len());
+        assert!(selected_range.end <= content_after_replacement.len());
     }
 }
 

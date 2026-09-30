@@ -22,7 +22,7 @@
 | 日本語フォント | Hiragino Sans |
 | コードフォント | Menlo |
 | 代替フォント | 個別指定なし。OS / GPUI のフォールバック先は未測定 |
-| 日本語 IME | macOS 標準入力を使用。候補表示を確認した過去の証跡はあるが、全ケースは未完了 |
+| 日本語 IME | macOS 標準 Kotoeri（ローマ字入力）で実機確認。候補確定と Undo / Redo は修正前に確認し、範囲計算修正後の再試験待ち |
 
 GPUI と GPUI platform は同一 Zed revision に固定している。
 AeroSpace を有効にしていた初回の寸法ログには、小さい編集表示の途中で 1472 × 965 や 1890 × 1169 が記録された。
@@ -81,7 +81,7 @@ screencapture -v -l <window-id> -V 15 -x validation/macos-gpui-probe/evidence/pr
 
 全画面への切替前に録画を始めると、ウィンドウ枠に合わせて映像が切り取られる。
 現在の全画面録画と手順別の画面証跡は [検証結果](results.md) を参照する。
-IME 録画はまだ作成していない。
+IME の画面証跡はあるが、IME 操作の録画はまだ作成していない。
 
 共有レイアウトと IME 入力処理の実装は `src/layout.rs` と `src/input.rs` にある。
 用語と対象を先に固定した対応表は [referent table](../../referent-table-macos-gpui-validation.md) である。
