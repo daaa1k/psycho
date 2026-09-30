@@ -3,7 +3,7 @@
 このプローブは Issue #18 の実機検証用コードである。
 製品データは保存せず、保存操作の出力は `target/PROTOTYPE-title.txt` に置く。
 編集表示と全画面発表は同じ 1280 × 720 の配置モデルを使う。
-画面上部に表示する問いは「標準日本語 IME・共通配置・全画面復帰を GPUI で満たせるか」である。
+画面上部に表示する問いは「標準日本語 IME、共通配置、全画面復帰を GPUI で満たせるか」である。
 
 ## 検証環境
 
@@ -13,18 +13,22 @@
 | macOS | 26.5.2、Build 25F84 |
 | Xcode | 26.5、Build 17F42 |
 | Rust | 1.98.1 |
-| GPUI | Zed commit `14dd03e89676e7fe74bc205001bfb32c8cfc3952` |
-| IME | macOS 標準日本語入力 Kotoeri、RomajiTyping、Hiragana |
+| GPUI / GPUI platform | Zed commit `14dd03e89676e7fe74bc205001bfb32c8cfc3952` |
+| ディスプレイ | 内蔵 Liquid Retina、2560 × 1664 Retina。今回の `system_profiler` 取得では内蔵画面のみ |
+| GPUI window scale | 1 |
+| 小さい編集表示 | viewport 1024 × 760、ウィンドウ 1024 × 792 |
+| 大きい編集表示 | viewport 1440 × 960、ウィンドウ 1440 × 992 |
+| 全画面 | viewport とウィンドウが 1920 × 1200 |
 | 日本語フォント | Hiragino Sans |
 | コードフォント | Menlo |
 | 代替フォント | 個別指定なし。OS / GPUI のフォールバック先は未測定 |
-| 内蔵ディスプレイ | 2560 × 1664 Retina、検証時の GPUI ウィンドウは 1470 × 922 pt、2x |
-| 編集ウィンドウ指定サイズ | 小 1024 × 760 px、大 1440 × 960 px |
+| 日本語 IME | macOS 標準入力を使用。候補表示を確認した過去の証跡はあるが、全ケースは未完了 |
 
 GPUI と GPUI platform は同一 Zed revision に固定している。
-検証途中に BenQ GW2765 外部ディスプレイ 2560 × 1440 も検出された。
-後の確認では内蔵ディスプレイだけが表示され、切替時刻は記録していない。
-表示環境の時系列と未完了ケースは [`results.md`](results.md) に記録した。
+AeroSpace を有効にしていた初回の寸法ログには、小さい編集表示の途中で 1472 × 965 や 1890 × 1169 が記録された。
+AeroSpace を停止して Orca を再起動した後は、上表の小さい編集表示、大きい編集表示、全画面の寸法で証跡を取り直した。
+初回の記録は [AeroSpace 有効時のウィンドウ寸法ログ](evidence/layout-window-dimensions-aerospace-enabled.csv)、取り直した配置ログは [AeroSpace 無効時の配置座標ログ](evidence/layout-coordinate-log-aerospace-disabled.csv) にある。
+判定と未完了ケースは [検証結果](results.md) に記録した。
 
 ## 起動
 
@@ -36,7 +40,7 @@ env PATH=/usr/bin:/bin:/usr/sbin:/sbin:$PATH CC=/usr/bin/clang CXX=/usr/bin/clan
 ```
 
 初回起動時は GPUI と依存クレートをビルドする。
-入力欄には標準日本語 IME を使う。
+入力欄には macOS 標準日本語 IME を使う。
 `type-text` は IME を通らず文字列を直接挿入するため、IME 確認にはキーイベントを使う。
 
 ## 操作
@@ -61,7 +65,7 @@ env PATH=/usr/bin:/bin:/usr/sbin:/sbin:$PATH CC=/usr/bin/clang CXX=/usr/bin/clan
 はみ出し診断は Slide の余白内に要素枠が収まるかを検査する。
 要素枠内に文字が収まらない場合の検出は、このプローブでは扱わない。
 
-## 出力
+## 出力と録画
 
 起動するたびに `target/` 内の試験用タイトルと座標ログを初期化する。
 `target/layout-coordinates.csv` はウィンドウと viewport の寸法、基本座標、配置倍率、画面倍率、論理座標、物理座標を記録する。
@@ -69,9 +73,18 @@ env PATH=/usr/bin:/bin:/usr/sbin:/sbin:$PATH CC=/usr/bin/clang CXX=/usr/bin/clan
 確定したタイトルは `target/PROTOTYPE-title.txt` に書く。
 編集サイズを選ぶと maximized 状態を解除してから指定寸法へ変更する。
 
+macOS のアプリウィンドウだけを録画する場合は、全画面表示に切り替えた後に次の形式で実行する。
+
+```sh
+screencapture -v -l <window-id> -V 15 -x validation/macos-gpui-probe/evidence/presentation.mov
+```
+
+全画面への切替前に録画を始めると、ウィンドウ枠に合わせて映像が切り取られる。
+現在の全画面録画と手順別の画面証跡は [検証結果](results.md) を参照する。
+IME 録画はまだ作成していない。
+
 共有レイアウトと IME 入力処理の実装は `src/layout.rs` と `src/input.rs` にある。
-手順別の観測結果と画面証跡は [`results.md`](results.md) を参照する。
-用語と対象を先に固定した対応表は [`../../referent-table-macos-gpui-validation.md`](../../referent-table-macos-gpui-validation.md) である。
+用語と対象を先に固定した対応表は [referent table](../../referent-table-macos-gpui-validation.md) である。
 対応表の SHA-256 は `489a3f46cc4c4f108883c4bfc900b2cb0775572e93ffbfe1fcca4e268305bc5f` である。
 
 ## 参考資料
