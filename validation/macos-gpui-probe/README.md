@@ -22,7 +22,7 @@
 | 日本語フォント | Hiragino Sans |
 | コードフォント | Menlo |
 | 代替フォント | 個別指定なし。CoreText では Menlo の日本語を `HiraginoSans-W3`、絵文字を `AppleColorEmoji` に解決。GPUI の個別グリフは未測定 |
-| 日本語 IME | macOS 標準 Kotoeri（ローマ字入力）で候補確定、再変換、Undo / Redo を実機確認。未確定中の保存と発表は変換を確定して進んだ。候補位置の追従と二重入力は継続確認中 |
+| 日本語 IME | macOS 標準 Kotoeri（ローマ字入力）で候補確定、再変換、Undo / Redo と候補位置の追従を実機確認。未確定中の保存と発表は変換を確定して進んだ。以前の二重表示 1 回は再現条件を継続調査中 |
 
 GPUI と GPUI platform は同一 Zed revision に固定している。
 AeroSpace を有効にしていた初回の寸法ログには、小さい編集表示の途中で 1472 × 965 や 1890 × 1169 が記録された。
@@ -89,6 +89,13 @@ IME 操作の録画は [修正版の IME 入力録画](evidence/ime-fixed-region
 
 ```sh
 /usr/bin/python3 validation/macos-gpui-probe/measure_raster.py
+```
+
+文字を含む要素の先頭画素が 3 サイズで配置とともに移動するかは次のコマンドで測る。
+[測定値](evidence/layout-text-anchor-consistency.csv)はサイズ間の一貫性を示し、全グリフの絶対位置の検証には使わない。
+
+```sh
+/usr/bin/python3 validation/macos-gpui-probe/measure_text_anchors.py
 ```
 
 CoreText のフォント解決先は次のコマンドで再取得する。

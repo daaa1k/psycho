@@ -9,7 +9,8 @@
 変換中の保存と発表は、AppKit の入力コンテキストを終了してから進んだ。
 保存値と発表画面に確定文字列が反映され、次の入力にも前の変換状態は残らなかった。
 画像枠とコード枠の描画境界を 6 画面で測定した結果、座標ログとの差は最大 0.778 物理 px だった。
-候補ウィンドウが異なる入力位置へ追従するかと、文字を含む全要素の描画誤差は未確認である。
+候補ウィンドウは異なる入力位置へ追従した。
+文字を含む要素の先頭画素は 3 サイズで最大 0.916 物理 px の残差だったが、全グリフの絶対位置は未検証である。
 修正前の再入力中に同じ文字列が二重に表示された観測が 1 回あり、再現条件も未確定である。
 必須ケースの未解決が残るため、Issue #18 の合格とは判定しない。
 
@@ -45,12 +46,12 @@ AeroSpace が動作していた初回記録では、「小さい編集表示」�
 | BUILD-01 | プローブをビルドして起動できる | `cargo check` と `cargo run` が成功した。選択範囲計算の回帰テスト 2 件も成功した | 合格 |
 | IME-01 | Kotoeri が日本語の未確定文字列を表示する | 修正版でキー入力による下線付き未確定文字列を再確認した | 合格 |
 | IME-02 | 変換候補を表示して選択し、確定できる | 修正版で候補一覧から「日本語変換」を確定し、保存ファイルにも同じ文字列を確認した | 合格 |
-| IME-03 | 候補ウィンドウが入力位置へ追従する | 修正版で候補ポップアップが未確定文字列の直下に現れ、候補文字列の左端は入力文字列の左端と同じ x=77 px だった。異なる入力位置での追従は未確認 | 一部確認 |
-| IME-04 | 再変換、Enter / Escape、文字の欠落と二重入力、二重 action の有無を確認する | 確定文字列を選択して Ctrl+Shift+R で候補一覧を再表示し、Return 2 回で確定した。Enter / Escape action カウンターは 0。変換中の Escape 2 回で未確定文字列を消せた。再入力中の二重表示 1 回は再現条件が未確定 | 未解決 |
+| IME-03 | 候補ウィンドウが入力位置へ追従する | 先頭の「日本語」とその後の「変換」で候補ポップアップを撮影した。入力範囲の左端は画面座標 525.0 px から 633.8 px、候補枠の左端は 516 px から 624 px へ移動した。移動量の差は 0.8 px | 合格 |
+| IME-04 | 再変換、Enter / Escape、文字の欠落と二重入力、二重 action の有無を確認する | 確定文字列を選択して Ctrl+Shift+R で候補一覧を再表示し、Return 2 回で確定した。Enter / Escape action カウンターは 0。変換中の Escape 2 回で未確定文字列を消せた。同じキー列を追加で 10 回入力して保存し、保存値は毎回「日本語変換」だった。以前の二重表示 1 回は再現条件が未確定 | 未解決 |
 | IME-05 | 変換単位の Undo / Redo と変換中の保存と発表を確認する | 未確定の「日本語変換」を保存操作で確定し、保存ファイルに同じ値を確認した。次の「桜」は発表操作で確定して全画面に表示され、保存ファイルは「日本語変換」のままだった。Cmd+Z / Cmd+Shift+Z で両変換値を 1 単位で往復できた | 合格 |
 | IME-06 | 無効入力を修正または取消し、保存と発表を再開できる | 未確定文字列を Escape 2 回で消して空タイトルにした後、「入力取消」で保存済みのタイトルへ復帰した。未確定の「日本語変換」を入力取消した直後に「桜」を入力でき、古い候補は戻らなかった | 合格 |
 | LAYOUT-01 | 日本語、英語、URL、箇条書き、タブ入りコード、Caption を同じ配置で表示する | 1:1 と 1:2 の小さい編集表示、大きい編集表示、全画面で画面を取得した。混在本文、長い URL、箇条書き、タブ入りコード、画像枠、Caption を確認した | 合格 |
-| LAYOUT-02 | 2 つの編集サイズと全画面で改行と基準配置が一致し、描画丸め誤差が物理 1 px 以内になる | 3 サイズで base 座標と URL の改行位置が一致した。画像枠とコード枠の 48 辺を画像から測定し、座標ログとの差は最大 0.778 px。文字など残りの要素は未測定 | 一部確認 |
+| LAYOUT-02 | 2 つの編集サイズと全画面で改行と基準配置が一致し、描画丸め誤差が物理 1 px 以内になる | 3 サイズで base 座標と URL の改行位置が一致した。画像枠とコード枠の 48 辺は座標ログとの差が最大 0.778 px。文字を含む 9 要素の先頭画素は、サイズ間で推定した位置との差が最大 0.916 px。ただし全グリフの絶対位置は未測定 | 一部確認 |
 | LAYOUT-03 | 1:2 の列、はみ出し診断、発表停止、修正後の再開を確認する | 1:2 を確認した。はみ出し Slide では発表開始が止まり、修正後は現在位置から開始できた。診断は要素枠を調べ、枠内文字のはみ出しは検出しない | 合格 |
 | PRESENT-01 | 最初と現在の Slide から発表を開始できる | 先頭と現在の Slide の両方から開始した | 合格 |
 | PRESENT-02 | 全移動キー、先頭と末尾の停止、Escape 後のフォーカス復帰を確認する | Right、Down、Space、PageDown、Left、Up、PageUp を試した。先頭の Left と末尾の Right は停止し、Escape 後に編集ウィンドウへ戻った | 合格 |
@@ -64,7 +65,10 @@ AeroSpace を停止した後の座標ログでは、小さい編集表示が 102
 ログに記録した座標は GPUI の配置値である。
 保存済みスクリーンショットから画像枠とコード枠の背景色を検出し、編集画面ではウィンドウ上端の 32 px を加えたログ上の座標と比較した。
 画像枠の 1 px の枠線を考慮した 48 辺の誤差は最大 0.778 px だった。
-文字のグリフ境界、箇条書き、Caption の描画位置は同じ方法では測っていない。
+今回、文字を含む 9 要素について、最初の暗い画素の位置を 3 サイズの保存画像から取得した。
+各要素の先頭画素から共有レイアウト上の相対位置を推定し、サイズごとの残差を計算すると最大 0.916 物理 px だった。
+Slide 1 の箇条書きは直前の URL と測定枠が接するため、この測定から除外した。
+この結果は先頭画素の相対位置がサイズに追従する証拠であり、各グリフの絶対位置を 1 px 以内と判定する証拠にはならない。
 
 Kotoeri の候補ポップアップ、確定後のタイトル、Undo 後と Redo 後の画面を修正前の実機で記録した。
 確定と Undo / Redo の後、選択範囲を置換後の文書全体へ誤って適用していたため、`start byte index 10 is out of bounds for string of length 9` でプローブが panic した。
@@ -83,7 +87,13 @@ Apple の [`NSTextInputClient.setMarkedText` 仕様](https://developer.apple.com
 未確定中の Escape は 1 回目では文字列が残り、2 回目で空になった。
 「入力取消」で保存済みタイトルに戻した。未確定中の取消後にも新しい「桜」を入力できた。
 別の再入力では「日本語変換日本語変換」が一度表示されたが、同じキー列の再実行 3 回では保存値がすべて「日本語変換」だった。
+今回も「にほんごへんかん」、Space、Return 2 回を 10 回繰り返し、毎回保存した。
+10 回とも保存値は「日本語変換」で、最後の画面にも二重表示はなかった。
 発生条件を特定できないため、二重表示は未解決の観測として残す。
+候補位置は、タイトル先頭で「日本語」を変換した後、続く位置で「変換」を変換して測った。
+座標ログの入力範囲左端はウィンドウ内で 77.0 px と 185.8 px、ウィンドウ左端は画面座標 448 px だった。
+候補枠の左端は画面座標 516 px と 624 px で、移動量は入力範囲が 108.8 px、候補枠が 108 px だった。
+候補枠の測定は画面画像の上端から 520 px の走査線で行った。
 試験後は入力ソースを ABC に戻し、Kotoeri の親入力ソースを開始時と同じ無効状態に戻した。TIS API はどちらも OSStatus 0 を返した。
 
 フォントの確認には CoreText を使った。
@@ -91,7 +101,7 @@ Hiragino Sans は `HiraginoSans-W3`、Menlo は `Menlo-Regular` に解決され�
 Menlo の日本語は `HiraginoSans-W3`、絵文字は `AppleColorEmoji` にフォールバックした。
 GPUI の macOS 実装は CoreText のシステムフォールバック一覧を利用するが、今回の測定は GPUI が描いた個別グリフのフォントを直接取得したものではない。
 
-残る作業は、候補ポップアップを異なる入力位置で測り、二重表示の発生条件を特定して欠落と重複がないことを再試験し、文字を含む要素の描画誤差を測ることである。
+残る作業は、過去の二重表示の発生条件を特定して欠落と重複がないことを再試験し、文字を含む全要素の絶対的な描画誤差を測ることである。
 
 通常テキストの Undo / Redo と空タイトルの修正と取消は確認した。
 これらは IME の変換単位動作を確認した証拠には数えない。
@@ -112,6 +122,7 @@ Slide の先頭と末尾で移動が止まり、Escape で編集表示へ戻っ�
 - [全画面、比率 1:2](evidence/layout-fullscreen-1-2-live.png)
 - [AeroSpace 無効時の配置座標](evidence/layout-coordinate-log-aerospace-disabled.csv)
 - [画像枠とコード枠の描画誤差](evidence/layout-raster-measurements.csv)
+- [文字要素の先頭画素の追従測定](evidence/layout-text-anchor-consistency.csv)
 - [AeroSpace 有効時の寸法履歴](evidence/layout-window-dimensions-aerospace-enabled.csv)
 - [CoreText のフォント解決結果](evidence/font-fallback-coretext.txt)
 
@@ -127,6 +138,10 @@ Slide の先頭と末尾で移動が止まり、Escape で編集表示へ戻っ�
 - [修正版の未確定文字列](evidence/ime-fixed-marked-live.png)
 - [修正版の候補ポップアップ](evidence/ime-fixed-candidate-region-live.png)
 - [修正版の候補範囲ログ](evidence/ime-fixed-candidate-coordinate-log.csv)
+- [タイトル先頭の候補位置](evidence/ime-candidate-position-start-live.png)
+- [後続文字列の候補位置](evidence/ime-candidate-position-shifted-live.png)
+- [2 か所の候補位置測定値](evidence/ime-candidate-position-measurements.csv)
+- [2 か所の入力範囲座標ログ](evidence/ime-candidate-position-coordinate-log.csv)
 - [修正版の確定後](evidence/ime-fixed-commit-live.png)
 - [修正版の Undo 後](evidence/ime-fixed-undo-live.png)
 - [修正版の Redo 後](evidence/ime-fixed-redo-live.png)
@@ -137,6 +152,8 @@ Slide の先頭と末尾で移動が止まり、Escape で編集表示へ戻っ�
 - [確定後の保存復帰](evidence/ime-fixed-save-recovered-live.png)
 - [確定後の発表復帰](evidence/ime-fixed-presentation-recovered-live.png)
 - [再現条件未特定の二重表示](evidence/ime-fixed-duplicate-observation.png)
+- [同じキー列を 10 回保存した値](evidence/ime-repeat-10-saved-values.csv)
+- [10 回目の保存後の画面](evidence/ime-repeat-10-save-live.png)
 - [修正版の IME 入力録画](evidence/ime-fixed-region-live.mov)
 - [文字列だけ確定した場合に残る古い候補](evidence/ime-direct-commit-stale-candidates.png)
 - [文字列だけ確定した場合に残る変換状態](evidence/ime-direct-commit-stale-context.png)
