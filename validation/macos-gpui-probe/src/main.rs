@@ -12,6 +12,8 @@ use gpui::{
 use gpui_platform::application;
 use input::TextInputState;
 use layout::{CanvasPlacement, ElementKind, ElementSpec};
+use objc::{msg_send, runtime::Object, sel, sel_impl};
+use raw_window_handle::{HasWindowHandle, RawWindowHandle};
 
 const INITIAL_TITLE: &str = "日本語と English が混在するタイトル";
 const SMALL_SIZE: Size<gpui::Pixels> = size(gpui::px(1024.0), gpui::px(760.0));
@@ -89,6 +91,33 @@ impl ValidationApp {
         !value.trim().is_empty() && !value.contains('\0')
     }
 
+    #[allow(unexpected_cfgs)] // objc 0.2 checks its legacy cargo-clippy feature in msg_send!.
+    fn finish_title_composition(&mut self, window: &mut Window, cx: &mut Context<Self>) -> bool {
+        if !self.title.read(cx).is_marked() {
+            return true;
+        }
+        let Ok(handle) = window.window_handle() else {
+            return false;
+        };
+        let RawWindowHandle::AppKit(handle) = handle.as_raw() else {
+            return false;
+        };
+        let view = handle.ns_view.as_ptr().cast::<Object>();
+        // GPUI's AppKit window handle is the NSView that owns the active input context.
+        let input_context: *mut Object = unsafe { msg_send![view, inputContext] };
+        if input_context.is_null() {
+            return false;
+        }
+        self.title
+            .update(cx, |title, cx| title.finish_composition(cx));
+        // AppKit requires the client to clear its marked range before discarding
+        // the input method's conversion session.
+        unsafe {
+            let _: () = msg_send![input_context, discardMarkedText];
+        }
+        !self.title.read(cx).is_marked()
+    }
+
     fn current_elements(&self, cx: &Context<Self>) -> Vec<ElementSpec> {
         let heading = self.title_value(cx);
         layout::slide_elements(self.current_slide, &heading, self.overflow_fixed)
@@ -156,6 +185,12 @@ impl ValidationApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        if !self.finish_title_composition(window, cx) {
+            self.last_action =
+                "IME の変換を終了できなかったため入力を変更しませんでした。".to_owned();
+            cx.notify();
+            return;
+        }
         self.title.update(cx, |title, cx| title.set_value("", cx));
         self.title_editing = true;
         let focus = self.title.read(cx).focus_handle();
@@ -165,6 +200,12 @@ impl ValidationApp {
     }
 
     fn fix_title(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
+        if !self.finish_title_composition(window, cx) {
+            self.last_action =
+                "IME の変換を終了できなかったため入力を変更しませんでした。".to_owned();
+            cx.notify();
+            return;
+        }
         self.title
             .update(cx, |title, cx| title.set_value(INITIAL_TITLE, cx));
         self.title_editing = true;
@@ -175,6 +216,12 @@ impl ValidationApp {
     }
 
     fn cancel_title_edit(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
+        if !self.finish_title_composition(window, cx) {
+            self.last_action =
+                "IME の変換を終了できなかったため入力を取消せませんでした。".to_owned();
+            cx.notify();
+            return;
+        }
         let value = self.saved_title.clone();
         self.title
             .update(cx, |title, cx| title.set_value(&value, cx));
@@ -193,17 +240,19 @@ impl ValidationApp {
     }
 
     fn save(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
+        if !self.finish_title_composition(window, cx) {
+            self.save_blocked += 1;
+            self.last_action = "IME の変換を確定できなかったため保存を止めました。".to_owned();
+            cx.notify();
+            return;
+        }
         let focus = self.root_focus.clone();
         window.focus(&focus, cx);
         let value = self.title_value(cx);
-        let marked = self.title.read(cx).is_marked();
-        if marked || !self.title_is_valid(cx) {
+        if !self.title_is_valid(cx) {
             self.save_blocked += 1;
-            self.last_action = if marked {
-                "IME の未確定文字列が残るため保存を止めました。".to_owned()
-            } else {
-                "タイトルが無効なため保存を止めました。修正または取消してください。".to_owned()
-            };
+            self.last_action =
+                "タイトルが無効なため保存を止めました。修正または取消してください。".to_owned();
             cx.notify();
             return;
         }
@@ -235,16 +284,18 @@ impl ValidationApp {
     }
 
     fn start_presentation(&mut self, slide: usize, window: &mut Window, cx: &mut Context<Self>) {
+        if !self.finish_title_composition(window, cx) {
+            self.presentation_blocked += 1;
+            self.last_action = "IME の変換を確定できなかったため発表を止めました。".to_owned();
+            cx.notify();
+            return;
+        }
         let focus = self.root_focus.clone();
         window.focus(&focus, cx);
-        let marked = self.title.read(cx).is_marked();
-        if marked || !self.title_is_valid(cx) {
+        if !self.title_is_valid(cx) {
             self.presentation_blocked += 1;
-            self.last_action = if marked {
-                "IME の変換を確定できなかったため発表を止めました。".to_owned()
-            } else {
-                "タイトルが無効なため発表を止めました。修正または取消してください。".to_owned()
-            };
+            self.last_action =
+                "タイトルが無効なため発表を止めました。修正または取消してください。".to_owned();
             cx.notify();
             return;
         }

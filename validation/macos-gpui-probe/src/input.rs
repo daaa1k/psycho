@@ -106,6 +106,15 @@ impl TextInputState {
         self.marked_range.is_some()
     }
 
+    pub fn finish_composition(&mut self, cx: &mut Context<Self>) {
+        if self.marked_range.take().is_some() {
+            if let Some(before) = self.composition_before.take() {
+                self.push_undo(before);
+            }
+            cx.notify();
+        }
+    }
+
     pub fn has_focus(&self, window: &Window) -> bool {
         self.focus_handle.is_focused(window)
     }

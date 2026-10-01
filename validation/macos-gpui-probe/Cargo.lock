@@ -2813,6 +2813,8 @@ version = "0.0.0"
 dependencies = [
  "gpui",
  "gpui_platform",
+ "objc",
+ "raw-window-handle",
 ]
 
 [[package]]
