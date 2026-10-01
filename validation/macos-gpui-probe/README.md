@@ -21,8 +21,8 @@
 | 全画面 | viewport とウィンドウが 1920 × 1200 |
 | 日本語フォント | Hiragino Sans |
 | コードフォント | Menlo |
-| 代替フォント | 個別指定なし。OS / GPUI のフォールバック先は未測定 |
-| 日本語 IME | macOS 標準 Kotoeri（ローマ字入力）で実機確認。候補確定と Undo / Redo は修正前に確認し、範囲計算修正後の再試験待ち |
+| 代替フォント | 個別指定なし。CoreText では Menlo の日本語を `HiraginoSans-W3`、絵文字を `AppleColorEmoji` に解決。GPUI の個別グリフは未測定 |
+| 日本語 IME | macOS 標準 Kotoeri（ローマ字入力）で修正版の候補確定、再変換、Undo / Redo を実機確認。未確定中の保存と発表は親仕様が求める自動確定へ進まず停止した |
 
 GPUI と GPUI platform は同一 Zed revision に固定している。
 AeroSpace を有効にしていた初回の寸法ログには、小さい編集表示の途中で 1472 × 965 や 1890 × 1169 が記録された。
@@ -81,7 +81,19 @@ screencapture -v -l <window-id> -V 15 -x validation/macos-gpui-probe/evidence/pr
 
 全画面への切替前に録画を始めると、ウィンドウ枠に合わせて映像が切り取られる。
 現在の全画面録画と手順別の画面証跡は [検証結果](results.md) を参照する。
-IME の画面証跡はあるが、IME 操作の録画はまだ作成していない。
+IME 操作の録画は [修正版の IME 入力録画](evidence/ime-fixed-region-live.mov) にある。
+画像枠とコード枠の物理ピクセル境界は次のコマンドで再測定する。
+`sips` と `ffmpeg` を使用し、[測定値](evidence/layout-raster-measurements.csv)を再生成する。
+
+```sh
+/usr/bin/python3 validation/macos-gpui-probe/measure_raster.py
+```
+
+CoreText のフォント解決先は次のコマンドで再取得する。
+
+```sh
+/usr/bin/swift validation/macos-gpui-probe/inspect_font_fallback.swift
+```
 
 共有レイアウトと IME 入力処理の実装は `src/layout.rs` と `src/input.rs` にある。
 用語と対象を先に固定した対応表は [referent table](../../referent-table-macos-gpui-validation.md) である。
