@@ -78,6 +78,39 @@ pub struct TextInputState {
 }
 
 impl TextInputState {
+    // Opt-in acceptance evidence: preserve every mutation and every painted input value.
+    fn record_ime_state(&self, event: &str, new_text: &str, range: Option<&Range<usize>>) {
+        let Some(directory) = std::env::var_os("PSYCHO_IME_TRACE_DIR") else {
+            return;
+        };
+        use std::io::Write;
+        let hex = |value: &str| {
+            value
+                .as_bytes()
+                .iter()
+                .map(|byte| format!("{byte:02x}"))
+                .collect::<String>()
+        };
+        let directory = std::path::Path::new(&directory);
+        let row = format!(
+            "{event}\t{}\t{:?}\t{:?}\t{}\t{range:?}\n",
+            hex(&self.content),
+            self.selected_range,
+            self.marked_range,
+            hex(new_text)
+        );
+        let mut file = std::fs::OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(directory.join("ime-events.tsv"))
+            .expect("open IME evidence");
+        file.write_all(row.as_bytes()).expect("write IME evidence");
+        if event == "paint" {
+            std::fs::write(directory.join("ime-painted.txt"), self.content.as_bytes())
+                .expect("write painted IME value");
+        }
+    }
+
     pub fn new(cx: &mut Context<Self>, initial_text: &str) -> Self {
         Self {
             focus_handle: cx.focus_handle(),
@@ -139,6 +172,7 @@ impl TextInputState {
         self.composition_before = None;
         self.undo_stack.clear();
         self.redo_stack.clear();
+        self.record_ime_state("set_value", value, None);
         cx.notify();
     }
 
@@ -384,7 +418,9 @@ impl EntityInputHandler for TextInputState {
     }
 
     fn unmark_text(&mut self, _: &mut Window, _: &mut Context<Self>) {
+        self.record_ime_state("unmark_before", "", None);
         self.marked_range = None;
+        self.record_ime_state("unmark_after", "", None);
     }
 
     fn replace_text_in_range(
@@ -394,6 +430,7 @@ impl EntityInputHandler for TextInputState {
         _: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        self.record_ime_state("replace_before", new_text, range_utf16.as_ref());
         let range = range_utf16
             .as_ref()
             .map(|range| self.range_from_utf16(range))
@@ -409,6 +446,7 @@ impl EntityInputHandler for TextInputState {
         self.selected_range = range.start + new_text.len()..range.start + new_text.len();
         self.marked_range = None;
         self.push_undo(before);
+        self.record_ime_state("replace_after", new_text, range_utf16.as_ref());
         cx.notify();
     }
 
@@ -420,6 +458,7 @@ impl EntityInputHandler for TextInputState {
         _: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        self.record_ime_state("mark_before", new_text, range_utf16.as_ref());
         if self.marked_range.is_none() {
             self.composition_before = Some(self.content.to_string());
         }
@@ -438,6 +477,7 @@ impl EntityInputHandler for TextInputState {
         };
         self.selected_range =
             selection_range_after_marked_text(&range, new_text, new_selected_range_utf16.as_ref());
+        self.record_ime_state("mark_after", new_text, range_utf16.as_ref());
         cx.notify();
     }
 
@@ -726,6 +766,7 @@ impl Element for TextElement {
         window: &mut Window,
         cx: &mut App,
     ) {
+        self.input.read(cx).record_ime_state("paint", "", None);
         let focus_handle = self.input.read(cx).focus_handle.clone();
         window.handle_input(
             &focus_handle,

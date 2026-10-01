@@ -1,0 +1,192 @@
+[
+  {
+    "slide": 1,
+    "id": "heading",
+    "kind": "heading",
+    "lines": [
+      "日本語と English が混在するタイトル"
+    ],
+    "x": 64,
+    "y": 48,
+    "width": 1152,
+    "height": 60,
+    "font_size": 48,
+    "line_height": 60,
+    "font": "HiraginoSans-W6"
+  },
+  {
+    "slide": 1,
+    "id": "mixed-text-and-url",
+    "kind": "text",
+    "lines": [
+      "日本語と English が混在する本文です。",
+      "https://example.org/psycho/presentation/layout/long-url-wrap-check-2026",
+      "/reconversion-candidate-position-and-text-editing-coordinate-validation",
+      "/scale-boundary-and-two-column-wrap-observation"
+    ],
+    "x": 64,
+    "y": 134,
+    "width": 1152,
+    "height": 136,
+    "font_size": 26,
+    "line_height": 38.4,
+    "font": "HiraginoSans-W3"
+  },
+  {
+    "slide": 1,
+    "id": "bullets-1-to-1",
+    "kind": "bullets",
+    "lines": [
+      "• 箇条書きの行頭と折返し",
+      "• 左右の列幅を比較する",
+      "• Caption は画像の下に置く"
+    ],
+    "x": 64,
+    "y": 280,
+    "width": 564,
+    "height": 122,
+    "font_size": 28,
+    "line_height": 42,
+    "font": "HiraginoSans-W3"
+  },
+  {
+    "slide": 1,
+    "id": "tabbed-code",
+    "kind": "code",
+    "lines": [
+      "fn main() {",
+      "    println!(\"日本語 IME を確認\");",
+      "}"
+    ],
+    "x": 64,
+    "y": 418,
+    "width": 564,
+    "height": 172,
+    "font_size": 22,
+    "line_height": 30.8,
+    "font": "Menlo-Regular"
+  },
+  {
+    "slide": 1,
+    "id": "image-1-to-1",
+    "kind": "image",
+    "lines": [
+      "画像枠 1:1"
+    ],
+    "x": 652,
+    "y": 280,
+    "width": 564,
+    "height": 300,
+    "font_size": 20,
+    "line_height": 28,
+    "font": "HiraginoSans-W3"
+  },
+  {
+    "slide": 1,
+    "id": "caption-1-to-1",
+    "kind": "caption",
+    "lines": [
+      "Caption: 編集と発表で同じ画像説明を表示する。"
+    ],
+    "x": 652,
+    "y": 592,
+    "width": 564,
+    "height": 50,
+    "font_size": 20,
+    "line_height": 28,
+    "font": "HiraginoSans-W3"
+  },
+  {
+    "slide": 2,
+    "id": "heading",
+    "kind": "heading",
+    "lines": [
+      "比率 1:2 の列配置"
+    ],
+    "x": 64,
+    "y": 48,
+    "width": 1152,
+    "height": 60,
+    "font_size": 48,
+    "line_height": 60,
+    "font": "HiraginoSans-W6"
+  },
+  {
+    "slide": 2,
+    "id": "body-1-to-2",
+    "kind": "text",
+    "lines": [
+      "Column widths remain fixed at 1:2 while the slide scales."
+    ],
+    "x": 64,
+    "y": 134,
+    "width": 1152,
+    "height": 56,
+    "font_size": 28,
+    "line_height": 42,
+    "font": "HiraginoSans-W3"
+  },
+  {
+    "slide": 2,
+    "id": "bullets-1-to-2",
+    "kind": "bullets",
+    "lines": [
+      "• 左列",
+      "• 幅 1",
+      "• 日本語"
+    ],
+    "x": 64,
+    "y": 264,
+    "width": 376,
+    "height": 150,
+    "font_size": 28,
+    "line_height": 42,
+    "font": "HiraginoSans-W3"
+  },
+  {
+    "slide": 2,
+    "id": "code-1-to-2",
+    "kind": "code",
+    "lines": [
+      "let columns = (1, 2);",
+      "let layout = shared_for_editor_and_presenter(columns);"
+    ],
+    "x": 464,
+    "y": 264,
+    "width": 752,
+    "height": 138,
+    "font_size": 22,
+    "line_height": 30.8,
+    "font": "Menlo-Regular"
+  },
+  {
+    "slide": 2,
+    "id": "image-1-to-2",
+    "kind": "image",
+    "lines": [
+      "画像枠 1:2"
+    ],
+    "x": 464,
+    "y": 430,
+    "width": 752,
+    "height": 160,
+    "font_size": 20,
+    "line_height": 28,
+    "font": "HiraginoSans-W3"
+  },
+  {
+    "slide": 2,
+    "id": "caption-1-to-2",
+    "kind": "caption",
+    "lines": [
+      "Caption: 右列は左列の2倍幅。"
+    ],
+    "x": 464,
+    "y": 602,
+    "width": 752,
+    "height": 50,
+    "font_size": 20,
+    "line_height": 28,
+    "font": "HiraginoSans-W3"
+  }
+]

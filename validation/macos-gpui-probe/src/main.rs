@@ -1,5 +1,6 @@
 mod input;
 mod layout;
+mod text;
 
 use std::fs::{self, OpenOptions};
 use std::io::Write;
@@ -583,18 +584,30 @@ impl ValidationApp {
                     if editing_title {
                         item.child(title_entity.clone())
                     } else {
-                        item.child(element.text)
+                        item.child(text::shared_text(
+                            element.clone(),
+                            scale,
+                            gpui::point(bounds.origin.x, bounds.origin.y + gpui::px(canvas_top)),
+                        ))
                     }
                 }
                 ElementKind::Code => item
                     .font_family("Menlo")
                     .bg(rgb(0xf1f2f3))
-                    .p(gpui::px(14.0 * scale))
-                    .child(element.text),
+                    .p(gpui::px(16.0 * scale))
+                    .child(text::shared_text(
+                        element.clone(),
+                        scale,
+                        gpui::point(bounds.origin.x, bounds.origin.y + gpui::px(canvas_top)),
+                    )),
                 ElementKind::Caption => item
                     .font_family("Hiragino Sans")
                     .text_color(rgb(0x4c5157))
-                    .child(element.text),
+                    .child(text::shared_text(
+                        element.clone(),
+                        scale,
+                        gpui::point(bounds.origin.x, bounds.origin.y + gpui::px(canvas_top)),
+                    )),
                 ElementKind::Image => item
                     .font_family("Hiragino Sans")
                     .flex()
@@ -603,9 +616,17 @@ impl ValidationApp {
                     .bg(rgb(0xe5e8eb))
                     .border_1()
                     .border_color(rgb(0xb8bec5))
-                    .child(element.text),
+                    .child(text::shared_text(
+                        element.clone(),
+                        scale,
+                        gpui::point(bounds.origin.x, bounds.origin.y + gpui::px(canvas_top)),
+                    )),
                 ElementKind::Text | ElementKind::Bullets => {
-                    item.font_family("Hiragino Sans").child(element.text)
+                    item.font_family("Hiragino Sans").child(text::shared_text(
+                        element.clone(),
+                        scale,
+                        gpui::point(bounds.origin.x, bounds.origin.y + gpui::px(canvas_top)),
+                    ))
                 }
             }
         });
