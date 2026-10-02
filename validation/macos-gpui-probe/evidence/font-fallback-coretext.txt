@@ -1,0 +1,8 @@
+requested=Hiragino Sans resolved=HiraginoSans-W3
+  sample=日 fallback=HiraginoSans-W3
+  sample=a fallback=HiraginoSans-W3
+  sample=🌟 fallback=AppleColorEmoji
+requested=Menlo resolved=Menlo-Regular
+  sample=日 fallback=HiraginoSans-W3
+  sample=a fallback=Menlo-Regular
+  sample=🌟 fallback=AppleColorEmoji
