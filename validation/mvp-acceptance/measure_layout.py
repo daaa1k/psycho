@@ -60,7 +60,7 @@ def stage(mode,slide):
     return image,x,y,width/1280
 failures=[]
 with (root/'layout-glyph-comparison.csv').open('w',newline='') as f:
-    writer=csv.writer(f);writer.writerow(['slide','mode','text_hex','text_occurrence','glyph_index','base_x','base_y','base_error','quantization_error_px'])
+    writer=csv.writer(f,lineterminator="\n");writer.writerow(['slide','mode','text_hex','text_occurrence','glyph_index','base_x','base_y','base_error','quantization_error_px'])
     for slide in [1,2]:
         ref=actual['fullscreen',slide]
         for mode in ['small','large','fullscreen']:
@@ -80,7 +80,7 @@ with (root/'layout-glyph-comparison.csv').open('w',newline='') as f:
 # Compare strong strokes against weak strokes within one physical pixel in both
 # directions. Intensities may differ due to native font antialiasing.
 with (root/'layout-raster-comparison.csv').open('w',newline='') as f:
-    writer=csv.writer(f);writer.writerow(['slide','mode','element','unmatched_observed','unmatched_reference'])
+    writer=csv.writer(f,lineterminator="\n");writer.writerow(['slide','mode','element','unmatched_observed','unmatched_reference'])
     for slide in [1,2]:
         full,fx,fy,fs=stage('fullscreen',slide)
         lw=1128*(.5 if slide==1 else .33)

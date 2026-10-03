@@ -36,7 +36,7 @@ if state['snapshot']['window']['width']==1920:
     action('press-key','--key','Escape','--no-screenshot')
     time.sleep(1)
 with (out/'fullscreen-checks.csv').open('w',newline='') as log:
-    writer=csv.writer(log);writer.writerow(['cycle','step','slide','width','height','result'])
+    writer=csv.writer(log,lineterminator="\n");writer.writerow(['cycle','step','slide','width','height','result'])
     for cycle in range(1,11):
         action('click','--x','65','--y','222','--no-screenshot')
         action('click','--x',str(630 if cycle%2 else 730),'--y','54','--no-screenshot')
