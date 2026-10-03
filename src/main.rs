@@ -3566,21 +3566,31 @@ impl PsychoApp {
                     || matches!(self.target, EditTarget::Columns { slide: selected_slide, index: selected_index } if selected_slide == slide_index && selected_index == index)
                     || matches!(self.target, EditTarget::ColumnWidth { slide: selected_slide, index: selected_index, .. } if selected_slide == slide_index && selected_index == index)
                     || matches!(self.target, EditTarget::NestedElement { slide: selected_slide, columns, .. } if selected_slide == slide_index && columns == index);
-                canvas = canvas.child(self.render_canvas_element(
-                    element,
-                    scale,
-                    selected,
-                    images,
-                    width - 128.0 * scale,
-                    CanvasTarget::Element {
-                        slide: slide_index,
-                        index,
-                    },
-                    editing && !self.external_edit_blocked(),
-                    window,
-                    &placement.shifted(0., cursor_y),
-                    cx,
-                ));
+                // Place complete Elements using the same base coordinates
+                // as their glyphs. Flex's per-child rounding otherwise
+                // accumulates before images and code backgrounds.
+                canvas = canvas.child(
+                    div()
+                        .absolute()
+                        .left(px(64. * scale))
+                        .top(px((48. + cursor_y) * scale))
+                        .w(px(width - 128. * scale))
+                        .child(self.render_canvas_element(
+                            element,
+                            scale,
+                            selected,
+                            images,
+                            width - 128.0 * scale,
+                            CanvasTarget::Element {
+                                slide: slide_index,
+                                index,
+                            },
+                            editing && !self.external_edit_blocked(),
+                            window,
+                            &placement.shifted(0., cursor_y),
+                            cx,
+                        )),
+                );
                 cursor_y += measure_element(element, 1152., window, &mut Vec::new()) + 24.;
             }
         }
@@ -3718,6 +3728,7 @@ impl PsychoApp {
                     && caption_selected
                     && self.editor.read(cx).has_focus(window);
                 let mut item = div()
+                    .relative()
                     .w_full()
                     .flex()
                     .flex_col()
@@ -3788,13 +3799,15 @@ impl PsychoApp {
                 } else if editing {
                     item = item.child(
                         div()
+                            .absolute()
+                            .top(px(324.0 * scale))
                             .w_full()
-                            .min_h(px(28.0 * scale))
+                            .h(px(20.0 * scale))
                             .px_2()
-                            .py_1()
                             .border_1()
                             .border_color(rgb(0xd1d5db))
                             .text_size(px(14.0 * scale))
+                            .line_height(px(20.0 * scale))
                             .text_color(rgb(0x6b7280))
                             .child("＋ キャプションを追加")
                             .cursor_pointer()
