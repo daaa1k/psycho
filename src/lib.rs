@@ -1300,6 +1300,11 @@ impl PresentationDocument {
     }
 
     pub fn save(&mut self) -> Result<(), DocumentError> {
+        self.save_before_replace(|| {})
+    }
+
+    // Private seam for deterministic tests of changes during the temporary write.
+    fn save_before_replace(&mut self, before_replace: impl FnOnce()) -> Result<(), DocumentError> {
         let path = self.path.clone().ok_or(DocumentError::NoPath)?;
         if !self.can_edit() {
             return Err(DocumentError::InvalidDocument);
@@ -1319,6 +1324,7 @@ impl PresentationDocument {
         if let Ok(metadata) = fs::metadata(&path) {
             temp.as_file().set_permissions(metadata.permissions())?;
         }
+        before_replace();
         // Recheck just before the atomic rename so an editor update during the
         // temporary-file write does not get silently overwritten.
         if fs::read(&path)? != self.saved_source.as_bytes() {
@@ -3074,6 +3080,62 @@ fn diagnostic(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn save_rechecks_changes_after_the_temporary_file_is_synced() {
+        for delete in [false, true] {
+            let folder = tempfile::tempdir().unwrap();
+            let path = folder.path().join("presentation.kdl");
+            let original = "presentation { metadata { title \"Original\" }; slide {} }";
+            let external = original.replace("Original", "External");
+            fs::write(&path, original).unwrap();
+            let mut document = PresentationDocument::open(&path).unwrap();
+            document.set_title("Draft").unwrap();
+            let draft = document.source().to_owned();
+            let error = document
+                .save_before_replace(|| {
+                    // Prove the injected change happens after writing the complete draft.
+                    let temp = fs::read_dir(folder.path())
+                        .unwrap()
+                        .map(|entry| entry.unwrap().path())
+                        .find(|candidate| candidate != &path)
+                        .unwrap();
+                    assert_eq!(fs::read(temp).unwrap(), draft.as_bytes());
+                    if delete {
+                        fs::remove_file(&path).unwrap();
+                    } else {
+                        fs::write(&path, &external).unwrap();
+                    }
+                })
+                .unwrap_err();
+            if delete {
+                assert!(
+                    matches!(error, DocumentError::Io(ref error) if error.kind() == std::io::ErrorKind::NotFound)
+                );
+                assert!(!path.exists());
+            } else {
+                assert!(matches!(error, DocumentError::ExternalChange));
+                assert_eq!(fs::read(&path).unwrap(), external.as_bytes());
+            }
+            assert_eq!(document.source(), draft);
+            assert!(document.is_dirty());
+            assert!(document.can_undo());
+            assert_eq!(document.path(), Some(path.as_path()));
+            assert_eq!(
+                fs::read_dir(folder.path()).unwrap().count(),
+                usize::from(!delete)
+            );
+            // Restoring the baseline permits a retry, without losing the edit's Undo.
+            fs::write(&path, original).unwrap();
+            document.save().unwrap();
+            assert_eq!(fs::read(&path).unwrap(), draft.as_bytes());
+            assert!(!document.is_dirty());
+            assert!(document.undo());
+            assert_eq!(document.source(), original);
+            assert!(document.redo());
+            assert_eq!(document.source(), draft);
+        }
+    }
 
     #[test]
     fn string_token_finder_handles_raw_and_attribute_strings() {
