@@ -1354,6 +1354,15 @@ impl PresentationDocument {
         path: &Path,
         overwrite_confirmed: bool,
     ) -> Result<(), DocumentError> {
+        self.save_as_before_replace(path, overwrite_confirmed, || {})
+    }
+
+    fn save_as_before_replace(
+        &mut self,
+        path: &Path,
+        overwrite_confirmed: bool,
+        before_replace: impl FnOnce(),
+    ) -> Result<(), DocumentError> {
         if !self.can_edit() {
             return Err(DocumentError::InvalidDocument);
         }
@@ -1373,6 +1382,7 @@ impl PresentationDocument {
         let mut temp = tempfile::NamedTempFile::new_in(&parent)?;
         temp.write_all(rebased_source.as_bytes())?;
         temp.as_file().sync_all()?;
+        before_replace();
         if let Some(previous_destination) = previous_destination {
             let metadata = fs::metadata(&path)?;
             if fs::read(&path)? != previous_destination {
@@ -3080,6 +3090,88 @@ fn diagnostic(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn save_as_rechecks_destination_changes_and_preserves_the_original_document() {
+        for scenario in ["created", "changed", "deleted"] {
+            let folder = tempfile::tempdir().unwrap();
+            let source_dir = folder.path().join("source");
+            let destination_dir = folder.path().join("archive/deep");
+            fs::create_dir_all(&source_dir).unwrap();
+            fs::create_dir_all(&destination_dir).unwrap();
+            let path = source_dir.join("presentation.kdl");
+            let destination = destination_dir.join("presentation.kdl");
+            let original =
+                "presentation { metadata { title \"Original\" }; slide { image \"pic.png\"; }; }";
+            let external = b"external destination bytes";
+            fs::write(&path, original).unwrap();
+            let overwrite = scenario != "created";
+            if overwrite {
+                fs::write(&destination, b"approved destination bytes").unwrap();
+            }
+            let mut document = PresentationDocument::open(&path).unwrap();
+            document.set_title("Draft").unwrap();
+            document.set_title("Next draft").unwrap();
+            assert!(document.undo());
+            let draft = document.source().to_owned();
+            let undo = document.undo.clone();
+            let redo = document.redo.clone();
+            let rebased =
+                rebase_image_paths(&draft, document.asset_base(), &destination_dir).unwrap();
+            let error = document
+                .save_as_before_replace(&destination, overwrite, || {
+                    let temp = fs::read_dir(&destination_dir)
+                        .unwrap()
+                        .map(|entry| entry.unwrap().path())
+                        .find(|candidate| candidate != &destination)
+                        .unwrap();
+                    assert_eq!(fs::read(temp).unwrap(), rebased.as_bytes());
+                    if scenario == "deleted" {
+                        fs::remove_file(&destination).unwrap();
+                    } else {
+                        fs::write(&destination, external).unwrap();
+                    }
+                })
+                .unwrap_err();
+            match scenario {
+                "created" => assert!(matches!(error, DocumentError::DestinationExists)),
+                "changed" => assert!(matches!(error, DocumentError::ExternalChange)),
+                "deleted" => assert!(
+                    matches!(error, DocumentError::Io(ref error) if error.kind() == std::io::ErrorKind::NotFound)
+                ),
+                _ => unreachable!(),
+            }
+            if scenario == "deleted" {
+                assert!(!destination.exists());
+            } else {
+                assert_eq!(fs::read(&destination).unwrap(), external);
+            }
+            assert_eq!(fs::read(&path).unwrap(), original.as_bytes());
+            assert_eq!(document.source(), draft);
+            assert_eq!(document.saved_source, original);
+            assert_eq!(document.path(), Some(path.as_path()));
+            assert_eq!(document.asset_base(), source_dir);
+            assert_eq!(document.undo, undo);
+            assert_eq!(document.redo, redo);
+            assert!(document.is_dirty());
+            assert_eq!(
+                fs::read_dir(&destination_dir).unwrap().count(),
+                usize::from(scenario != "deleted")
+            );
+            // A retry after resolving the destination uses the same draft and rebases once.
+            if destination.exists() {
+                fs::remove_file(&destination).unwrap();
+            }
+            document.save_as(&destination).unwrap();
+            assert_eq!(document.path(), Some(destination.as_path()));
+            assert_eq!(document.asset_base(), destination_dir);
+            assert_eq!(fs::read(&destination).unwrap(), rebased.as_bytes());
+            assert_eq!(fs::read(&path).unwrap(), original.as_bytes());
+            assert!(!document.is_dirty());
+            assert!(!document.can_undo());
+            assert!(!document.can_redo());
+        }
+    }
 
     #[test]
     fn save_rechecks_changes_after_the_temporary_file_is_synced() {
