@@ -284,25 +284,25 @@ impl PsychoApp {
     }
 
     fn record_external_problem(&mut self, error: &DocumentError) {
-        self.external_change = match error {
-            DocumentError::ExternalChange => true,
-            DocumentError::Io(error) => matches!(
-                error.kind(),
-                std::io::ErrorKind::NotFound | std::io::ErrorKind::PermissionDenied
-            ),
-            _ => false,
-        };
+        self.external_change =
+            matches!(error, DocumentError::ExternalChange | DocumentError::Io(_));
         self.external_error = match error {
-            DocumentError::Io(error)
-                if matches!(
-                    error.kind(),
-                    std::io::ErrorKind::NotFound | std::io::ErrorKind::PermissionDenied
-                ) =>
-            {
-                Some(error.to_string())
-            }
+            DocumentError::Io(error) => Some(error.to_string()),
             _ => None,
         };
+    }
+
+    fn record_save_problem(&mut self, error: &DocumentError) {
+        if matches!(error, DocumentError::ExternalChange) {
+            self.record_external_problem(error);
+        } else if matches!(error, DocumentError::Io(_)) {
+            // A failure creating or writing the temporary file does not imply
+            // the source became unreadable. Keep editing and retry available
+            // unless a fresh read actually reports a source-file problem.
+            if let Err(source_error) = self.document.check_external_change() {
+                self.record_external_problem(&source_error);
+            }
+        }
     }
 
     fn edit_value(&self, target: EditTarget) -> String {
@@ -639,7 +639,7 @@ impl PsychoApp {
                 self.status = "保存しました。".into();
             }
             Err(error) => {
-                self.record_external_problem(&error);
+                self.record_save_problem(&error);
                 self.status = format!("保存できませんでした: {error}");
             }
         }
@@ -665,7 +665,7 @@ impl PsychoApp {
                 window.remove_window();
             }
             Err(error) => {
-                self.record_external_problem(&error);
+                self.record_save_problem(&error);
                 self.status = format!("保存できませんでした: {error}");
                 cx.notify();
             }
