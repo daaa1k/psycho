@@ -12,7 +12,8 @@ use gpui::{
 actions!(
     ime_probe,
     [
-        Backspace, Delete, Left, Right, Up, Down, SelectAll, Undo, Redo, Enter, Escape
+        Backspace, Delete, Left, Right, Up, Down, SelectAll, Undo, Redo, Enter, Escape, Copy, Cut,
+        Paste, Tab
     ]
 );
 
@@ -236,6 +237,27 @@ impl TextInputState {
         );
     }
 
+    pub fn selected_text(&self) -> Option<String> {
+        self.content
+            .get(self.selected_range.clone())
+            .filter(|text| !text.is_empty())
+            .map(str::to_owned)
+    }
+
+    pub fn can_undo(&self) -> bool {
+        !self.undo_stack.is_empty() && self.marked_range.is_none()
+    }
+    pub fn can_redo(&self) -> bool {
+        !self.redo_stack.is_empty() && self.marked_range.is_none()
+    }
+
+    pub fn paste_text(&mut self, text: &str, window: &mut Window, cx: &mut Context<Self>) {
+        self.break_undo_group();
+        self.pending_undo_group = Some(UndoGroup::Atomic);
+        self.replace_text_in_range(None, text, window, cx);
+        self.break_undo_group();
+    }
+
     pub fn value(&self) -> String {
         self.content.to_string()
     }
@@ -346,6 +368,13 @@ impl TextInputState {
         }
         self.break_undo_group();
         self.move_vertically(1, cx);
+    }
+
+    fn tab(&mut self, _: &Tab, window: &mut Window, cx: &mut Context<Self>) {
+        if self.multiline && self.marked_range.is_none() {
+            self.pending_undo_group = Some(UndoGroup::Typing);
+            self.replace_text_in_range(None, "\t", window, cx);
+        }
     }
 
     fn enter(&mut self, _: &Enter, window: &mut Window, cx: &mut Context<Self>) {
@@ -852,6 +881,7 @@ impl Render for TextInputState {
             .on_action(cx.listener(Self::select_all))
             .on_action(cx.listener(Self::undo))
             .on_action(cx.listener(Self::redo))
+            .on_action(cx.listener(Self::tab))
             .on_action(cx.listener(Self::enter))
             .on_action(cx.listener(Self::escape))
             .on_mouse_down(MouseButton::Left, cx.listener(Self::on_mouse_down))

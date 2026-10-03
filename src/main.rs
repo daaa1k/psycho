@@ -636,6 +636,44 @@ impl PsychoApp {
         Ok(())
     }
 
+    fn copy_input(&mut self, _: &input::Copy, window: &mut Window, cx: &mut Context<Self>) {
+        if self.external_edit_blocked() || !self.editor.read(cx).has_focus(window) {
+            return;
+        }
+        if let Some(text) = self.editor.read(cx).selected_text() {
+            cx.write_to_clipboard(gpui::ClipboardItem::new_string(text));
+        }
+    }
+
+    fn cut_input(&mut self, _: &input::Cut, window: &mut Window, cx: &mut Context<Self>) {
+        if self.external_edit_blocked() || !self.editor.read(cx).has_focus(window) {
+            return;
+        }
+        if !self.finish_composition(window, cx) {
+            return;
+        }
+        if let Some(text) = self.editor.read(cx).selected_text() {
+            cx.write_to_clipboard(gpui::ClipboardItem::new_string(text));
+            self.editor
+                .update(cx, |input, cx| input.paste_text("", window, cx));
+        }
+    }
+
+    fn paste_input(&mut self, _: &input::Paste, window: &mut Window, cx: &mut Context<Self>) {
+        if self.external_edit_blocked() || !self.editor.read(cx).has_focus(window) {
+            return;
+        }
+        // Finalize through the native context before borrowing TextInputState,
+        // so IME callbacks can update the input and its history safely.
+        if !self.finish_composition(window, cx) {
+            return;
+        }
+        if let Some(text) = cx.read_from_clipboard().and_then(|item| item.text()) {
+            self.editor
+                .update(cx, |input, cx| input.paste_text(&text, window, cx));
+        }
+    }
+
     fn commit_text_edit(
         &mut self,
         _: &CommitTextEdit,
@@ -982,7 +1020,8 @@ impl PsychoApp {
         }) {
             self.status = format!("Slide を追加できませんでした: {error}");
         } else {
-            self.select_title(window, cx);
+            self.reset_editor_to_title(cx);
+            window.focus(&self.root_focus, cx);
             self.status = "Slide を追加しました。".into();
         }
         cx.notify();
@@ -1144,7 +1183,10 @@ impl PsychoApp {
             return;
         }
         self.current_slide = to;
-        self.select_title(window, cx);
+        // The draft was committed before moving. Its numeric target now
+        // refers to another slide, so selection must not commit it again.
+        self.reset_editor_to_title(cx);
+        window.focus(&self.root_focus, cx);
         self.status = "Slide の順序を変更しました。".into();
         cx.notify();
     }
@@ -2345,6 +2387,9 @@ impl PsychoApp {
             .on_action(cx.listener(Self::redo))
             .on_action(cx.listener(Self::delete_selection))
             .on_action(cx.listener(Self::commit_text_edit))
+            .on_action(cx.listener(Self::copy_input))
+            .on_action(cx.listener(Self::cut_input))
+            .on_action(cx.listener(Self::paste_input))
             .on_action(cx.listener(Self::save_action))
             .on_action(cx.listener(Self::save_as_action))
             .bg(rgb(0xe5e7eb))
@@ -3349,6 +3394,10 @@ impl PsychoApp {
         };
         match result {
             Ok(target) => {
+                // Reordering can invalidate the previous numeric target.
+                // Clear it before using the ordinary selection helpers,
+                // which commit the previous field when changing selection.
+                self.reset_editor_to_title(cx);
                 self.select_canvas_source(target, window, cx);
                 self.refresh_assets();
                 self.status = "Element をドラッグして移動しました。".into();
@@ -4075,11 +4124,28 @@ impl Render for PsychoApp {
             || "やり直す".to_owned(),
             |description| format!("やり直す: {description}"),
         );
-        cx.set_menus([Menu::new("編集").items([
+        let input = self.editor.read(cx);
+        let input_focused = editing_enabled && input.has_focus(window);
+        let can_copy = input_focused && input.selected_text().is_some();
+        let undo_item = if input_focused {
+            MenuItem::action("元に戻す: 文字編集", input::Undo).disabled(!input.can_undo())
+        } else {
             MenuItem::action(undo_label, UndoEdit)
-                .disabled(!editing_enabled || !self.document.can_undo()),
+                .disabled(!editing_enabled || !self.document.can_undo())
+        };
+        let redo_item = if input_focused {
+            MenuItem::action("やり直す: 文字編集", input::Redo).disabled(!input.can_redo())
+        } else {
             MenuItem::action(redo_label, RedoEdit)
-                .disabled(!editing_enabled || !self.document.can_redo()),
+                .disabled(!editing_enabled || !self.document.can_redo())
+        };
+        cx.set_menus([Menu::new("編集").items([
+            undo_item,
+            redo_item,
+            MenuItem::action("切り取り", input::Cut).disabled(!can_copy),
+            MenuItem::action("コピー", input::Copy).disabled(!can_copy),
+            MenuItem::action("貼り付け", input::Paste).disabled(!input_focused),
+            MenuItem::action("すべてを選択", input::SelectAll).disabled(!input_focused),
         ])]);
         if let Some(model) = self.presentation.clone() {
             div()
@@ -5291,6 +5357,10 @@ fn main() {
             KeyBinding::new("up", input::Up, Some("TextInput")),
             KeyBinding::new("down", input::Down, Some("TextInput")),
             KeyBinding::new("cmd-a", input::SelectAll, Some("TextInput")),
+            KeyBinding::new("cmd-c", input::Copy, Some("TextInput")),
+            KeyBinding::new("cmd-x", input::Cut, Some("TextInput")),
+            KeyBinding::new("cmd-v", input::Paste, Some("TextInput")),
+            KeyBinding::new("tab", input::Tab, Some("TextInput")),
             KeyBinding::new("cmd-z", input::Undo, Some("TextInput")),
             KeyBinding::new("cmd-shift-z", input::Redo, Some("TextInput")),
             KeyBinding::new("enter", input::Enter, Some("TextInput")),
