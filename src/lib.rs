@@ -124,6 +124,20 @@ pub enum ElementField {
     Caption,
 }
 
+#[derive(Clone, Copy)]
+enum BulletLocation {
+    Slide {
+        slide: usize,
+        element: usize,
+    },
+    Column {
+        slide: usize,
+        columns: usize,
+        column: usize,
+        element: usize,
+    },
+}
+
 #[derive(Debug)]
 pub enum DocumentError {
     Io(std::io::Error),
@@ -495,11 +509,45 @@ impl PresentationDocument {
         item_index: usize,
         value: &str,
     ) -> Result<(), DocumentError> {
+        self.add_bullet_at(
+            BulletLocation::Slide {
+                slide: slide_index,
+                element: element_index,
+            },
+            item_index,
+            value,
+        )
+    }
+
+    pub fn add_column_bullet(
+        &mut self,
+        slide: usize,
+        columns: usize,
+        column: usize,
+        element: usize,
+        item: usize,
+        value: &str,
+    ) -> Result<(), DocumentError> {
+        self.add_bullet_at(
+            BulletLocation::Column {
+                slide,
+                columns,
+                column,
+                element,
+            },
+            item,
+            value,
+        )
+    }
+
+    fn add_bullet_at(
+        &mut self,
+        location: BulletLocation,
+        item_index: usize,
+        value: &str,
+    ) -> Result<(), DocumentError> {
         let parsed = self.editable_document()?;
-        let bullets = slide_node(&parsed, slide_index)
-            .and_then(|slide| slide.children())
-            .and_then(|children| children.nodes().get(element_index))
-            .filter(|node| node.name().value() == "bullets")
+        let bullets = bullet_node(&parsed, location)
             .ok_or_else(|| DocumentError::UnsafeValue("selected element is not bullets".into()))?;
         let items = bullets
             .children()
@@ -531,11 +579,41 @@ impl PresentationDocument {
         element_index: usize,
         item_index: usize,
     ) -> Result<(), DocumentError> {
+        self.remove_bullet_at(
+            BulletLocation::Slide {
+                slide: slide_index,
+                element: element_index,
+            },
+            item_index,
+        )
+    }
+
+    pub fn remove_column_bullet(
+        &mut self,
+        slide: usize,
+        columns: usize,
+        column: usize,
+        element: usize,
+        item: usize,
+    ) -> Result<(), DocumentError> {
+        self.remove_bullet_at(
+            BulletLocation::Column {
+                slide,
+                columns,
+                column,
+                element,
+            },
+            item,
+        )
+    }
+
+    fn remove_bullet_at(
+        &mut self,
+        location: BulletLocation,
+        item_index: usize,
+    ) -> Result<(), DocumentError> {
         let parsed = self.editable_document()?;
-        let item = slide_node(&parsed, slide_index)
-            .and_then(|slide| slide.children())
-            .and_then(|children| children.nodes().get(element_index))
-            .filter(|node| node.name().value() == "bullets")
+        let item = bullet_node(&parsed, location)
             .and_then(|node| node.children())
             .and_then(|children| children.nodes().get(item_index))
             .ok_or_else(|| {
@@ -551,11 +629,45 @@ impl PresentationDocument {
         from: usize,
         to: usize,
     ) -> Result<(), DocumentError> {
+        self.move_bullet_at(
+            BulletLocation::Slide {
+                slide: slide_index,
+                element: element_index,
+            },
+            from,
+            to,
+        )
+    }
+
+    pub fn move_column_bullet(
+        &mut self,
+        slide: usize,
+        columns: usize,
+        column: usize,
+        element: usize,
+        from: usize,
+        to: usize,
+    ) -> Result<(), DocumentError> {
+        self.move_bullet_at(
+            BulletLocation::Column {
+                slide,
+                columns,
+                column,
+                element,
+            },
+            from,
+            to,
+        )
+    }
+
+    fn move_bullet_at(
+        &mut self,
+        location: BulletLocation,
+        from: usize,
+        to: usize,
+    ) -> Result<(), DocumentError> {
         let parsed = self.editable_document()?;
-        let bullets = slide_node(&parsed, slide_index)
-            .and_then(|slide| slide.children())
-            .and_then(|children| children.nodes().get(element_index))
-            .filter(|node| node.name().value() == "bullets")
+        let bullets = bullet_node(&parsed, location)
             .ok_or_else(|| DocumentError::UnsafeValue("selected element is not bullets".into()))?;
         let items = bullets
             .children()
@@ -576,10 +688,7 @@ impl PresentationDocument {
 
         let reparsed =
             KdlDocument::parse_v2(&candidate).map_err(|_| DocumentError::InvalidDocument)?;
-        let parent = slide_node(&reparsed, slide_index)
-            .and_then(|slide| slide.children())
-            .and_then(|children| children.nodes().get(element_index))
-            .ok_or(DocumentError::InvalidDocument)?;
+        let parent = bullet_node(&reparsed, location).ok_or(DocumentError::InvalidDocument)?;
         insert_moved_source_at(&mut candidate, parent, to, &moving)?;
         self.commit_candidate(candidate)
     }
@@ -2257,6 +2366,23 @@ fn child_named<'a>(node: &'a KdlNode, name: &str, index: usize) -> Option<&'a Kd
         .iter()
         .filter(|child| child.name().value() == name)
         .nth(index)
+}
+
+fn bullet_node(document: &KdlDocument, location: BulletLocation) -> Option<&KdlNode> {
+    let (parent, element) = match location {
+        BulletLocation::Slide { slide, element } => (slide_node(document, slide)?, element),
+        BulletLocation::Column {
+            slide,
+            columns,
+            column,
+            element,
+        } => (column_node(document, slide, columns, column)?, element),
+    };
+    parent
+        .children()?
+        .nodes()
+        .get(element)
+        .filter(|node| node.name().value() == "bullets")
 }
 
 fn slide_node(document: &KdlDocument, slide_index: usize) -> Option<&KdlNode> {

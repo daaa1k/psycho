@@ -1393,52 +1393,116 @@ impl PsychoApp {
         cx.notify();
     }
 
-    fn bullet_target(&self) -> Option<(usize, usize, usize)> {
-        let EditTarget::Element {
-            slide,
-            index,
-            field: ElementField::Bullet(item),
-        } = self.target
-        else {
-            return None;
+    fn bullet_source(&self) -> Option<CanvasSource> {
+        match self.target {
+            EditTarget::Element { slide, index, .. } => {
+                Some(CanvasSource::Element { slide, index })
+            }
+            EditTarget::NestedElement {
+                slide,
+                columns,
+                column,
+                index,
+                ..
+            } => Some(CanvasSource::NestedElement {
+                slide,
+                columns,
+                column,
+                index,
+            }),
+            _ => None,
+        }
+    }
+
+    fn bullet_target(&self) -> Option<(CanvasSource, usize)> {
+        match self.target {
+            EditTarget::Element {
+                field: ElementField::Bullet(item),
+                ..
+            }
+            | EditTarget::NestedElement {
+                field: ElementField::Bullet(item),
+                ..
+            } => Some((self.bullet_source()?, item)),
+            _ => None,
+        }
+    }
+
+    fn bullet_items(&self, source: CanvasSource) -> Option<&[String]> {
+        let model = self.document.model()?;
+        let element = match source {
+            CanvasSource::Element { slide, index } => {
+                model.slides.get(slide)?.elements.get(index)?
+            }
+            CanvasSource::NestedElement {
+                slide,
+                columns,
+                column,
+                index,
+            } => nested_element(model, slide, columns, column, index)?,
         };
-        Some((slide, index, item))
+        match element {
+            Element::Bullets(items) => Some(items),
+            _ => None,
+        }
+    }
+
+    fn select_bullet_field(
+        &mut self,
+        source: CanvasSource,
+        field: ElementField,
+        edit: bool,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        match source {
+            CanvasSource::Element { slide, index } => {
+                self.select_element(slide, index, field, edit, window, cx)
+            }
+            CanvasSource::NestedElement {
+                slide,
+                columns,
+                column,
+                index,
+            } => self.select_nested_element(slide, columns, column, index, field, edit, window, cx),
+        }
     }
 
     fn add_bullet_selection(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         if self.external_edit_blocked() {
             return;
         }
-        let EditTarget::Element { slide, index, .. } = self.target else {
+        let Some(source) = self.bullet_source() else {
             return;
         };
-        let insertion = self
-            .document
-            .model()
-            .and_then(|model| model.slides.get(slide))
-            .and_then(|slide| slide.elements.get(index))
-            .and_then(|element| match element {
-                Element::Bullets(items) => Some(items.len()),
-                _ => None,
-            });
-        let Some(insertion) = insertion else {
+        if let Err(error) = self.commit_draft(window, cx) {
+            self.status = format!("項目を追加できませんでした: {error}");
+            cx.notify();
+            return;
+        }
+        let Some(insertion) = self.bullet_items(source).map(<[String]>::len) else {
             return;
         };
-        if let Err(error) = self.commit_draft(window, cx).and_then(|()| {
-            self.document
-                .add_bullet(slide, index, insertion, "")
-                .map_err(|error| error.to_string())
-        }) {
+        let result = match source {
+            CanvasSource::Element { slide, index } => {
+                self.document.add_bullet(slide, index, insertion, "")
+            }
+            CanvasSource::NestedElement {
+                slide,
+                columns,
+                column,
+                index,
+            } => self
+                .document
+                .add_column_bullet(slide, columns, column, index, insertion, ""),
+        };
+        if let Err(error) = result {
             self.status = format!("項目を追加できませんでした: {error}");
         } else {
-            self.select_element(
-                slide,
-                index,
-                ElementField::Bullet(insertion),
-                true,
-                window,
-                cx,
-            );
+            // Adding changes the whole-list field. Do not commit its old
+            // contents again while selecting the newly inserted item.
+            self.reset_editor_to_title(cx);
+            self.select_bullet_field(source, ElementField::Bullet(insertion), true, window, cx);
             self.status = "箇条書き項目を追加しました。".into();
         }
         cx.notify();
@@ -1448,38 +1512,39 @@ impl PsychoApp {
         if self.external_edit_blocked() {
             return;
         }
-        let Some((slide, index, item)) = self.bullet_target() else {
+        let Some((source, item)) = self.bullet_target() else {
             return;
         };
         if let Err(error) = self.commit_draft(window, cx).and_then(|()| {
-            self.document
-                .remove_bullet(slide, index, item)
-                .map_err(|error| error.to_string())
+            match source {
+                CanvasSource::Element { slide, index } => {
+                    self.document.remove_bullet(slide, index, item)
+                }
+                CanvasSource::NestedElement {
+                    slide,
+                    columns,
+                    column,
+                    index,
+                } => self
+                    .document
+                    .remove_column_bullet(slide, columns, column, index, item),
+            }
+            .map_err(|error| error.to_string())
         }) {
             self.status = format!("項目を削除できませんでした: {error}");
         } else {
             self.reset_editor_to_title(cx);
-            let count = self
-                .document
-                .model()
-                .and_then(|model| model.slides.get(slide))
-                .and_then(|slide| slide.elements.get(index))
-                .and_then(|element| match element {
-                    Element::Bullets(items) => Some(items.len()),
-                    _ => None,
-                })
-                .unwrap_or(0);
+            let count = self.bullet_items(source).map_or(0, <[String]>::len);
             if count > 0 {
-                self.select_element(
-                    slide,
-                    index,
+                self.select_bullet_field(
+                    source,
                     ElementField::Bullet(item.min(count - 1)),
                     true,
                     window,
                     cx,
                 );
             } else {
-                self.select_element(slide, index, ElementField::Text, false, window, cx);
+                self.select_bullet_field(source, ElementField::Text, false, window, cx);
             }
             self.status = "箇条書き項目を削除しました。".into();
         }
@@ -1490,19 +1555,10 @@ impl PsychoApp {
         if self.external_edit_blocked() {
             return;
         }
-        let Some((slide, index, from)) = self.bullet_target() else {
+        let Some((source, from)) = self.bullet_target() else {
             return;
         };
-        let count = self
-            .document
-            .model()
-            .and_then(|model| model.slides.get(slide))
-            .and_then(|slide| slide.elements.get(index))
-            .and_then(|element| match element {
-                Element::Bullets(items) => Some(items.len()),
-                _ => None,
-            })
-            .unwrap_or(0);
+        let count = self.bullet_items(source).map_or(0, <[String]>::len);
         if count == 0 {
             return;
         }
@@ -1511,16 +1567,41 @@ impl PsychoApp {
             return;
         }
         if let Err(error) = self.commit_draft(window, cx).and_then(|()| {
-            self.document
-                .move_bullet(slide, index, from, to)
-                .map_err(|error| error.to_string())
+            match source {
+                CanvasSource::Element { slide, index } => {
+                    self.document.move_bullet(slide, index, from, to)
+                }
+                CanvasSource::NestedElement {
+                    slide,
+                    columns,
+                    column,
+                    index,
+                } => self
+                    .document
+                    .move_column_bullet(slide, columns, column, index, from, to),
+            }
+            .map_err(|error| error.to_string())
         }) {
             self.status = format!("項目を移動できませんでした: {error}");
         } else {
-            self.target = EditTarget::Element {
-                slide,
-                index,
-                field: ElementField::Bullet(to),
+            self.target = match source {
+                CanvasSource::Element { slide, index } => EditTarget::Element {
+                    slide,
+                    index,
+                    field: ElementField::Bullet(to),
+                },
+                CanvasSource::NestedElement {
+                    slide,
+                    columns,
+                    column,
+                    index,
+                } => EditTarget::NestedElement {
+                    slide,
+                    columns,
+                    column,
+                    index,
+                    field: ElementField::Bullet(to),
+                },
             };
             self.refresh_editor_value(cx);
             window.focus(&self.root_focus, cx);
@@ -2611,12 +2692,17 @@ impl PsychoApp {
                     Element::Heading(_) | Element::Text(_) => {}
                     Element::Bullets(items) => {
                         inspector = inspector.child(div().pt_2().child("箇条書き項目"));
-                        let item_actions_available =
-                            matches!(self.target, EditTarget::Element { .. });
+                        let item_actions_available = matches!(
+                            self.target,
+                            EditTarget::Element { .. } | EditTarget::NestedElement { .. }
+                        );
                         for (item_index, _) in items.iter().enumerate() {
                             let selected = matches!(
                                 self.target,
                                 EditTarget::Element {
+                                    field: ElementField::Bullet(selected),
+                                    ..
+                                } | EditTarget::NestedElement {
                                     field: ElementField::Bullet(selected),
                                     ..
                                 } if selected == item_index

@@ -488,6 +488,34 @@ fn asset_diagnostics_cover_animation_permissions_and_multiple_locations() {
 }
 
 #[test]
+fn nested_bullet_items_preserve_siblings_and_exact_history() {
+    let source = "presentation { metadata { title \"Nested items\" }; slide { text \"Root untouched\"; columns { column width=50 { bullets { item \"a\"; item \"b\"; }; text \"Left untouched\"; }; column width=50 { text \"Right untouched\"; }; }; }; }\r\n";
+    let mut doc = PresentationDocument::from_source(source).unwrap();
+    let original = doc.model().unwrap().clone();
+    doc.add_column_bullet(0, 1, 0, 0, 2, "c").unwrap();
+    let added = doc.source().to_owned();
+    assert!(added.contains("item \"c\""));
+    assert!(doc.undo());
+    assert_eq!(doc.source(), source);
+    assert!(doc.redo());
+    assert_eq!(doc.source(), added);
+    doc.move_column_bullet(0, 1, 0, 0, 2, 0).unwrap();
+    let moved = doc.source().to_owned();
+    assert!(moved.find("item \"c\"") < moved.find("item \"a\""));
+    assert!(doc.undo());
+    assert_eq!(doc.source(), added);
+    assert!(doc.redo());
+    assert_eq!(doc.source(), moved);
+    doc.remove_column_bullet(0, 1, 0, 0, 0).unwrap();
+    assert_eq!(doc.model().unwrap(), &original);
+    for sibling in ["Root untouched", "Left untouched", "Right untouched"] {
+        assert!(doc.source().contains(sibling));
+    }
+    assert!(doc.undo());
+    assert_eq!(doc.source(), moved);
+}
+
+#[test]
 fn root_metadata_and_slide_constraints_are_schema_errors() {
     for source in [
         "presentation;",
