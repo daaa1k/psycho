@@ -10,7 +10,15 @@ precondition(AXIsProcessTrusted(), "Accessibility permission is required")
 let app=AXUIElementCreateApplication(pid)
 var value: CFTypeRef?
 precondition(AXUIElementCopyAttributeValue(app,kAXWindowsAttribute as CFString,&value) == .success)
-let window=(value as! [AXUIElement])[0]
+// Native IME panels also appear in AXWindows; target the large editor window.
+let window=(value as! [AXUIElement]).first { window in
+    var value: CFTypeRef?
+    guard AXUIElementCopyAttributeValue(window,kAXSizeAttribute as CFString,&value) == .success else { return false }
+    var dimensions=CGSize.zero
+    AXValueGetValue(value as! AXValue,.cgSize,&dimensions)
+    return dimensions.width >= 1000
+}!
+
 precondition(AXUIElementCopyAttributeValue(window,kAXPositionAttribute as CFString,&value) == .success)
 var origin=CGPoint.zero
 precondition(AXValueGetValue(value as! AXValue,.cgPoint,&origin))

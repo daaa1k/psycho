@@ -12,7 +12,7 @@ frames=[];frame=[]
 for row in csv.reader((root/'glyph-origins.csv').open()):
     if len(row)!=12:continue
     text=bytes.fromhex(row[3]).decode()
-    if text.startswith('日本語と English') and row[4]=='0':
+    if row[2]=='48' and text=='日本語と English の配置比較' and row[4]=='0':
         if frame:frames.append(frame)
         frame=[]
     frame.append(row)

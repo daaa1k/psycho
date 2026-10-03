@@ -1,6 +1,6 @@
 # Issue #17 製品受け入れ確認
 
-2026-10-03に製品バイナリーで実施した確認を記録する。配置比較と全画面10回は`0ec3116`。保存失敗の再試行は`f66d593`、競合中の入力保持と再読み込みは`6ccb562`で確認した。画像のEXIF回転・透過は`6ccb562`、退避後の再保存は`fb0c65f`で確認した。自動テスト41件は`8b9366c`の差分で再実行した。先行試作の結果は製品の合格証拠として数えない。Issue #17全体の判定は**未完了**。下表の確認済みケースと、末尾の残件を分けて扱う。
+2026-10-03に製品バイナリーで実施した確認を記録する。配置比較は`9d0a67c`、全画面10回は`0ec3116`。保存失敗の再試行は`f66d593`、競合中の入力保持と再読み込みは`6ccb562`で確認した。画像のEXIF回転・透過と退避後の再保存は`ccd45d2`のバイナリーでスクリプトを再実行した。標準IMEの位置追従とCanvas・Inspectorの往復は`3aa94a9`で確認した。コードの貼り付けとSlide移動の修正は`4db1eda`。入力欄のUndo範囲とIDのないSlideの選択保持は`bcbad54`。自動テスト42件もこの差分で再実行した。先行試作の結果は製品の合格証拠として数えない。Issue #17全体の判定は**未完了**。下表の確認済みケースと、末尾の残件を分けて扱う。
 
 ## 環境
 
@@ -16,11 +16,16 @@ IME確認時はmacOS標準日本語入力 `com.apple.inputmethod.Kotoeri.RomajiT
 | --- | --- | --- | --- |
 | 公開操作の自動テスト | 原文保持、Schema、編集、履歴、保存失敗・競合・退避、画像診断が公開操作から確認できる | [cargo-test.txt](evidence/cargo-test.txt)。各テスト内の組合せを含む | 合格 |
 | IME入力・再変換 | 「日本語変換」の入力と再変換で欠落・重複がなく、確定を1操作でUndo/Redoできる | 標準IMEでキー入力、Spaceによる候補、Ctrl+Shift+Rによる再変換、Return、Undo/Redoを確認。保存値も一致 | 合格 |
+| IME候補位置・キー優先 | 候補がカーソル・ウィンドウ移動・リサイズに追従し、変換中のEnter・Escape・矢印が編集へ二重作用しない | [ime-observations.json](evidence/ime-observations.json)の20状態を検査。移動180×70px、タイトルバードラッグ100×30px、リサイズと文節移動、Canvas・Inspector往復、画面端の補正、Enterによる候補選択・確定と確定後の改行、Escapeによる読みへの復帰、明示取消、Undo/Redo・保存を確認 | 合格 |
 | IME中の保存・発表 | 未確定入力を反映する。発表開始は自動保存しない | 保存ボタンで「保存」を確定・保存。発表ボタンで「発表」を確定・表示し、ディスクは「保存」のまま。終了後の保存で「発表」に更新 | 合格 |
 | 無効入力 | 空タイトルは保存・発表を止め、理由を欄に示す。明示取消で復帰する | 空タイトルで両操作を停止。欄の日本語エラー、未保存表示、取消後の有効値復元を確認 | 合格 |
 | 列をまたぐドラッグ | 挿入先・候補列を表示し、ドロップ後に表示を消す。移動はUndo 1操作 | 左の箇条書きを右のコード前へ移動。挿入線・列背景・ゴーストを撮影。保存後、Undo 1回と保存で移動前ファイルに全バイト一致 | 合格 |
 | 列幅ドラッグ | 幅を連続更新し、終了までをUndo 1操作にする。はみ出しは保存可・発表不可 | 45:55から56:44へ変更。コードのはみ出し診断と発表停止、保存を確認。Undo 1回と保存で変更前ファイルに全バイト一致 | 合格 |
-| 共通配置 | 日本語、英数字、長いURL、箇条書き、タブ入りコード、複数行Caption、50:50と33:67の列で改行・1280×720基準座標が一致する | 2枚×3サイズで各238グリフを照合。基準座標誤差0.001未満、描画丸め1物理px以内。強い描画画素は両方向で相手の弱い画素から1px以内 | 合格 |
+| 共通配置 | 日本語、英数字、長いURL、箇条書き、タブ入りコード、複数行Caption、50:50と33:67の列で改行・1280×720基準座標が一致する | 見出しを含む2枚×3サイズで各256グリフを照合。基準座標誤差0.001未満、描画丸め1物理px以内。強い描画画素は両方向で相手の弱い画素から1px以内 | 合格 |
+| 白紙Slideと構造履歴 | 全種類を追加でき、中身のあるSlideの移動・削除をUndoで復元する。Assetは削除しない | 6種類それぞれの追加・保存・Undo、画像Elementの削除とUndo、IDのないSlideの追加・上下移動・保存・Undo、中身ごとの削除と1回のUndoを確認。[blank-slide-observations.json](evidence/blank-slide-observations.json) | 合格 |
+| 入力欄のUndo範囲 | 入力中は以前のElement操作へ進まず、保存後は全体の履歴を使える | 空欄でのツールバーUndo、文字のUndo/Redoと下限、通常保存後のキーボードUndo/Redo、Undoによる自動保存がないことを実機で確認 | 合格 |
+| コードの全文編集と履歴 | タブ・改行・Unicodeを保持し、入力単位を全体履歴へ引き継ぐ。通常保存後もUndo/Redoできる | コピー・切り取り・貼り付け、Canvas・Inspector往復、1操作Undo、保存後の原文全バイト復元、Redo、コード言語変更、再起動後の再読込を確認。[text-workflow-observations.json](evidence/text-workflow-observations.json) | 合格 |
+| 直接編集中の配置 | 見出し・本文・箇条書き・コード・Captionの入力中も基準配置を保ち、入力欄が後続を押し出さない | 5種類×2枚×編集2サイズの20ケースで全256グリフ、基準座標、改行、1px以内の描画を照合。[direct-layout-checks.csv](evidence/direct-layout-checks.csv)の全ケースが合格。各領域でカーソルを検出し、Inspectorの編集切替ボタンをOCRで確認。入力部品の高さ・タブ・候補用座標を修正 | 合格 |
 | 全画面反復 | 両開始位置、全7移動キー、先頭末尾、Escape、終了後の編集フォーカスを10回確認する | [fullscreen-checks.csv](evidence/fullscreen-checks.csv)の160状態を見出しOCRとウィンドウ寸法で検査。10回とも合格。終了後のSpaceで発表が再開しない | 合格 |
 | 別アプリ往復 | 発表から別アプリへ切替え、戻った後もキー移動・終了できる | Finderへ切替え、psychoへ復帰、Right/PageDown/Left/Spaceによる移動とEscapeを確認 | 合格 |
 | 発表中の画像削除 | 開始後は読み込んだ画像を表示し続け、再開始時には現在の欠落を検出する | 発表中にscratch PNGを移動し、画像表示が不変。終了後に欠落診断とCaptionを表示、再開始を停止。画像を戻して再読込・保存で復帰 | 合格 |
@@ -35,9 +40,11 @@ IME確認時はmacOS標準日本語入力 `com.apple.inputmethod.Kotoeri.RomajiT
 
 [IME録画](evidence/ime-standard.mov)、[全画面キー操作の録画](evidence/fullscreen.mov)を保存した。録画は確認の一部を示し、全ケースの連続録画ではない。全画面10回の各開始・終了画像と1回目の全キー画像を残した。画像削除、ドラッグ、取消などの静止画は`evidence`内にある。文字描画修正前のIME・ドラッグ画像はその機能の観測用であり、最終配置の証拠には使わない。最終配置は`layout-*.png`と`glyph-origins.csv`を使う。
 
-画像の色はスクリーンショットのICCプロファイルからsRGBへ変換して検査した。`asset-retreat-stale-*.png`は修正前の失敗を示す。修正後の確認は`asset-retreat-synced-input.png`と`asset-retreat-resaved.png`を使う。画像スクリプトの一括再実行は画面ロックで中断されたため、今回は手動操作後の静止画と保存前後の実ファイル比較を証拠とする。静止画の見出しOCRと8点の色検査も再実行した。
+IME候補の画像は`ime-*-visible.png`を使う。前面にある検証用編集ウィンドウの画面領域を直接撮影し、別ウィンドウとして表示される標準IMEの候補を含めた。`ime-inspector-candidate-group.png`は編集ウィンドウの外へ続く説明パネルも含むネイティブ撮影。OrcaのScreenCaptureKitによる候補単体撮影には縮小と黒い余白が混じったため、合成画像を証跡に使わない。位置の判定は、このプロセスに属する候補・編集ウィンドウの実座標とUTF-16選択範囲、入力履歴を照合した。GPUIの座標無効化だけでは候補が移動しなかったため、標準IMEがこのプロセス内に作るレベル20のNSPanelをAppKitで移動する補助実装を追加した。他のIMEやOS版で同じウィンドウ構成になることは今回の確認範囲に含めない。
 
-座標比較は提出したグリフ座標を共通のスライド原点から1280×720へ戻し、全画面の同じグリフと照合する。描画比較は全画面画像を同率で縮小し、固定した文字領域で強い画素と弱い画素を1pxの範囲で両方向に照合する。部品ごとの位置補正や、画像ごとの閾値変更は行わない。独立したCoreText参照の再生成は今回の製品比較には含めていない。
+画像の色はスクリーンショットのICCプロファイルからsRGBへ変換して検査した。`asset-retreat-stale-*.png`は修正前の失敗を示す。修正後の確認は`asset-retreat-synced-input.png`と`asset-retreat-resaved.png`を使う。画面ロック解除後に画像スクリプトを一括再実行し、見出しOCRと8点の色、退避後の画像参照、通常保存時の全バイト一致を確認した。
+
+座標比較は提出したグリフ座標を共通のスライド原点から1280×720へ戻し、全画面の同じグリフと照合する。描画比較は全画面画像を同率で縮小し、固定した文字領域で強い画素と弱い画素を1pxの範囲で両方向に照合する。部品ごとの位置補正や、画像ごとの閾値変更は行わない。独立したCoreText参照の再生成は今回の製品比較には含めていない。従来の座標集計は本文の開始をフレームの開始と誤認し、見出し18グリフを除外していた。今回の集計は見出しを開始位置とし、全256グリフを含めて画像・ログを取り直した。直接編集中の描画比較では、カーソルの青い画素だけを除外する固定条件を使った。カーソル検出とInspector表示を別途検査し、未フォーカスの表示を合格として数えない。
 
 ## 再実行
 
@@ -54,6 +61,13 @@ python3 validation/mvp-acceptance/capture_layout.py
 python3 -m venv target/mvp-layout-venv
 target/mvp-layout-venv/bin/pip install numpy==2.0.2 Pillow==11.3.0
 target/mvp-layout-venv/bin/python validation/mvp-acceptance/measure_layout.py --evidence target/mvp-acceptance
+```
+
+直接編集中を含む配置の再実行は、ほかのpsychoを閉じて次を実行する。専用の未編集文書を確認し、新しいプロセスを起動・終了する。通常表示6枚、直接編集中20枚と座標ログ・合否表を保存する。
+
+```sh
+target/mvp-layout-venv/bin/python validation/mvp-acceptance/direct_layout_acceptance.py
+target/mvp-layout-venv/bin/python validation/mvp-acceptance/measure_layout.py --evidence target/mvp-direct-evidence
 ```
 
 測定だけなら最後のコマンドの`--evidence`を`validation/mvp-acceptance/evidence`へ変更する。全画面反復は6枚の`examples/build-time.kdl`のコピーを開き、初期1280×892の編集ウィンドウで実行する。
@@ -81,19 +95,27 @@ target/mvp-layout-venv/bin/python validation/mvp-acceptance/assets_acceptance.py
 target/mvp-layout-venv/bin/python validation/mvp-acceptance/assets_acceptance.py
 ```
 
+標準IMEの位置・キー・編集面切替は、macOS標準日本語入力を選び、ほかのpsychoを閉じて次を実行する。新しい出力先に専用文書を作り、プロセスを起動・終了する。IMEの学習順は変更せず、矢印で「日本語の変換」を選ぶ。
+
+```sh
+python3 validation/mvp-acceptance/ime_acceptance.py --output target/mvp-ime-evidence
+```
+
+コードの全文編集、入力欄のUndo範囲、白紙Slideへの追加とSlide履歴は、それぞれ新しい出力先で確認する。
+
+```sh
+python3 validation/mvp-acceptance/text_workflow_acceptance.py --output target/mvp-text-workflow-evidence
+python3 validation/mvp-acceptance/input_scope_acceptance.py --output target/mvp-input-scope-evidence
+python3 validation/mvp-acceptance/blank_slide_acceptance.py --output target/mvp-blank-slide-evidence
+```
+
 ドラッグの再実行には`slow_drag.swift PID x1 y1 x2 y2 [hold_seconds]`を使える。座標は最新のpsychoウィンドウ内で指定する。`hold_seconds`を長くするとドロップ前の表示を撮影できる。Orcaの一括dragが短すぎるとGPUIの描画が間に合わなかったため、同じMacのCGEventsを段階的に送る補助コードを残した。PIDがpsychoであり、前面にあることを検査してから送信する。
-
-## 実機確認待ちの修正
-
-`bb5f31d`で列内Element・Captionの入力部品をキャンバスとInspectorへ同時に表示する経路を解消した。Canvas編集中はInspectorに「全文をInspectorで編集」を表示し、同じ入力・履歴を持ったまま切り替える。単一選択時はInspectorで全文を修正できる。未確定入力を元ファイルや履歴へ確定せずにプレビューへ反映し、配置診断を更新する処理も追加した。ビルドと自動テストは成功したが、この変更後のGUI動線はMacの画面ロック解除待ちで未確認。上表の合格には数えない。
 
 ## 残件
 
 Issue #17全体を合格にするには、次の製品上の確認を続ける必要がある。
 
-- 標準IMEの候補位置をカーソル移動・ウィンドウ移動でも測定し、変換中のEnter/Escape/矢印が編集操作へ二重作用しないことを確認する。
-- キャンバスを直接編集中の文字配置・タブ・候補位置を確認する。今回の3サイズ比較は入力フォーカスを外した編集表示を対象とした。
-- 6枚の通し操作と白紙Slideから全ElementをGUIで追加する操作を最後まで確認する。複数Columns間・列内外・不正な入れ子のドラッグと中身の削除復元もGUIで確認する。
+- 6枚の代表例のGUI通し操作を最後まで確認する。白紙Slideから全種類の追加、Slideの移動・削除とUndoは確認済み。複数Columns間・列内外・不正な入れ子のドラッグと中身の削除復元もGUIで確認する。
 - 退避失敗からの再試行をGUIで確認する。通常保存の失敗・再試行、外部変更・競合・削除・無効化・破棄確認・別フォルダーへの退避と再保存時の画像参照は確認済み。
 - 空列・高い列の後続配置、画像の全体表示、画面外Elementの全文修正、現在Slide以外の問題による発表停止、発表中の外部変更後の復帰位置を確認する。
 
