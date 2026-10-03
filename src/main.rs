@@ -147,6 +147,7 @@ struct PsychoApp {
     root_focus: FocusHandle,
     current_slide: usize,
     target: EditTarget,
+    canvas_editing: bool,
     column_add_menu: Option<usize>,
     presentation: Option<PresentationModel>,
     presentation_slide: usize,
@@ -205,6 +206,7 @@ impl PsychoApp {
             root_focus: cx.focus_handle(),
             current_slide: 0,
             target: EditTarget::Title,
+            canvas_editing: false,
             column_add_menu: None,
             presentation: None,
             presentation_slide: 0,
@@ -382,12 +384,21 @@ impl PsychoApp {
             field,
         };
         if self.target == target {
+            if self.canvas_editing && !edit {
+                if let Err(error) = self.commit_draft(window, cx) {
+                    self.status = error;
+                    cx.notify();
+                    return;
+                }
+            }
+            self.canvas_editing = edit;
             if edit {
                 let focus = self.editor.read(cx).focus_handle();
                 window.focus(&focus, cx);
-            } else if !self.editor.read(cx).has_focus(window) {
+            } else {
                 window.focus(&self.root_focus, cx);
             }
+            cx.notify();
             return;
         }
         if let Err(error) = self.commit_draft(window, cx) {
@@ -397,6 +408,7 @@ impl PsychoApp {
         }
         self.current_slide = slide;
         self.target = target;
+        self.canvas_editing = edit;
         self.column_add_menu = None;
         let value = self.edit_value(self.target);
         let multiline = self
@@ -444,12 +456,21 @@ impl PsychoApp {
             field,
         };
         if self.target == target {
+            if self.canvas_editing && !edit {
+                if let Err(error) = self.commit_draft(window, cx) {
+                    self.status = error;
+                    cx.notify();
+                    return;
+                }
+            }
+            self.canvas_editing = edit;
             if edit {
                 let focus = self.editor.read(cx).focus_handle();
                 window.focus(&focus, cx);
-            } else if !self.editor.read(cx).has_focus(window) {
+            } else {
                 window.focus(&self.root_focus, cx);
             }
+            cx.notify();
             return;
         }
         if let Err(error) = self.commit_draft(window, cx) {
@@ -459,6 +480,7 @@ impl PsychoApp {
         }
         self.current_slide = slide;
         self.target = target;
+        self.canvas_editing = edit;
         self.column_add_menu = None;
         let value = self.edit_value(target);
         let multiline = self
@@ -1990,8 +2012,26 @@ impl PsychoApp {
         cx.notify();
     }
 
+    fn preview_model(&self, cx: &App) -> Option<PresentationModel> {
+        let value = self.editor.read(cx).value();
+        if self.external_edit_blocked() || value == self.edit_value(self.target) {
+            return self.document.model().cloned();
+        }
+        // Preview the draft without adding history entries or changing saved bytes.
+        let mut preview = PresentationDocument::from_source_with_asset_base(
+            self.document.source(),
+            self.document.asset_base(),
+        )
+        .ok()?;
+        if apply_editor_value(&mut preview, self.target, &value).is_ok() {
+            preview.model().cloned()
+        } else {
+            self.document.model().cloned()
+        }
+    }
+
     fn render_editor(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let model = self.document.model().cloned();
+        let model = self.preview_model(cx);
         let editing_available = !self.external_edit_blocked();
         self.layout_diagnostics = model
             .as_ref()
@@ -2702,25 +2742,26 @@ impl PsychoApp {
                             }
                             cx.notify();
                         }));
-                } else if matches!(
-                    (element, self.target),
-                    (
-                        Element::Heading(_)
-                            | Element::Text(_)
-                            | Element::Bullets(_)
-                            | Element::Code { .. },
-                        EditTarget::Element {
-                            field: ElementField::Text,
-                            ..
-                        }
-                    )
-                ) {
-                    inspector = inspector.child(
-                        div()
-                            .pt_2()
-                            .text_size(px(12.0))
-                            .child("キャンバス上でダブルクリックして編集"),
-                    );
+                } else if self.canvas_editing && supports_canvas_text_editor(element, self.target) {
+                    inspector = inspector
+                        .child(
+                            div()
+                                .pt_2()
+                                .text_size(px(12.0))
+                                .child("キャンバス上で編集中"),
+                        )
+                        .child(button(
+                            cx,
+                            "全文をInspectorで編集",
+                            true,
+                            |this, _, window, cx| {
+                                // Keep the same draft and IME session, but mount the input once.
+                                this.canvas_editing = false;
+                                let focus = this.editor.read(cx).focus_handle();
+                                window.focus(&focus, cx);
+                                cx.notify();
+                            },
+                        ));
                 } else if !matches!(element, Element::Columns { .. }) {
                     inspector = inspector
                         .child(div().pt_2().child("編集値"))
@@ -3444,6 +3485,7 @@ impl PsychoApp {
             _ => ElementField::Text,
         };
         let inline_editing = editing
+            && self.canvas_editing
             && selected
             && self.editor.read(cx).has_focus(window)
             && match (target, self.target) {
@@ -3539,8 +3581,10 @@ impl PsychoApp {
                         && column == selected_column
                         && index == selected_index
                 );
-                let caption_editor_focused =
-                    caption_selected && self.editor.read(cx).has_focus(window);
+                let caption_editor_focused = editing
+                    && self.canvas_editing
+                    && caption_selected
+                    && self.editor.read(cx).has_focus(window);
                 let mut item = div()
                     .w_full()
                     .flex()
@@ -4046,7 +4090,8 @@ fn select_canvas_target(
     window: &mut Window,
     cx: &mut Context<PsychoApp>,
 ) {
-    if app.editor.read(cx).has_focus(window)
+    if app.canvas_editing
+        && app.editor.read(cx).has_focus(window)
         && canvas_target_matches_edit_target(target, field, app.target)
     {
         return;
@@ -4485,6 +4530,21 @@ fn load_asset_images(
         );
     }
     images
+}
+
+fn supports_canvas_text_editor(element: &Element, target: EditTarget) -> bool {
+    let field = match target {
+        EditTarget::Element { field, .. } | EditTarget::NestedElement { field, .. } => field,
+        _ => return false,
+    };
+    match field {
+        ElementField::Text => matches!(
+            element,
+            Element::Heading(_) | Element::Text(_) | Element::Bullets(_) | Element::Code { .. }
+        ),
+        ElementField::Caption => matches!(element, Element::Image { .. }),
+        _ => false,
+    }
 }
 
 fn render_inline_editor(
