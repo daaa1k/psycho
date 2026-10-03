@@ -211,6 +211,21 @@ impl PsychoApp {
             }
         })
         .detach();
+        let input_focus = editor.read(cx).focus_handle();
+        cx.on_blur(&input_focus, window, |this, window, cx| {
+            if this.presentation.is_none()
+                && !this.external_edit_blocked()
+                && (this.has_uncommitted_draft(cx)
+                    || this.editor.read(cx).can_undo()
+                    || this.editor.read(cx).can_redo())
+            {
+                if let Err(error) = this.commit_draft(window, cx) {
+                    this.status = error;
+                }
+                cx.notify();
+            }
+        })
+        .detach();
         let current_title = document
             .model()
             .map_or_else(String::new, |model| model.title.clone());
@@ -617,8 +632,15 @@ impl PsychoApp {
         let target = self.target;
         let history = self.editor.read(cx).history_states_for_commit();
         let redo = self.editor.read(cx).redo_states_for_commit();
+        let baseline = self.editor.read(cx).history_baseline_for_commit();
         let mut validated = self.document.clone();
         apply_editor_value(&mut validated, target, &value).map_err(|error| error.to_string())?;
+        if let Some(baseline) = baseline {
+            // Input has already discarded older units. Start the shared
+            // history at its surviving baseline, keeping the saved bytes.
+            let _ = apply_editor_value(&mut self.document, target, &baseline);
+            self.document.clear_history();
+        }
         for state in history {
             if state != value {
                 // Earlier drafts can be invalid while the user repairs a field

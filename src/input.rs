@@ -151,6 +151,7 @@ pub struct TextInputState {
     composition_before: Option<String>,
     undo_stack: Vec<String>,
     redo_stack: Vec<String>,
+    discarded_baseline: Option<String>,
     last_undo_group: Option<UndoGroup>,
     pending_undo_group: Option<UndoGroup>,
     last_layout: Option<Arc<Vec<(WrappedLine, usize)>>>,
@@ -177,6 +178,7 @@ impl TextInputState {
             composition_before: None,
             undo_stack: Vec::new(),
             redo_stack: Vec::new(),
+            discarded_baseline: None,
             last_undo_group: None,
             pending_undo_group: None,
             last_layout: None,
@@ -303,6 +305,7 @@ impl TextInputState {
         self.composition_before = None;
         self.undo_stack.clear();
         self.redo_stack.clear();
+        self.discarded_baseline = None;
         self.last_undo_group = None;
         self.pending_undo_group = None;
         cx.notify();
@@ -322,12 +325,17 @@ impl TextInputState {
     pub fn reset_undo_history(&mut self) {
         self.undo_stack.clear();
         self.redo_stack.clear();
+        self.discarded_baseline = None;
         self.last_undo_group = None;
         self.pending_undo_group = None;
     }
 
     pub fn redo_states_for_commit(&self) -> Vec<String> {
         self.redo_stack.iter().rev().cloned().collect()
+    }
+
+    pub fn history_baseline_for_commit(&self) -> Option<String> {
+        self.discarded_baseline.clone()
     }
 
     fn left(&mut self, _: &Left, _: &mut Window, cx: &mut Context<Self>) {
@@ -636,6 +644,10 @@ impl TextInputState {
         if !can_merge {
             self.undo_stack.push(before);
             self.redo_stack.clear();
+            if self.undo_stack.len() > 1_000 {
+                self.undo_stack.remove(0);
+                self.discarded_baseline = self.undo_stack.first().cloned();
+            }
         }
         self.last_undo_group = Some(group);
     }

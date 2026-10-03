@@ -1411,6 +1411,14 @@ impl PresentationDocument {
         true
     }
 
+    /// Discard history without changing the document or its saved baseline.
+    pub fn clear_history(&mut self) {
+        self.undo.clear();
+        self.redo.clear();
+        self.undo_labels.clear();
+        self.redo_labels.clear();
+    }
+
     pub fn redo(&mut self) -> bool {
         let Some((source, description)) = self.redo.pop().zip(self.redo_labels.pop()) else {
             return false;
