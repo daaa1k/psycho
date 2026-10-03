@@ -1,21 +1,22 @@
    Compiling psycho v0.1.0 (/Users/daichikinoshita/orca/workspaces/psycho/psycho-mvp-kdl-gui)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.25s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.67s
 warning: the following packages contain code that will be rejected by a future version of Rust: block v0.1.6
 note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
      Running unittests src/lib.rs (target/debug/deps/psycho-d6570aafc7db8d27)
 
-running 3 tests
+running 4 tests
 test tests::string_token_finder_handles_raw_and_attribute_strings ... ok
 test tests::numeric_attribute_token_finder_leaves_comments_outside_the_edit_range ... ok
 test tests::save_rechecks_changes_after_the_temporary_file_is_synced ... ok
+test tests::save_as_rechecks_destination_changes_and_preserves_the_original_document ... ok
 
-test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
 
      Running unittests src/main.rs (target/debug/deps/psycho-6c7cb39d907b33f0)
 
 running 2 tests
-test input::tests::marked_text_selection_is_relative_to_replacement_text ... ok
 test input::tests::marked_text_selection_stays_within_a_fully_replaced_title ... ok
+test input::tests::marked_text_selection_is_relative_to_replacement_text ... ok
 
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
@@ -23,48 +24,48 @@ test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 running 16 tests
 test invalid_kdl_is_reported_with_a_source_location ... ok
-test column_widths_change_together_and_invalid_totals_are_rejected ... ok
 test adding_elements_to_a_blank_slide_and_undoing_keeps_valid_kdl ... ok
 test adding_and_removing_slides_preserves_the_metadata_and_previous_slides ... ok
 test changing_a_value_replaces_only_its_source_token_and_undo_restores_bytes ... ok
-test bullet_items_can_be_changed_without_rewriting_other_slide_text ... ok
+test column_widths_change_together_and_invalid_totals_are_rejected ... ok
 test opening_and_read_only_save_preserve_every_byte ... ok
 test image_assets_resolve_relative_to_the_kdl_file_and_report_missing_or_corrupt_files ... ok
-test save_as_does_not_overwrite_an_existing_destination ... ok
-test bundled_presentation_parses_and_its_png_asset_is_available ... ok
-test schema_diagnostics_reject_unknown_nodes_and_duplicate_attributes ... ok
-test moving_a_slide_preserves_source_and_keeps_inline_comments_with_it ... ok
-test save_refuses_to_overwrite_an_external_change ... ok
 test moving_a_slide_supports_multiple_nodes_on_one_source_line ... ok
+test save_as_does_not_overwrite_an_existing_destination ... ok
+test schema_diagnostics_reject_unknown_nodes_and_duplicate_attributes ... ok
+test bundled_presentation_parses_and_its_png_asset_is_available ... ok
+test save_refuses_to_overwrite_an_external_change ... ok
+test bullet_items_can_be_changed_without_rewriting_other_slide_text ... ok
 test moving_an_element_keeps_trailing_comments_and_undo_restores_source ... ok
+test moving_a_slide_preserves_source_and_keeps_inline_comments_with_it ... ok
 test save_writes_only_the_requested_change_and_marks_the_document_clean ... ok
 
-test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
 
      Running tests/presentation_acceptance.rs (target/debug/deps/presentation_acceptance-812e463096c9f405)
 
 running 19 tests
 test external_change_and_deletion_never_overwrite_or_discard_edits ... ok
-test failed_write_keeps_original_edit_and_history_for_retry ... ok
 test asset_diagnostics_cover_animation_permissions_and_multiple_locations ... ok
 test image_formats_are_detected_by_content_and_missing_images_allow_editing ... ok
+test failed_write_keeps_original_edit_and_history_for_retry ... ok
 test invalid_documents_are_diagnosed_and_cannot_edit_or_save ... ok
+test multiline_trailing_comments_move_with_the_element ... ok
+test move_into_and_out_of_columns_preserves_text_and_comment_ownership ... ok
 test failed_retreat_preserves_state_and_success_rebases_assets_and_clears_history ... ok
 test inline_bullets_reorder_at_every_boundary_without_moving_parent_content ... ok
 test root_metadata_and_slide_constraints_are_schema_errors ... ok
-test multiline_trailing_comments_move_with_the_element ... ok
 test inline_semicolon_nodes_can_reorder_at_every_boundary ... ok
-test move_into_and_out_of_columns_preserves_text_and_comment_ownership ... ok
 test six_slide_example_loads_with_all_assets_from_its_file_location ... ok
-test schema_constraints_are_reported_together_without_partial_preview ... ok
 test blank_slide_supports_all_elements_and_caption_and_rejects_nested_columns ... ok
+test schema_constraints_are_reported_together_without_partial_preview ... ok
 test moving_multiline_and_raw_strings_keeps_their_meaning ... ok
 test save_preserves_bytes_and_value_edit_is_local ... ok
 test valid_kdl_whitespace_and_continuations_survive_local_edits_and_moves ... ok
 test root_to_column_moves_work_at_every_valid_insertion_position ... ok
 test history_limits_branching_and_same_value_operations ... ok
 
-test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.06s
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.05s
 
    Doc-tests psycho
 
