@@ -734,6 +734,12 @@ impl PsychoApp {
                         });
                         if result.is_ok() {
                             this.refresh_assets();
+                            // Save As can rebase the selected image path. Keep
+                            // the field in sync so the next Save cannot restore
+                            // the previous document's relative path.
+                            let value = this.edit_value(this.target);
+                            this.editor
+                                .update(cx, |input, cx| input.set_value(&value, cx));
                             this.external_change = false;
                             this.external_diagnostics = None;
                             this.external_error = None;
