@@ -731,6 +731,7 @@ impl PsychoApp {
             cx.notify();
             return;
         }
+        window.focus(&self.root_focus, cx);
         match self.document.save() {
             Ok(()) => {
                 self.external_change = false;
@@ -763,6 +764,7 @@ impl PsychoApp {
             cx.notify();
             return;
         }
+        window.focus(&self.root_focus, cx);
         match self.document.save() {
             Ok(()) => {
                 self.pending_close = false;
@@ -820,6 +822,7 @@ impl PsychoApp {
                 let _ = cx.update(|window, cx| {
                     let close_after_save = view.update(cx, |this, cx| {
                         let result = this.commit_draft(window, cx).and_then(|()| {
+                            window.focus(&this.root_focus, cx);
                             this.document
                                 .save_as_overwriting(&path)
                                 .map_err(|error| error.to_string())
@@ -1041,6 +1044,7 @@ impl PsychoApp {
             let count = self.document.model().map_or(0, |model| model.slides.len());
             self.current_slide = self.current_slide.min(count.saturating_sub(1));
             self.reset_editor_to_title(cx);
+            window.focus(&self.root_focus, cx);
             self.status = "Slide を削除しました。".into();
         }
         cx.notify();
@@ -1153,6 +1157,7 @@ impl PsychoApp {
         match result {
             Ok(()) => {
                 self.reset_editor_to_title(cx);
+                window.focus(&self.root_focus, cx);
                 self.status = "Element を削除しました。".into();
             }
             Err(error) => self.status = format!("Element を削除できませんでした: {error}"),
@@ -1242,6 +1247,7 @@ impl PsychoApp {
             EditTarget::Columns { slide, index: to }
         };
         self.refresh_editor_value(cx);
+        window.focus(&self.root_focus, cx);
         self.status = "Element の順序を変更しました。".into();
         cx.notify();
     }
@@ -1299,6 +1305,7 @@ impl PsychoApp {
                 field,
             };
             self.refresh_editor_value(cx);
+            window.focus(&self.root_focus, cx);
             self.status = "列内の Element の順序を変更しました。".into();
         }
         cx.notify();
@@ -1340,6 +1347,7 @@ impl PsychoApp {
                     field,
                 };
                 self.refresh_editor_value(cx);
+                window.focus(&self.root_focus, cx);
                 self.status = "Element を列へ移動しました。".into();
             }
             Err(error) => self.status = format!("Element を列へ移動できませんでした: {error}"),
@@ -1377,6 +1385,7 @@ impl PsychoApp {
                     field,
                 };
                 self.refresh_editor_value(cx);
+                window.focus(&self.root_focus, cx);
                 self.status = "Element を Slide 直下へ移動しました。".into();
             }
             Err(error) => self.status = format!("Element を移動できませんでした: {error}"),
@@ -1514,6 +1523,7 @@ impl PsychoApp {
                 field: ElementField::Bullet(to),
             };
             self.refresh_editor_value(cx);
+            window.focus(&self.root_focus, cx);
             self.status = "箇条書き項目の順序を変更しました。".into();
         }
         cx.notify();
@@ -1523,6 +1533,10 @@ impl PsychoApp {
         if self.external_edit_blocked() {
             self.status = "外部ファイルの競合を解決するまで Undo は使えません。".into();
             cx.notify();
+            return;
+        }
+        if self.editor.read(cx).has_focus(window) {
+            window.dispatch_action(Box::new(input::Undo), cx);
             return;
         }
         if self.has_uncommitted_draft(cx) {
@@ -1548,6 +1562,10 @@ impl PsychoApp {
         if self.external_edit_blocked() {
             self.status = "外部ファイルの競合を解決するまで Redo は使えません。".into();
             cx.notify();
+            return;
+        }
+        if self.editor.read(cx).has_focus(window) {
+            window.dispatch_action(Box::new(input::Redo), cx);
             return;
         }
         if self.has_uncommitted_draft(cx) {
@@ -1700,6 +1718,22 @@ impl PsychoApp {
                 .slides
                 .iter()
                 .position(|slide| slide.id.as_ref() == Some(&active_slide_id))
+            {
+                return index;
+            }
+        } else if let Some(previous) = previous_model
+            .filter(|previous| previous.slides.len() == model.slides.len())
+            .and_then(|previous| previous.slides.get(self.current_slide))
+        {
+            // Slides without IDs can still be followed through a reorder
+            // when their complete contents uniquely identify them.
+            let mut matching = model
+                .slides
+                .iter()
+                .enumerate()
+                .filter(|(_, slide)| *slide == previous);
+            if let Some((index, _)) = matching.next()
+                && matching.next().is_none()
             {
                 return index;
             }
@@ -2109,6 +2143,18 @@ impl PsychoApp {
             .update(cx, |input, _| input.set_canvas_layout(None));
         let model = self.preview_model(cx);
         let editing_available = !self.external_edit_blocked();
+        let input = self.editor.read(cx);
+        let input_focused = input.has_focus(window);
+        let can_undo = if input_focused {
+            input.can_undo()
+        } else {
+            self.document.can_undo()
+        };
+        let can_redo = if input_focused {
+            input.can_redo()
+        } else {
+            self.document.can_redo()
+        };
         self.layout_diagnostics = model
             .as_ref()
             .map(|model| collect_layout_diagnostics(model, window))
@@ -2138,13 +2184,13 @@ impl PsychoApp {
             .child(button(
                 cx,
                 "Undo",
-                self.document.can_undo() && editing_available,
+                can_undo && editing_available,
                 Self::undo_button,
             ))
             .child(button(
                 cx,
                 "Redo",
-                self.document.can_redo() && editing_available,
+                can_redo && editing_available,
                 Self::redo_button,
             ))
             .child(button(cx, "＋ Slide", editing_available, Self::add_slide))
@@ -2816,7 +2862,7 @@ impl PsychoApp {
                         )
                         .child(button(cx, "幅を適用", true, |this, _, window, cx| {
                             match this.commit_draft(window, cx) {
-                                Ok(()) => {}
+                                Ok(()) => window.focus(&this.root_focus, cx),
                                 Err(error) => this.status = error,
                             }
                             cx.notify();
@@ -2862,7 +2908,7 @@ impl PsychoApp {
                         )
                         .child(button(cx, "適用", true, |this, _, window, cx| {
                             match this.commit_draft(window, cx) {
-                                Ok(()) => {}
+                                Ok(()) => window.focus(&this.root_focus, cx),
                                 Err(error) => this.status = error,
                             }
                             cx.notify();
@@ -2953,6 +2999,8 @@ impl PsychoApp {
                     .child(button(cx, "適用", true, |this, _, window, cx| {
                         if let Err(error) = this.commit_draft(window, cx) {
                             this.status = error;
+                        } else {
+                            window.focus(&this.root_focus, cx);
                         }
                         cx.notify();
                     }));
@@ -4115,6 +4163,9 @@ impl PsychoApp {
 
 impl Render for PsychoApp {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        // Keep opt-in acceptance observations current when an unfocused
+        // canvas field is no longer mounted; paint updates its geometry later.
+        self.editor.read(cx).record_acceptance_state(window);
         let editing_enabled = self.presentation.is_none() && !self.external_edit_blocked();
         let undo_label = self.document.undo_description().map_or_else(
             || "元に戻す".to_owned(),
@@ -5324,6 +5375,9 @@ fn button(
         .border_color(rgb(0xb8bdc5))
         .cursor_pointer()
         .child(label.into())
+        // A toolbar press must not focus the Editor ancestor before its
+        // handler decides whether Undo belongs to the active text field.
+        .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
         .on_mouse_up(
             MouseButton::Left,
             cx.listener(move |this, event, window, cx| {

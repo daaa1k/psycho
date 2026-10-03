@@ -195,7 +195,7 @@ impl TextInputState {
         self.canvas_layout = layout;
     }
 
-    fn record_acceptance_state(&self, window: &Window) {
+    pub fn record_acceptance_state(&self, window: &Window) {
         let Some(path) = std::env::var_os("PSYCHO_INPUT_STATE") else {
             return;
         };
