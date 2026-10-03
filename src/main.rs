@@ -409,8 +409,12 @@ impl PsychoApp {
                     return;
                 }
             }
+            let surface_changed = self.canvas_editing != edit;
             self.canvas_editing = edit;
             if edit {
+                if surface_changed {
+                    self.ime_geometry.refresh(window, true);
+                }
                 let focus = self.editor.read(cx).focus_handle();
                 window.focus(&focus, cx);
             } else {
@@ -484,8 +488,12 @@ impl PsychoApp {
                     return;
                 }
             }
+            let surface_changed = self.canvas_editing != edit;
             self.canvas_editing = edit;
             if edit {
+                if surface_changed {
+                    self.ime_geometry.refresh(window, true);
+                }
                 let focus = self.editor.read(cx).focus_handle();
                 window.focus(&focus, cx);
             } else {

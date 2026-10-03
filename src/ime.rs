@@ -42,8 +42,15 @@ unsafe fn native_selected_rect(view: &Object) -> NativeRect {
     }
 }
 
+#[derive(Clone, Copy, Default)]
+struct GeometryState {
+    rect: Option<NativeRect>,
+    clamp_x: f64,
+    clamp_y: f64,
+}
+
 #[derive(Clone, Default)]
-pub struct Geometry(Rc<Cell<Option<NativeRect>>>);
+pub struct Geometry(Rc<Cell<GeometryState>>);
 
 impl Geometry {
     pub fn refresh(&self, window: &Window, geometry_changed: bool) {
@@ -68,15 +75,20 @@ impl Geometry {
                         }
                         let rect = native_selected_rect(&**view);
                         if !rect.x.is_finite() || !rect.y.is_finite() || rect.height <= 0. {
-                            last_rect.set(None);
+                            last_rect.set(GeometryState::default());
                             return;
                         }
-                        let previous = last_rect.replace(Some(rect));
+                        let previous = last_rect.replace(GeometryState {
+                            rect: Some(rect),
+                            ..GeometryState::default()
+                        });
                         let marked: objc::runtime::BOOL = msg_send![*view, hasMarkedText];
                         if geometry_changed && marked == YES {
-                            if let Some(previous) = previous {
-                                let dx = rect.x - previous.x;
-                                let dy = rect.y - previous.y;
+                            if let Some(previous_rect) = previous.rect {
+                                // Undo the last screen-edge correction before anchoring
+                                // the panels to a different surface or window size.
+                                let dx = rect.x - previous_rect.x - previous.clamp_x;
+                                let dy = rect.y - previous_rect.y - previous.clamp_y;
                                 let application: *mut Object =
                                     msg_send![objc::class!(NSApplication), sharedApplication];
                                 let windows: *mut Object = msg_send![application, windows];
@@ -127,6 +139,11 @@ impl Geometry {
                                     let adjust_y = (visible.y + visible.height - top)
                                         .min(0.)
                                         .max(visible.y - bottom);
+                                    last_rect.set(GeometryState {
+                                        rect: Some(rect),
+                                        clamp_x: adjust_x,
+                                        clamp_y: adjust_y,
+                                    });
                                     for (_, frame) in &mut panels {
                                         frame.x += adjust_x;
                                         frame.y += adjust_y;
