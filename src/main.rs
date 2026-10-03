@@ -264,6 +264,7 @@ impl PsychoApp {
                 self.external_change = true;
                 if self.document.is_dirty() || self.has_uncommitted_draft(cx) {
                     self.status = "外部変更と未保存の編集が競合しています。外部ファイルを読み込むか、別名保存してください。".into();
+                    window.focus(&self.root_focus, cx);
                     cx.notify();
                 } else {
                     self.pending_external_reload = true;
@@ -274,6 +275,7 @@ impl PsychoApp {
                 self.external_change = true;
                 self.record_external_problem(&error);
                 self.status = format!("外部ファイルを確認できません: {error}");
+                window.focus(&self.root_focus, cx);
                 cx.notify();
             }
             Err(error) => {
@@ -586,6 +588,9 @@ impl PsychoApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        if self.external_edit_blocked() {
+            return;
+        }
         match self.commit_draft(window, cx) {
             Ok(()) => {
                 window.focus(&self.root_focus, cx);
@@ -620,6 +625,11 @@ impl PsychoApp {
     }
 
     fn save(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        if self.external_edit_blocked() {
+            self.status = "外部ファイルの問題を解決するか、別名保存してください。".into();
+            cx.notify();
+            return;
+        }
         if self.document.path().is_none() {
             self.prompt_save_as(window, cx);
             return;
@@ -647,6 +657,11 @@ impl PsychoApp {
     }
 
     fn save_and_close(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        if self.external_edit_blocked() {
+            self.status = "外部ファイルの問題を解決するか、別名保存してから閉じてください。".into();
+            cx.notify();
+            return;
+        }
         if self.document.path().is_none() {
             self.prompt_save_as(window, cx);
             return;
@@ -2307,6 +2322,14 @@ impl PsychoApp {
                     heading
                 );
                 list = list.child(button(cx, label, true, move |this, _, window, cx| {
+                    if this.external_edit_blocked() {
+                        // Navigate the frozen preview without committing or
+                        // replacing the draft belonging to the previous target.
+                        this.current_slide = index;
+                        window.focus(&this.root_focus, cx);
+                        cx.notify();
+                        return;
+                    }
                     if let Err(error) = this.commit_draft(window, cx) {
                         this.status = error;
                         cx.notify();
@@ -2338,6 +2361,13 @@ impl PsychoApp {
             .p_3()
             .bg(rgb(0xf8f8f8));
         inspector = inspector.child(div().font_weight(gpui::FontWeight::BOLD).child("Inspector"));
+        if self.external_edit_blocked() {
+            return inspector
+                .child("外部ファイルの問題を解決するまで編集できません。")
+                .child("保持中の入力")
+                .child(div().w_full().child(self.editor.read(cx).value()))
+                .into_any_element();
+        }
         if let Some(model) = model {
             inspector = inspector.child(button(
                 cx,
