@@ -16,6 +16,10 @@ impl TextPlacement {
         }
     }
 
+    pub fn origin(&self, scale: f32) -> Point<Pixels> {
+        self.canvas_origin.get() + self.offset * scale
+    }
+
     pub fn shifted(&self, x: f32, y: f32) -> Self {
         Self {
             canvas_origin: self.canvas_origin.clone(),

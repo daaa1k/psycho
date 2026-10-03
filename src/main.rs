@@ -418,7 +418,10 @@ impl PsychoApp {
             .and_then(|slide| slide.elements.get(index))
             .is_some_and(|element| match (element, field) {
                 (
-                    Element::Text(_) | Element::Code { .. } | Element::Bullets(_),
+                    Element::Heading(_)
+                    | Element::Text(_)
+                    | Element::Code { .. }
+                    | Element::Bullets(_),
                     ElementField::Text,
                 ) => true,
                 (Element::Image { .. }, ElementField::Caption) => true,
@@ -489,7 +492,10 @@ impl PsychoApp {
             .and_then(|model| nested_element(model, slide, columns, column, index))
             .is_some_and(|element| match (element, field) {
                 (
-                    Element::Text(_) | Element::Code { .. } | Element::Bullets(_),
+                    Element::Heading(_)
+                    | Element::Text(_)
+                    | Element::Code { .. }
+                    | Element::Bullets(_),
                     ElementField::Text,
                 ) => true,
                 (Element::Image { .. }, ElementField::Caption) => true,
@@ -2031,6 +2037,8 @@ impl PsychoApp {
     }
 
     fn render_editor(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        self.editor
+            .update(cx, |input, _| input.set_canvas_layout(None));
         let model = self.preview_model(cx);
         let editing_available = !self.external_edit_blocked();
         self.layout_diagnostics = model
@@ -3411,6 +3419,16 @@ impl PsychoApp {
             .py(px(48.0 * scale))
             .bg(rgb(0xffffff))
             .text_color(rgb(0x222222));
+        canvas = canvas.child(
+            gpui::canvas(
+                move |bounds, _, _| {
+                    canvas_origin.set(bounds.origin);
+                },
+                |_, _, _, _| {},
+            )
+            .absolute()
+            .inset_0(),
+        );
         if let Some(slide) = slide {
             let images = if editing {
                 &self.asset_images
@@ -3442,16 +3460,6 @@ impl PsychoApp {
                 cursor_y += measure_element(element, 1152., window, &mut Vec::new()) + 24.;
             }
         }
-        canvas = canvas.child(
-            gpui::canvas(
-                move |bounds, _, _| {
-                    canvas_origin.set(bounds.origin);
-                },
-                |_, _, _, _| {},
-            )
-            .absolute()
-            .inset_0(),
-        );
         div()
             .size_full()
             .flex()
@@ -3594,6 +3602,18 @@ impl PsychoApp {
                     .text_color(rgb(0x222222))
                     .child(image);
                 if caption_editor_focused {
+                    self.editor.update(cx, |input, _| {
+                        input.set_canvas_layout(Some(input::CanvasInputLayout {
+                            font_size: 20.,
+                            line_height: 28.,
+                            width: content_width / scale,
+                            scale,
+                            placement: placement.shifted(0., 332.),
+                            code: false,
+                            language: None,
+                            bullets: false,
+                        }))
+                    });
                     item = item.child(
                         div()
                             .w_full()
@@ -3869,7 +3889,14 @@ impl PsychoApp {
                     .child(divider)
                     .child(right_column)
             }
-            _ if inline_editing => render_inline_editor(element, scale, self.editor.clone()),
+            _ if inline_editing => render_inline_editor(
+                element,
+                scale,
+                content_width / scale,
+                placement,
+                self.editor.clone(),
+                cx,
+            ),
             _ => render_element(
                 element,
                 scale,
@@ -4550,13 +4577,37 @@ fn supports_canvas_text_editor(element: &Element, target: EditTarget) -> bool {
 fn render_inline_editor(
     element: &Element,
     scale: f32,
+    width: f32,
+    placement: &text::TextPlacement,
     editor: gpui::Entity<TextInputState>,
+    cx: &mut App,
 ) -> gpui::Div {
-    let base = div()
-        .w_full()
-        .border_1()
-        .border_color(rgb(0x3b82f6))
-        .text_color(rgb(0x222222));
+    let (font_size, line_height) = match element {
+        Element::Heading(_) => (48., 60.),
+        Element::Code { .. } => (22., 30.8),
+        _ => (28., 42.),
+    };
+    let code = matches!(element, Element::Code { .. });
+    editor.update(cx, |input, _| {
+        input.set_canvas_layout(Some(input::CanvasInputLayout {
+            font_size,
+            line_height,
+            width: width - if code { 32. } else { 0. },
+            scale,
+            placement: if code {
+                placement.shifted(16., 16.)
+            } else {
+                placement.clone()
+            },
+            code,
+            language: match element {
+                Element::Code { language, .. } => language.clone(),
+                _ => None,
+            },
+            bullets: matches!(element, Element::Bullets(_)),
+        }))
+    });
+    let base = div().w_full().text_color(rgb(0x222222));
     match element {
         Element::Heading(_) => base
             .text_size(px(48.0 * scale))

@@ -70,6 +70,75 @@ fn selection_range_after_marked_text(
         })
 }
 
+#[derive(Clone)]
+pub struct CanvasInputLayout {
+    pub font_size: f32,
+    pub line_height: f32,
+    pub width: f32,
+    pub scale: f32,
+    pub placement: super::text::TextPlacement,
+    pub code: bool,
+    pub language: Option<String>,
+    pub bullets: bool,
+}
+
+#[derive(Clone, Default)]
+struct DisplayText {
+    text: String,
+    boundaries: Vec<(usize, usize)>,
+}
+
+impl DisplayText {
+    fn new(raw: &str, expand_tabs: bool) -> Self {
+        let mut result = Self {
+            text: String::new(),
+            boundaries: vec![(0, 0)],
+        };
+        let mut column = 0;
+        for (offset, ch) in raw.char_indices() {
+            match ch {
+                '\t' if expand_tabs => {
+                    let count = 4 - column % 4;
+                    result.text.extend(std::iter::repeat_n(' ', count));
+                    column += count;
+                }
+                '\n' => {
+                    result.text.push(ch);
+                    column = 0;
+                }
+                _ => {
+                    result.text.push(ch);
+                    column += 1;
+                }
+            }
+            result
+                .boundaries
+                .push((offset + ch.len_utf8(), result.text.len()));
+        }
+        result
+    }
+
+    fn display_offset(&self, raw: usize) -> usize {
+        self.boundaries
+            .get(
+                self.boundaries
+                    .partition_point(|(r, _)| *r <= raw)
+                    .saturating_sub(1),
+            )
+            .map_or(0, |(_, d)| *d)
+    }
+
+    fn raw_offset(&self, display: usize) -> usize {
+        self.boundaries
+            .get(
+                self.boundaries
+                    .partition_point(|(_, d)| *d <= display)
+                    .saturating_sub(1),
+            )
+            .map_or(0, |(r, _)| *r)
+    }
+}
+
 pub struct TextInputState {
     focus_handle: FocusHandle,
     content: SharedString,
@@ -87,6 +156,11 @@ pub struct TextInputState {
     last_line_height: Pixels,
     last_bounds: Option<Bounds<Pixels>>,
     is_selecting: bool,
+    canvas_layout: Option<CanvasInputLayout>,
+    last_display: DisplayText,
+    last_scale: f32,
+    last_indent: Pixels,
+    last_paragraph_gap: Pixels,
 }
 
 impl TextInputState {
@@ -108,7 +182,16 @@ impl TextInputState {
             last_line_height: px(20.0),
             last_bounds: None,
             is_selecting: false,
+            canvas_layout: None,
+            last_display: DisplayText::new(initial_text, false),
+            last_scale: 1.,
+            last_indent: px(0.),
+            last_paragraph_gap: px(0.),
         }
+    }
+
+    pub fn set_canvas_layout(&mut self, layout: Option<CanvasInputLayout>) {
+        self.canvas_layout = layout;
     }
 
     pub fn value(&self) -> String {
@@ -356,26 +439,10 @@ impl TextInputState {
     }
 
     fn index_for_mouse_position(&self, position: Point<Pixels>) -> usize {
-        let (Some(bounds), Some(lines)) = (self.last_bounds.as_ref(), self.last_layout.as_ref())
-        else {
+        let Some(bounds) = self.last_bounds else {
             return 0;
         };
-        let line_height = self.line_height();
-        let local = point(position.x - bounds.left(), position.y - bounds.top());
-        let mut line_top = px(0.0);
-        for (line, start) in lines.iter() {
-            let line_height_total = line.size(line_height).height;
-            if local.y <= line_top + line_height_total {
-                let in_line = point(local.x, (local.y - line_top).max(px(0.0)));
-                return start
-                    + line
-                        .closest_index_for_position(in_line, line_height)
-                        .unwrap_or(line.len())
-                        .min(line.len());
-            }
-            line_top += line_height_total;
-        }
-        self.content.len()
+        self.offset_for_position(position - bounds.origin)
     }
 
     fn line_height(&self) -> Pixels {
@@ -384,42 +451,48 @@ impl TextInputState {
 
     fn position_for_offset(&self, offset: usize) -> Option<Point<Pixels>> {
         let lines = self.last_layout.as_ref()?;
-        let line_height = self.line_height();
-        let mut line_top = px(0.0);
-        for (line_index, (line, start)) in lines.iter().enumerate() {
-            let end = start + line.len();
-            if offset <= end || line_index + 1 == lines.len() {
-                let local_offset = offset.saturating_sub(*start).min(line.len());
-                return line
-                    .position_for_index(local_offset, line_height)
-                    .map(|position| point(position.x, position.y + line_top));
+        let offset = self.last_display.display_offset(offset);
+        let mut top = px(0.);
+        for (index, (line, start)) in lines.iter().enumerate() {
+            if offset <= start + line.len() || index + 1 == lines.len() {
+                let position = line.position_for_index(
+                    offset.saturating_sub(*start).min(line.len()),
+                    self.line_height(),
+                )?;
+                return Some(
+                    point(position.x + self.last_indent, position.y + top) * self.last_scale,
+                );
             }
-            line_top += line.size(line_height).height;
+            top += line.size(self.line_height()).height + self.last_paragraph_gap;
         }
-        let (line, start) = lines.last()?;
-        line.position_for_index(self.content.len().saturating_sub(*start), line_height)
-            .map(|position| point(position.x, position.y + line_top))
+        Some(point(self.last_indent, top) * self.last_scale)
     }
 
     fn offset_for_position(&self, position: Point<Pixels>) -> usize {
         let Some(lines) = self.last_layout.as_ref() else {
             return 0;
         };
-        let line_height = self.line_height();
-        let mut line_top = px(0.0);
+        let position = position / self.last_scale;
+        let mut top = px(0.);
         for (line, start) in lines.iter() {
-            let height = line.size(line_height).height;
-            if position.y <= line_top + height {
-                return start
-                    + line
-                        .closest_index_for_position(
-                            point(position.x, (position.y - line_top).max(px(0.0))),
-                            line_height,
-                        )
-                        .unwrap_or(line.len())
-                        .min(line.len());
+            let height = line.size(self.line_height()).height;
+            if position.y <= top + height {
+                let index = line
+                    .closest_index_for_position(
+                        point(
+                            (position.x - self.last_indent).max(px(0.)),
+                            (position.y - top).max(px(0.)),
+                        ),
+                        self.line_height(),
+                    )
+                    .unwrap_or(line.len())
+                    .min(line.len());
+                return self
+                    .last_display
+                    .raw_offset(start + index)
+                    .min(self.content.len());
             }
-            line_top += height;
+            top += height + self.last_paragraph_gap;
         }
         self.content.len()
     }
@@ -434,7 +507,7 @@ impl TextInputState {
         };
         let target = point(
             position.x,
-            position.y + self.line_height() * direction as f32,
+            position.y + self.line_height() * self.last_scale * direction as f32,
         );
         let offset = self.offset_for_position(target);
         self.move_to(offset, cx);
@@ -603,7 +676,8 @@ impl EntityInputHandler for TextInputState {
         let start = self.position_for_offset(range.start)?;
         let end = self.position_for_offset(range.end)?;
         let top = start.y.min(end.y);
-        let bottom = (start.y.max(end.y) + self.line_height()).min(bounds.size.height);
+        let bottom =
+            (start.y.max(end.y) + self.line_height() * self.last_scale).min(bounds.size.height);
         Some(Bounds::from_corners(
             point(bounds.left() + start.x, bounds.top() + top),
             point(
@@ -628,6 +702,25 @@ impl EntityInputHandler for TextInputState {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn display_tabs_keep_raw_unicode_and_utf16_edit_offsets() {
+        let raw = "日\t語\n\t😀x\t";
+        let display = DisplayText::new(raw, true);
+        assert_eq!(display.text, "日   語\n    😀x  ");
+        for (offset, _) in raw.char_indices().chain(std::iter::once((raw.len(), '\0'))) {
+            assert_eq!(display.raw_offset(display.display_offset(offset)), offset);
+            let utf16 = utf16_offset_from_utf8(raw, offset);
+            assert_eq!(utf8_offset_from_utf16(raw, utf16), offset);
+        }
+        let before_tab = "日".len();
+        assert_eq!(
+            display.raw_offset(display.display_offset(before_tab) + 2),
+            before_tab
+        );
+        let unchanged = DisplayText::new(raw, false);
+        assert_eq!(unchanged.text, raw);
+    }
 
     #[test]
     fn marked_text_selection_is_relative_to_replacement_text() {
@@ -677,7 +770,8 @@ mod tests {
 impl Render for TextInputState {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         div()
-            .size_full()
+            .w_full()
+            .flex_shrink_0()
             .key_context("TextInput")
             .track_focus(&self.focus_handle)
             .cursor(CursorStyle::IBeam)
@@ -714,6 +808,18 @@ struct PrepaintState {
     lines: Arc<Vec<(WrappedLine, usize)>>,
     cursor: Option<PaintQuad>,
     selection: Vec<PaintQuad>,
+    underline: Vec<PaintQuad>,
+    bounds: Bounds<Pixels>,
+    display: DisplayText,
+    scale: f32,
+    font_size: Pixels,
+    line_height: Pixels,
+    indent: Pixels,
+    paragraph_gap: Pixels,
+    canvas: bool,
+    color: gpui::Hsla,
+    canvas_origin: Point<Pixels>,
+    highlights: Vec<(Range<usize>, gpui::HighlightStyle)>,
 }
 
 impl IntoElement for TextElement {
@@ -746,18 +852,71 @@ impl Element for TextElement {
         let mut style = Style::default();
         style.size.width = relative(1.0).into();
         let input = self.input.read(cx);
-        let line_count = if input.multiline {
-            input
-                .content
-                .split('\n')
-                .map(|line| line.chars().count().div_ceil(16).max(1))
-                .sum::<usize>()
-                .max(5)
+        if let Some(layout) = &input.canvas_layout {
+            let display = DisplayText::new(&input.content, layout.code);
+            let indent = if layout.bullets { 28. } else { 0. };
+            let gap = if layout.bullets { 8. } else { 0. };
+            let run = window.text_style().to_run(display.text.len());
+            let lines = window
+                .text_system()
+                .shape_text(
+                    display.text.into(),
+                    px(layout.font_size),
+                    &[run],
+                    (!layout.code).then(|| px(layout.width - indent)),
+                    None,
+                )
+                .unwrap_or_default();
+            let height = lines
+                .iter()
+                .map(|line| f32::from(line.size(px(layout.line_height)).height))
+                .sum::<f32>()
+                .max(layout.line_height)
+                + gap * lines.len().saturating_sub(1) as f32;
+            style.size.height = px(height * layout.scale).into();
+            return (window.request_layout(style, [], cx), ());
+        }
+        let text = if input.content.is_empty() {
+            input.placeholder.clone()
         } else {
-            1
+            input.content.clone()
         };
-        style.size.height = (window.line_height() * line_count as f32).into();
-        (window.request_layout(style, [], cx), ())
+        let text_style = window.text_style();
+        let font_size = text_style.font_size.to_pixels(window.rem_size());
+        let line_height = window.line_height();
+        let run = text_style.to_run(text.len());
+        let layout = window.request_measured_layout(style, move |known, available, window, _| {
+            let width = known.width.or(match available.width {
+                gpui::AvailableSpace::Definite(width) => Some(width),
+                _ => None,
+            });
+            let lines = window
+                .text_system()
+                .shape_text(
+                    text.clone(),
+                    font_size,
+                    std::slice::from_ref(&run),
+                    width,
+                    None,
+                )
+                .unwrap_or_default();
+            let height = lines
+                .iter()
+                .map(|line| line.size(line_height).height)
+                .sum::<Pixels>()
+                .max(line_height);
+            size(
+                width.unwrap_or_else(|| {
+                    lines
+                        .iter()
+                        .map(|line| line.size(line_height).width)
+                        .max()
+                        .unwrap_or(px(0.))
+                }),
+                height,
+            )
+        });
+        (layout, ())
     }
 
     fn prepaint(
@@ -770,13 +929,19 @@ impl Element for TextElement {
         cx: &mut App,
     ) -> Self::PrepaintState {
         let input = self.input.read(cx);
-        let text = if input.content.is_empty() {
-            input.placeholder.clone()
-        } else {
-            input.content.clone()
-        };
-        let selected_range = input.selected_range.clone();
-        let cursor_offset = input.cursor_offset();
+        let layout = input.canvas_layout.clone();
+        let display = DisplayText::new(
+            if input.content.is_empty() && layout.is_none() {
+                &input.placeholder
+            } else {
+                &input.content
+            },
+            layout.as_ref().is_some_and(|layout| layout.code),
+        );
+        let text: SharedString = display.text.clone().into();
+        let selected_range = display.display_offset(input.selected_range.start)
+            ..display.display_offset(input.selected_range.end);
+        let cursor_offset = display.display_offset(input.cursor_offset());
         let style = window.text_style();
         let text_color = if input.content.is_empty() {
             hsla(0.0, 0.0, 0.0, 0.3)
@@ -791,7 +956,11 @@ impl Element for TextElement {
             underline: None,
             strikethrough: None,
         };
-        let runs = if let Some(marked) = input.marked_range.as_ref() {
+        let marked = input
+            .marked_range
+            .as_ref()
+            .map(|range| display.display_offset(range.start)..display.display_offset(range.end));
+        let runs = if let Some(marked) = marked.as_ref() {
             vec![
                 TextRun {
                     len: marked.start,
@@ -817,17 +986,34 @@ impl Element for TextElement {
         } else {
             vec![base_run]
         };
-        let font_size = style.font_size.to_pixels(window.rem_size());
-        let line_height = window.line_height();
+        let scale = layout.as_ref().map_or(1., |layout| layout.scale);
+        let font_size = layout.as_ref().map_or_else(
+            || style.font_size.to_pixels(window.rem_size()),
+            |layout| px(layout.font_size),
+        );
+        let line_height = layout
+            .as_ref()
+            .map_or_else(|| window.line_height(), |layout| px(layout.line_height));
+        let indent = px(if layout.as_ref().is_some_and(|layout| layout.bullets) {
+            28.
+        } else {
+            0.
+        });
+        let paragraph_gap = px(if layout.as_ref().is_some_and(|layout| layout.bullets) {
+            8.
+        } else {
+            0.
+        });
+        let wrap_width = layout.as_ref().map_or(Some(bounds.size.width), |layout| {
+            (!layout.code).then(|| px(layout.width) - indent)
+        });
+        let origin = layout
+            .as_ref()
+            .map_or(bounds.origin, |layout| layout.placement.origin(scale));
+        let bounds = Bounds::new(origin, bounds.size);
         let shaped = window
             .text_system()
-            .shape_text(
-                text.clone(),
-                font_size,
-                &runs,
-                Some(bounds.size.width),
-                None,
-            )
+            .shape_text(text.clone(), font_size, &runs, wrap_width, None)
             .unwrap_or_default();
         let mut offset = 0;
         let lines = shaped
@@ -848,62 +1034,109 @@ impl Element for TextElement {
                     let position = line
                         .position_for_index(local_offset, line_height)
                         .unwrap_or(point(px(0.0), px(0.0)));
-                    return point(position.x, position.y + line_top);
+                    return point(position.x + indent, position.y + line_top) * scale;
                 }
-                line_top += line.size(line_height).height;
+                line_top += line.size(line_height).height + paragraph_gap;
             }
-            point(px(0.0), line_top)
+            point(indent, line_top) * scale
         };
-        let mut selection = Vec::new();
-        if !selected_range.is_empty() {
-            for (line, start) in lines.iter() {
-                let end = start + line.len();
-                let selected_start = selected_range.start.max(*start);
-                let selected_end = selected_range.end.min(end);
-                if selected_start >= selected_end {
-                    continue;
-                }
-                for (char_offset, character) in line.text.char_indices() {
-                    let char_end = char_offset + character.len_utf8();
-                    let absolute_start = start + char_offset;
-                    let absolute_end = start + char_end;
-                    if absolute_start >= selected_end || absolute_end <= selected_start {
+        let rectangles = |selected_range: &Range<usize>, underline: bool| {
+            let mut selection = Vec::new();
+            if !selected_range.is_empty() {
+                for (line, start) in lines.iter() {
+                    let end = start + line.len();
+                    let selected_start = selected_range.start.max(*start);
+                    let selected_end = selected_range.end.min(end);
+                    if selected_start >= selected_end {
                         continue;
                     }
-                    let start_position = line_position(absolute_start);
-                    let end_position = line_position(absolute_end);
-                    selection.push(fill(
-                        Bounds::from_corners(
-                            point(
-                                bounds.left() + start_position.x,
-                                bounds.top() + start_position.y,
+                    for (char_offset, character) in line.text.char_indices() {
+                        let char_end = char_offset + character.len_utf8();
+                        let absolute_start = start + char_offset;
+                        let absolute_end = start + char_end;
+                        if absolute_start >= selected_end || absolute_end <= selected_start {
+                            continue;
+                        }
+                        let start_position = line_position(absolute_start);
+                        let end_position = line_position(absolute_end);
+                        let right = if end_position.y > start_position.y {
+                            wrap_width.unwrap_or(line.size(line_height).width) * scale
+                                + indent * scale
+                        } else {
+                            end_position.x
+                        };
+                        selection.push(fill(
+                            Bounds::from_corners(
+                                point(
+                                    bounds.left() + start_position.x,
+                                    bounds.top()
+                                        + start_position.y
+                                        + if underline {
+                                            line_height * scale - px(1.)
+                                        } else {
+                                            px(0.)
+                                        },
+                                ),
+                                point(
+                                    bounds.left() + right.max(start_position.x + px(1.0)),
+                                    bounds.top() + start_position.y + line_height * scale,
+                                ),
                             ),
-                            point(
-                                bounds.left() + end_position.x.max(start_position.x + px(1.0)),
-                                bounds.top() + start_position.y + line_height,
-                            ),
-                        ),
-                        rgba(0x3311ff30),
-                    ));
+                            if underline {
+                                rgba(0x222222ff)
+                            } else {
+                                rgba(0x3311ff30)
+                            },
+                        ));
+                    }
                 }
             }
-        }
+            selection
+        };
+        let selection = rectangles(&selected_range, false);
+        let underline = if layout.is_some() {
+            marked
+                .as_ref()
+                .map_or_else(Vec::new, |range| rectangles(range, true))
+        } else {
+            Vec::new()
+        };
         let cursor = if selected_range.is_empty() {
             let position = line_position(cursor_offset);
             Some(fill(
                 Bounds::new(
                     point(bounds.left() + position.x, bounds.top() + position.y),
-                    size(px(2.0), line_height),
+                    size(px(2.0), line_height * scale),
                 ),
                 gpui::blue(),
             ))
         } else {
             None
         };
+        let highlights = layout
+            .as_ref()
+            .filter(|layout| layout.code)
+            .map_or_else(Vec::new, |layout| {
+                super::code_highlights(&display.text, layout.language.as_deref())
+            });
         PrepaintState {
             lines,
             cursor,
             selection,
+            underline,
+            bounds,
+            display,
+            scale,
+            font_size,
+            line_height,
+            indent,
+            paragraph_gap,
+            canvas: layout.is_some(),
+            color: text_color,
+            highlights,
+            canvas_origin: layout
+                .as_ref()
+                .map_or(bounds.origin, |layout| layout.placement.canvas_origin.get()),
         }
     }
 
@@ -911,12 +1144,13 @@ impl Element for TextElement {
         &mut self,
         _: Option<&GlobalElementId>,
         _: Option<&gpui::InspectorElementId>,
-        bounds: Bounds<Pixels>,
+        _bounds: Bounds<Pixels>,
         _: &mut Self::RequestLayoutState,
         prepaint: &mut Self::PrepaintState,
         window: &mut Window,
         cx: &mut App,
     ) {
+        let bounds = prepaint.bounds;
         let focus_handle = self.input.read(cx).focus_handle.clone();
         window.handle_input(
             &focus_handle,
@@ -926,18 +1160,65 @@ impl Element for TextElement {
         for selection in prepaint.selection.drain(..) {
             window.paint_quad(selection);
         }
-        let mut line_origin = bounds.origin;
-        for (line, _) in prepaint.lines.iter() {
-            line.paint(
-                line_origin,
-                window.line_height(),
-                gpui::TextAlign::Left,
-                Some(bounds),
-                window,
-                cx,
-            )
-            .unwrap();
-            line_origin.y += line.size(window.line_height()).height;
+        let mut origin = bounds.origin;
+        let mut all_glyphs = Vec::new();
+        for (line, start) in prepaint.lines.iter() {
+            if prepaint.canvas {
+                let glyphs = paint_scaled_line(
+                    line,
+                    origin + point(prepaint.indent * prepaint.scale, px(0.)),
+                    prepaint.font_size,
+                    prepaint.line_height,
+                    prepaint.scale,
+                    prepaint.color,
+                    &prepaint.highlights,
+                    *start,
+                    window,
+                );
+                if prepaint.indent > px(0.) {
+                    record_canvas_glyphs(&line.text, &glyphs, prepaint, window);
+
+                    let run = window.text_style().to_run("•".len());
+                    let markers = window
+                        .text_system()
+                        .shape_text("•".into(), prepaint.font_size, &[run], None, None)
+                        .unwrap_or_default();
+                    for marker in &markers {
+                        let glyphs = paint_scaled_line(
+                            marker,
+                            origin,
+                            prepaint.font_size,
+                            prepaint.line_height,
+                            prepaint.scale,
+                            prepaint.color,
+                            &[],
+                            0,
+                            window,
+                        );
+                        record_canvas_glyphs("•", &glyphs, prepaint, window);
+                    }
+                } else {
+                    all_glyphs.extend(glyphs);
+                }
+            } else {
+                line.paint(
+                    origin,
+                    prepaint.line_height,
+                    gpui::TextAlign::Left,
+                    Some(bounds),
+                    window,
+                    cx,
+                )
+                .unwrap();
+            }
+            origin.y +=
+                (line.size(prepaint.line_height).height + prepaint.paragraph_gap) * prepaint.scale;
+        }
+        if prepaint.canvas && prepaint.indent == px(0.) {
+            record_canvas_glyphs(&prepaint.display.text, &all_glyphs, prepaint, window);
+        }
+        for underline in prepaint.underline.drain(..) {
+            window.paint_quad(underline);
         }
         if focus_handle.is_focused(window)
             && let Some(cursor) = prepaint.cursor.take()
@@ -946,8 +1227,101 @@ impl Element for TextElement {
         }
         self.input.update(cx, |input, _| {
             input.last_layout = Some(prepaint.lines.clone());
-            input.last_line_height = window.line_height();
+            input.last_line_height = prepaint.line_height;
             input.last_bounds = Some(bounds);
+            input.last_scale = prepaint.scale;
+            input.last_indent = prepaint.indent;
+            input.last_paragraph_gap = prepaint.paragraph_gap;
+            input.last_display = prepaint.display.clone();
         });
+    }
+}
+
+fn paint_scaled_line(
+    line: &WrappedLine,
+    origin: Point<Pixels>,
+    font_size: Pixels,
+    line_height: Pixels,
+    scale: f32,
+    color: gpui::Hsla,
+    highlights: &[(Range<usize>, gpui::HighlightStyle)],
+    byte_offset: usize,
+    window: &mut Window,
+) -> Vec<(gpui::GlyphId, Point<Pixels>)> {
+    let mut glyphs = Vec::new();
+    let layout = &line.unwrapped_layout;
+    let baseline = (line_height - layout.ascent - layout.descent) / 2. + layout.ascent;
+    let mut row = 0;
+    let mut wrap_start = px(0.);
+    for (run_ix, run) in layout.runs.iter().enumerate() {
+        for (glyph_ix, glyph) in run.glyphs.iter().enumerate() {
+            if line
+                .wrap_boundaries
+                .iter()
+                .any(|boundary| boundary.run_ix == run_ix && boundary.glyph_ix == glyph_ix)
+            {
+                row += 1;
+                wrap_start = glyph.position.x;
+            }
+            let position = origin
+                + point(
+                    glyph.position.x - wrap_start,
+                    line_height * row as f32 + baseline + glyph.position.y,
+                ) * scale;
+            let color = highlights
+                .iter()
+                .find(|(range, _)| range.contains(&(byte_offset + glyph.index)))
+                .and_then(|(_, style)| style.color)
+                .unwrap_or(color);
+            glyphs.push((glyph.id, position));
+            window
+                .paint_glyph(position, run.font_id, glyph.id, font_size * scale, color)
+                .expect("paint canvas input glyph");
+        }
+    }
+    glyphs
+}
+
+fn record_canvas_glyphs(
+    text: &str,
+    glyphs: &[(gpui::GlyphId, Point<Pixels>)],
+    prepaint: &PrepaintState,
+    window: &Window,
+) {
+    let Some(path) = std::env::var_os("PSYCHO_GLYPH_TRACE") else {
+        return;
+    };
+    use std::{fmt::Write, io::Write as _};
+    let text_hex = text
+        .as_bytes()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect::<String>();
+    let mut evidence = String::new();
+    let viewport = window.viewport_size();
+    for (index, (glyph, origin)) in glyphs.iter().enumerate() {
+        let _ = writeln!(
+            evidence,
+            "{},{},{},{},{},{},{},{},{},{},{},{}",
+            f32::from(viewport.width),
+            f32::from(viewport.height),
+            f32::from(prepaint.font_size),
+            text_hex,
+            index,
+            glyph.0,
+            f32::from(origin.x),
+            f32::from(origin.y),
+            prepaint.scale,
+            f32::from(prepaint.canvas_origin.x),
+            f32::from(prepaint.canvas_origin.y),
+            window.scale_factor()
+        );
+    }
+    if let Ok(mut file) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(path)
+    {
+        let _ = file.write_all(evidence.as_bytes());
     }
 }
