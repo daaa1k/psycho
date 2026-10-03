@@ -1,0 +1,10 @@
+[
+  {
+    "name": "bullet-item-move",
+    "source": "presentation { metadata { title \"Bullet items\" }; slide { heading \"Bullet items\"; bullets { item \"First item\";     item \"Third item\"\nitem \"Second item\"; \n}; }; }\n"
+  },
+  {
+    "name": "bullet-item-delete",
+    "source": "presentation { metadata { title \"Bullet items\" }; slide { heading \"Bullet items\"; bullets { item \"First item\";     item \"Second item\"; \n}; }; }\n"
+  }
+]

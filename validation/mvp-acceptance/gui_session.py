@@ -15,13 +15,22 @@ class Gui:
         self.input=self.out/f'{name}-input.csv';self.trace=self.out/f'{name}-glyphs.csv'
         self.ocr=self.out/'recognize-bounds'
         subprocess.run(['xcrun','swiftc',str(Path(__file__).with_name('recognize_bounds.swift')),'-o',str(self.ocr)],check=True)
-        self.start()
+        try:self.start()
+        except Exception:self.stop();raise
 
     def start(self):
         self.app=subprocess.Popen([str(root/'target/debug/psycho'),str(self.fixture)],
             env=dict(os.environ,PSYCHO_INPUT_STATE=str(self.input),PSYCHO_GLYPH_TRACE=str(self.trace)),
             stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
-        time.sleep(3);self.act('get-app-state','--restore-window')
+        deadline=time.monotonic()+15
+        while time.monotonic()<deadline:
+            assert self.app.poll() is None,'Scratch app exited during startup'
+            available=json.loads(subprocess.check_output(['orca','computer','list-apps','--json'],text=True))
+            assert available['ok'],available
+            if any(app['pid']==self.app.pid for app in available['result']['apps']):break
+            time.sleep(.5)
+        else:raise AssertionError('Scratch app did not register a GUI within 15 seconds')
+        time.sleep(1);self.act('get-app-state','--restore-window')
 
     def stop(self):
         self.app.terminate()
@@ -49,7 +58,7 @@ class Gui:
     def press(self,label,scroll=False,aliases=()):
         for attempt in range(5 if scroll else 1):
             state,rows=self.snapshot()
-            normalize=lambda text:unicodedata.normalize('NFKC',''.join(text.split())).replace('−','-').replace('–','-')
+            normalize=lambda text:unicodedata.normalize('NFKC',''.join(text.split())).replace('−','-').replace('–','-').replace('・','').replace('·','')
             accepted={normalize(text) for text in (label,*aliases)}
             matches=[r for r in rows if normalize(r['text']) in accepted]
             if len(matches)==1:
@@ -82,7 +91,12 @@ class Gui:
             self.hotkey('CmdOrCtrl+V')
         elif text:self.act('type-text','--text',text,'--no-screenshot')
         else:self.key('Backspace')
-        assert self.state()['text']==text,self.state()
+        deadline=time.monotonic()+10
+        while time.monotonic()<deadline:
+            state=self.state()
+            if state['text']==text:return
+            time.sleep(.1)
+        raise AssertionError(state)
 
     def glyph_position(self,prefix,font=None):
         rows=list(csv.reader(self.trace.open()))
