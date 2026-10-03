@@ -1,0 +1,134 @@
+[
+  {
+    "heading": "Empty columns",
+    "mode": "editor",
+    "kind": "image",
+    "expected_top": 318.9125,
+    "actual_top": 319,
+    "actual_image_size": [
+      414,
+      207
+    ],
+    "expected_image_size": [
+      414.0,
+      207.0
+    ]
+  },
+  {
+    "heading": "Empty columns",
+    "mode": "presentation",
+    "kind": "image",
+    "expected_top": 294.0,
+    "actual_top": 294,
+    "actual_image_size": [
+      960,
+      480
+    ],
+    "expected_image_size": [
+      960.0,
+      480.0
+    ]
+  },
+  {
+    "heading": "Tall columns",
+    "mode": "editor",
+    "kind": "image",
+    "expected_top": 400.41875,
+    "actual_top": 400,
+    "actual_image_size": [
+      414,
+      207
+    ],
+    "expected_image_size": [
+      414.0,
+      207.0
+    ]
+  },
+  {
+    "heading": "Tall columns",
+    "mode": "presentation",
+    "kind": "image",
+    "expected_top": 483.0,
+    "actual_top": 483,
+    "actual_image_size": [
+      960,
+      480
+    ],
+    "expected_image_size": [
+      960.0,
+      480.0
+    ]
+  },
+  {
+    "heading": "No caption",
+    "mode": "editor",
+    "kind": "code",
+    "expected_top": 525.9124999999999,
+    "actual_top": 526
+  },
+  {
+    "heading": "No caption",
+    "mode": "presentation",
+    "kind": "code",
+    "expected_top": 774.0,
+    "actual_top": 774
+  },
+  {
+    "heading": "Empty caption",
+    "mode": "editor",
+    "kind": "code",
+    "expected_top": 525.9124999999999,
+    "actual_top": 526
+  },
+  {
+    "heading": "Empty caption",
+    "mode": "presentation",
+    "kind": "code",
+    "expected_top": 774.0,
+    "actual_top": 774
+  },
+  {
+    "heading": "Nested tall",
+    "mode": "editor",
+    "kind": "nested-image",
+    "expected_top": 412.709375,
+    "actual_top": 413,
+    "actual_image_size": [
+      365,
+      183
+    ],
+    "expected_image_size": [
+      364.8375,
+      182.41875
+    ]
+  },
+  {
+    "heading": "Nested tall",
+    "mode": "presentation",
+    "kind": "nested-image",
+    "expected_top": 511.5,
+    "actual_top": 511,
+    "actual_image_size": [
+      846,
+      423
+    ],
+    "expected_image_size": [
+      846.0,
+      423.0
+    ]
+  },
+  {
+    "heading": "Nested caption",
+    "mode": "editor",
+    "kind": "nested-code",
+    "expected_top": 525.9124999999999,
+    "actual_top": 526
+  },
+  {
+    "heading": "Nested caption",
+    "mode": "presentation",
+    "kind": "nested-code",
+    "expected_top": 774.0,
+    "actual_top": 774
+  }
+]

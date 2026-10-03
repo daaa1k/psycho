@@ -37,6 +37,8 @@ IME確認時はmacOS標準日本語入力 `com.apple.inputmethod.Kotoeri.RomajiT
 | 退避後の画像参照と再保存 | 画像パス欄を選択中でも退避先からの相対参照を保ち、通常保存で古い値へ戻らない | 異なる深さのarchive/deepへ退避。3画像の参照と表示を保持、未保存表示が消え、通常保存後も全バイト一致。元ファイル不変。入力欄に古い値が残る不具合を修正 | 合格 |
 | 保存直前の競合 | 一時ファイルの書込み中に原本・退避先が変更された場合、編集内容・履歴を保って置換を止める | 通常保存での原本変更・削除、別名保存での退避先作成・変更・削除を、一時ファイルの内容検査直後に注入。原本・変更先・入力・Undo/Redo・画像参照の保持、一時ファイルの削除、解消後の再試行を確認 | 合格 |
 | 書込み失敗からの再試行 | 原本・編集中内容・履歴を保ち、権限を戻したら同じ保存操作で再試行できる | 一時ファイル作成の権限エラーを外部読込エラーとして扱う不具合を修正。失敗中の原本不変、再試行成功、Undo 1回と保存で全バイト一致を確認 | 合格 |
+| 退避失敗からの再試行 | 原本・入力内容・履歴を保ち、同じ退避先へ再試行できる。成功時に履歴を消す | Native Save panelで選んだ専用フォルダーを一時的に書込み不可にし、製品の権限エラーを確認。原本不変、入力保持、失敗後のUndo/Redo、権限復旧後の退避成功、成功後の履歴消去を確認。[save-as-retry-observations.json](evidence/save-as-retry-observations.json) | 合格 |
+| 空列・高い列・Captionなしの後続 | 画像・コード枠も共有座標で配置し、画像の全体を縦横比を保って表示する | 6枚×編集・発表の12状態を実画素で検査。後続位置1px以内、画像の縦横サイズ1px以内。高い列の後続画像のずれを`5bac00b`で修正し、空Captionの追加ボタンをElement間の余白へ表示。[following-layout-observations.json](evidence/following-layout-observations.json) | 合格 |
 
 [IME録画](evidence/ime-standard.mov)、[全画面キー操作の録画](evidence/fullscreen.mov)を保存した。録画は確認の一部を示し、全ケースの連続録画ではない。全画面10回の各開始・終了画像と1回目の全キー画像を残した。画像削除、ドラッグ、取消などの静止画は`evidence`内にある。文字描画修正前のIME・ドラッグ画像はその機能の観測用であり、最終配置の証拠には使わない。最終配置は`layout-*.png`と`glyph-origins.csv`を使う。
 
@@ -107,6 +109,9 @@ python3 validation/mvp-acceptance/ime_acceptance.py --output target/mvp-ime-evid
 python3 validation/mvp-acceptance/text_workflow_acceptance.py --output target/mvp-text-workflow-evidence
 python3 validation/mvp-acceptance/input_scope_acceptance.py --output target/mvp-input-scope-evidence
 python3 validation/mvp-acceptance/blank_slide_acceptance.py --output target/mvp-blank-slide-evidence
+python3 validation/mvp-acceptance/save_as_retry_acceptance.py --output target/mvp-save-as-retry-evidence
+# numpyとPillowがあるPythonで実行する
+python3 validation/mvp-acceptance/following_layout_acceptance.py --output target/mvp-following-layout-evidence
 ```
 
 ドラッグの再実行には`slow_drag.swift PID x1 y1 x2 y2 [hold_seconds]`を使える。座標は最新のpsychoウィンドウ内で指定する。`hold_seconds`を長くするとドロップ前の表示を撮影できる。Orcaの一括dragが短すぎるとGPUIの描画が間に合わなかったため、同じMacのCGEventsを段階的に送る補助コードを残した。PIDがpsychoであり、前面にあることを検査してから送信する。
@@ -116,7 +121,6 @@ python3 validation/mvp-acceptance/blank_slide_acceptance.py --output target/mvp-
 Issue #17全体を合格にするには、次の製品上の確認を続ける必要がある。
 
 - 6枚の代表例のGUI通し操作を最後まで確認する。白紙Slideから全種類の追加、Slideの移動・削除とUndoは確認済み。複数Columns間・列内外・不正な入れ子のドラッグと中身の削除復元もGUIで確認する。
-- 退避失敗からの再試行をGUIで確認する。通常保存の失敗・再試行、外部変更・競合・削除・無効化・破棄確認・別フォルダーへの退避と再保存時の画像参照は確認済み。
-- 空列・高い列の後続配置、画像の全体表示、画面外Elementの全文修正、現在Slide以外の問題による発表停止、発表中の外部変更後の復帰位置を確認する。
+- 画面外Elementの全文修正、現在Slide以外の問題による発表停止、発表中の外部変更後の復帰位置を確認する。
 
 保存時は一時ファイルの書込み後、rename前の比較までに発生した変更・削除を決定的な試験で検査した。比較の完了からrenameまでの間に別プロセスが書く競合は、この方式では排除できない。未確認事項をIssueの完了扱いにしない。

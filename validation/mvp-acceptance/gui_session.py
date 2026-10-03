@@ -1,5 +1,5 @@
 """Helpers for acceptance scripts operating only a fresh scratch PSYCHO process."""
-import csv, json, os, shutil, subprocess, time, unicodedata
+import csv, json, os, re, shutil, subprocess, time, unicodedata
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[2]
@@ -46,11 +46,12 @@ class Gui:
         rows=json.loads(subprocess.check_output([str(self.ocr),state['screenshot']['path']],text=True))
         return state,rows
 
-    def press(self,label,scroll=False):
+    def press(self,label,scroll=False,aliases=()):
         for attempt in range(5 if scroll else 1):
             state,rows=self.snapshot()
             normalize=lambda text:unicodedata.normalize('NFKC',''.join(text.split())).replace('−','-').replace('–','-')
-            matches=[r for r in rows if normalize(r['text'])==normalize(label)]
+            accepted={normalize(text) for text in (label,*aliases)}
+            matches=[r for r in rows if normalize(r['text']) in accepted]
             if len(matches)==1:
                 row=matches[0];return self.act('click','--x',str(row['x']),'--y',str(row['y']),'--no-screenshot')
             if not scroll:break
@@ -58,6 +59,11 @@ class Gui:
         raise AssertionError((label,rows))
 
     def key(self,key):return self.act('press-key','--key',key,'--no-screenshot')
+    def select_slide(self,number):
+        _,rows=self.snapshot()
+        row=next(row for row in rows if row['x']<160 and re.match(
+            r'^[>›]?\s*'+str(number)+r'(?!\d)',unicodedata.normalize('NFKC',row['text'])))
+        self.click(row['x'],row['y'])
     def hotkey(self,key):return self.act('hotkey','--key',key,'--no-screenshot')
     def click(self,x,y,count=1):return self.act('click','--x',str(x),'--y',str(y),'--click-count',str(count),'--no-screenshot')
 
