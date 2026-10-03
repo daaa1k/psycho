@@ -460,12 +460,24 @@ impl PresentationDocument {
             .children()
             .map(|children| children.nodes())
             .unwrap_or(&[]);
+        if existing
+            .iter()
+            .filter_map(|item| item.entries().first()?.value().as_string())
+            .collect::<Vec<_>>()
+            .join("\n")
+            == text
+        {
+            return Ok(());
+        }
         let mut edits: Vec<(usize, usize, String)> = Vec::new();
         for (item, value) in existing.iter().zip(requested.iter()) {
             let entry = item
                 .entries()
                 .first()
                 .ok_or(DocumentError::InvalidDocument)?;
+            if entry.value().as_string() == Some(*value) {
+                continue;
+            }
             let (start, end) = entry_string_range(&self.source, entry)?;
             edits.push((start, end, encode_kdl_string(value)));
         }
@@ -1204,12 +1216,24 @@ impl PresentationDocument {
             .children()
             .map(|children| children.nodes())
             .unwrap_or(&[]);
+        if existing
+            .iter()
+            .filter_map(|item| item.entries().first()?.value().as_string())
+            .collect::<Vec<_>>()
+            .join("\n")
+            == text
+        {
+            return Ok(());
+        }
         let mut edits: Vec<(usize, usize, String)> = Vec::new();
         for (item, value) in existing.iter().zip(requested.iter()) {
             let entry = item
                 .entries()
                 .first()
                 .ok_or(DocumentError::InvalidDocument)?;
+            if entry.value().as_string() == Some(*value) {
+                continue;
+            }
             let (start, end) = entry_string_range(&self.source, entry)?;
             edits.push((start, end, encode_kdl_string(value)));
         }
@@ -1344,6 +1368,9 @@ impl PresentationDocument {
     }
 
     fn replace_entry_string(&mut self, entry: &KdlEntry, value: &str) -> Result<(), DocumentError> {
+        if entry.value().as_string() == Some(value) {
+            return Ok(());
+        }
         let (start, end) = entry_string_range(&self.source, entry)?;
         let encoded = encode_kdl_string(value);
         let mut candidate = self.source.clone();

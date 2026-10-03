@@ -326,6 +326,10 @@ impl TextInputState {
         self.pending_undo_group = None;
     }
 
+    pub fn redo_states_for_commit(&self) -> Vec<String> {
+        self.redo_stack.iter().rev().cloned().collect()
+    }
+
     fn left(&mut self, _: &Left, _: &mut Window, cx: &mut Context<Self>) {
         if self.marked_range.is_none() {
             self.break_undo_group();

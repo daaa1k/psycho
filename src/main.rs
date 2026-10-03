@@ -616,6 +616,7 @@ impl PsychoApp {
         let value = self.editor.read(cx).value();
         let target = self.target;
         let history = self.editor.read(cx).history_states_for_commit();
+        let redo = self.editor.read(cx).redo_states_for_commit();
         let mut validated = self.document.clone();
         apply_editor_value(&mut validated, target, &value).map_err(|error| error.to_string())?;
         for state in history {
@@ -628,6 +629,20 @@ impl PsychoApp {
         }
         apply_editor_value(&mut self.document, target, &value)
             .map_err(|error| error.to_string())?;
+        // Preserve undone input units as document Redo. Replay valid future
+        // states, then return to the current state without saving any bytes.
+        let mut future_units = 0;
+        for state in redo {
+            let before = self.document.source().to_owned();
+            if apply_editor_value(&mut self.document, target, &state).is_ok()
+                && self.document.source() != before
+            {
+                future_units += 1;
+            }
+        }
+        for _ in 0..future_units {
+            self.document.undo();
+        }
         self.editor
             .update(cx, |input, _| input.reset_undo_history());
         self.refresh_assets();
@@ -1682,41 +1697,34 @@ impl PsychoApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        let target_was_invalid = !self.target_is_valid(self.target);
-        let previous_slide_index = self.current_slide;
+        let mut target_was_invalid = !self.target_is_valid(self.target);
+        self.current_slide =
+            self.slide_restored_by_history(previous_model, active_slide_id.clone());
+        target_was_invalid |=
+            target_slide(self.target).is_some_and(|slide| slide != self.current_slide);
         if target_was_invalid {
             self.target = EditTarget::Title;
         }
-        self.current_slide =
-            self.slide_restored_by_history(previous_model, active_slide_id.clone());
         if (target_was_invalid || matches!(self.target, EditTarget::Title))
             && let Some(restored_target) = previous_model.and_then(|previous| {
-                let previous_slide_index = active_slide_id
-                    .as_ref()
-                    .and_then(|id| {
-                        previous
-                            .slides
-                            .iter()
-                            .position(|slide| slide.id.as_ref() == Some(id))
-                    })
-                    .unwrap_or(previous_slide_index);
-                let current = self
-                    .document
-                    .model()
-                    .and_then(|model| model.slides.get(self.current_slide))?;
-                let before = previous.slides.get(previous_slide_index)?;
-                let same_slide = active_slide_id.as_ref().map_or_else(
-                    || {
-                        self.document
-                            .model()
-                            .is_some_and(|model| model.slides.len() == previous.slides.len())
-                            && previous_slide_index == self.current_slide
-                    },
-                    |id| current.id.as_ref() == Some(id),
-                );
-                if !same_slide {
-                    return None;
-                }
+                let model = self.document.model()?;
+                let current = model.slides.get(self.current_slide)?;
+                let before = if let Some(id) = &current.id {
+                    previous
+                        .slides
+                        .iter()
+                        .find(|slide| slide.id.as_ref() == Some(id))?
+                } else {
+                    previous
+                        .slides
+                        .iter()
+                        .find(|slide| *slide == current)
+                        .or_else(|| {
+                            (previous.slides.len() == model.slides.len())
+                                .then(|| previous.slides.get(self.current_slide))
+                                .flatten()
+                        })?
+                };
                 restored_element_after_history(before, current, self.current_slide)
             })
         {
@@ -1792,6 +1800,18 @@ impl PsychoApp {
                     return index;
                 }
                 return model.slides.len() - 1;
+            }
+            if previous_model.slides.len() == model.slides.len()
+                && !slides_have_same_members(&previous_model.slides, &model.slides)
+                && let Some(index) = previous_model
+                    .slides
+                    .iter()
+                    .zip(&model.slides)
+                    .position(|(before, after)| before != after)
+            {
+                // A content edit belongs to its changed Slide, even if the
+                // user navigated elsewhere before invoking Undo or Redo.
+                return index;
             }
         }
         if let Some(active_slide_id) = active_slide_id {
@@ -4511,6 +4531,20 @@ fn nested_column_len(
         .unwrap_or(0)
 }
 
+fn slides_have_same_members(before: &[psycho::Slide], after: &[psycho::Slide]) -> bool {
+    if before.len() != after.len() {
+        return false;
+    }
+    let mut remaining = after.iter().collect::<Vec<_>>();
+    for slide in before {
+        let Some(index) = remaining.iter().position(|candidate| *candidate == slide) else {
+            return false;
+        };
+        remaining.swap_remove(index);
+    }
+    true
+}
+
 fn restored_element_after_history(
     before: &psycho::Slide,
     after: &psycho::Slide,
@@ -4619,6 +4653,30 @@ fn apply_editor_value(
     value: &str,
 ) -> Result<(), DocumentError> {
     validate_editor_value(target, value)?;
+    // Optional fields can have an empty editor value while still being
+    // absent in KDL. Selecting and ending an unchanged field must preserve
+    // that representation as well as existing quoting and list boundaries.
+    let element = document.model().and_then(|model| match target {
+        EditTarget::Element { slide, index, .. } => model.slides.get(slide)?.elements.get(index),
+        EditTarget::NestedElement {
+            slide,
+            columns,
+            column,
+            index,
+            ..
+        } => nested_element(model, slide, columns, column, index),
+        _ => None,
+    });
+    let field = match target {
+        EditTarget::Element { field, .. } | EditTarget::NestedElement { field, .. } => Some(field),
+        _ => None,
+    };
+    if let Some((element, field)) = element.zip(field)
+        && element_supports_field(element, field)
+        && element_field_value(element, field) == value
+    {
+        return Ok(());
+    }
     match target {
         EditTarget::Title => document.set_title(value),
         EditTarget::Columns { .. } => Ok(()),

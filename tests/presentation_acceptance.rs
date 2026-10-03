@@ -516,6 +516,31 @@ fn nested_bullet_items_preserve_siblings_and_exact_history() {
 }
 
 #[test]
+fn same_decoded_values_preserve_raw_quotes_empty_bullets_and_redo() {
+    let source = "presentation { metadata { title #\"Raw title\"# }; slide { heading #\"Raw heading\"#; bullets { item #\"a\"#; item \"b\"; }; bullets {}; columns { column width=50 { bullets { item #\"c\"#; item \"d\"; }; }; column width=50 {}; }; }; }\r\n";
+    let mut doc = PresentationDocument::from_source(source).unwrap();
+    doc.set_title("changed").unwrap();
+    assert!(doc.undo());
+    assert!(doc.can_redo());
+    doc.set_title("Raw title").unwrap();
+    doc.set_element_text(0, 0, "Raw heading").unwrap();
+    doc.set_bullets_text(0, 1, "a\nb").unwrap();
+    doc.set_bullets_text(0, 2, "").unwrap();
+    doc.set_column_bullets_text(0, 3, 0, 0, "c\nd").unwrap();
+    assert_eq!(doc.source(), source);
+    assert!(!doc.can_undo());
+    assert!(doc.can_redo());
+    doc.set_bullets_text(0, 1, "a\nB").unwrap();
+    assert_eq!(doc.source(), source.replace("item \"b\"", "item \"B\""));
+    assert!(doc.undo());
+    assert_eq!(doc.source(), source);
+    doc.set_column_bullets_text(0, 3, 0, 0, "c\nD").unwrap();
+    assert_eq!(doc.source(), source.replace("item \"d\"", "item \"D\""));
+    assert!(doc.undo());
+    assert_eq!(doc.source(), source);
+}
+
+#[test]
 fn root_metadata_and_slide_constraints_are_schema_errors() {
     for source in [
         "presentation;",
