@@ -38,7 +38,7 @@ presentation {
             item "同じ runner と toolchain を使用"
             item "中央値と p95 を記録"
         }
-        image "assets/build-time.png" {
+        image "../assets/build-time.png" {
             caption "キャッシュ導入前後の CI 実行時間"
         }
     }

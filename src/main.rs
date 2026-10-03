@@ -1,6 +1,7 @@
 #![allow(unexpected_cfgs)]
 
 mod input;
+mod text;
 
 use std::collections::HashMap;
 use std::fs;
@@ -237,6 +238,20 @@ impl PsychoApp {
     fn has_uncommitted_draft(&self, cx: &Context<Self>) -> bool {
         self.editor.read(cx).is_marked()
             || self.editor.read(cx).value() != self.edit_value(self.target)
+    }
+
+    fn cancel_input(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        if !self.finish_composition(window, cx) {
+            self.status = "日本語変換を終了できませんでした。".into();
+            cx.notify();
+            return;
+        }
+        let value = self.edit_value(self.target);
+        self.editor
+            .update(cx, |input, cx| input.set_value(&value, cx));
+        window.focus(&self.root_focus, cx);
+        self.status = "入力を取り消しました。".into();
+        cx.notify();
     }
 
     fn poll_external_change(&mut self, window: &mut Window, cx: &mut Context<Self>) {
@@ -2131,7 +2146,7 @@ impl PsychoApp {
             .child(format!(
                 "{}{}",
                 title,
-                if self.document.is_dirty() {
+                if self.document.is_dirty() || self.has_uncommitted_draft(cx) {
                     "  • 未保存"
                 } else {
                     ""
@@ -2244,6 +2259,7 @@ impl PsychoApp {
                     .flex()
                     .flex_row()
                     .flex_1()
+                    .min_h_0()
                     .gap_2()
                     .p_2()
                     .child(side)
@@ -2262,6 +2278,7 @@ impl PsychoApp {
             .flex()
             .flex_col()
             .w(px(150.0))
+            .flex_shrink_0()
             .h_full()
             .gap_2()
             .p_2()
@@ -2309,10 +2326,14 @@ impl PsychoApp {
         cx: &mut Context<Self>,
     ) -> gpui::AnyElement {
         let mut inspector = div()
+            .id("inspector")
             .flex()
             .flex_col()
             .w(px(270.0))
+            .flex_shrink_0()
             .h_full()
+            .min_h_0()
+            .overflow_y_scroll()
             .gap_2()
             .p_3()
             .bg(rgb(0xf8f8f8));
@@ -2780,6 +2801,17 @@ impl PsychoApp {
                     }));
             }
             if !matches!(self.target, EditTarget::Columns { .. }) {
+                if let Err(DocumentError::UnsafeValue(reason)) =
+                    validate_editor_value(self.target, &self.editor.read(cx).value())
+                {
+                    inspector = inspector.child(div().text_color(rgb(0x991b1b)).child(reason));
+                }
+                inspector = inspector.child(button(
+                    cx,
+                    "入力を取り消す",
+                    self.has_uncommitted_draft(cx),
+                    |this, _, window, cx| this.cancel_input(window, cx),
+                ));
                 inspector = inspector
                     .child(button(
                         cx,
@@ -3279,7 +3311,8 @@ impl PsychoApp {
         cx: &mut Context<Self>,
     ) -> gpui::AnyElement {
         let viewport = window.viewport_size();
-        let horizontal_panes = if editing { 430.0 } else { 0.0 };
+        // 150px slide list + 270px inspector + 16px outer padding + 16px gaps.
+        let horizontal_panes = if editing { 452.0 } else { 0.0 };
         let available_width = (f32::from(viewport.width) - horizontal_panes).max(320.0);
         let available_height =
             (f32::from(viewport.height) - if editing { 72.0 } else { 0.0 }).max(180.0);
@@ -3287,7 +3320,11 @@ impl PsychoApp {
         let width = 1280.0 * scale;
         let height = 720.0 * scale;
         let slide = model.slides.get(slide_index);
+        let canvas_origin = std::rc::Rc::new(std::cell::Cell::new(gpui::point(px(0.), px(0.))));
+        let placement = text::TextPlacement::new(canvas_origin.clone(), 64., 48.);
+        let mut cursor_y = 0.;
         let mut canvas = div()
+            .relative()
             .flex()
             .flex_col()
             .gap(px(24.0 * scale))
@@ -3322,10 +3359,22 @@ impl PsychoApp {
                     },
                     editing && !self.external_edit_blocked(),
                     window,
+                    &placement.shifted(0., cursor_y),
                     cx,
                 ));
+                cursor_y += measure_element(element, 1152., window, &mut Vec::new()) + 24.;
             }
         }
+        canvas = canvas.child(
+            gpui::canvas(
+                move |bounds, _, _| {
+                    canvas_origin.set(bounds.origin);
+                },
+                |_, _, _, _| {},
+            )
+            .absolute()
+            .inset_0(),
+        );
         div()
             .size_full()
             .flex()
@@ -3350,6 +3399,7 @@ impl PsychoApp {
         target: CanvasTarget,
         editing: bool,
         window: &Window,
+        placement: &text::TextPlacement,
         cx: &mut Context<Self>,
     ) -> gpui::AnyElement {
         let field = match element {
@@ -3479,11 +3529,25 @@ impl PsychoApp {
                         .w_full()
                         .text_size(px(20.0 * scale))
                         .line_height(px(28.0 * scale))
-                        .child(caption.clone());
+                        .child(text::shared_text(
+                            caption,
+                            ".SystemUIFont",
+                            20.0,
+                            28.0,
+                            content_width / scale,
+                            false,
+                            Vec::new(),
+                            scale,
+                            window,
+                            &placement.shifted(0., 332.),
+                        ));
                     if editing {
                         caption_view = caption_view.cursor_pointer().on_mouse_up(
                             MouseButton::Left,
                             cx.listener(move |this, event, window, cx| {
+                                if cx.has_active_drag() {
+                                    return;
+                                }
                                 select_canvas_target(
                                     this,
                                     target,
@@ -3513,6 +3577,9 @@ impl PsychoApp {
                             .on_mouse_up(
                                 MouseButton::Left,
                                 cx.listener(move |this, event, window, cx| {
+                                    if cx.has_active_drag() {
+                                        return;
+                                    }
                                     select_canvas_target(
                                         this,
                                         target,
@@ -3551,6 +3618,7 @@ impl PsychoApp {
                     .flex_col()
                     .gap(px(24.0 * scale))
                     .w(px(left_column_width));
+                let mut cursor_y = 0.;
                 for (index, nested) in left.iter().enumerate() {
                     let nested_selected = matches!(
                         self.target,
@@ -3578,8 +3646,12 @@ impl PsychoApp {
                         },
                         editing,
                         window,
+                        &placement.shifted(0., cursor_y),
                         cx,
                     ));
+                    cursor_y +=
+                        measure_element(nested, left_column_width / scale, window, &mut Vec::new())
+                            + 24.;
                 }
                 let left_destination = DropDestination::Column {
                     slide: parent_slide,
@@ -3615,6 +3687,7 @@ impl PsychoApp {
                     .flex_col()
                     .gap(px(24.0 * scale))
                     .w(px(right_column_width));
+                let mut cursor_y = 0.;
                 for (index, nested) in right.iter().enumerate() {
                     let nested_selected = matches!(
                         self.target,
@@ -3642,8 +3715,15 @@ impl PsychoApp {
                         },
                         editing,
                         window,
+                        &placement.shifted(left_column_width / scale + 24., cursor_y),
                         cx,
                     ));
+                    cursor_y += measure_element(
+                        nested,
+                        right_column_width / scale,
+                        window,
+                        &mut Vec::new(),
+                    ) + 24.;
                 }
                 let right_destination = DropDestination::Column {
                     slide: parent_slide,
@@ -3693,6 +3773,7 @@ impl PsychoApp {
                                         window,
                                         cx,
                                     );
+                                    cx.stop_propagation();
                                 }),
                             ),
                     )
@@ -3709,14 +3790,26 @@ impl PsychoApp {
                     .child(right_column)
             }
             _ if inline_editing => render_inline_editor(element, scale, self.editor.clone()),
-            _ => render_element(element, scale, selected, images, content_width),
+            _ => render_element(
+                element,
+                scale,
+                selected,
+                images,
+                content_width,
+                window,
+                placement,
+            ),
         };
+        let rendered = rendered.flex_shrink_0();
         if !editing {
             return rendered.into_any_element();
         }
         let selected_view = rendered.on_mouse_up(
             MouseButton::Left,
             cx.listener(move |this, event, window, cx| {
+                if cx.has_active_drag() || this.column_resize_drag.is_some() {
+                    return;
+                }
                 select_canvas_target(this, target, field, event, window, cx);
                 cx.stop_propagation();
             }),
@@ -3749,8 +3842,14 @@ impl PsychoApp {
         div()
             .id(canvas_target_id(target))
             .w_full()
+            .flex_shrink_0()
             .child(selected_view)
-            .on_drag(canvas_source(target), |_, _, _, cx| cx.new(|_| DragGhost))
+            .on_drag(
+                DraggedCanvasElement {
+                    source: canvas_source(target),
+                },
+                |_, _, _, cx| cx.new(|_| DragGhost),
+            )
             .on_drag_move(cx.listener(
                 move |this, event: &DragMoveEvent<DraggedCanvasElement>, _, cx| {
                     this.update_drop_destination(default_destination, event, cx);
@@ -4134,11 +4233,41 @@ fn target_slide(target: EditTarget) -> Option<usize> {
     }
 }
 
+fn validate_editor_value(target: EditTarget, value: &str) -> Result<(), DocumentError> {
+    let reason = match target {
+        EditTarget::Title if value.is_empty() => Some("タイトルを入力してください"),
+        EditTarget::ColumnWidth { .. }
+            if value
+                .trim()
+                .parse::<u8>()
+                .ok()
+                .is_none_or(|width| !(1..=99).contains(&width)) =>
+        {
+            Some("列幅は1〜99の整数で指定してください")
+        }
+        EditTarget::Element {
+            field: ElementField::ImagePath,
+            ..
+        }
+        | EditTarget::NestedElement {
+            field: ElementField::ImagePath,
+            ..
+        } if value.is_empty() || Path::new(value).is_absolute() => {
+            Some("画像参照は空でない相対パスで指定してください")
+        }
+        _ => None,
+    };
+    reason.map_or(Ok(()), |reason| {
+        Err(DocumentError::UnsafeValue(reason.into()))
+    })
+}
+
 fn apply_editor_value(
     document: &mut PresentationDocument,
     target: EditTarget,
     value: &str,
 ) -> Result<(), DocumentError> {
+    validate_editor_value(target, value)?;
     match target {
         EditTarget::Title => document.set_title(value),
         EditTarget::Columns { .. } => Ok(()),
@@ -4347,7 +4476,7 @@ fn render_inline_editor(
             .p(px(16.0 * scale))
             .font_family("Menlo")
             .text_size(px(22.0 * scale))
-            .line_height(px(31.0 * scale))
+            .line_height(px(30.8 * scale))
             .child(editor),
         Element::Image { .. } | Element::Columns { .. } => base,
     }
@@ -4359,23 +4488,41 @@ fn render_element(
     selected: bool,
     images: &HashMap<String, Arc<gpui::RenderImage>>,
     content_width: f32,
+    window: &Window,
+    placement: &text::TextPlacement,
 ) -> gpui::Div {
     let base = div()
         .w_full()
+        .flex_shrink_0()
         .when(selected, |element| {
             element.border_1().border_color(rgb(0x3b82f6))
         })
         .text_color(rgb(0x222222));
     match element {
-        Element::Heading(text) => base
-            .text_size(px(48.0 * scale))
-            .line_height(px(60.0 * scale))
-            .font_weight(gpui::FontWeight::BOLD)
-            .child(text.clone()),
-        Element::Text(text) => base
-            .text_size(px(28.0 * scale))
-            .line_height(px(42.0 * scale))
-            .child(text.clone()),
+        Element::Heading(value) => base.child(text::shared_text(
+            value,
+            ".SystemUIFont",
+            48.0,
+            60.0,
+            content_width / scale,
+            true,
+            Vec::new(),
+            scale,
+            window,
+            placement,
+        )),
+        Element::Text(value) => base.child(text::shared_text(
+            value,
+            ".SystemUIFont",
+            28.0,
+            42.0,
+            content_width / scale,
+            false,
+            Vec::new(),
+            scale,
+            window,
+            placement,
+        )),
         Element::Bullets(items) => {
             let mut list = div()
                 .flex()
@@ -4383,26 +4530,78 @@ fn render_element(
                 .gap(px(8.0 * scale))
                 .text_size(px(28.0 * scale))
                 .line_height(px(42.0 * scale));
+            let mut cursor_y = 0.;
             for item in items {
-                list = list.child(
-                    div()
-                        .flex()
-                        .flex_row()
-                        .items_start()
-                        .child(div().w(px(28.0 * scale)).child("•"))
-                        .child(div().flex_1().child(item.clone())),
-                );
+                list =
+                    list.child(
+                        div()
+                            .flex()
+                            .flex_row()
+                            .items_start()
+                            .child(div().w(px(28.0 * scale)).flex_shrink_0().child(
+                                text::shared_text(
+                                    "•",
+                                    ".SystemUIFont",
+                                    28.0,
+                                    42.0,
+                                    f32::INFINITY,
+                                    false,
+                                    Vec::new(),
+                                    scale,
+                                    window,
+                                    &placement.shifted(0., cursor_y),
+                                ),
+                            ))
+                            .child(div().flex_1().child(text::shared_text(
+                                item,
+                                ".SystemUIFont",
+                                28.0,
+                                42.0,
+                                content_width / scale - 28.0,
+                                false,
+                                Vec::new(),
+                                scale,
+                                window,
+                                &placement.shifted(28., cursor_y),
+                            ))),
+                    );
+                cursor_y += measure_text(
+                    item,
+                    ".SystemUIFont",
+                    28.,
+                    42.,
+                    (content_width / scale - 28.).max(1.),
+                    false,
+                    window,
+                )
+                .0 + 8.;
             }
             base.child(list)
         }
-        Element::Code { text, language } => base
-            .bg(rgb(0xf3f4f6))
-            .p(px(16.0 * scale))
-            .font_family("Menlo")
-            .text_size(px(22.0 * scale))
-            .line_height(px(31.0 * scale))
-            .whitespace_nowrap()
-            .child(render_code_text(text, language.as_deref())),
+        Element::Code {
+            text: value,
+            language,
+        } => {
+            let expanded = text::expand_tabs(value);
+            base.bg(rgb(0xf3f4f6))
+                .p(px(16.0 * scale))
+                .font_family("Menlo")
+                .text_size(px(22.0 * scale))
+                .line_height(px(30.8 * scale))
+                .whitespace_nowrap()
+                .child(text::shared_text(
+                    &expanded,
+                    "Menlo",
+                    22.0,
+                    30.8,
+                    f32::INFINITY,
+                    false,
+                    code_highlights(&expanded, language.as_deref()),
+                    scale,
+                    window,
+                    &placement.shifted(16., 16.),
+                ))
+        }
         Element::Image { path, caption } => {
             let image = if let Some(image) = images.get(path) {
                 div()
@@ -4435,60 +4634,24 @@ fn render_element(
                     div()
                         .text_size(px(20.0 * scale))
                         .line_height(px(28.0 * scale))
-                        .child(caption.clone()),
+                        .child(text::shared_text(
+                            caption,
+                            ".SystemUIFont",
+                            20.0,
+                            28.0,
+                            content_width / scale,
+                            false,
+                            Vec::new(),
+                            scale,
+                            window,
+                            &placement.shifted(0., 332.),
+                        )),
                 );
             }
             item
         }
-        Element::Columns {
-            left_width,
-            right_width,
-            left,
-            right,
-        } => {
-            let column_content_width = (content_width - 24.0 * scale).max(1.0);
-            let left_column_width = column_content_width * *left_width as f32 / 100.0;
-            let right_column_width = column_content_width * *right_width as f32 / 100.0;
-            let mut left_column = div()
-                .flex()
-                .flex_col()
-                .gap(px(24.0 * scale))
-                .w(px(left_column_width));
-            for element in left {
-                left_column = left_column.child(render_element(
-                    element,
-                    scale,
-                    false,
-                    images,
-                    left_column_width,
-                ));
-            }
-            let mut right_column = div()
-                .flex()
-                .flex_col()
-                .gap(px(24.0 * scale))
-                .w(px(right_column_width));
-            for element in right {
-                right_column = right_column.child(render_element(
-                    element,
-                    scale,
-                    false,
-                    images,
-                    right_column_width,
-                ));
-            }
-            base.flex()
-                .flex_row()
-                .gap(px(24.0 * scale))
-                .child(left_column)
-                .child(right_column)
-        }
+        Element::Columns { .. } => unreachable!("columns use render_canvas_element"),
     }
-}
-
-fn render_code_text(text: &str, language: Option<&str>) -> gpui::StyledText {
-    let highlights = code_highlights(text, language);
-    gpui::StyledText::new(text.to_owned()).with_highlights(highlights)
 }
 
 fn code_highlights(
@@ -4703,8 +4866,9 @@ fn measure_element(
             height
         }
         Element::Code { text, .. } => {
+            let text = text::expand_tabs(text);
             let (height, natural_width) =
-                measure_text(text, "Menlo", 22.0, 31.0, f32::INFINITY, false, window);
+                measure_text(&text, "Menlo", 22.0, 30.8, f32::INFINITY, false, window);
             if natural_width > width - 32.0 {
                 reasons.push("コードが横にはみ出します");
             }
@@ -4961,7 +5125,10 @@ fn main() {
         let document = match std::env::args_os().nth(1) {
             Some(path) => PresentationDocument::open(path).expect("open requested presentation"),
             None => {
-                PresentationDocument::from_source_with_asset_base(DEMO, env!("CARGO_MANIFEST_DIR"))
+                PresentationDocument::from_source_with_asset_base(
+                    DEMO,
+                    Path::new(env!("CARGO_MANIFEST_DIR")).join("examples"),
+                )
                     .expect("load built-in example")
             }
         };

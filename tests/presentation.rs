@@ -170,7 +170,7 @@ fn column_widths_change_together_and_invalid_totals_are_rejected() {
 fn bundled_presentation_parses_and_its_png_asset_is_available() {
     let document = PresentationDocument::from_source_with_asset_base(
         include_str!("../examples/build-time.kdl"),
-        env!("CARGO_MANIFEST_DIR"),
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("examples"),
     )
     .unwrap();
 
@@ -235,13 +235,18 @@ fn moving_a_slide_preserves_source_and_keeps_inline_comments_with_it() {
 }
 
 #[test]
-fn moving_a_slide_rejects_multiple_nodes_on_one_source_line() {
+fn moving_a_slide_supports_multiple_nodes_on_one_source_line() {
     let input =
-        "presentation { metadata { title \"Move\" } slide id=\"one\" {}; slide id=\"two\" {} }";
+        "presentation { metadata { title \"Move\" }; slide id=\"one\" {}; slide id=\"two\" {} }";
     let mut document = PresentationDocument::from_source(input).unwrap();
     let before = document.source().to_owned();
 
-    assert!(document.move_slide(0, 1).is_err());
+    document.move_slide(0, 1).unwrap();
+    assert_eq!(
+        document.model().unwrap().slides[0].id.as_deref(),
+        Some("two")
+    );
+    assert!(document.undo());
     assert_eq!(document.source(), before);
 }
 

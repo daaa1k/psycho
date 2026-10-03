@@ -576,24 +576,11 @@ impl PresentationDocument {
 
         let reparsed =
             KdlDocument::parse_v2(&candidate).map_err(|_| DocumentError::InvalidDocument)?;
-        let remaining = slide_node(&reparsed, slide_index)
+        let parent = slide_node(&reparsed, slide_index)
             .and_then(|slide| slide.children())
             .and_then(|children| children.nodes().get(element_index))
-            .and_then(|node| node.children())
             .ok_or(DocumentError::InvalidDocument)?;
-        let insertion = if to < remaining.nodes().len() {
-            node_line_range(&candidate, &remaining.nodes()[to])?.0
-        } else {
-            let parent = slide_node(&reparsed, slide_index)
-                .and_then(|slide| slide.children())
-                .and_then(|children| children.nodes().get(element_index))
-                .ok_or(DocumentError::InvalidDocument)?;
-            let close = node_children_close(&candidate, parent)?;
-            candidate[..close]
-                .rfind('\n')
-                .map_or(close, |index| index + 1)
-        };
-        candidate.insert_str(insertion, &moving);
+        insert_moved_source_at(&mut candidate, parent, to, &moving)?;
         self.commit_candidate(candidate)
     }
 
@@ -665,8 +652,8 @@ impl PresentationDocument {
 
     /// Moves a slide while copying its original source slice byte-for-byte.
     /// Standalone comments remain in place; a same-line trailing comment moves
-    /// with its slide. Inline sibling nodes are rejected because moving one
-    /// would require changing their shared source line.
+    /// with its slide. Inline siblings use their parser spans; insertion adds
+    /// a node separator without changing quoted string contents.
     pub fn move_slide(&mut self, from: usize, to: usize) -> Result<(), DocumentError> {
         let parsed = self.editable_document()?;
         let root = parsed
@@ -696,28 +683,12 @@ impl PresentationDocument {
 
         let reparsed =
             KdlDocument::parse_v2(&candidate).map_err(|_| DocumentError::InvalidDocument)?;
-        let target_slides = reparsed
+        let root = reparsed
             .nodes()
             .first()
-            .and_then(KdlNode::children)
-            .ok_or(DocumentError::InvalidDocument)?
-            .nodes()
-            .iter()
-            .filter(|node| node.name().value() == "slide")
-            .collect::<Vec<_>>();
-        let insertion = if to < target_slides.len() {
-            node_line_range(&candidate, target_slides[to])?.0
-        } else {
-            let root = reparsed
-                .nodes()
-                .first()
-                .ok_or(DocumentError::InvalidDocument)?;
-            let close = node_children_close(&candidate, root)?;
-            candidate[..close]
-                .rfind('\n')
-                .map_or(close, |index| index + 1)
-        };
-        candidate.insert_str(insertion, &moving);
+            .ok_or(DocumentError::InvalidDocument)?;
+        // Metadata is always the first child of a valid presentation.
+        insert_moved_source_at(&mut candidate, root, to + 1, &moving)?;
         self.commit_candidate(candidate)
     }
 
@@ -750,16 +721,7 @@ impl PresentationDocument {
         let reparsed =
             KdlDocument::parse_v2(&candidate).map_err(|_| DocumentError::InvalidDocument)?;
         let slide = slide_node(&reparsed, slide_index).ok_or(DocumentError::InvalidDocument)?;
-        let remaining = slide.children().ok_or(DocumentError::InvalidDocument)?;
-        let insertion = if to < remaining.nodes().len() {
-            node_line_range(&candidate, &remaining.nodes()[to])?.0
-        } else {
-            let close = node_children_close(&candidate, slide)?;
-            candidate[..close]
-                .rfind('\n')
-                .map_or(close, |index| index + 1)
-        };
-        candidate.insert_str(insertion, &moving);
+        insert_moved_source_at(&mut candidate, slide, to, &moving)?;
         self.commit_candidate(candidate)
     }
 
@@ -1220,16 +1182,7 @@ impl PresentationDocument {
             KdlDocument::parse_v2(&candidate).map_err(|_| DocumentError::InvalidDocument)?;
         let column = column_node(&reparsed, slide_index, columns_index, column_index)
             .ok_or(DocumentError::InvalidDocument)?;
-        let children = column.children().ok_or(DocumentError::InvalidDocument)?;
-        let insertion = if to < children.nodes().len() {
-            node_line_range(&candidate, &children.nodes()[to])?.0
-        } else {
-            let close = node_children_close(&candidate, column)?;
-            candidate[..close]
-                .rfind('\n')
-                .map_or(close, |index| index + 1)
-        };
-        candidate.insert_str(insertion, &moving);
+        insert_moved_source_at(&mut candidate, column, to, &moving)?;
         self.commit_candidate(candidate)
     }
 
@@ -2373,11 +2326,28 @@ fn insert_moved_source_at(
     destination_index: usize,
     moving: &str,
 ) -> Result<(), DocumentError> {
+    if parent.children().is_none() {
+        let insertion = node_header_end(source, parent)?;
+        let line_ending = line_ending_near(source, insertion);
+        let mut moving = normalize_line_endings_outside_strings(moving, line_ending);
+        if !moving.ends_with('\n') {
+            moving.push_str(line_ending);
+        }
+        let parent_indent = line_indent(source, parent.name().span().offset());
+        source.insert_str(
+            insertion,
+            &format!(" {{{line_ending}{moving}{parent_indent}}}"),
+        );
+        return Ok(());
+    }
     let children = parent.children().ok_or(DocumentError::InvalidDocument)?;
     if let Some(target) = children.nodes().get(destination_index) {
-        let insertion = node_line_range(source, target)?.0;
+        let insertion = node_source_start(source, target);
         let line_ending = line_ending_near(source, insertion);
-        let moving = normalize_line_endings_outside_strings(moving, line_ending);
+        let mut moving = normalize_line_endings_outside_strings(moving, line_ending);
+        if !moving.ends_with('\n') {
+            moving.push_str(line_ending);
+        }
         source.insert_str(insertion, &moving);
         return Ok(());
     }
@@ -2392,7 +2362,10 @@ fn insert_moved_source_at(
             close
         },
     );
-    let moving = normalize_line_endings_outside_strings(moving, line_ending);
+    let mut moving = normalize_line_endings_outside_strings(moving, line_ending);
+    if !moving.ends_with('\n') {
+        moving.push_str(line_ending);
+    }
     if source[line_start..close].chars().all(char::is_whitespace) {
         source.insert_str(line_start, &moving);
     } else {
@@ -2657,14 +2630,14 @@ fn node_line_range(source: &str, node: &KdlNode) -> Result<(usize, usize), Docum
     let line_start = source[..name_start]
         .rfind('\n')
         .map_or(0, |index| index + 1);
-    if !source[line_start..name_start]
+    let starts_on_own_line = source[line_start..name_start]
         .chars()
-        .all(|ch| matches!(ch, ' ' | '\t'))
-    {
-        return Err(DocumentError::UnsafeValue(
-            "cannot move a slide that shares a source line".into(),
-        ));
-    }
+        .all(|ch| matches!(ch, ' ' | '\t'));
+    let start = if starts_on_own_line {
+        line_start
+    } else {
+        node.span().offset()
+    };
     let span_end = node.span().offset().saturating_add(node.span().len());
     if span_end > source.len() || !source.is_char_boundary(span_end) {
         return Err(DocumentError::UnsafeValue(
@@ -2676,19 +2649,23 @@ fn node_line_range(source: &str, node: &KdlNode) -> Result<(usize, usize), Docum
         .map_or(source.len(), |index| span_end + index);
     let bytes = source.as_bytes();
     let mut cursor = span_end;
+    let mut owned_end = span_end;
     while cursor < line_end {
         match bytes[cursor] {
             b' ' | b'\t' | b'\r' => cursor += 1,
+            b';' if owned_end == span_end => {
+                cursor += 1;
+                owned_end = cursor;
+            }
             b'/' if bytes.get(cursor + 1) == Some(&b'/') => {
                 cursor = line_end;
             }
             b'/' if bytes.get(cursor + 1) == Some(&b'*') => {
                 cursor = skip_block_comment(bytes, cursor, line_end)?;
+                owned_end = cursor;
             }
             _ => {
-                return Err(DocumentError::UnsafeValue(
-                    "cannot move a slide that shares a source line".into(),
-                ));
+                return Ok((start, owned_end));
             }
         }
     }
@@ -2697,7 +2674,7 @@ fn node_line_range(source: &str, node: &KdlNode) -> Result<(usize, usize), Docum
     } else {
         line_end
     };
-    Ok((line_start, end))
+    Ok((start, end))
 }
 
 fn node_source_start(source: &str, node: &KdlNode) -> usize {
