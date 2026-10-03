@@ -4176,16 +4176,32 @@ impl PsychoApp {
         if !editing {
             return rendered.into_any_element();
         }
-        let selected_view = rendered.on_mouse_up(
-            MouseButton::Left,
-            cx.listener(move |this, event, window, cx| {
-                if cx.has_active_drag() || this.column_resize_drag.is_some() {
-                    return;
-                }
-                select_canvas_target(this, target, field, event, window, cx);
-                cx.stop_propagation();
-            }),
-        );
+        let selected_view = rendered
+            .on_mouse_down(
+                MouseButton::Left,
+                cx.listener(move |this, _, window, cx| {
+                    if this.editor.read(cx).has_focus(window)
+                        && (canvas_target_matches_edit_target(target, field, this.target)
+                            || canvas_target_matches_edit_target(
+                                target,
+                                ElementField::Caption,
+                                this.target,
+                            ))
+                    {
+                        window.prevent_default();
+                    }
+                }),
+            )
+            .on_mouse_up(
+                MouseButton::Left,
+                cx.listener(move |this, event, window, cx| {
+                    if cx.has_active_drag() || this.column_resize_drag.is_some() {
+                        return;
+                    }
+                    select_canvas_target(this, target, field, event, window, cx);
+                    cx.stop_propagation();
+                }),
+            );
         let destination = drop_destination(target);
         let insert_before = self.drop_destination == Some(destination);
         let after_destination = match destination {
@@ -4402,7 +4418,7 @@ fn select_canvas_target(
     window: &mut Window,
     cx: &mut Context<PsychoApp>,
 ) {
-    if app.canvas_editing
+    if (app.canvas_editing || event.click_count < 2)
         && app.editor.read(cx).has_focus(window)
         && canvas_target_matches_edit_target(target, field, app.target)
     {
