@@ -1,0 +1,9 @@
+slide,format,point,x,y,red,green,blue,result
+1,JPEG,red,580,350,254,1,0,pass
+1,JPEG,blue,580,460,0,0,254,pass
+2,PNG,white,477,410,255,255,255,pass
+2,PNG,pink,580,410,255,127,127,pass
+2,PNG,blue,683,410,0,0,255,pass
+3,WebP,white,477,410,255,255,255,pass
+3,WebP,pink,580,410,255,127,127,pass
+3,WebP,blue,683,410,0,0,255,pass

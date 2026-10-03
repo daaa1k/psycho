@@ -1,0 +1,140 @@
+[
+  {
+    "name": "code-direct-original",
+    "input": {
+      "text": "fn\tmain() {\n\tprintln!(\"日本語\");\n}",
+      "selected": [
+        31,
+        31
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        226.31793,
+        321.585,
+        19.92375
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    }
+  },
+  {
+    "name": "code-inspector-original",
+    "input": {
+      "text": "fn\tmain() {\n\tprintln!(\"日本語\");\n}",
+      "selected": [
+        31,
+        31
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1028.7969,
+        304.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    }
+  },
+  {
+    "name": "code-cut",
+    "input": {
+      "text": "",
+      "selected": [
+        0,
+        0
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1023.0,
+        252.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    }
+  },
+  {
+    "name": "code-inspector-edited",
+    "input": {
+      "text": "fn\tmain() {\n\tlet 値 = 7;\n\tprintln!(\"{}\", 値);\n}\t",
+      "selected": [
+        46,
+        46
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1051.0,
+        330.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    }
+  },
+  {
+    "name": "code-return-to-canvas",
+    "input": {
+      "text": "fn\tmain() {\n\tlet 値 = 7;\n\tprintln!(\"{}\", 値);\n}\t",
+      "selected": [
+        46,
+        46
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        252.02174,
+        341.50873,
+        19.92375
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    }
+  },
+  {
+    "name": "code-reloaded",
+    "input": {
+      "text": "fn\tmain() {\n\tlet 値 = 7;\n\tprintln!(\"{}\", 値);\n}\t",
+      "selected": [
+        46,
+        46
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        252.02174,
+        341.50873,
+        19.92375
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    }
+  }
+]

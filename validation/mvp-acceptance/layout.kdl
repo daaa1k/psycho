@@ -1,0 +1,29 @@
+presentation {
+    metadata { title "Layout acceptance" }
+    slide id="equal" {
+        heading "日本語と English の配置比較"
+        text "日本語と English が混在する本文です。\nhttps://example.org/psycho/presentation/layout/long-url-wrap-check/reconversion-candidate-position-and-text-editing-coordinate-validation"
+        columns {
+            column width=50 {
+                bullets { item "箇条書きの行頭と折返し"; item "左右の列幅を比較する"; }
+                code language="rust" "fn main() {\n\tprintln!(\"日本語\");\n}"
+            }
+            column width=50 {
+                image "../../assets/build-time.png" { caption "画像の Caption\n2行目の Caption" }
+            }
+        }
+    }
+    slide id="ratio" {
+        heading "日本語と English の配置比較"
+        text "日本語と English が混在する本文です。\nhttps://example.org/psycho/presentation/layout/long-url-wrap-check/reconversion-candidate-position-and-text-editing-coordinate-validation"
+        columns {
+            column width=33 {
+                bullets { item "箇条書きの行頭と折返し"; item "左右の列幅を比較する"; }
+                code language="rust" "fn main() {\n\tprintln!(\"日本語\");\n}"
+            }
+            column width=67 {
+                image "../../assets/build-time.png" { caption "画像の Caption\n2行目の Caption" }
+            }
+        }
+    }
+}

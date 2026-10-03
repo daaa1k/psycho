@@ -1,0 +1,58 @@
+presentation {
+    metadata {
+        title "ビルド時間を38%短縮した話"
+    }
+    slide id="problem" {
+        heading "CI のビルドが遅い"
+        text "変更のたびに待ち時間が発生し、レビューの流れを止めていた。"
+        bullets {
+            item "平均 8 分 12 秒"
+            item "キャッシュが依存関係の変化で無効になる"
+        }
+    }
+    slide id="approach" {
+        heading "キャッシュの境界を見直す"
+        text "依存クレートとワークスペースの成果物を分けて保存する。"
+        code language="rust" "let key = hash(lockfile, toolchain, target);"
+    }
+    slide id="changes" {
+        heading "依存と成果物を分ける"
+        columns {
+            column width=45 {
+                heading "依存関係"
+                bullets {
+                    item "Cargo.lock をキーにする"
+                    item "更新時だけ再構築する"
+                }
+            }
+            column width=55 {
+                heading "成果物"
+                code language="yaml" "cache:\n  key: ${{ hashFiles('Cargo.lock') }}"
+            }
+        }
+    }
+    slide id="verify" {
+        heading "計測方法"
+        bullets {
+            item "main の直近20回を比較"
+            item "同じ runner と toolchain を使用"
+            item "中央値と p95 を記録"
+        }
+        image "../assets/build-time.png" {
+            caption "キャッシュ導入前後の CI 実行時間"
+        }
+    }
+    slide id="result" {
+        heading "ビルド時間を38%短縮"
+        text "中央値は 8:12 から 5:06 になり、p95 も安定した。"
+        bullets {
+            item "キャッシュ hit 率 92%"
+            item "失敗時は従来どおりクリーンビルド"
+        }
+    }
+    slide id="summary" {
+        heading "待ち時間を減らし、変更を速く届ける"
+        text "キーを明示し、計測を続けながら段階的に適用する。"
+        code language="rust" "assert!(cached_build < clean_build);"
+    }
+}
