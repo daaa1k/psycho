@@ -1,5 +1,6 @@
 #![allow(unexpected_cfgs)]
 
+mod ime;
 mod input;
 mod text;
 
@@ -145,6 +146,7 @@ struct PsychoApp {
     document: PresentationDocument,
     editor: gpui::Entity<TextInputState>,
     root_focus: FocusHandle,
+    ime_geometry: ime::Geometry,
     current_slide: usize,
     target: EditTarget,
     canvas_editing: bool,
@@ -192,8 +194,23 @@ impl PsychoApp {
         cx: &mut Context<Self>,
         document: PresentationDocument,
         editor: gpui::Entity<TextInputState>,
+        window: &mut Window,
     ) -> Self {
-        cx.observe(&editor, |_, _, cx| cx.notify()).detach();
+        let ime_rect = ime::Geometry::default();
+        let input_ime_rect = ime_rect.clone();
+        cx.observe_in(&editor, window, move |_, editor, window, cx| {
+            if editor.read(cx).has_focus(window) {
+                input_ime_rect.refresh(window, false);
+            }
+            cx.notify();
+        })
+        .detach();
+        cx.observe_window_bounds(window, move |this, window, cx| {
+            if this.editor.read(cx).has_focus(window) {
+                this.ime_geometry.refresh(window, true);
+            }
+        })
+        .detach();
         let current_title = document
             .model()
             .map_or_else(String::new, |model| model.title.clone());
@@ -204,6 +221,7 @@ impl PsychoApp {
             document,
             editor,
             root_focus: cx.focus_handle(),
+            ime_geometry: ime_rect,
             current_slide: 0,
             target: EditTarget::Title,
             canvas_editing: false,
@@ -2765,6 +2783,7 @@ impl PsychoApp {
                             |this, _, window, cx| {
                                 // Keep the same draft and IME session, but mount the input once.
                                 this.canvas_editing = false;
+                                this.ime_geometry.refresh(window, true);
                                 let focus = this.editor.read(cx).focus_handle();
                                 window.focus(&focus, cx);
                                 cx.notify();
@@ -5291,7 +5310,7 @@ fn main() {
                 },
                 |window, cx| {
                     let editor = cx.new(|cx| TextInputState::new(cx, &title));
-                    let view = cx.new(|cx| PsychoApp::new(cx, document, editor));
+                    let view = cx.new(|cx| PsychoApp::new(cx, document, editor, window));
                     let weak_view = view.downgrade();
                     let weak_watch = view.downgrade();
                     window.on_window_should_close(cx, move |window, cx| {

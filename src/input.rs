@@ -194,6 +194,48 @@ impl TextInputState {
         self.canvas_layout = layout;
     }
 
+    fn record_acceptance_state(&self, window: &Window) {
+        let Some(path) = std::env::var_os("PSYCHO_INPUT_STATE") else {
+            return;
+        };
+        let selected = self.range_to_utf16(&self.selected_range);
+        let marked = self
+            .marked_range
+            .as_ref()
+            .map(|range| self.range_to_utf16(range));
+        let cursor = self
+            .position_for_offset(self.cursor_offset())
+            .unwrap_or(point(px(0.), px(0.)));
+        let origin = self
+            .last_bounds
+            .map_or(point(px(0.), px(0.)), |bounds| bounds.origin);
+        let text_hex = self
+            .content
+            .as_bytes()
+            .iter()
+            .map(|byte| format!("{byte:02x}"))
+            .collect::<String>();
+        let _ = std::fs::write(
+            path,
+            format!(
+                "{},{},{},{},{},{},{},{},{},{},{},{},{}\n",
+                trace_timestamp(),
+                text_hex,
+                selected.start,
+                selected.end,
+                marked.as_ref().map_or(-1, |range| range.start as i64),
+                marked.as_ref().map_or(-1, |range| range.end as i64),
+                f32::from((origin + cursor).x),
+                f32::from((origin + cursor).y),
+                f32::from(self.line_height()) * self.last_scale,
+                self.undo_stack.len(),
+                self.redo_stack.len(),
+                self.composition_before.is_some(),
+                self.has_focus(window)
+            ),
+        );
+    }
+
     pub fn value(&self) -> String {
         self.content.to_string()
     }
@@ -203,10 +245,13 @@ impl TextInputState {
     }
 
     pub fn finish_composition(&mut self, cx: &mut Context<Self>) {
-        if self.marked_range.take().is_some() {
-            if let Some(before) = self.composition_before.take() {
-                self.push_undo(before, UndoGroup::Composition);
-            }
+        let had_marked_text = self.marked_range.take().is_some();
+        let before = self.composition_before.take();
+        let had_composition = before.is_some();
+        if let Some(before) = before {
+            self.push_undo(before, UndoGroup::Composition);
+        }
+        if had_marked_text || had_composition {
             cx.notify();
         }
     }
@@ -598,8 +643,10 @@ impl EntityInputHandler for TextInputState {
             .map(|range| self.range_to_utf16(range))
     }
 
-    fn unmark_text(&mut self, _: &mut Window, _: &mut Context<Self>) {
-        self.marked_range = None;
+    fn unmark_text(&mut self, _: &mut Window, cx: &mut Context<Self>) {
+        // Native clients may commit by unmarking without insertText. Keep that
+        // composition atomic and repaint its selection/underline immediately.
+        self.finish_composition(cx);
     }
 
     fn replace_text_in_range(
@@ -678,13 +725,34 @@ impl EntityInputHandler for TextInputState {
         let top = start.y.min(end.y);
         let bottom =
             (start.y.max(end.y) + self.line_height() * self.last_scale).min(bounds.size.height);
-        Some(Bounds::from_corners(
+        let rectangle = Bounds::from_corners(
             point(bounds.left() + start.x, bounds.top() + top),
             point(
                 bounds.left() + end.x.max(start.x + px(1.0)),
                 bounds.top() + bottom,
             ),
-        ))
+        );
+        if let Some(path) = std::env::var_os("PSYCHO_IME_RECTS") {
+            use std::io::Write;
+            if let Ok(mut file) = std::fs::OpenOptions::new()
+                .create(true)
+                .append(true)
+                .open(path)
+            {
+                let _ = writeln!(
+                    file,
+                    "{},{},{},{},{},{},{}",
+                    trace_timestamp(),
+                    range_utf16.start,
+                    range_utf16.end,
+                    f32::from(rectangle.origin.x),
+                    f32::from(rectangle.origin.y),
+                    f32::from(rectangle.size.width),
+                    f32::from(rectangle.size.height)
+                );
+            }
+        }
+        Some(rectangle)
     }
 
     fn character_index_for_point(
@@ -1233,6 +1301,7 @@ impl Element for TextElement {
             input.last_indent = prepaint.indent;
             input.last_paragraph_gap = prepaint.paragraph_gap;
             input.last_display = prepaint.display.clone();
+            input.record_acceptance_state(window);
         });
     }
 }
@@ -1324,4 +1393,11 @@ fn record_canvas_glyphs(
     {
         let _ = file.write_all(evidence.as_bytes());
     }
+}
+
+fn trace_timestamp() -> u128 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap_or_default()
+        .as_millis()
 }
