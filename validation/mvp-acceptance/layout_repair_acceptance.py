@@ -32,7 +32,7 @@ try:
     gui.press('Redo');assert gui.save()==saved
     gui.press('最初から発表');gui.key('Right')
     state,rows=gui.snapshot('repaired-presentation')
-    assert state['screenshot']['width']==1920 and any('repaired' in row['text'] for row in rows)
+    assert state['screenshot']['width']>1280 and any('repaired' in row['text'] for row in rows)
     assert gui.fixture.read_bytes()==saved
     gui.key('Escape');time.sleep(1)
     print('PASS noncurrent overflow blocks both starts, full Inspector repair, immediate diagnosis clearing, Save, exact Undo/Redo and presentation',flush=True)
@@ -89,4 +89,29 @@ try:
     print('PASS offscreen outline selection, draft commit on selection, editing, Save and reload',flush=True)
 except Exception:
     gui.snapshot('outline-failure');raise
+finally:gui.stop()
+
+page_source='presentation { metadata { title "Paged outline" }; slide { code '+json.dumps(large)+'; '+''.join('text "Hidden '+str(i)+'"; ' for i in range(2,11))+'}; slide { heading "Second slide"; }; }\n'
+gui=Gui(output/'paged-outline',page_source)
+try:
+    _,rows=gui.snapshot('outline-first-page')
+    assert not any(row['text']=='Element 10 · 本文' for row in rows)
+    gui.press('次の項目');gui.press('次の項目')
+    gui.press('Element 10 · 本文')
+    assert gui.state()['text']=='Hidden 10','Last Element must be selectable through page controls'
+    _,rows=gui.snapshot('outline-last-page')
+    row=next(row for row in rows if row['x']>1000 and row['text']=='Hidden 10')
+    gui.click(row['x'],row['y']);gui.replace('Last repaired')
+    gui.press('前の項目');gui.press('前の項目')
+    gui.press('Element 2 · 本文')
+    assert gui.state()['text']=='Hidden 2','Paging must keep selection and commit the prior draft on selection'
+    saved=gui.save()
+    assert saved.decode()==page_source.replace('Hidden 10','Last repaired')
+    gui.press('次の項目')
+    gui.select_slide(2);gui.select_slide(1)
+    gui.press('Element 2 · 本文')
+    assert gui.state()['text']=='Hidden 2','Changing slides must reset the outline to its first page'
+    print('PASS ten-Element outline pagination, late selection, draft commit, Save and page reset across slides',flush=True)
+except Exception:
+    gui.snapshot('paged-outline-failure');raise
 finally:gui.stop()

@@ -135,12 +135,19 @@ impl gpui::Render for DragGhost {
     }
 }
 
+#[derive(Clone, Copy, Default)]
+struct OutlinePage {
+    slide: usize,
+    index: usize,
+}
+
 struct PsychoApp {
     document: PresentationDocument,
     editor: gpui::Entity<TextInputState>,
     root_focus: FocusHandle,
     ime_geometry: ime::Geometry,
     current_slide: usize,
+    outline_page: OutlinePage,
     target: EditTarget,
     canvas_editing: bool,
     column_add_menu: Option<usize>,
@@ -232,6 +239,7 @@ impl PsychoApp {
             root_focus: cx.focus_handle(),
             ime_geometry: ime_rect,
             current_slide: 0,
+            outline_page: OutlinePage::default(),
             target: EditTarget::Title,
             canvas_editing: false,
             column_add_menu: None,
@@ -2633,54 +2641,103 @@ impl PsychoApp {
     }
 
     fn render_element_outline(
-        &self,
+        &mut self,
         model: &PresentationModel,
         cx: &mut Context<Self>,
     ) -> gpui::AnyElement {
+        const PAGE_SIZE: usize = 4;
         let mut outline = div()
             .id("element-outline")
             .flex()
             .flex_col()
             .max_h(px(180.0))
             .flex_shrink_0()
-            .overflow_y_scroll()
             .gap_1();
         let Some(slide) = model.slides.get(self.current_slide) else {
             return outline.into_any_element();
         };
+        let mut rows = Vec::new();
         for (index, element) in slide.elements.iter().enumerate() {
-            let source = CanvasSource::Element {
-                slide: self.current_slide,
-                index,
-            };
-            outline = outline.child(self.render_outline_row(
-                source,
+            rows.push((
+                CanvasSource::Element {
+                    slide: self.current_slide,
+                    index,
+                },
                 format!("Element {} · {}", index + 1, outline_kind_label(element)),
-                cx,
             ));
             if let Element::Columns { left, right, .. } = element {
                 for (column, label, elements) in [(0, "左列", left), (1, "右列", right)] {
                     for (nested_index, nested) in elements.iter().enumerate() {
-                        let source = CanvasSource::NestedElement {
-                            slide: self.current_slide,
-                            columns: index,
-                            column,
-                            index: nested_index,
-                        };
-                        outline = outline.child(div().flex_shrink_0().pl_3().child(
-                            self.render_outline_row(
-                                source,
-                                format!(
-                                    "{label} · {} {}",
-                                    outline_kind_label(nested),
-                                    nested_index + 1
-                                ),
-                                cx,
+                        rows.push((
+                            CanvasSource::NestedElement {
+                                slide: self.current_slide,
+                                columns: index,
+                                column,
+                                index: nested_index,
+                            },
+                            format!(
+                                "{label} · {} {}",
+                                outline_kind_label(nested),
+                                nested_index + 1
                             ),
                         ));
                     }
                 }
             }
+        }
+        let page_count = rows.len().div_ceil(PAGE_SIZE).max(1);
+        let page = if self.outline_page.slide == self.current_slide {
+            self.outline_page.index.min(page_count - 1)
+        } else {
+            0
+        };
+        self.outline_page = OutlinePage {
+            slide: self.current_slide,
+            index: page,
+        };
+        for (source, label) in rows.into_iter().skip(page * PAGE_SIZE).take(PAGE_SIZE) {
+            let row = self.render_outline_row(source, label, cx);
+            outline = outline.child(if matches!(source, CanvasSource::NestedElement { .. }) {
+                div().flex_shrink_0().pl_3().child(row).into_any_element()
+            } else {
+                row
+            });
+        }
+        if page_count > 1 {
+            let slide = self.current_slide;
+            outline = outline.child(
+                div()
+                    .flex()
+                    .flex_shrink_0()
+                    .items_center()
+                    .justify_between()
+                    .gap_1()
+                    .child(button(
+                        cx,
+                        "前の項目",
+                        page > 0,
+                        move |this, _, _, cx| {
+                            this.outline_page = OutlinePage {
+                                slide,
+                                index: page - 1,
+                            };
+                            cx.notify();
+                        },
+                    ))
+                    .child(format!("{}/{}", page + 1, page_count))
+                    .child(button(
+                        cx,
+                        "次の項目",
+                        page + 1 < page_count,
+                        move |this, _, _, cx| {
+                            this.outline_page = OutlinePage {
+                                slide,
+                                index: page + 1,
+                            };
+                            cx.notify();
+                        },
+                    )),
+            );
         }
         outline.into_any_element()
     }
