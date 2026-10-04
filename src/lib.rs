@@ -1,4 +1,5 @@
-use std::collections::HashSet;
+use image::ImageDecoder;
+use std::collections::{HashMap, HashSet};
 use std::fmt;
 use std::fs;
 use std::io::Cursor;
@@ -33,6 +34,11 @@ impl fmt::Display for AssetProblem {
         };
         f.write_str(label)
     }
+}
+
+pub struct LoadedAssets {
+    pub images: HashMap<String, image::RgbaImage>,
+    pub diagnostics: Vec<AssetDiagnostic>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -324,17 +330,32 @@ impl PresentationDocument {
     }
 
     pub fn inspect_assets(&self) -> Vec<AssetDiagnostic> {
+        self.load_assets().diagnostics
+    }
+
+    pub fn load_assets(&self) -> LoadedAssets {
         let Some(model) = self.model.as_ref() else {
-            return Vec::new();
+            return LoadedAssets {
+                images: HashMap::new(),
+                diagnostics: Vec::new(),
+            };
         };
         let base = self.asset_base();
+        let loaded = model
+            .slides
+            .iter()
+            .flat_map(Slide::image_paths)
+            .collect::<HashSet<_>>()
+            .into_iter()
+            .map(|path| (path.to_owned(), load_asset_file(&base.join(path))))
+            .collect::<HashMap<_, _>>();
         let mut diagnostics = Vec::new();
         for (slide_index, slide) in model.slides.iter().enumerate() {
             for (element_index, element) in slide.elements.iter().enumerate() {
                 match element {
                     Element::Image { path, .. } => push_asset_diagnostic(
                         &mut diagnostics,
-                        &base,
+                        &loaded,
                         path,
                         slide,
                         slide_index,
@@ -348,7 +369,7 @@ impl PresentationDocument {
                                 if let Element::Image { path, .. } = element {
                                     push_asset_diagnostic(
                                         &mut diagnostics,
-                                        &base,
+                                        &loaded,
                                         path,
                                         slide,
                                         slide_index,
@@ -364,7 +385,13 @@ impl PresentationDocument {
                 }
             }
         }
-        diagnostics
+        LoadedAssets {
+            images: loaded
+                .into_iter()
+                .filter_map(|(path, result)| result.ok().map(|pixels| (path, pixels)))
+                .collect(),
+            diagnostics,
+        }
     }
 
     pub fn set_title(&mut self, title: &str) -> Result<(), DocumentError> {
@@ -1860,7 +1887,7 @@ fn same_members<T: Clone + PartialEq>(before: &[T], after: &[T]) -> bool {
 
 fn push_asset_diagnostic(
     diagnostics: &mut Vec<AssetDiagnostic>,
-    base: &Path,
+    loaded: &HashMap<String, Result<image::RgbaImage, AssetProblem>>,
     path: &str,
     slide: &Slide,
     slide_index: usize,
@@ -1868,10 +1895,10 @@ fn push_asset_diagnostic(
     column_index: Option<usize>,
     nested_element_index: Option<usize>,
 ) {
-    if let Some(problem) = inspect_asset_file(&base.join(path)) {
+    if let Some(Err(problem)) = loaded.get(path) {
         diagnostics.push(AssetDiagnostic {
             path: path.to_owned(),
-            problem,
+            problem: *problem,
             slide_index,
             slide_id: slide.id.clone(),
             element_index,
@@ -2482,39 +2509,45 @@ fn collect_image_paths<'a>(element: &'a Element, paths: &mut Vec<&'a str>) {
     }
 }
 
-fn inspect_asset_file(path: &Path) -> Option<AssetProblem> {
-    let bytes = match fs::read(path) {
-        Ok(bytes) => bytes,
-        Err(error) => {
-            return Some(match error.kind() {
-                std::io::ErrorKind::NotFound => AssetProblem::Missing,
-                std::io::ErrorKind::PermissionDenied => AssetProblem::PermissionDenied,
-                _ => AssetProblem::Corrupt,
-            });
-        }
-    };
-    let Some(format) = image::guess_format(&bytes).ok() else {
-        return Some(AssetProblem::UnsupportedFormat);
-    };
+fn load_asset_file(path: &Path) -> Result<image::RgbaImage, AssetProblem> {
+    let bytes = fs::read(path).map_err(|error| match error.kind() {
+        std::io::ErrorKind::NotFound => AssetProblem::Missing,
+        std::io::ErrorKind::PermissionDenied => AssetProblem::PermissionDenied,
+        _ => AssetProblem::Corrupt,
+    })?;
+    let format = image::guess_format(&bytes).map_err(|_| AssetProblem::UnsupportedFormat)?;
     if !matches!(
         format,
         image::ImageFormat::Png | image::ImageFormat::Jpeg | image::ImageFormat::WebP
     ) {
-        return Some(AssetProblem::UnsupportedFormat);
+        return Err(AssetProblem::UnsupportedFormat);
     }
     if format == image::ImageFormat::Png && png_is_animated(&bytes) {
-        return Some(AssetProblem::AnimatedImage);
+        return Err(AssetProblem::AnimatedImage);
     }
     if format == image::ImageFormat::WebP {
-        match image::codecs::webp::WebPDecoder::new(Cursor::new(&bytes)) {
-            Ok(decoder) if decoder.has_animation() => return Some(AssetProblem::AnimatedImage),
-            Err(_) => return Some(AssetProblem::Corrupt),
-            _ => {}
+        let decoder = image::codecs::webp::WebPDecoder::new(Cursor::new(&bytes))
+            .map_err(|_| AssetProblem::Corrupt)?;
+        if decoder.has_animation() {
+            return Err(AssetProblem::AnimatedImage);
         }
     }
-    image::load_from_memory_with_format(&bytes, format)
-        .err()
-        .map(|_| AssetProblem::Corrupt)
+    let mut decoder = image::ImageReader::with_format(Cursor::new(bytes), format)
+        .into_decoder()
+        .map_err(|_| AssetProblem::Corrupt)?;
+    let orientation = decoder.orientation().map_err(|_| AssetProblem::Corrupt)?;
+    let mut decoded =
+        image::DynamicImage::from_decoder(decoder).map_err(|_| AssetProblem::Corrupt)?;
+    decoded.apply_orientation(orientation);
+    let mut pixels = decoded.into_rgba8();
+    for pixel in pixels.pixels_mut() {
+        let alpha = u32::from(pixel[3]);
+        for channel in &mut pixel.0[..3] {
+            *channel = ((u32::from(*channel) * alpha + 255 * (255 - alpha) + 127) / 255) as u8;
+        }
+        pixel[3] = 255;
+    }
+    Ok(pixels)
 }
 
 fn png_is_animated(bytes: &[u8]) -> bool {

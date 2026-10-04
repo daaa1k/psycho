@@ -666,3 +666,118 @@ fn column_moves_change_only_the_requested_element_position() {
         assert_eq!(document.model().unwrap(), &expected);
     }
 }
+
+#[test]
+fn loaded_images_composite_transparency_on_white_and_apply_exif_orientation() {
+    let dir = tempfile::tempdir().unwrap();
+    let source = "presentation { metadata { title \"images\"; }; slide { image \"asset.bin\"; }; }";
+    let doc = PresentationDocument::from_source_with_asset_base(source, dir.path()).unwrap();
+    for format in [image::ImageFormat::Png, image::ImageFormat::WebP] {
+        let pixels = image::RgbaImage::from_fn(3, 1, |x, _| match x {
+            0 => image::Rgba([10, 20, 30, 0]),
+            1 => image::Rgba([10, 20, 30, 128]),
+            _ => image::Rgba([10, 20, 30, 255]),
+        });
+        pixels
+            .save_with_format(dir.path().join("asset.bin"), format)
+            .unwrap();
+        let assets = doc.load_assets();
+        assert!(assets.diagnostics.is_empty(), "{format:?}");
+        let loaded = &assets.images["asset.bin"];
+        assert_eq!(loaded.get_pixel(0, 0).0, [255, 255, 255, 255]);
+        assert_eq!(loaded.get_pixel(1, 0).0, [132, 137, 142, 255]);
+        assert_eq!(loaded.get_pixel(2, 0).0, [10, 20, 30, 255]);
+    }
+    fs::write(
+        dir.path().join("asset.bin"),
+        include_bytes!("fixtures/orientation-6.jpg"),
+    )
+    .unwrap();
+    let assets = doc.load_assets();
+    assert!(assets.diagnostics.is_empty());
+    assert_eq!(assets.images["asset.bin"].dimensions(), (40, 80));
+}
+
+#[test]
+fn asset_snapshots_share_failures_and_preserve_edits_and_history_during_recovery() {
+    let dir = tempfile::tempdir().unwrap();
+    let source = "presentation { metadata { title \"images\"; }; slide { image \"asset.bin\" { caption \"keep\"; }; image \"asset.bin\"; }; }";
+    let mut doc = PresentationDocument::from_source_with_asset_base(source, dir.path()).unwrap();
+    image::RgbImage::from_pixel(2, 1, image::Rgb([1, 2, 3]))
+        .save_with_format(dir.path().join("asset.bin"), image::ImageFormat::Png)
+        .unwrap();
+    doc.set_element_field(0, 0, ElementField::Caption, "draft")
+        .unwrap();
+    let edited = doc.source().to_owned();
+    let loaded = doc.load_assets();
+    assert_eq!(loaded.images.len(), 1);
+    assert!(loaded.diagnostics.is_empty());
+    fs::remove_file(dir.path().join("asset.bin")).unwrap();
+    assert_eq!(loaded.images["asset.bin"].get_pixel(0, 0).0, [1, 2, 3, 255]);
+    let missing = doc.load_assets();
+    assert!(missing.images.is_empty());
+    assert_eq!(missing.diagnostics.len(), 2);
+    assert!(
+        missing
+            .diagnostics
+            .iter()
+            .all(|d| d.problem == psycho::AssetProblem::Missing)
+    );
+    fs::write(
+        dir.path().join("asset.bin"),
+        include_bytes!("fixtures/animated.png"),
+    )
+    .unwrap();
+    let animated = doc.load_assets();
+    assert!(animated.images.is_empty());
+    assert!(
+        animated
+            .diagnostics
+            .iter()
+            .all(|d| d.problem == psycho::AssetProblem::AnimatedImage)
+    );
+    image::RgbImage::from_pixel(1, 2, image::Rgb([4, 5, 6]))
+        .save_with_format(dir.path().join("asset.bin"), image::ImageFormat::WebP)
+        .unwrap();
+    let recovered = doc.load_assets();
+    assert!(recovered.diagnostics.is_empty());
+    assert_eq!(recovered.images["asset.bin"].dimensions(), (1, 2));
+    assert_eq!(doc.source(), edited);
+    assert!(doc.can_undo());
+    assert!(doc.undo());
+    assert_eq!(doc.source(), source);
+    assert!(doc.redo());
+    assert_eq!(doc.source(), edited);
+}
+
+#[test]
+fn image_path_history_loads_the_current_asset_bytes() {
+    let dir = tempfile::tempdir().unwrap();
+    let source = "presentation { metadata { title \"images\"; }; slide { image \"a.bin\"; }; }";
+    let mut doc = PresentationDocument::from_source_with_asset_base(source, dir.path()).unwrap();
+    for (path, color) in [("a.bin", [1, 2, 3]), ("b.bin", [4, 5, 6])] {
+        image::RgbImage::from_pixel(1, 1, image::Rgb(color))
+            .save_with_format(dir.path().join(path), image::ImageFormat::Png)
+            .unwrap();
+    }
+    doc.set_element_field(0, 0, ElementField::ImagePath, "b.bin")
+        .unwrap();
+    assert_eq!(
+        doc.load_assets().images["b.bin"].get_pixel(0, 0).0,
+        [4, 5, 6, 255]
+    );
+    image::RgbImage::from_pixel(1, 1, image::Rgb([7, 8, 9]))
+        .save_with_format(dir.path().join("a.bin"), image::ImageFormat::Png)
+        .unwrap();
+    assert!(doc.undo());
+    assert_eq!(
+        doc.load_assets().images["a.bin"].get_pixel(0, 0).0,
+        [7, 8, 9, 255]
+    );
+    fs::remove_file(dir.path().join("b.bin")).unwrap();
+    assert!(doc.redo());
+    let assets = doc.load_assets();
+    assert!(assets.images.is_empty());
+    assert_eq!(assets.diagnostics[0].path, "b.bin");
+    assert_eq!(assets.diagnostics[0].problem, psycho::AssetProblem::Missing);
+}
