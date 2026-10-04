@@ -5,8 +5,6 @@ mod input;
 mod text;
 
 use std::collections::HashMap;
-use std::fs;
-use std::io::Cursor;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
@@ -17,7 +15,6 @@ use gpui::{
     WindowBounds, WindowOptions, actions, div, prelude::*, px, rgb, size,
 };
 use gpui_platform::application;
-use image::{ImageDecoder, ImageFormat};
 use input::TextInputState;
 use objc::{msg_send, runtime::Object, sel, sel_impl};
 use psycho::{
@@ -226,8 +223,9 @@ impl PsychoApp {
             .model()
             .map_or_else(String::new, |model| model.title.clone());
         editor.update(cx, |input, cx| input.set_value(&current_title, cx));
-        let asset_diagnostics = document.inspect_assets();
-        let asset_images = load_asset_images(&document, &asset_diagnostics);
+        let assets = document.load_assets();
+        let asset_diagnostics = assets.diagnostics;
+        let asset_images = load_asset_images(assets.images);
         Self {
             document,
             editor,
@@ -1918,8 +1916,9 @@ impl PsychoApp {
     }
 
     fn refresh_assets(&mut self) {
-        self.asset_diagnostics = self.document.inspect_assets();
-        self.asset_images = load_asset_images(&self.document, &self.asset_diagnostics);
+        let assets = self.document.load_assets();
+        self.asset_diagnostics = assets.diagnostics;
+        self.asset_images = load_asset_images(assets.images);
     }
 
     fn navigate_to_diagnostic(
@@ -4838,71 +4837,18 @@ fn element_field_value(element: &Element, field: ElementField) -> String {
 }
 
 fn load_asset_images(
-    document: &PresentationDocument,
-    diagnostics: &[AssetDiagnostic],
+    images: HashMap<String, image::RgbaImage>,
 ) -> HashMap<String, Arc<gpui::RenderImage>> {
-    let Some(model) = document.model() else {
-        return HashMap::new();
-    };
-    let invalid = diagnostics
-        .iter()
-        .map(|diagnostic| diagnostic.path.as_str())
-        .collect::<std::collections::HashSet<_>>();
-    let base = document.asset_base();
-    let paths = model
-        .slides
-        .iter()
-        .flat_map(|slide| slide.image_paths())
-        .collect::<std::collections::HashSet<_>>();
-    let mut images = HashMap::new();
-    for path in paths {
-        if invalid.contains(path) {
-            continue;
-        }
-        let Ok(bytes) = fs::read(base.join(path)) else {
-            continue;
-        };
-        let Ok(format) = image::guess_format(&bytes) else {
-            continue;
-        };
-        if !matches!(
-            format,
-            ImageFormat::Png | ImageFormat::Jpeg | ImageFormat::WebP
-        ) {
-            continue;
-        }
-        if format == ImageFormat::WebP {
-            let Ok(webp) = image::codecs::webp::WebPDecoder::new(Cursor::new(bytes.as_slice()))
-            else {
-                continue;
-            };
-            if webp.has_animation() {
-                continue;
-            }
-        }
-        let Ok(mut decoder) =
-            image::ImageReader::with_format(Cursor::new(bytes), format).into_decoder()
-        else {
-            continue;
-        };
-        let Ok(orientation) = decoder.orientation() else {
-            continue;
-        };
-        let Ok(mut decoded) = image::DynamicImage::from_decoder(decoder) else {
-            continue;
-        };
-        decoded.apply_orientation(orientation);
-        let mut pixels = decoded.into_rgba8();
-        for pixel in pixels.chunks_exact_mut(4) {
-            pixel.swap(0, 2);
-        }
-        let frame = image::Frame::new(pixels);
-        images.insert(
-            path.to_owned(),
-            Arc::new(gpui::RenderImage::new(vec![frame])),
-        );
-    }
     images
+        .into_iter()
+        .map(|(path, mut pixels)| {
+            for pixel in pixels.chunks_exact_mut(4) {
+                pixel.swap(0, 2);
+            }
+            let frame = image::Frame::new(pixels);
+            (path, Arc::new(gpui::RenderImage::new(vec![frame])))
+        })
+        .collect()
 }
 
 fn supports_canvas_text_editor(element: &Element, target: EditTarget) -> bool {
