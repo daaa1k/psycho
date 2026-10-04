@@ -14,8 +14,8 @@ source='''presentation {
 }
 '''
 gui=Gui(parser.parse_args().output,source);records=[]
-def select(prefix):
-    gui.snapshot();x,y=gui.glyph_position(prefix,28);gui.click(x,y)
+def select(prefix,font=28):
+    gui.snapshot();x,y=gui.glyph_position(prefix,font);gui.click(x,y)
 def operation(before,name):
     after=gui.save();assert after!=before,(name,'No movement')
     gui.snapshot(name)
@@ -64,7 +64,38 @@ try:
     deleted=operation(gui.original,'columns-delete-subtree')
     assert deleted.count(b'columns')==1 and b'Right first' not in deleted and b'Left one' not in deleted
     assert '左列50%/右列50%' in gui.text('columns-restored-selection')
-    print('PASS root/column moves, nested reorder, inter-block drag, invalid nesting, Columns subtree deletion and selection restoration',flush=True)
+    assert gui.save()==gui.original
+    saved=gui.original
+    for kind,payload,font,target in [('heading','Columns workflow',48,'2列 3 · 左列へ移動'),
+                                      ('text','Root payload',28,'2列 2 · 左列へ移動')]:
+        for location,label,depth in [('column',target,4),('root','Slide 直下へ移動',2)]:
+            name=f'columns-{kind}-persist-{location}'
+            select(payload,font);gui.press(label)
+            saved=operation(saved,name)
+            node=f'{kind} "{payload}"'.encode()
+            assert saved.count(node)==1,(name,'Payload must occur once')
+            preceding=saved[:saved.index(node)]
+            assert preceding.count(b'{')-preceding.count(b'}')==depth,(name,'KDL parent')
+            gui.press('Redo');assert gui.save()==saved
+            for phase in ['saved','restarted']:
+                if phase=='restarted':gui.stop();gui.start()
+                assert gui.fixture.read_bytes()==saved,(name,phase,'Persisted KDL')
+                assert ''.join(payload.split()) in gui.text(name+'-'+phase),(name,phase,'Visible payload')
+                _,payload_y=gui.glyph_position(payload,font)
+                _,other_y=gui.glyph_position('Other left',28)
+                assert (payload_y<other_y)==(location=='column'),(name,phase,'Canvas placement')
+                assert gui.save()==saved,(name,phase,'No-op save')
+            print('PASS',name,'saved KDL and canvas survive restart',flush=True)
+    select('Left one');gui.press('2列の内容へ戻る');gui.press('左列幅を数値入力')
+    gui.replace('0');gui.press('保存')
+    assert gui.fixture.read_bytes()==saved,'Invalid width must block save'
+    assert gui.state()['text']=='0','Invalid width must remain editable'
+    reason=gui.text('columns-invalid-width')
+    assert '列幅は1' in reason and '99の整数' in reason,'Invalid width reason must be visible'
+    gui.replace('50')
+    assert gui.save()==saved,'Repair must leave the source unchanged'
+    print('PASS invalid numeric width blocks save until repaired',flush=True)
+    print('PASS root/column moves, nested reorder, inter-block drag, invalid nesting, Columns subtree deletion, selection restoration and heading/body persistence',flush=True)
 except Exception:
     gui.snapshot('columns-failure');raise
 finally:
