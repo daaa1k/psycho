@@ -1869,6 +1869,7 @@ fn parse_and_validate(
                 .diagnostics
                 .iter()
                 .map(|detail| {
+                    let slide = syntax_slide_context(source, detail.span.offset());
                     diagnostic(
                         source,
                         DiagnosticKind::Syntax,
@@ -1879,8 +1880,8 @@ fn parse_and_validate(
                         detail.span.offset(),
                         detail.span.len(),
                         file_name.clone(),
-                        None,
-                        None,
+                        slide.as_ref().map(|(index, _)| *index),
+                        slide.and_then(|(_, id)| id),
                         None,
                         None,
                         None,
@@ -1890,6 +1891,35 @@ fn parse_and_validate(
             (None, diagnostics)
         }
     }
+}
+
+fn syntax_slide_context(source: &str, offset: usize) -> Option<(usize, Option<String>)> {
+    const MAX_SCHEMA_NESTING: usize = 4;
+    let mut prefix = source[..offset].to_owned();
+    prefix.push('\n');
+    for _ in 0..MAX_SCHEMA_NESTING {
+        prefix.push_str("}\n");
+        let Ok(document) = KdlDocument::parse_v2(&prefix) else {
+            continue;
+        };
+        let [root] = document.nodes() else {
+            return None;
+        };
+        if root.name().value() != "presentation" {
+            return None;
+        }
+        return root
+            .children()?
+            .nodes()
+            .iter()
+            .filter(|node| node.name().value() == "slide")
+            .enumerate()
+            .find(|(_, node)| {
+                node.children().is_some() && node.span().offset() + node.span().len() > offset
+            })
+            .map(|(index, node)| (index, property_string(node, "id")));
+    }
+    None
 }
 
 fn validate_document(
@@ -1975,7 +2005,9 @@ fn validate_document(
     }
     let mut slides = Vec::new();
     let mut slide_ids = HashSet::new();
-    for (index, node) in children.iter().enumerate().skip(1) {
+    for node in children.iter().skip(1) {
+        validator.slide_index = None;
+        validator.slide_id = None;
         if node.name().value() != "slide" {
             validator.node_error(node, "unknown presentation child; expected slide");
             continue;
@@ -1997,7 +2029,6 @@ fn validate_document(
             id: property_string(node, "id"),
             elements,
         });
-        let _ = index;
     }
     if validator.diagnostics.is_empty() {
         (Some(PresentationModel { title, slides }), Vec::new())
@@ -3223,15 +3254,31 @@ fn diagnostic(
     nested_element_index: Option<usize>,
 ) -> Diagnostic {
     let offset = offset.min(source.len());
-    let before = &source[..offset];
-    let line = before.bytes().filter(|byte| *byte == b'\n').count() + 1;
-    let line_start = before.rfind('\n').map_or(0, |index| index + 1);
+    let mut line = 1;
+    let mut line_start = 0;
+    let mut line_end = source.len();
+    let mut chars = source.char_indices().peekable();
+    while let Some((index, character)) = chars.next() {
+        if !matches!(
+            character,
+            '\r' | '\n' | '\u{85}' | '\u{c}' | '\u{2028}' | '\u{2029}'
+        ) {
+            continue;
+        }
+        let mut next_line = index + character.len_utf8();
+        if character == '\r' && chars.peek().is_some_and(|(_, next)| *next == '\n') {
+            chars.next();
+            next_line += 1;
+        }
+        if offset < next_line {
+            line_end = index;
+            break;
+        }
+        line += 1;
+        line_start = next_line;
+    }
     let column = source[line_start..offset].chars().count() + 1;
-    let source_line = source
-        .lines()
-        .nth(line.saturating_sub(1))
-        .unwrap_or_default()
-        .to_owned();
+    let source_line = source[line_start..line_end].to_owned();
     Diagnostic {
         kind,
         message,
