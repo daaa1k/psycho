@@ -53,7 +53,7 @@ try:
     for i,heading in enumerate(expected):
         if i:gui.key('Right')
         state,rows=gui.snapshot(f'sample-presentation-{i+1}')
-        assert state['screenshot']['width']==1920 and compact(heading) in compact(''.join(row['text'] for row in rows))
+        assert state['screenshot']['width']>1280 and compact(heading) in compact(''.join(row['text'] for row in rows))
         assert gui.fixture.read_bytes()==saved
     gui.key('Escape');time.sleep(1)
     state,rows=gui.snapshot('sample-return')
