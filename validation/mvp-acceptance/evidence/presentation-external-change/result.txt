@@ -1,0 +1,1 @@
+PASS immutable presentation snapshot, external reorder/delete, return by Slide ID, restart and cleared reload history

@@ -1,0 +1,3 @@
+[DEBUG-cursor] moved hidden=false
+[DEBUG-cursor] hidden
+[DEBUG-cursor] moved hidden=true

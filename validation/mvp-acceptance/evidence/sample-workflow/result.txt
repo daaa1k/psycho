@@ -1,0 +1,9 @@
+PASS sample-title Save / exact Undo / exact Redo
+PASS sample-heading Save / exact Undo / exact Redo
+PASS sample-body Save / exact Undo / exact Redo
+PASS sample-code Save / exact Undo / exact Redo
+PASS sample-column-width Save / exact Undo / exact Redo
+PASS sample-image-path Save / exact Undo / exact Redo
+PASS sample-caption Save / exact Undo / exact Redo
+PASS sample-structure Save / exact Undo / exact Redo
+PASS six-slide sample edits, structure, width, image reference, exact Undo/Redo, reload and full presentation

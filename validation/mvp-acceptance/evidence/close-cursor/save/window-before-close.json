@@ -1,0 +1,50 @@
+{
+  "snapshot": {
+    "treeText": "App=psycho (pid 44494)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "focusedElementId": 0,
+    "truncation": {
+      "maxNodes": 1200,
+      "maxDepth": 64,
+      "maxDepthReached": false,
+      "truncated": false
+    },
+    "app": {
+      "name": "psycho",
+      "bundleId": null,
+      "pid": 44494
+    },
+    "window": {
+      "isOffscreen": false,
+      "height": 892,
+      "screenIndex": 0,
+      "title": "",
+      "width": 1280,
+      "y": 185,
+      "id": 20897,
+      "isMinimized": false,
+      "x": 320,
+      "platform": {
+        "layer": 0
+      }
+    },
+    "elementCount": 5,
+    "id": "E92A09D1-10C8-4DAA-9E8D-17425570D589",
+    "coordinateSpace": "window"
+  },
+  "screenshotStatus": {
+    "metadata": {
+      "engine": "screenCaptureKit",
+      "windowId": 20897
+    },
+    "state": "captured"
+  },
+  "screenshot": {
+    "format": "png",
+    "width": 1280,
+    "scale": 1,
+    "height": 892,
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/ac6dce31-fe7a-4903-ae48-dfbb732066c2-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-05T00:21:44.227Z"
+  }
+}

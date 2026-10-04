@@ -1,0 +1,4 @@
+{"heading": [".HiraKakuInterface-W6", ".SFNS-Bold"], "body": [".HiraKakuInterface-W4", ".SFNS-Regular"], "code": ["Menlo-Regular"], "caption": [".HiraKakuInterface-W4", ".SFNS-Regular"]}
+PASS actual GPUI font names; dependency and binary restored
+
+Code Japanese line aggregation from the same raw runs: ["HiraginoSans-W3", "Menlo-Regular"]

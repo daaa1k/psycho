@@ -1,0 +1,23 @@
+[package]
+name = "psycho"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[features]
+default = []
+gui = ["dep:gpui", "dep:gpui_platform", "dep:objc", "dep:raw-window-handle"]
+
+[[bin]]
+name = "psycho"
+path = "src/main.rs"
+required-features = ["gui"]
+
+[dependencies]
+kdl = { version = "=6.7.1", default-features = false, features = ["span"] }
+image = { version = "=0.25.10", default-features = false, features = ["png", "jpeg", "webp"] }
+tempfile = "=3.23.0"
+gpui = { git = "https://github.com/zed-industries/zed", rev = "14dd03e89676e7fe74bc205001bfb32c8cfc3952", default-features = false, features = ["font-kit"], optional = true }
+gpui_platform = { git = "https://github.com/zed-industries/zed", rev = "14dd03e89676e7fe74bc205001bfb32c8cfc3952", default-features = false, features = ["font-kit"], optional = true }
+objc = { version = "0.2", optional = true }
+raw-window-handle = { version = "0.6", optional = true }
