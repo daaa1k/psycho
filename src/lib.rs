@@ -125,6 +125,28 @@ pub enum ElementField {
 }
 
 #[derive(Clone, Copy)]
+enum ElementContainer {
+    Slide,
+    Column { columns: usize, column: usize },
+}
+
+impl ElementContainer {
+    fn elements_mut(self, slide: &mut Slide) -> Result<&mut Vec<Element>, DocumentError> {
+        match self {
+            Self::Slide => Ok(&mut slide.elements),
+            Self::Column { columns, column } => match slide.elements.get_mut(columns) {
+                Some(Element::Columns { left, right, .. }) => match column {
+                    0 => Ok(left),
+                    1 => Ok(right),
+                    _ => Err(DocumentError::InvalidDocument),
+                },
+                _ => Err(DocumentError::InvalidDocument),
+            },
+        }
+    }
+}
+
+#[derive(Clone, Copy)]
 enum BulletLocation {
     Slide {
         slide: usize,
@@ -810,7 +832,10 @@ impl PresentationDocument {
             .ok_or(DocumentError::InvalidDocument)?;
         // Metadata is always the first child of a valid presentation.
         insert_moved_source_at(&mut candidate, root, to + 1, &moving)?;
-        self.commit_candidate(candidate)
+        let mut expected = self.model.clone().ok_or(DocumentError::InvalidDocument)?;
+        let moving = expected.slides.remove(from);
+        expected.slides.insert(to, moving);
+        self.commit_candidate_matching(candidate, Some(&expected))
     }
 
     /// Moves a top-level element on a slide using its original source bytes.
@@ -843,7 +868,14 @@ impl PresentationDocument {
             KdlDocument::parse_v2(&candidate).map_err(|_| DocumentError::InvalidDocument)?;
         let slide = slide_node(&reparsed, slide_index).ok_or(DocumentError::InvalidDocument)?;
         insert_moved_source_at(&mut candidate, slide, to, &moving)?;
-        self.commit_candidate(candidate)
+        self.commit_element_move(
+            candidate,
+            slide_index,
+            ElementContainer::Slide,
+            from,
+            ElementContainer::Slide,
+            to,
+        )
     }
 
     pub fn move_element_to_column(
@@ -902,7 +934,17 @@ impl PresentationDocument {
             .map_or(0, |children| children.nodes().len());
         let destination_index = destination_index.min(count);
         insert_moved_source_at(&mut candidate, column, destination_index, &moving)?;
-        self.commit_candidate(candidate)?;
+        self.commit_element_move(
+            candidate,
+            slide_index,
+            ElementContainer::Slide,
+            element_index,
+            ElementContainer::Column {
+                columns: target_columns_index,
+                column: column_index,
+            },
+            destination_index,
+        )?;
         Ok((target_columns_index, destination_index))
     }
 
@@ -956,7 +998,17 @@ impl PresentationDocument {
             reindent_moved_source(&self.source, element, start, &moving, &candidate, slide)?;
         let destination_index = destination_index.min(slide_element_count);
         insert_moved_source_at(&mut candidate, slide, destination_index, &moving)?;
-        self.commit_candidate(candidate)?;
+        self.commit_element_move(
+            candidate,
+            slide_index,
+            ElementContainer::Column {
+                columns: columns_index,
+                column: column_index,
+            },
+            element_index,
+            ElementContainer::Slide,
+            destination_index,
+        )?;
         Ok(destination_index)
     }
 
@@ -1037,7 +1089,20 @@ impl PresentationDocument {
             .map_or(0, |children| children.nodes().len());
         let destination_index = destination_index.min(count);
         insert_moved_source_at(&mut candidate, target, destination_index, &moving)?;
-        self.commit_candidate(candidate)?;
+        self.commit_element_move(
+            candidate,
+            slide_index,
+            ElementContainer::Column {
+                columns: columns_index,
+                column: source_column,
+            },
+            element_index,
+            ElementContainer::Column {
+                columns: columns_index,
+                column: target_column,
+            },
+            destination_index,
+        )?;
         Ok(destination_index)
     }
 
@@ -1088,7 +1153,20 @@ impl PresentationDocument {
             .map_or(0, |children| children.nodes().len());
         let destination_index = destination_index.min(count);
         insert_moved_source_at(&mut candidate, target, destination_index, &moving)?;
-        self.commit_candidate(candidate)?;
+        self.commit_element_move(
+            candidate,
+            slide_index,
+            ElementContainer::Column {
+                columns: source_columns_index,
+                column: source_column,
+            },
+            element_index,
+            ElementContainer::Column {
+                columns: target_columns_index,
+                column: target_column,
+            },
+            destination_index,
+        )?;
         Ok(destination_index)
     }
 
@@ -1316,7 +1394,20 @@ impl PresentationDocument {
         let column = column_node(&reparsed, slide_index, columns_index, column_index)
             .ok_or(DocumentError::InvalidDocument)?;
         insert_moved_source_at(&mut candidate, column, to, &moving)?;
-        self.commit_candidate(candidate)
+        self.commit_element_move(
+            candidate,
+            slide_index,
+            ElementContainer::Column {
+                columns: columns_index,
+                column: column_index,
+            },
+            from,
+            ElementContainer::Column {
+                columns: columns_index,
+                column: column_index,
+            },
+            to,
+        )
     }
 
     pub fn remove_element(
@@ -1378,10 +1469,42 @@ impl PresentationDocument {
         self.commit_candidate(candidate)
     }
 
+    fn commit_element_move(
+        &mut self,
+        candidate: String,
+        slide_index: usize,
+        source: ElementContainer,
+        from: usize,
+        destination: ElementContainer,
+        to: usize,
+    ) -> Result<(), DocumentError> {
+        let mut expected = self.model.clone().ok_or(DocumentError::InvalidDocument)?;
+        let slide = expected
+            .slides
+            .get_mut(slide_index)
+            .ok_or(DocumentError::InvalidDocument)?;
+        let moving = source.elements_mut(slide)?.remove(from);
+        destination.elements_mut(slide)?.insert(to, moving);
+        self.commit_candidate_matching(candidate, Some(&expected))
+    }
+
     fn commit_candidate(&mut self, candidate: String) -> Result<(), DocumentError> {
+        self.commit_candidate_matching(candidate, None)
+    }
+
+    fn commit_candidate_matching(
+        &mut self,
+        candidate: String,
+        expected: Option<&PresentationModel>,
+    ) -> Result<(), DocumentError> {
         let (model, diagnostics) = parse_and_validate(&candidate, self.path.as_deref());
         if model.is_none() || !diagnostics.is_empty() {
             return Err(DocumentError::InvalidDocument);
+        }
+        if expected.is_some_and(|expected| model.as_ref() != Some(expected)) {
+            return Err(DocumentError::UnsafeValue(
+                "moving a node changed presentation content".into(),
+            ));
         }
         if candidate == self.source {
             return Ok(());
@@ -3298,6 +3421,51 @@ fn diagnostic(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn move_candidate_rejects_valid_kdl_with_unexpected_meaning_without_changing_history() {
+        let source = "presentation { metadata { title \"test\" }; slide { text \"moving\"; text \"other\"; }; }";
+        for candidate in [
+            "presentation { metadata { title \"test\" }; slide { text \"other\"; text \"changed\"; }; }",
+            "presentation { metadata { title \"test\" }; slide { text \"other\"; heading \"moving\"; }; }",
+            "presentation { metadata { title \"changed\" }; slide { text \"other\"; text \"moving\"; }; }",
+            "presentation { metadata { title \"test\" }; slide { text \"changed\"; text \"moving\"; }; }",
+        ] {
+            let mut document = PresentationDocument::from_source(source).unwrap();
+            document.set_title("edited").unwrap();
+            document.set_title("future").unwrap();
+            assert!(document.undo());
+            let before_source = document.source.clone();
+            let before_model = document.model.clone();
+            let before_undo = document.undo.clone();
+            let before_redo = document.redo.clone();
+            let before_undo_labels = document.undo_labels.clone();
+            let before_redo_labels = document.redo_labels.clone();
+            let candidate = candidate.replace("title \"test\"", "title \"edited\"");
+            assert!(
+                PresentationDocument::from_source(&candidate)
+                    .unwrap()
+                    .can_edit()
+            );
+            assert!(matches!(
+                document.commit_element_move(
+                    candidate,
+                    0,
+                    ElementContainer::Slide,
+                    0,
+                    ElementContainer::Slide,
+                    1
+                ),
+                Err(DocumentError::UnsafeValue(_))
+            ));
+            assert_eq!(document.source, before_source);
+            assert_eq!(document.model, before_model);
+            assert_eq!(document.undo, before_undo);
+            assert_eq!(document.redo, before_redo);
+            assert_eq!(document.undo_labels, before_undo_labels);
+            assert_eq!(document.redo_labels, before_redo_labels);
+        }
+    }
 
     #[test]
     fn save_as_rechecks_destination_changes_and_preserves_the_original_document() {

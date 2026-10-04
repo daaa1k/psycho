@@ -613,3 +613,56 @@ fn root_to_column_moves_work_at_every_valid_insertion_position() {
         }
     }
 }
+
+#[test]
+fn column_moves_change_only_the_requested_element_position() {
+    let source = r#"presentation {
+    metadata { title "unchanged" }
+    slide id="first" {
+        heading "untouched"
+        columns {
+            column width=40 { text "a"; code "b" language="rust"; }
+            column width=60 { image "c.png" { caption "caption"; }; }
+        }
+        columns {
+            column width=30 { bullets { item "d"; item "e"; }; }
+            column width=70 { text "f"; }
+        }
+    }
+    slide id="second" { text "other slide"; }
+}"#;
+    for operation in 0..3 {
+        let mut document = PresentationDocument::from_source(source).unwrap();
+        let mut expected = document.model().unwrap().clone();
+        let Element::Columns { left, right, .. } = &mut expected.slides[0].elements[1] else {
+            panic!()
+        };
+        let moving = left.remove(0);
+        match operation {
+            0 => {
+                left.insert(1, moving);
+                document.move_column_element(0, 1, 0, 0, 1).unwrap();
+            }
+            1 => {
+                right.insert(0, moving);
+                document
+                    .move_column_element_to_column_at(0, 1, 0, 0, 1, 0)
+                    .unwrap();
+            }
+            _ => {
+                let Element::Columns { right, .. } = &mut expected.slides[0].elements[2] else {
+                    panic!()
+                };
+                right.insert(0, moving);
+                document
+                    .move_column_element_between_columns_at(0, 1, 0, 0, 2, 1, 0)
+                    .unwrap();
+            }
+        }
+        assert_eq!(document.model().unwrap(), &expected);
+        assert!(document.undo());
+        assert_eq!(document.source(), source);
+        assert!(document.redo());
+        assert_eq!(document.model().unwrap(), &expected);
+    }
+}
