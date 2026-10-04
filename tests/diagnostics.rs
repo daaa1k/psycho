@@ -75,3 +75,39 @@ fn syntax_diagnostics_use_kdl_newlines_and_unicode_columns() {
         }
     }
 }
+
+#[test]
+fn syntax_diagnostics_identify_only_a_slide_proven_by_the_valid_prefix() {
+    let prefix = "presentation { metadata { title \"x\"; }; slide id=\"first\" {};\n";
+    for content in [
+        "slide id=\"second\" { text \"bad\\q\"; }",
+        "slide id=\"second\" { bad[; }",
+        "slide id=\"second\" { columns { column { text \"bad\\q\"; } } }",
+        "/* slide id=\"fake\" { */ slide id=\"second\" { text \"bad\\q\"; }",
+        "/- slide id=\"ignored\" {}; slide id=\"second\" { text \"bad\\q\"; }",
+    ] {
+        let document =
+            PresentationDocument::from_source(&format!("{prefix}{content}\n}}")).unwrap();
+        assert!(document.model().is_none());
+        assert!(!document.diagnostics().is_empty());
+        for diagnostic in document.diagnostics() {
+            assert_eq!(diagnostic.slide_index, Some(1), "{diagnostic:?}");
+            assert_eq!(diagnostic.slide_id.as_deref(), Some("second"));
+        }
+    }
+    for content in [
+        "bad[",
+        "slide id=\"second\" {}; bad[",
+        "/- slide id=\"ignored\" { bad[; }",
+        "metadata { title \"slide id=\\\"fake\\\" {\\q\"; }",
+        "/* slide id=\"fake\" { */ bad[",
+    ] {
+        let document =
+            PresentationDocument::from_source(&format!("{prefix}{content}\n}}")).unwrap();
+        assert!(!document.diagnostics().is_empty());
+        for diagnostic in document.diagnostics() {
+            assert_eq!(diagnostic.slide_index, None, "{diagnostic:?}");
+            assert_eq!(diagnostic.slide_id, None);
+        }
+    }
+}
