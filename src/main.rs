@@ -19,11 +19,7 @@ use gpui::{
 use gpui_platform::application;
 use image::{ImageDecoder, ImageFormat};
 use input::TextInputState;
-use objc::{
-    msg_send,
-    runtime::{NO, Object, YES},
-    sel, sel_impl,
-};
+use objc::{msg_send, runtime::Object, sel, sel_impl};
 use psycho::{
     AssetDiagnostic, Diagnostic, DiagnosticKind, DocumentError, Element, ElementField, ElementKind,
     PresentationDocument, PresentationModel,
@@ -2093,7 +2089,7 @@ impl PsychoApp {
             return;
         }
         unsafe {
-            let _: () = msg_send![objc::class!(NSCursor), setHiddenUntilMouseMoves: YES];
+            let _: () = msg_send![objc::class!(NSCursor), hide];
         }
         self.presentation_cursor_hidden = true;
     }
@@ -2103,7 +2099,7 @@ impl PsychoApp {
             return;
         }
         unsafe {
-            let _: () = msg_send![objc::class!(NSCursor), setHiddenUntilMouseMoves: NO];
+            let _: () = msg_send![objc::class!(NSCursor), unhide];
         }
         self.presentation_cursor_hidden = false;
         self.cursor_hide_generation = self.cursor_hide_generation.wrapping_add(1);
