@@ -49,6 +49,9 @@ app=subprocess.Popen([str(root/'target/debug/psycho'),str(p)],stdout=subprocess.
 def act(*cmd):
     result=subprocess.run(['orca','computer',*cmd,'--app',f'pid:{app.pid}','--json'],text=True,capture_output=True)
     r=json.loads(result.stdout)
+    if not r['ok'] and r.get('error',{}).get('code')=='window_not_focused' and cmd[0] in {'hotkey','press-key','type-text'}:
+        result=subprocess.run(['orca','computer',*cmd,'--restore-window','--app',f'pid:{app.pid}','--json'],text=True,capture_output=True)
+        r=json.loads(result.stdout)
     if not r['ok']:
         # Native confirmation transitions may deliver a click then change focus.
         # The caller observes the resulting dialog/editor before doing anything else.
