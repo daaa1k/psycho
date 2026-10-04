@@ -1,0 +1,7 @@
+     Removed 23 files, 31.3MiB total
+   Compiling gpui_macos v0.1.0 (https://github.com/zed-industries/zed?rev=14dd03e89676e7fe74bc205001bfb32c8cfc3952#14dd03e8)
+   Compiling gpui_platform v0.1.0 (https://github.com/zed-industries/zed?rev=14dd03e89676e7fe74bc205001bfb32c8cfc3952#14dd03e8)
+   Compiling psycho v0.1.0 (/Users/daichikinoshita/orca/workspaces/psycho/psycho-mvp-kdl-gui)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.32s
+warning: the following packages contain code that will be rejected by a future version of Rust: block v0.1.6
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`

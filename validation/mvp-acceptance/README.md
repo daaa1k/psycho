@@ -1,14 +1,18 @@
 # Issue #17 製品受け入れ確認
 
-2026-10-03に製品バイナリーで実施した確認を記録する。配置比較は`9d0a67c`、全画面10回は`0ec3116`。保存失敗の再試行は`f66d593`、競合中の入力保持と再読み込みは`6ccb562`で確認した。画像のEXIF回転・透過と退避後の再保存は`ccd45d2`のバイナリーでスクリプトを再実行した。標準IMEの位置追従とCanvas・Inspectorの往復は`3aa94a9`で確認した。コードの貼り付けとSlide移動の修正は`4db1eda`。入力欄のUndo範囲とIDのないSlideの選択保持は`bcbad54`。同値保存と入力Redoの引継ぎは`cc15124`で修正した。フォーカス喪失と入力履歴上限は`1930beb`。自動テスト44件をこの差分で再実行した。先行試作の結果は製品の合格証拠として数えない。Issue #17全体の判定は**未完了**。下表の確認済みケースと、末尾の残件を分けて扱う。
+2026-10-03〜04に製品バイナリーで実施した確認を記録する。最終ソースは`84dffd4`。この差分で自動テスト44件、終了時の3分岐、発表中のカーソル・クリック・スクロール、実際に解決されたフォント名を確認した。標準IMEの本文20状態とCaption5状態、直接編集20ケースと通常表示6画面の配置比較は`ba16784`で確認した。`84dffd4`の変更はカーソルの非表示・再表示APIと未使用importだけで、文字組み・入力・文書操作は変更していない。代表例、Columns操作、画面外修復、発表中の外部変更、履歴上限は`1930beb`までのバイナリーで実施した。先行試作の結果は製品の合格証拠として数えない。実施時の判断は[decisions.tsv](decisions.tsv)に残した。
+
+全画面10回は`0ec3116`、保存失敗の再試行は`f66d593`、外部競合と再読み込みは`6ccb562`、画像のEXIF回転・透過と退避後の再保存は`ccd45d2`で確認した。コードの貼り付けは`4db1eda`、入力欄のUndo範囲は`bcbad54`、同値保存と入力Redoの引継ぎは`cc15124`、空列・高い列の後続配置は`5bac00b`で修正・確認した。
 
 ## 環境
 
 MacBook Air / Apple M3、macOS 26.5.2（25F84）、Xcode 26.5、Rust 1.98.1。GPUIとGPUI platformはZed `14dd03e89676e7fe74bc205001bfb32c8cfc3952`。内蔵画面1枚、Orca 1.4.218。GPUIの`window.scale_factor()`と撮影倍率は1。編集ウィンドウは1280×892と1440×992、viewportはそれぞれ1280×860と1440×960。全画面は1920×1200。スライドの表示倍率は0.646875、0.771875、1.5。
 
-本文は`.SystemUIFont`、コードはMenloを指定した。日本語の代替フォントはOSのCoreTextに任せる。先行検証の同一OS・GPUI環境ではMenloの日本語をHiraginoSans-W3、絵文字をAppleColorEmojiに解決している。今回は代替フォント名をGPUIから直接取得していない。配置比較では実際に選ばれたグリフIDが3サイズで一致することを検査した。
+本文とCaptionは`.SystemUIFont`、コードはMenloを指定した。製品のGPUIが実際に生成したCoreTextのglyph runからPostScript名を取得した。本文・Captionは`.SFNS-Regular`と日本語の`.HiraKakuInterface-W4`、太字見出しは`.SFNS-Bold`と`.HiraKakuInterface-W6`、コードは`Menlo-Regular`と日本語の`HiraginoSans-W3`だった。[解決結果](evidence/font-resolution/font-resolution.json)と[実run](evidence/font-resolution/font-runs.tsv)を保存した。
 
-IME確認時はmacOS標準日本語入力 `com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese` を使用した。確認後は元のazooKeyに戻し、この確認のために一時的に有効化したKotoeriを無効化した。
+この測定では固定リビジョンのGPUI macOS backendへrunのフォント名を出力する処理だけを一時追加した。測定後に依存ファイルを元のバイト列へ戻し、依存crateと製品バイナリーを再ビルドした。[測定処理](evidence/font-resolution/backend-probe.txt)、[復元ビルド](evidence/font-resolution/build-restored.txt)。配置比較の実際のグリフIDは3サイズで一致している。
+
+IME確認時はmacOS標準日本語入力 `com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese` を使用した。確認後は元のazooKeyに戻した。一時有効化したKotoeriの親と日本語入力を無効化し、元から有効だったRomanは保持した。[復元状態](evidence/input-source-restored.txt)。
 
 ## 結果
 
@@ -41,8 +45,17 @@ IME確認時はmacOS標準日本語入力 `com.apple.inputmethod.Kotoeri.RomajiT
 | 箇条書き項目 | Slide直下と列内で追加・移動・削除でき、入力と構造操作の単位を保つ | 追加した項目の入力、2回のUndo/Redo、項目移動・削除各1回のUndo/Redo、兄弟Element不変を確認。列内の操作入口と追加時の古い入力の再適用を`be46c00`で修正。[直下](evidence/bullets-root/bullet-items-observations.json)、[列内](evidence/bullets-nested/bullet-items-observations.json) | 合格 |
 | 同値保存と部分編集 | 未変更の引用形式・改行・空リスト・未指定属性を保持する | raw引用、CRLF、空Bullets、未指定Caption・コード言語をGUIで開いて終了・保存し、全バイト一致。公開操作では一部の箇条書き項目だけを変更し、他の項目のraw引用を保持。`cc15124`で修正。[GUI結果](evidence/no-edit-save/result.txt) | 合格 |
 | 入力中のRedoの引継ぎ | 入力中にUndoした単位を編集終了・保存後もRedoでき、変更対象のSlideを表示する | 通常保存とSlide切り替え後のRedo、各入力単位のUndo/Redo、raw引用を含む原文への復元を確認。`cc15124`で修正。[変更対象のSlide](evidence/redo-slide/redo-target-slide.png) | 合格 |
-| フォーカス喪失での編集終了 | 入力をすべてUndoしてからCanvasの余白へ移っても、全体Redoへ引き継ぐ | 入力欄の値が開始値と同じ場合もRedoを保持。フォーカス喪失の処理を`1930beb`で追加。[GUI結果](evidence/redo-background/result.txt) | 合格 |
+| フォーカス喪失での編集終了 | 入力をすべてUndoしてからCanvasの余白へ移っても、全体Redoへ引き継ぐ | 入力欄の値が開始値と同じ場合もRedoを保持。フォーカス喪失の処理を`1930beb`で追加し、`ba16784`でも再確認。[GUI結果](evidence/redo-background/result.txt) | 合格 |
 | 空列・高い列・Captionなしの後続 | 画像・コード枠も共有座標で配置し、画像の全体を縦横比を保って表示する | 6枚×編集・発表の12状態を実画素で検査。後続位置1px以内、画像の縦横サイズ1px以内。高い列の後続画像のずれを`5bac00b`で修正し、空Captionの追加ボタンをElement間の余白へ表示。[following-layout-observations.json](evidence/following-layout-observations.json) | 合格 |
+| 代表例の通し操作 | 6枚をGUIで編集、保存、Undo/Redo、発表、再読み込みできる | 表題・見出し・本文・コード・列幅・画像参照・Caption・構成の8操作で保存値を照合。各Undoで変更前の全バイトを復元、Redoで変更後を復元。6枚の発表と再起動後の表示・履歴消去を確認。[結果](evidence/sample-workflow/result.txt) | 合格 |
+| Columns構成操作 | 列内外・別ブロック間の移動、並べ替え、入れ子拒否、中身を含む削除復元ができる | 移動とドラッグの挿入表示、不正なColumns入れ子の理由表示・原文不変・Redo保持、Columns全体削除と1回のUndoによる原文・選択復元を確認。[結果](evidence/columns-workflow/result.txt) | 合格 |
+| 画面外の全文修復 | 非表示Slideの問題も発表を止め、全文を修正したら解除する | 別Slideの30行コードで両開始ボタンを停止。診断から全文へ移動し、コピー値・修正後の即時解除・保存・全バイトUndo/Redo・発表を確認。[結果](evidence/layout-repair/result.txt) | 合格 |
+| 発表中の外部変更 | 表示を固定し、終了後にSlide IDで復帰する | 発表中にSlideを削除・並べ替え、見出しを変更。発表表示は不変。終了時は旧位置でなく同じIDへ復帰し、再開始で最新内容を表示。[結果](evidence/presentation-external-change/result.txt) | 合格 |
+| 入力履歴の上限 | 最新1,000単位だけを残し、編集終了後もUndo/Redoできる | 1,001単位を入力。入力欄で1,000回Undo、下限の追加Undoは不変。編集終了後の全体Redo・Undo各1,000回と保存値を照合。[結果](evidence/input-history-limit/result.txt) | 合格 |
+| EscapeでのRedo引継ぎ | 編集終了後も入力中のRedoを保持する | 入力単位のUndo、Escape、全体Redo/Undoと原文全バイト復元を確認。[結果](evidence/redo-escape/result.txt) | 合格 |
+| Captionの変換と編集面切替 | Canvas・Inspector往復で未確定範囲を保ち、別欄へ移ると確定する | 標準IMEの4地点でmarked・selected範囲、フォーカス、履歴0を維持。画像欄への切り替えで確定し、Captionだけの保存変更を確認。[5状態](evidence/ime-caption/ime-observations.json)、[結果](evidence/ime-caption/result.txt) | 合格 |
+| 閉じる3分岐 | 保存・破棄で文書ウィンドウを閉じ、取消では未保存入力を保つ | 保存は変更後の全バイト、破棄は元の全バイトに一致。文書window IDの消失をネイティブ一覧で確認。取消後は入力と元ファイルを保持。macOSのアプリプロセス存続は文書終了と区別した。[4ケースの観測](evidence/close-cursor/observations.json) | 合格 |
+| 発表中のカーソルとポインター操作 | 静止2秒で隠れ、動くと表示し、終了で復帰する。クリック・スクロールでは移動しない | `CGCursorIsVisible`で表示→2.155秒後非表示→移動後表示→再び非表示→Escape後表示を確認。クリック・スクロール後の見出しは不変。再表示されない問題を`84dffd4`で修正。[結果](evidence/close-cursor/result.txt) | 合格 |
 
 [IME録画](evidence/ime-standard.mov)、[全画面キー操作の録画](evidence/fullscreen.mov)を保存した。録画は確認の一部を示し、全ケースの連続録画ではない。全画面10回の各開始・終了画像と1回目の全キー画像を残した。画像削除、ドラッグ、取消などの静止画は`evidence`内にある。文字描画修正前のIME・ドラッグ画像はその機能の観測用であり、最終配置の証拠には使わない。最終配置は`layout-*.png`と`glyph-origins.csv`を使う。
 
@@ -105,6 +118,7 @@ target/mvp-layout-venv/bin/python validation/mvp-acceptance/assets_acceptance.py
 
 ```sh
 python3 validation/mvp-acceptance/ime_acceptance.py --output target/mvp-ime-evidence
+python3 validation/mvp-acceptance/ime_acceptance.py --caption-roundtrip --output target/mvp-ime-caption-evidence
 ```
 
 コードの全文編集、入力欄のUndo範囲、白紙Slideへの追加とSlide履歴は、それぞれ新しい出力先で確認する。
@@ -118,13 +132,28 @@ python3 validation/mvp-acceptance/save_as_retry_acceptance.py --output target/mv
 python3 validation/mvp-acceptance/following_layout_acceptance.py --output target/mvp-following-layout-evidence
 ```
 
+残りの通し操作と履歴上限は、ほかのpsychoを閉じ、各コマンドに未使用の出力先を指定して実行する。履歴上限はSwiftのキー送信と前面確認を使い、数分かかる。
+
+```sh
+python3 validation/mvp-acceptance/sample_workflow_acceptance.py --output target/mvp-sample-workflow-evidence
+python3 validation/mvp-acceptance/columns_workflow_acceptance.py --output target/mvp-columns-workflow-evidence
+python3 validation/mvp-acceptance/layout_repair_acceptance.py --output target/mvp-layout-repair-evidence
+python3 validation/mvp-acceptance/presentation_external_change_acceptance.py --output target/mvp-presentation-external-evidence
+python3 validation/mvp-acceptance/input_history_limit_acceptance.py --output target/mvp-history-limit-evidence
+python3 validation/mvp-acceptance/input_redo_transfer_acceptance.py --end escape --output target/mvp-redo-escape-evidence
+```
+
+終了3分岐と発表ポインターは次で確認する。フォント名の測定は、固定GPUI依存に観測処理を一時追加して2回ビルドする。スクリプトは終了時に依存ファイルを復元し、通常バイナリーへ戻す。ほかのビルドと同時に実行しない。
+
+```sh
+python3 validation/mvp-acceptance/close_cursor_acceptance.py --output target/mvp-close-cursor-evidence
+python3 validation/mvp-acceptance/font_resolution_acceptance.py --output target/mvp-font-resolution-evidence
+```
+
 ドラッグの再実行には`slow_drag.swift PID x1 y1 x2 y2 [hold_seconds]`を使える。座標は最新のpsychoウィンドウ内で指定する。`hold_seconds`を長くするとドロップ前の表示を撮影できる。Orcaの一括dragが短すぎるとGPUIの描画が間に合わなかったため、同じMacのCGEventsを段階的に送る補助コードを残した。PIDがpsychoであり、前面にあることを検査してから送信する。
 
-## 残件
+## 確認範囲
 
-Issue #17全体を合格にするには、次の製品上の確認を続ける必要がある。
+最初の判定環境で要求された通し操作と保証別の検証を実施した。監査で不足と分かった解決フォント名、閉じる3分岐、発表中のポインター操作も追加検証した。他のIME、OS、複数画面への一般化はこの記録の合格範囲に含めない。
 
-- 6枚の代表例のGUI通し操作を最後まで確認する。白紙Slideから全種類の追加、Slideの移動・削除とUndoは確認済み。複数Columns間・列内外・不正な入れ子のドラッグと中身の削除復元もGUIで確認する。
-- 画面外Elementの全文修正、現在Slide以外の問題による発表停止、発表中の外部変更後の復帰位置を確認する。
-
-保存時は一時ファイルの書込み後、rename前の比較までに発生した変更・削除を決定的な試験で検査した。比較の完了からrenameまでの間に別プロセスが書く競合は、この方式では排除できない。未確認事項をIssueの完了扱いにしない。
+保存時は一時ファイルの書込み後、rename前の比較までに発生した変更・削除を決定的な試験で検査した。比較の完了からrenameまでの間に別プロセスが書く競合は、この方式では排除できない。

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "columns-root-to-column",
+    "source": "presentation {\n metadata { title \"Columns workflow\" }\n slide id=\"one\" {\n  heading \"Columns workflow\"\n  columns { column width=50 { text \"Left one\"; text \"Left two\"; \n      text \"Root payload\"\n  }; column width=50 { bullets { item \"Right first\"; item \"Right second\"; }; }; }\n  columns { column width=50 { text \"Other left\"; }; column width=50 { text \"Other one\"; text \"Other two\"; }; }\n }\n}\n"
+  },
+  {
+    "name": "columns-column-to-root",
+    "source": "presentation {\n metadata { title \"Columns workflow\" }\n slide id=\"one\" {\n  heading \"Columns workflow\"\n  columns { column width=50 { text \"Left one\"; text \"Left two\"; \n  }; column width=50 { bullets { item \"Right first\"; item \"Right second\"; }; }; }\n  columns { column width=50 { text \"Other left\"; }; column width=50 { text \"Other one\"; text \"Other two\"; }; }\n  text \"Root payload\"\n }\n}\n"
+  },
+  {
+    "name": "columns-nested-reorder",
+    "source": "presentation {\n metadata { title \"Columns workflow\" }\n slide id=\"one\" {\n  heading \"Columns workflow\"\n  text \"Root payload\"\n  columns { column width=50 {  text \"Left two\"; \ntext \"Left one\";\n  }; column width=50 { bullets { item \"Right first\"; item \"Right second\"; }; }; }\n  columns { column width=50 { text \"Other left\"; }; column width=50 { text \"Other one\"; text \"Other two\"; }; }\n }\n}\n"
+  },
+  {
+    "name": "columns-between-blocks",
+    "source": "presentation {\n metadata { title \"Columns workflow\" }\n slide id=\"one\" {\n  heading \"Columns workflow\"\n  text \"Root payload\"\n  columns { column width=50 {  text \"Left two\"; }; column width=50 { bullets { item \"Right first\"; item \"Right second\"; }; }; }\n  columns { column width=50 { text \"Other left\"; }; column width=50 { text \"Other one\"; text \"Left one\";\ntext \"Other two\"; }; }\n }\n}\n"
+  },
+  {
+    "name": "columns-delete-subtree",
+    "source": "presentation {\n metadata { title \"Columns workflow\" }\n slide id=\"one\" {\n  heading \"Columns workflow\"\n  text \"Root payload\"\n  columns { column width=50 { text \"Other left\"; }; column width=50 { text \"Other one\"; text \"Other two\"; }; }\n }\n}\n"
+  }
+]

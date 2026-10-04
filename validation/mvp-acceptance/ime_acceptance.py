@@ -9,11 +9,16 @@ from pathlib import Path
 root = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', type=Path, default=root/'target/mvp-ime-evidence')
-out = parser.parse_args().output.resolve()
+parser.add_argument('--caption-roundtrip', action='store_true')
+args = parser.parse_args()
+out = args.output.resolve()
 out.mkdir(parents=True, exist_ok=True)
 fixture = out/'presentation.kdl'
 original = b'presentation { metadata { title "IME position" }; slide { heading "IME acceptance"; text "original body"; }; }\n'
 assert not fixture.exists(), 'Use a fresh output directory; edited fixtures are never overwritten'
+if args.caption_roundtrip:
+    original = b'presentation { metadata { title "Caption IME" }; slide { heading "Caption acceptance"; image "orientation-6.jpg" { caption "original caption"; }; }; }\n'
+    shutil.copy(root/'tests/fixtures/orientation-6.jpg',out/'orientation-6.jpg')
 fixture.write_bytes(original)
 state_file, rect_file = out/'input-state.csv', out/'character-rects.csv'
 app = subprocess.Popen([str(root/'target/debug/psycho'), str(fixture)],
@@ -98,84 +103,115 @@ def selected_rect():
     return tuple(map(float,row[3:7]))
 
 try:
-    time.sleep(3)
-    act('get-app-state','--restore-window')
-    act('click','--x','300','--y','316','--click-count','2','--no-screenshot')
-    composition()
-    initial=record('ime-candidates',True)
-    assert initial['input']['text']=='日本語の変換',initial
-    assert initial['input']['marked']==[0,6] and initial['input']['undo']==0
-    assert initial['input']['focused'] and initial['input']['composing']
-    subprocess.run(['xcrun','swift',str(Path(__file__).with_name('move_window.swift')),str(app.pid),'500','255'],check=True,capture_output=True)
-    moved=record('ime-window-move',True); follows(initial,moved,180,70)
-    subprocess.run(['xcrun','swift',str(Path(__file__).with_name('slow_drag.swift')),str(app.pid),'200','16','300','46','0'],check=True,capture_output=True)
-    dragged=record('ime-titlebar-drag',True); follows(moved,dragged,100,30)
-    act('press-key','--key','Right','--no-screenshot')
-    right=record('ime-right',True)
-    assert right['input']['text']==initial['input']['text'] and right['input']['marked']==[0,6]
-    assert right['input']['selected']!=initial['input']['selected'] and right['input']['undo']==0
-    act('press-key','--key','Left','--no-screenshot')
-    left=record('ime-left'); assert left['input']['text']==initial['input']['text'] and left['input']['undo']==0
-    subprocess.run(['xcrun','swift',str(Path(__file__).with_name('move_window.swift')),str(app.pid),'320','185'],check=True,capture_output=True)
-    before=record('ime-before-resize'); old_rect=selected_rect()
-    subprocess.run(['xcrun','swift',str(Path(__file__).with_name('resize_window.swift')),str(app.pid),'1440','992'],check=True,capture_output=True)
-    resized=record('ime-resize',True); new_rect=selected_rect()
-    follows(before,resized,new_rect[0]-old_rect[0],new_rect[1]+new_rect[3]-old_rect[1]-old_rect[3])
-    # With the candidate list open, Return can first choose the candidate and
-    # leave the conversion session active. Only IME decides when it is final.
-    for attempt in range(1,4):
-        act('press-key','--key','Return','--no-screenshot')
-        confirmed=record(f'ime-return-{attempt}',True)
-        assert confirmed['input']['text']=='日本語の変換'
-        if confirmed['input']['marked']==[-1,-1]:
-            break
-        assert confirmed['input']['undo']==0 and confirmed['input']['focused']
+    if args.caption_roundtrip:
+        time.sleep(3)
+        act('get-app-state','--restore-window')
+        main=next(w for w in windows() if w['layer']==0 and w['bounds']['Width']>=1000)
+        state=act('get-app-state','--window-id',str(main['id']))
+        rows=json.loads(subprocess.check_output([str(ocr),state['screenshot']['path']],text=True))
+        shutil.copy(state['screenshot']['path'],out/'initial.png')
+        row=next(row for row in rows if ''.join(row['text'].split()).lower()=='originalcaption')
+        x,y=str(row['x']),str(row['y'])
+        act('click','--x',x,'--y',y,'--click-count','2','--no-screenshot')
+        assert input_state()['text']=='original caption' and input_state()['focused']
+        composition()
+        before=record('caption-before-inspector',True)
+        press_label('全文をInspectorで編集')
+        inspector=record('caption-inspector',True)
+        same_conversion(before,inspector)
+        act('click','--x',x,'--y',y,'--click-count','2','--no-screenshot')
+        canvas=record('caption-canvas',True)
+        same_conversion(before,canvas)
+        press_label('全文をInspectorで編集')
+        inspector_again=record('caption-inspector-again',True)
+        same_conversion(before,inspector_again)
+        act('click','--x',x,'--y',str(float(y)-80),'--no-screenshot')
+        switched_field=record('image-path-after-caption',True)
+        assert switched_field['input']['text'].endswith('orientation-6.jpg')
+        assert switched_field['input']['marked']==[-1,-1] and not switched_field['input']['composing']
+        assert fixture.read_bytes()==original
+        act('click','--x','85','--y','55','--no-screenshot')
+        assert fixture.read_bytes()==original.replace(b'original caption','日本語の変換'.encode())
+        print('PASS native Caption Canvas/Inspector roundtrip and commit on different field',flush=True)
     else:
-        raise AssertionError('Native IME did not finalize after selecting the candidate')
-    assert confirmed['input']['undo']==1 and not confirmed['input']['composing']
-    act('press-key','--key','Return','--no-screenshot')
-    newline=record('ime-newline'); assert newline['input']['text']=='日本語の変換\n' and newline['input']['undo']==2
-    act('hotkey','--key','CmdOrCtrl+Z','--no-screenshot'); undone=record('ime-undo-newline')
-    assert undone['input']['text']=='日本語の変換' and undone['input']['undo']==1
-    act('hotkey','--key','CmdOrCtrl+Z','--no-screenshot'); undone=record('ime-undo-conversion')
-    assert undone['input']['text']=='original body' and undone['input']['undo']==0
-    act('hotkey','--key','CmdOrCtrl+Shift+Z','--no-screenshot'); redone=record('ime-redo-conversion')
-    assert redone['input']['text']=='日本語の変換' and redone['input']['undo']==1
-    assert fixture.read_bytes()==original, 'IME and window operations must not save automatically'
-    act('press-key','--key','Escape','--no-screenshot')
-    act('click','--x','85','--y','55','--no-screenshot')
-    assert fixture.read_bytes()==original.replace(b'original body','日本語の変換'.encode())
-    record('ime-saved',True)
-    # Start another edit and keep its native composition while moving the same
-    # input entity from Canvas to Inspector. Escape must first reach the IME.
-    act('click','--x','260','--y','346','--click-count','2','--no-screenshot')
-    composition()
-    before_switch=record('ime-before-inspector',True)
-    press_label('全文をInspectorで編集')
-    switched=record('ime-inspector',True)
-    same_conversion(before_switch,switched)
-    assert switched['input']['cursor'][0]>1170, 'Input was not mounted in Inspector'
-    for panel in switched['windows']:
-        if panel['layer']==20:
-            b=panel['bounds'];assert b['X']>=0 and b['X']+b['Width']<=1920 and b['Y']>=0 and b['Y']+b['Height']<=1200,b
-    act('click','--x','260','--y','346','--click-count','2','--no-screenshot')
-    returned=record('ime-return-to-canvas',True)
-    same_conversion(before_switch,returned)
-    assert returned['input']['cursor'][0]<400, 'Input was not mounted back in Canvas'
-    follows(before_switch,returned,0,0)
-    press_label('全文をInspectorで編集')
-    record('ime-inspector-again',True)
-    act('press-key','--key','Escape','--no-screenshot')
-    escaped=record('ime-escape-priority',True)
-    assert escaped['input']['text']=='にほんごのへんかん'
-    assert escaped['input']['marked'][0]>=0 and escaped['input']['focused'] and escaped['input']['composing']
-    assert escaped['input']['undo']==before_switch['input']['undo']
-    press_label('入力を取り消す')
-    cancelled=record('ime-cancelled',True)
-    assert cancelled['input']['text']=='日本語の変換' and cancelled['input']['marked']==[-1,-1]
-    assert cancelled['input']['undo']==0 and not cancelled['input']['composing']
-    assert fixture.read_bytes()==original.replace(b'original body','日本語の変換'.encode())
-    print('PASS native geometry, IME key priority, Canvas/Inspector switch, Cancel, Undo/Redo and Save',flush=True)
+        time.sleep(3)
+        act('get-app-state','--restore-window')
+        act('click','--x','300','--y','316','--click-count','2','--no-screenshot')
+        composition()
+        initial=record('ime-candidates',True)
+        assert initial['input']['text']=='日本語の変換',initial
+        assert initial['input']['marked']==[0,6] and initial['input']['undo']==0
+        assert initial['input']['focused'] and initial['input']['composing']
+        subprocess.run(['xcrun','swift',str(Path(__file__).with_name('move_window.swift')),str(app.pid),'500','255'],check=True,capture_output=True)
+        moved=record('ime-window-move',True); follows(initial,moved,180,70)
+        subprocess.run(['xcrun','swift',str(Path(__file__).with_name('slow_drag.swift')),str(app.pid),'200','16','300','46','0'],check=True,capture_output=True)
+        dragged=record('ime-titlebar-drag',True); follows(moved,dragged,100,30)
+        act('press-key','--key','Right','--no-screenshot')
+        right=record('ime-right',True)
+        assert right['input']['text']==initial['input']['text'] and right['input']['marked']==[0,6]
+        assert right['input']['selected']!=initial['input']['selected'] and right['input']['undo']==0
+        act('press-key','--key','Left','--no-screenshot')
+        left=record('ime-left'); assert left['input']['text']==initial['input']['text'] and left['input']['undo']==0
+        subprocess.run(['xcrun','swift',str(Path(__file__).with_name('move_window.swift')),str(app.pid),'320','185'],check=True,capture_output=True)
+        before=record('ime-before-resize'); old_rect=selected_rect()
+        subprocess.run(['xcrun','swift',str(Path(__file__).with_name('resize_window.swift')),str(app.pid),'1440','992'],check=True,capture_output=True)
+        resized=record('ime-resize',True); new_rect=selected_rect()
+        follows(before,resized,new_rect[0]-old_rect[0],new_rect[1]+new_rect[3]-old_rect[1]-old_rect[3])
+        # With the candidate list open, Return can first choose the candidate and
+        # leave the conversion session active. Only IME decides when it is final.
+        for attempt in range(1,4):
+            act('press-key','--key','Return','--no-screenshot')
+            confirmed=record(f'ime-return-{attempt}',True)
+            assert confirmed['input']['text']=='日本語の変換'
+            if confirmed['input']['marked']==[-1,-1]:
+                break
+            assert confirmed['input']['undo']==0 and confirmed['input']['focused']
+        else:
+            raise AssertionError('Native IME did not finalize after selecting the candidate')
+        assert confirmed['input']['undo']==1 and not confirmed['input']['composing']
+        act('press-key','--key','Return','--no-screenshot')
+        newline=record('ime-newline'); assert newline['input']['text']=='日本語の変換\n' and newline['input']['undo']==2
+        act('hotkey','--key','CmdOrCtrl+Z','--no-screenshot'); undone=record('ime-undo-newline')
+        assert undone['input']['text']=='日本語の変換' and undone['input']['undo']==1
+        act('hotkey','--key','CmdOrCtrl+Z','--no-screenshot'); undone=record('ime-undo-conversion')
+        assert undone['input']['text']=='original body' and undone['input']['undo']==0
+        act('hotkey','--key','CmdOrCtrl+Shift+Z','--no-screenshot'); redone=record('ime-redo-conversion')
+        assert redone['input']['text']=='日本語の変換' and redone['input']['undo']==1
+        assert fixture.read_bytes()==original, 'IME and window operations must not save automatically'
+        act('press-key','--key','Escape','--no-screenshot')
+        act('click','--x','85','--y','55','--no-screenshot')
+        assert fixture.read_bytes()==original.replace(b'original body','日本語の変換'.encode())
+        record('ime-saved',True)
+        # Start another edit and keep its native composition while moving the same
+        # input entity from Canvas to Inspector. Escape must first reach the IME.
+        act('click','--x','260','--y','346','--click-count','2','--no-screenshot')
+        composition()
+        before_switch=record('ime-before-inspector',True)
+        press_label('全文をInspectorで編集')
+        switched=record('ime-inspector',True)
+        same_conversion(before_switch,switched)
+        assert switched['input']['cursor'][0]>1170, 'Input was not mounted in Inspector'
+        for panel in switched['windows']:
+            if panel['layer']==20:
+                b=panel['bounds'];assert b['X']>=0 and b['X']+b['Width']<=1920 and b['Y']>=0 and b['Y']+b['Height']<=1200,b
+        act('click','--x','260','--y','346','--click-count','2','--no-screenshot')
+        returned=record('ime-return-to-canvas',True)
+        same_conversion(before_switch,returned)
+        assert returned['input']['cursor'][0]<400, 'Input was not mounted back in Canvas'
+        follows(before_switch,returned,0,0)
+        press_label('全文をInspectorで編集')
+        record('ime-inspector-again',True)
+        act('press-key','--key','Escape','--no-screenshot')
+        escaped=record('ime-escape-priority',True)
+        assert escaped['input']['text']=='にほんごのへんかん'
+        assert escaped['input']['marked'][0]>=0 and escaped['input']['focused'] and escaped['input']['composing']
+        assert escaped['input']['undo']==before_switch['input']['undo']
+        press_label('入力を取り消す')
+        cancelled=record('ime-cancelled',True)
+        assert cancelled['input']['text']=='日本語の変換' and cancelled['input']['marked']==[-1,-1]
+        assert cancelled['input']['undo']==0 and not cancelled['input']['composing']
+        assert fixture.read_bytes()==original.replace(b'original body','日本語の変換'.encode())
+        print('PASS native geometry, IME key priority, Canvas/Inspector switch, Cancel, Undo/Redo and Save',flush=True)
 finally:
     (out/'ime-observations.json').write_text(json.dumps(observations,ensure_ascii=False,indent=2)+'\n')
     app.terminate()

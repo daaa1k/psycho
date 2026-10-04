@@ -1,0 +1,7 @@
+current=dev.ensan.inputmethod.azooKeyMac.Japanese
+com.apple.inputmethod.Kotoeri.RomajiTyping=false
+com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese.Katakana=false
+com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese.HalfWidthKana=false
+com.apple.inputmethod.Kotoeri.RomajiTyping.Roman=true
+com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese.FullWidthRoman=false
+com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese=false

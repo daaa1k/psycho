@@ -1,0 +1,6 @@
+[DEBUG-ime-select] clicks=1 canvas=false focused=false same=false
+[DEBUG-ime-select] clicks=2 canvas=false focused=false same=true
+2026-10-03 20:07:21.743 psycho[19946:38121591] error messaging the mach port for IMKCFRunLoopWakeUpReliable
+[DEBUG-ime-blur] focused=false draft=true undo=false redo=false
+[DEBUG-ime-select] clicks=1 canvas=false focused=false same=true
+[DEBUG-ime-select] clicks=2 canvas=false focused=false same=true

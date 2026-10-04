@@ -1,0 +1,6 @@
+PASS columns-root-to-column one Undo/Redo and exact bytes
+PASS columns-column-to-root one Undo/Redo and exact bytes
+PASS columns-nested-reorder one Undo/Redo and exact bytes
+PASS columns-between-blocks one Undo/Redo and exact bytes
+PASS columns-delete-subtree one Undo/Redo and exact bytes
+PASS root/column moves, nested reorder, inter-block drag, invalid nesting, Columns subtree deletion and selection restoration

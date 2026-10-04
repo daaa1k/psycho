@@ -1,0 +1,6 @@
+MOUSE 950.0 242.0 to 700.0 400.0 visible True
+MOUSE 700.0 400.0 to 800.0 400.0 visible False
+Traceback (most recent call last):
+  File "/Users/daichikinoshita/orca/workspaces/psycho/psycho-mvp-kdl-gui/validation/mvp-acceptance/close_cursor_acceptance.py", line 70, in <module>
+    move();time.sleep(.35);redisplayed=visible();assert redisplayed
+AssertionError
