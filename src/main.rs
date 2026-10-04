@@ -4158,6 +4158,16 @@ impl PsychoApp {
                 self.editor.clone(),
                 cx,
             ),
+            Element::Bullets(items) if editing && items.is_empty() => div()
+                .w_full()
+                .h(px(42.0 * scale))
+                .text_size(px(28.0 * scale))
+                .line_height(px(42.0 * scale))
+                .text_color(rgb(0x9ca3af))
+                .overflow_hidden()
+                .whitespace_nowrap()
+                .when(selected, |item| item.border_1().border_color(rgb(0x3b82f6)))
+                .child("空の箇条書き"),
             _ => render_element(
                 element,
                 scale,
@@ -5058,7 +5068,8 @@ fn render_element(
                 )
                 .0 + 8.;
             }
-            base.child(list)
+            base.when(items.is_empty(), |element| element.h(px(42.0 * scale)))
+                .child(list)
         }
         Element::Code {
             text: value,
@@ -5329,6 +5340,9 @@ fn measure_element(
             measure_text(text, ".SystemUIFont", 28.0, 42.0, width, false, window).0
         }
         Element::Bullets(items) => {
+            if items.is_empty() {
+                return 42.0;
+            }
             let mut height = 0.0;
             for (index, item) in items.iter().enumerate() {
                 if index > 0 {
