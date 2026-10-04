@@ -3686,10 +3686,11 @@ impl PsychoApp {
                     .unwrap_or(&self.asset_images)
             };
             for (index, element) in slide.elements.iter().enumerate() {
-                let selected = matches!(self.target, EditTarget::Element { slide: selected_slide, index: selected_index, .. } if selected_slide == slide_index && selected_index == index)
-                    || matches!(self.target, EditTarget::Columns { slide: selected_slide, index: selected_index } if selected_slide == slide_index && selected_index == index)
-                    || matches!(self.target, EditTarget::ColumnWidth { slide: selected_slide, index: selected_index, .. } if selected_slide == slide_index && selected_index == index)
-                    || matches!(self.target, EditTarget::NestedElement { slide: selected_slide, columns, .. } if selected_slide == slide_index && columns == index);
+                let selected = editing
+                    && (matches!(self.target, EditTarget::Element { slide: selected_slide, index: selected_index, .. } if selected_slide == slide_index && selected_index == index)
+                        || matches!(self.target, EditTarget::Columns { slide: selected_slide, index: selected_index } if selected_slide == slide_index && selected_index == index)
+                        || matches!(self.target, EditTarget::ColumnWidth { slide: selected_slide, index: selected_index, .. } if selected_slide == slide_index && selected_index == index)
+                        || matches!(self.target, EditTarget::NestedElement { slide: selected_slide, columns, .. } if selected_slide == slide_index && columns == index));
                 // Place complete Elements using the same base coordinates
                 // as their glyphs. Flex's per-child rounding otherwise
                 // accumulates before images and code backgrounds.
