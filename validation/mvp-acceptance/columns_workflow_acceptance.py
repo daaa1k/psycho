@@ -1,4 +1,4 @@
-import argparse,json,subprocess,time
+import argparse,json,subprocess,time,unicodedata
 from pathlib import Path
 from gui_session import Gui,root
 
@@ -63,7 +63,7 @@ try:
     select('Left one');gui.press('2列の内容へ戻る');gui.press('Element を削除')
     deleted=operation(gui.original,'columns-delete-subtree')
     assert deleted.count(b'columns')==1 and b'Right first' not in deleted and b'Left one' not in deleted
-    assert '左列50%/右列50%' in gui.text('columns-restored-selection')
+    assert '左列50%/右列50%' in unicodedata.normalize('NFKC',gui.text('columns-restored-selection'))
     assert gui.save()==gui.original
     saved=gui.original
     for kind,payload,font,target in [('heading','Columns workflow',48,'2列 3 · 左列へ移動'),
