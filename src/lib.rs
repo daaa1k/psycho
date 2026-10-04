@@ -1869,6 +1869,7 @@ fn parse_and_validate(
                 .diagnostics
                 .iter()
                 .map(|detail| {
+                    let slide = syntax_slide_context(source, detail.span.offset());
                     diagnostic(
                         source,
                         DiagnosticKind::Syntax,
@@ -1879,8 +1880,8 @@ fn parse_and_validate(
                         detail.span.offset(),
                         detail.span.len(),
                         file_name.clone(),
-                        None,
-                        None,
+                        slide.as_ref().map(|(index, _)| *index),
+                        slide.and_then(|(_, id)| id),
                         None,
                         None,
                         None,
@@ -1890,6 +1891,35 @@ fn parse_and_validate(
             (None, diagnostics)
         }
     }
+}
+
+fn syntax_slide_context(source: &str, offset: usize) -> Option<(usize, Option<String>)> {
+    const MAX_SCHEMA_NESTING: usize = 4;
+    let mut prefix = source[..offset].to_owned();
+    prefix.push('\n');
+    for _ in 0..MAX_SCHEMA_NESTING {
+        prefix.push_str("}\n");
+        let Ok(document) = KdlDocument::parse_v2(&prefix) else {
+            continue;
+        };
+        let [root] = document.nodes() else {
+            return None;
+        };
+        if root.name().value() != "presentation" {
+            return None;
+        }
+        return root
+            .children()?
+            .nodes()
+            .iter()
+            .filter(|node| node.name().value() == "slide")
+            .enumerate()
+            .find(|(_, node)| {
+                node.children().is_some() && node.span().offset() + node.span().len() > offset
+            })
+            .map(|(index, node)| (index, property_string(node, "id")));
+    }
+    None
 }
 
 fn validate_document(

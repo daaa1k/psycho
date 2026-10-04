@@ -84,7 +84,7 @@ fn syntax_diagnostics_identify_only_a_slide_proven_by_the_valid_prefix() {
         "slide id=\"second\" { bad[; }",
         "slide id=\"second\" { columns { column { text \"bad\\q\"; } } }",
         "/* slide id=\"fake\" { */ slide id=\"second\" { text \"bad\\q\"; }",
-        "/- slide id=\"ignored\" {}; slide id=\"second\" { text \"bad\\q\"; }",
+        "/- slide id=\"ignored\" {}\n slide id=\"second\" { text \"bad\\q\"; }",
     ] {
         let document =
             PresentationDocument::from_source(&format!("{prefix}{content}\n}}")).unwrap();
@@ -110,4 +110,31 @@ fn syntax_diagnostics_identify_only_a_slide_proven_by_the_valid_prefix() {
             assert_eq!(diagnostic.slide_id, None);
         }
     }
+}
+
+#[test]
+fn diagnostics_after_successive_edits_use_the_reopened_source() {
+    let folder = tempfile::tempdir().unwrap();
+    let path = folder.path().join("edited.kdl");
+    std::fs::write(&path, "presentation {\r\n metadata { title \"x\" }\r\n slide id=\"edited\" { text \"before\"; }\r\n}").unwrap();
+    let mut document = PresentationDocument::open(&path).unwrap();
+    document.set_title("長いタイトル").unwrap();
+    document.set_element_text(0, 0, "一行目\n二行目").unwrap();
+    document.set_element_text(0, 0, "書き直した内容").unwrap();
+    document.save().unwrap();
+    let source = document
+        .source()
+        .replace("text \"書き直した内容\"", "text 42");
+    std::fs::write(&path, &source).unwrap();
+    let reopened = PresentationDocument::open(&path).unwrap();
+    assert!(reopened.model().is_none());
+    assert_eq!(reopened.diagnostics().len(), 1);
+    let diagnostic = &reopened.diagnostics()[0];
+    assert_eq!(diagnostic.file_name.as_deref(), Some("edited.kdl"));
+    assert_eq!(diagnostic.line, 3);
+    assert_eq!(diagnostic.column, 22);
+    assert_eq!(diagnostic.source_line, " slide id=\"edited\" { text 42; }");
+    assert_eq!(&source[diagnostic.byte_range.clone()], "text 42");
+    assert_eq!(diagnostic.slide_index, Some(0));
+    assert_eq!(diagnostic.slide_id.as_deref(), Some("edited"));
 }
