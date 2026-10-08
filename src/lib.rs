@@ -206,6 +206,18 @@ impl From<std::io::Error> for DocumentError {
     }
 }
 
+/// State of the backing KDL file relative to the retained GUI document.
+#[derive(Clone, Debug)]
+pub enum ExternalState {
+    Current,
+    Conflict,
+    Invalid(Vec<Diagnostic>),
+    Unavailable {
+        kind: std::io::ErrorKind,
+        message: String,
+    },
+}
+
 /// A source-preserving editor model. Public operations are the shared seam for
 /// the GUI and persistence tests; parsed KDL values are never serialized as a
 /// whole document when a user edits one field.
@@ -221,6 +233,7 @@ pub struct PresentationDocument {
     redo: Vec<String>,
     undo_labels: Vec<String>,
     redo_labels: Vec<String>,
+    external_state: ExternalState,
 }
 
 impl PresentationDocument {
@@ -279,6 +292,7 @@ impl PresentationDocument {
             redo: Vec::new(),
             undo_labels: Vec::new(),
             redo_labels: Vec::new(),
+            external_state: ExternalState::Current,
         }
     }
 
@@ -305,8 +319,14 @@ impl PresentationDocument {
         &self.diagnostics
     }
 
+    pub fn external_state(&self) -> &ExternalState {
+        &self.external_state
+    }
+
     pub fn can_edit(&self) -> bool {
-        self.model.is_some() && self.diagnostics.is_empty()
+        matches!(self.external_state, ExternalState::Current)
+            && self.model.is_some()
+            && self.diagnostics.is_empty()
     }
 
     pub fn is_dirty(&self) -> bool {
@@ -314,11 +334,11 @@ impl PresentationDocument {
     }
 
     pub fn can_undo(&self) -> bool {
-        !self.undo.is_empty()
+        matches!(self.external_state, ExternalState::Current) && !self.undo.is_empty()
     }
 
     pub fn can_redo(&self) -> bool {
-        !self.redo.is_empty()
+        matches!(self.external_state, ExternalState::Current) && !self.redo.is_empty()
     }
 
     pub fn undo_description(&self) -> Option<&str> {
@@ -1552,6 +1572,9 @@ impl PresentationDocument {
     }
 
     pub fn undo(&mut self) -> bool {
+        if !self.can_undo() {
+            return false;
+        }
         let Some((source, description)) = self.undo.pop().zip(self.undo_labels.pop()) else {
             return false;
         };
@@ -1570,6 +1593,9 @@ impl PresentationDocument {
     }
 
     pub fn redo(&mut self) -> bool {
+        if !self.can_redo() {
+            return false;
+        }
         let Some((source, description)) = self.redo.pop().zip(self.redo_labels.pop()) else {
             return false;
         };
@@ -1577,6 +1603,56 @@ impl PresentationDocument {
         self.undo_labels.push(description);
         self.refresh_model();
         true
+    }
+
+    /// Reload a valid external change only when neither the document nor the
+    /// GUI input has unsaved changes. Returns whether a reload was performed.
+    pub fn synchronize_external(&mut self, has_draft: bool) -> Result<bool, DocumentError> {
+        let Some(path) = self.path.as_ref() else {
+            return Ok(false);
+        };
+        let document = self.read_external_document(path.clone())?;
+        if document.source == self.saved_source {
+            return if matches!(self.external_state, ExternalState::Current) {
+                Ok(false)
+            } else {
+                Err(DocumentError::ExternalChange)
+            };
+        }
+        if !document.can_edit() {
+            self.external_state = ExternalState::Invalid(document.diagnostics);
+            return Err(DocumentError::InvalidDocument);
+        }
+        if self.is_dirty() || has_draft || !matches!(self.external_state, ExternalState::Current) {
+            self.external_state = ExternalState::Conflict;
+            return Err(DocumentError::ExternalChange);
+        }
+        *self = document;
+        Ok(true)
+    }
+
+    /// Explicitly discard GUI edits only after a valid replacement is read.
+    /// Failed reloads preserve source bytes, the saved baseline and history.
+    pub fn reload_from_disk(&mut self) -> Result<(), DocumentError> {
+        let path = self.path.as_ref().ok_or(DocumentError::NoPath)?;
+        let document = self.read_external_document(path.clone())?;
+        if !document.can_edit() {
+            self.external_state = ExternalState::Invalid(document.diagnostics);
+            return Err(DocumentError::InvalidDocument);
+        }
+        *self = document;
+        Ok(())
+    }
+
+    fn read_external_document(&mut self, path: PathBuf) -> Result<Self, DocumentError> {
+        Self::open(path).inspect_err(|error| {
+            if let DocumentError::Io(error) = error {
+                self.external_state = ExternalState::Unavailable {
+                    kind: error.kind(),
+                    message: error.to_string(),
+                };
+            }
+        })
     }
 
     pub fn check_external_change(&self) -> Result<(), DocumentError> {
@@ -1594,7 +1670,13 @@ impl PresentationDocument {
     }
 
     pub fn save(&mut self) -> Result<(), DocumentError> {
-        self.save_before_replace(|| {})
+        let result = self.save_before_replace(|| {});
+        // A temporary-write failure alone must not lock the editor. Inspect
+        // the source only when the backing file also reports a change.
+        if result.is_err() && self.check_external_change().is_err() {
+            let _ = self.synchronize_external(true);
+        }
+        result
     }
 
     // Private seam for deterministic tests of changes during the temporary write.
@@ -1657,7 +1739,7 @@ impl PresentationDocument {
         overwrite_confirmed: bool,
         before_replace: impl FnOnce(),
     ) -> Result<(), DocumentError> {
-        if !self.can_edit() {
+        if self.model.is_none() || !self.diagnostics.is_empty() {
             return Err(DocumentError::InvalidDocument);
         }
         let path = path.to_path_buf();
@@ -1701,6 +1783,7 @@ impl PresentationDocument {
         self.path = Some(path);
         self.asset_base = Some(parent);
         self.saved_source.clone_from(&self.source);
+        self.external_state = ExternalState::Current;
         self.undo.clear();
         self.redo.clear();
         self.undo_labels.clear();

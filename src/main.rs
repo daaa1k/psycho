@@ -19,7 +19,7 @@ use input::TextInputState;
 use objc::{msg_send, runtime::Object, sel, sel_impl};
 use psycho::{
     AssetDiagnostic, Diagnostic, DiagnosticKind, DocumentError, Element, ElementField, ElementKind,
-    PresentationDocument, PresentationModel,
+    ExternalState, PresentationDocument, PresentationModel,
 };
 use raw_window_handle::{HasWindowHandle, RawWindowHandle};
 
@@ -160,9 +160,6 @@ struct PsychoApp {
     pending_open: Option<PathBuf>,
     pending_close: bool,
     pending_external_reload: bool,
-    external_change: bool,
-    external_diagnostics: Option<Vec<Diagnostic>>,
-    external_error: Option<String>,
     source_selection: Option<Diagnostic>,
     layout_diagnostics: Vec<LayoutDiagnostic>,
     asset_diagnostics: Vec<AssetDiagnostic>,
@@ -252,9 +249,6 @@ impl PsychoApp {
             pending_open: None,
             pending_close: false,
             pending_external_reload: false,
-            external_change: false,
-            external_diagnostics: None,
-            external_error: None,
             source_selection: None,
             layout_diagnostics: Vec::new(),
             asset_diagnostics,
@@ -266,10 +260,8 @@ impl PsychoApp {
     }
 
     fn external_edit_blocked(&self) -> bool {
-        self.external_change
-            || self.pending_external_reload
-            || self.external_diagnostics.is_some()
-            || self.external_error.is_some()
+        self.pending_external_reload
+            || !matches!(self.document.external_state(), ExternalState::Current)
     }
 
     fn has_uncommitted_draft(&self, cx: &Context<Self>) -> bool {
@@ -292,56 +284,33 @@ impl PsychoApp {
     }
 
     fn poll_external_change(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        if self.external_change || self.presentation.is_some() || self.document.path().is_none() {
+        if self.external_edit_blocked()
+            || self.presentation.is_some()
+            || self.document.path().is_none()
+        {
             return;
         }
-        match self.document.check_external_change() {
-            Ok(()) => {}
-            Err(DocumentError::ExternalChange) => {
-                self.external_change = true;
-                if self.document.is_dirty() || self.has_uncommitted_draft(cx) {
-                    self.status = "外部変更と未保存の編集が競合しています。外部ファイルを読み込むか、別名保存してください。".into();
-                    window.focus(&self.root_focus, cx);
-                    cx.notify();
-                } else {
-                    self.pending_external_reload = true;
-                    self.reload_external_change(window, cx);
-                }
-            }
-            Err(error @ DocumentError::Io(_)) => {
-                self.external_change = true;
-                self.record_external_problem(&error);
-                self.status = format!("外部ファイルを確認できません: {error}");
-                window.focus(&self.root_focus, cx);
-                cx.notify();
-            }
-            Err(error) => {
-                self.status = format!("外部ファイルの確認に失敗しました: {error}");
-                cx.notify();
-            }
+        let previous_slide = self.reload_slide_position();
+        let has_draft = self.has_uncommitted_draft(cx);
+        match self.document.synchronize_external(has_draft) {
+            Ok(false) => return,
+            Ok(true) => self.did_reload(previous_slide, window, cx),
+            Err(_) => self.show_external_problem(window, cx),
         }
+        cx.notify();
     }
 
-    fn record_external_problem(&mut self, error: &DocumentError) {
-        self.external_change =
-            matches!(error, DocumentError::ExternalChange | DocumentError::Io(_));
-        self.external_error = match error {
-            DocumentError::Io(error) => Some(error.to_string()),
-            _ => None,
+    fn show_external_problem(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        self.source_selection = None;
+        self.status = match self.document.external_state() {
+            ExternalState::Current => return,
+            ExternalState::Conflict => "外部変更と未保存の編集が競合しています。編集を破棄して再読み込みするか、別名保存してください。".into(),
+            ExternalState::Invalid(_) => "外部ファイルが無効です。表示中の内容を保持し、編集・保存・発表を停止しました。外部で修正して再読み込みしてください。".into(),
+            ExternalState::Unavailable { kind: std::io::ErrorKind::NotFound, .. } => "外部ファイルが削除されています。編集中の内容を保持しています。ファイルを復元して再読み込みしてください。".into(),
+            ExternalState::Unavailable { message, .. } => format!("外部ファイルを読み込めません。編集中の内容を保持しています: {message}"),
         };
-    }
-
-    fn record_save_problem(&mut self, error: &DocumentError) {
-        if matches!(error, DocumentError::ExternalChange) {
-            self.record_external_problem(error);
-        } else if matches!(error, DocumentError::Io(_)) {
-            // A failure creating or writing the temporary file does not imply
-            // the source became unreadable. Keep editing and retry available
-            // unless a fresh read actually reports a source-file problem.
-            if let Err(source_error) = self.document.check_external_change() {
-                self.record_external_problem(&source_error);
-            }
-        }
+        window.focus(&self.root_focus, cx);
+        cx.notify();
     }
 
     fn edit_value(&self, target: EditTarget) -> String {
@@ -627,6 +596,9 @@ impl PsychoApp {
     }
 
     fn commit_draft(&mut self, window: &mut Window, cx: &mut Context<Self>) -> Result<(), String> {
+        if self.external_edit_blocked() && !self.has_uncommitted_draft(cx) {
+            return Ok(());
+        }
         if self.editor.read(cx).is_marked() && !self.finish_composition(window, cx) {
             return Err("日本語変換を確定できませんでした。".into());
         }
@@ -773,15 +745,12 @@ impl PsychoApp {
         window.focus(&self.root_focus, cx);
         match self.document.save() {
             Ok(()) => {
-                self.external_change = false;
-                self.external_diagnostics = None;
-                self.external_error = None;
                 self.source_selection = None;
                 self.pending_external_reload = false;
                 self.status = "保存しました。".into();
             }
             Err(error) => {
-                self.record_save_problem(&error);
+                self.show_external_problem(window, cx);
                 self.status = format!("保存できませんでした: {error}");
             }
         }
@@ -807,13 +776,10 @@ impl PsychoApp {
         match self.document.save() {
             Ok(()) => {
                 self.pending_close = false;
-                self.external_change = false;
-                self.external_diagnostics = None;
-                self.external_error = None;
                 window.remove_window();
             }
             Err(error) => {
-                self.record_save_problem(&error);
+                self.show_external_problem(window, cx);
                 self.status = format!("保存できませんでした: {error}");
                 cx.notify();
             }
@@ -860,12 +826,7 @@ impl PsychoApp {
                 };
                 let _ = cx.update(|window, cx| {
                     let close_after_save = view.update(cx, |this, cx| {
-                        let result = this.commit_draft(window, cx).and_then(|()| {
-                            window.focus(&this.root_focus, cx);
-                            this.document
-                                .save_as_overwriting(&path)
-                                .map_err(|error| error.to_string())
-                        });
+                        let result = this.save_as_with_draft(&path, window, cx);
                         if result.is_ok() {
                             this.refresh_assets();
                             // Save As can rebase the selected image path. Keep
@@ -874,9 +835,6 @@ impl PsychoApp {
                             let value = this.edit_value(this.target);
                             this.editor
                                 .update(cx, |input, cx| input.set_value(&value, cx));
-                            this.external_change = false;
-                            this.external_diagnostics = None;
-                            this.external_error = None;
                             this.source_selection = None;
                             this.pending_external_reload = false;
                         }
@@ -897,6 +855,40 @@ impl PsychoApp {
                 });
             })
             .detach();
+    }
+
+    fn save_as_with_draft(
+        &mut self,
+        path: &Path,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> Result<(), String> {
+        if self.external_edit_blocked() {
+            if self.editor.read(cx).is_marked() && !self.finish_composition(window, cx) {
+                return Err("日本語変換を確定できませんでした。".into());
+            }
+            // Stage the retained content and input separately. A failed Save
+            // As must leave both the locked document and input history intact.
+            let mut candidate = PresentationDocument::from_source_with_asset_base(
+                self.document.source(),
+                self.document.asset_base(),
+            )
+            .map_err(|error| error.to_string())?;
+            apply_editor_value(&mut candidate, self.target, &self.editor.read(cx).value())
+                .map_err(|error| error.to_string())?;
+            candidate
+                .save_as_overwriting(path)
+                .map_err(|error| error.to_string())?;
+            self.document = candidate;
+            window.focus(&self.root_focus, cx);
+            Ok(())
+        } else {
+            self.commit_draft(window, cx)?;
+            window.focus(&self.root_focus, cx);
+            self.document
+                .save_as_overwriting(path)
+                .map_err(|error| error.to_string())
+        }
     }
 
     fn open_picker(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
@@ -942,23 +934,11 @@ impl PsychoApp {
         match PresentationDocument::open(&path) {
             Ok(document) => {
                 self.document = document;
-                self.refresh_assets();
-                self.current_slide = 0;
-                self.target = EditTarget::Title;
-                self.external_change = false;
-                self.external_diagnostics = None;
-                self.external_error = None;
-                self.source_selection = None;
-                let title = self.edit_value(EditTarget::Title);
-                self.editor.update(cx, |input, cx| {
-                    input.set_multiline(false, cx);
-                    input.set_value(&title, cx);
-                });
+                self.reset_document_view(window, cx);
                 self.status = format!(
                     "{} を開きました。",
                     path.file_name().unwrap_or_default().to_string_lossy()
                 );
-                window.focus(&self.root_focus, cx);
             }
             Err(error) => self.status = format!("ファイルを開けませんでした: {error}"),
         }
@@ -966,10 +946,53 @@ impl PsychoApp {
         cx.notify();
     }
 
+    fn reset_document_view(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        self.refresh_assets();
+        self.current_slide = 0;
+        self.target = EditTarget::Title;
+        self.source_selection = None;
+        self.pending_external_reload = false;
+        self.column_resize_drag = None;
+        self.drop_destination = None;
+        let title = self.edit_value(EditTarget::Title);
+        self.editor.update(cx, |input, cx| {
+            input.set_multiline(false, cx);
+            input.set_value(&title, cx);
+        });
+        window.focus(&self.root_focus, cx);
+    }
+
+    fn reload_slide_position(&self) -> (usize, Option<String>) {
+        let id = self
+            .document
+            .model()
+            .and_then(|model| model.slides.get(self.current_slide))
+            .and_then(|slide| slide.id.clone());
+        (self.current_slide, id)
+    }
+
+    fn did_reload(
+        &mut self,
+        (previous_index, previous_id): (usize, Option<String>),
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        self.reset_document_view(window, cx);
+        if let Some(model) = self.document.model() {
+            self.current_slide = previous_id
+                .as_ref()
+                .and_then(|id| {
+                    model
+                        .slides
+                        .iter()
+                        .position(|slide| slide.id.as_ref() == Some(id))
+                })
+                .unwrap_or(previous_index.min(model.slides.len().saturating_sub(1)));
+        }
+        self.status = "外部ファイルを再読み込みしました。".into();
+    }
+
     fn reload_external_change(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        let Some(path) = self.document.path().map(Path::to_path_buf) else {
-            return;
-        };
         if !self.pending_external_reload
             && (self.document.is_dirty() || self.has_uncommitted_draft(cx))
         {
@@ -980,52 +1003,15 @@ impl PsychoApp {
             cx.notify();
             return;
         }
-        let previous_index = self.current_slide;
-        let previous_id = self
-            .document
-            .model()
-            .and_then(|model| model.slides.get(previous_index))
-            .and_then(|slide| slide.id.clone());
-        match PresentationDocument::open(&path) {
-            Ok(document) if document.can_edit() => {
-                self.open_document(path, window, cx);
-                if let Some(model) = self.document.model() {
-                    self.current_slide = previous_id
-                        .as_ref()
-                        .and_then(|id| {
-                            model
-                                .slides
-                                .iter()
-                                .position(|slide| slide.id.as_ref() == Some(id))
-                        })
-                        .unwrap_or(previous_index.min(model.slides.len().saturating_sub(1)));
-                }
+        let previous_slide = self.reload_slide_position();
+        match self.document.reload_from_disk() {
+            Ok(()) => self.did_reload(previous_slide, window, cx),
+            Err(_) => {
                 self.pending_external_reload = false;
-                cx.notify();
-            }
-            Ok(document) => {
-                self.external_diagnostics = Some(document.diagnostics().to_vec());
-                self.source_selection = None;
-                self.external_error = None;
-                self.external_change = true;
-                self.status =
-                    "外部ファイルが無効です。最後の正常な表示を保ち、編集と発表を停止しました。"
-                        .into();
-                self.pending_external_reload = false;
-                window.focus(&self.root_focus, cx);
-                cx.notify();
-            }
-            Err(error) => {
-                self.external_diagnostics = None;
-                self.external_error = Some(error.to_string());
-                self.external_change = true;
-                self.status =
-                    format!("外部ファイルを読み込めません。最後の正常な表示を保ちます: {error}");
-                self.pending_external_reload = false;
-                window.focus(&self.root_focus, cx);
-                cx.notify();
+                self.show_external_problem(window, cx);
             }
         }
+        cx.notify();
     }
 
     fn resolve_pending_open(
@@ -2128,27 +2114,8 @@ impl PsychoApp {
             cx.notify();
             return;
         }
-        if self.external_change {
-            self.status = "外部変更を読み込むか、別ファイルへ保存してから発表してください。".into();
-            cx.notify();
-            return;
-        }
-        if let Err(error) = self.document.check_external_change() {
-            self.external_change = true;
-            if matches!(
-                &error,
-                DocumentError::Io(error)
-                    if matches!(
-                        error.kind(),
-                        std::io::ErrorKind::NotFound | std::io::ErrorKind::PermissionDenied
-                    )
-            ) {
-                self.external_error = Some(error.to_string());
-            }
-            self.status = format!(
-                "外部ファイルに変更があります。読み込み直してから発表してください: {error}"
-            );
-            cx.notify();
+        self.poll_external_change(window, cx);
+        if self.external_edit_blocked() {
             return;
         }
         let Some(model) = self.document.model().cloned() else {
@@ -2230,19 +2197,7 @@ impl PsychoApp {
         window.focus(&self.root_focus, cx);
         self.refresh_assets();
         self.status = "発表を終了しました。".into();
-        match self.document.check_external_change() {
-            Err(DocumentError::ExternalChange) => {
-                self.external_change = false;
-                self.poll_external_change(window, cx);
-            }
-            Err(error @ DocumentError::Io(_)) => {
-                self.external_change = true;
-                self.external_error = Some(error.to_string());
-                self.status = format!("発表後に外部ファイルを確認できません: {error}");
-            }
-            Err(error) => self.status = format!("発表後の確認に失敗しました: {error}"),
-            Ok(()) => {}
-        }
+        self.poll_external_change(window, cx);
         cx.notify();
     }
 
@@ -2303,7 +2258,7 @@ impl PsychoApp {
             .child(button(
                 cx,
                 "保存",
-                model.is_some() && !self.external_change,
+                model.is_some() && !self.external_edit_blocked(),
                 |this, _, window, cx| this.save(window, cx),
             ))
             .child(button(cx, "別名保存", model.is_some(), Self::save_as))
@@ -2346,7 +2301,7 @@ impl PsychoApp {
                 "最初から発表",
                 model.as_ref().is_some_and(|model| !model.slides.is_empty())
                     && editing_available
-                    && !self.external_change
+                    && !self.external_edit_blocked()
                     && layout_valid,
                 |this, _, window, cx| this.start_presentation(false, window, cx),
             ))
@@ -2355,7 +2310,7 @@ impl PsychoApp {
                 "現在から発表",
                 model.as_ref().is_some_and(|model| !model.slides.is_empty())
                     && editing_available
-                    && !self.external_change
+                    && !self.external_edit_blocked()
                     && layout_valid,
                 |this, _, window, cx| this.start_presentation(true, window, cx),
             ));
@@ -2390,7 +2345,7 @@ impl PsychoApp {
                 .child(button(cx, "破棄して閉じる", true, Self::discard_and_close))
                 .child(button(cx, "閉じるのをやめる", true, Self::cancel_close));
         }
-        if self.external_change {
+        if self.external_edit_blocked() {
             if self.pending_external_reload {
                 toolbar = toolbar
                     .child(button(cx, "編集を破棄して再読み込み", true, |this, _, window, cx| {
@@ -2413,16 +2368,7 @@ impl PsychoApp {
 
         let side = self.render_slide_list(model.as_ref(), cx);
         let canvas = if let Some(model) = model.as_ref() {
-            if self.document.can_edit() {
-                self.render_canvas(model, self.current_slide, true, window, cx)
-            } else {
-                diagnostics_view(
-                    self.document.diagnostics(),
-                    self.source_selection.as_ref(),
-                    cx,
-                )
-                .into_any_element()
-            }
+            self.render_canvas(model, self.current_slide, true, window, cx)
         } else {
             diagnostics_view(
                 self.document.diagnostics(),
@@ -2431,9 +2377,12 @@ impl PsychoApp {
             )
             .into_any_element()
         };
-        let inspector = if let Some(diagnostics) = &self.external_diagnostics {
+        let inspector = if let ExternalState::Invalid(diagnostics) = self.document.external_state()
+        {
             diagnostics_view(diagnostics, self.source_selection.as_ref(), cx).into_any_element()
-        } else if let Some(error) = &self.external_error {
+        } else if let ExternalState::Unavailable { message: error, .. } =
+            self.document.external_state()
+        {
             div()
                 .flex()
                 .flex_col()
@@ -2516,14 +2465,14 @@ impl PsychoApp {
                 }
             }));
         }
-        if self.external_diagnostics.is_some() {
+        if self.external_edit_blocked() {
             footer = footer.child(
                 div()
                     .text_color(rgb(0x991b1b))
                     .child("表示中の内容は現在の外部ファイルと一致していません。"),
             );
         }
-        if let Some(error) = &self.external_error {
+        if let ExternalState::Unavailable { message: error, .. } = self.document.external_state() {
             footer = footer.child(
                 div()
                     .text_color(rgb(0x991b1b))
