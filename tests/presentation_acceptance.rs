@@ -279,12 +279,14 @@ fn external_change_and_deletion_never_overwrite_or_discard_edits() {
     assert!(matches!(doc.save(), Err(DocumentError::ExternalChange)));
     assert_eq!(fs::read_to_string(&path).unwrap(), "external");
     assert_eq!(doc.source(), edited);
-    assert!(doc.is_dirty() && doc.can_undo());
+    assert!(doc.is_dirty() && !doc.can_undo());
+    assert!(doc.undo_description().is_some());
     fs::remove_file(&path).unwrap();
     assert!(doc.save().is_err());
     assert!(!path.exists());
     assert_eq!(doc.source(), edited);
-    assert!(doc.is_dirty() && doc.can_undo());
+    assert!(doc.is_dirty() && !doc.can_undo());
+    assert!(doc.undo_description().is_some());
 }
 
 #[test]
