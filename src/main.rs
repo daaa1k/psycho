@@ -2379,7 +2379,18 @@ impl PsychoApp {
         };
         let inspector = if let ExternalState::Invalid(diagnostics) = self.document.external_state()
         {
-            diagnostics_view(diagnostics, self.source_selection.as_ref(), cx).into_any_element()
+            div()
+                .id("external-diagnostics")
+                .w(px(270.0))
+                .flex_shrink_0()
+                .h_full()
+                .overflow_y_scroll()
+                .child(diagnostics_view(
+                    diagnostics,
+                    self.source_selection.as_ref(),
+                    cx,
+                ))
+                .into_any_element()
         } else if let ExternalState::Unavailable { message: error, .. } =
             self.document.external_state()
         {
@@ -5508,7 +5519,10 @@ fn diagnostics_view(
         .flex()
         .flex_col()
         .gap_2()
+        .w_full()
+        .min_w_0()
         .max_w(px(680.0))
+        .whitespace_normal()
         .p_6()
         .bg(rgb(0xffffff));
     if diagnostics.is_empty() {

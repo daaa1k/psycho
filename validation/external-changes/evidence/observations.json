@@ -1,0 +1,907 @@
+[
+  {
+    "name": "01-clean-auto-reload",
+    "text": "●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表Slides>1Extern...InspectorElementsElement1・見出しPresentationtitleExternalclean編集値Externalrecovery適用入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Externalrecovery外部ファイルを再読み込みしました。",
+    "input": {
+      "text": "External recovery",
+      "selected": [
+        17,
+        17
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1148.8594,
+        260.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "y": 185,
+      "width": 1280,
+      "title": "",
+      "platform": {
+        "layer": 0
+      },
+      "isMinimized": false,
+      "x": 320,
+      "screenIndex": 0,
+      "id": 25504,
+      "height": 892,
+      "isOffscreen": false
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "External clean",
+      "再読み込みしました"
+    ]
+  },
+  {
+    "name": "02-conflict",
+    "text": "●●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1Local...Inspector外部ファイルの問題を解決するまで編集できません。保持中の入力RetaineddraftLocalcommittedExternalrecovery・未保存外部変更と未保存の編集が競合しています。編集を破棄して再読み込みするか、別名保存してください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "platform": {
+        "layer": 0
+      },
+      "x": 320,
+      "width": 1280,
+      "title": "",
+      "height": 892,
+      "isMinimized": false,
+      "screenIndex": 0,
+      "isOffscreen": false,
+      "id": 25504,
+      "y": 185
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "競合",
+      "Local committed",
+      "Retained draft",
+      "一致していません"
+    ]
+  },
+  {
+    "name": "03-conflict-frozen",
+    "text": "●●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1Local...Inspector外部ファイルの問題を解決するまで編集できません。保持中の入力RetaineddraftLocalcommittedExternalrecovery・未保存外部ファイルの競合を解決するまでRedoは使えません。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "y": 185,
+      "width": 1280,
+      "title": "",
+      "platform": {
+        "layer": 0
+      },
+      "isMinimized": false,
+      "x": 320,
+      "screenIndex": 0,
+      "id": 25504,
+      "height": 892,
+      "isOffscreen": false
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "Local committed",
+      "Retained draft"
+    ]
+  },
+  {
+    "name": "04-discard-confirmation",
+    "text": "●●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表編集を破楽して再読み込み読み込みをやめるSlides>1Local...Inspector外部ファイルの問題を解決するまで編集できません。保持中の入力RetaineddraftLocalcommittedExternalrecovery・未保存再読み込みすると未保存の編集内容を破棄します。続行するか、別名保存してください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "isOffscreen": false,
+      "platform": {
+        "layer": 0
+      },
+      "width": 1280,
+      "title": "",
+      "y": 185,
+      "x": 320,
+      "height": 892,
+      "isMinimized": false,
+      "screenIndex": 0,
+      "id": 25504
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "未保存の編集内容を破棄します"
+    ]
+  },
+  {
+    "name": "05-syntax-failed-retry",
+    "text": "●●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1Local...KDL構文・presentation.kdl:1:14Noclosing'y'forchildblockpresentation{LocalcommittedExternalrecovery・未保存外部ファイルが無効です。表示中の内容を保持し、編集・保存・発表を停止しました。外部で修正して再読み込みしてください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "y": 185,
+      "width": 1280,
+      "title": "",
+      "platform": {
+        "layer": 0
+      },
+      "isMinimized": false,
+      "x": 320,
+      "screenIndex": 0,
+      "id": 25504,
+      "height": 892,
+      "isOffscreen": false
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "KDL",
+      "Local committed",
+      "一致していません"
+    ]
+  },
+  {
+    "name": "06-syntax-readonly-source",
+    "text": "●●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1Local...KDL構文・presentation.kdl:1:14Noclosing'yforchildblockpresentation{Localcommitted読み取り専用のソース行・presentation.kdl:1:14presentationtExternalrecovery・未保存外部ファイルが無効です。表示中の内容を保持し、編集・保存・発表を停止しました。外部で修正して再読み込みしてください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "isOffscreen": false,
+      "platform": {
+        "layer": 0
+      },
+      "width": 1280,
+      "title": "",
+      "y": 185,
+      "x": 320,
+      "height": 892,
+      "isMinimized": false,
+      "screenIndex": 0,
+      "id": 25504
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "読み取り専用",
+      "presentation {"
+    ]
+  },
+  {
+    "name": "07-schema-failed-retry",
+    "text": "●●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1Local...Schema・presentation.kdl:3:21.Slideid=introunknownelement”mysteryLocalcommittedslideid=\"'intro\"{mystery\"Invalidelement\"}Externalrecovery・未保存外部ファイルが無効です。表示中の内容を保持し、編集・保存・発表を停止しました。外部で修正して再読み込みしてください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "platform": {
+        "layer": 0
+      },
+      "x": 320,
+      "width": 1280,
+      "title": "",
+      "height": 892,
+      "isMinimized": false,
+      "screenIndex": 0,
+      "isOffscreen": false,
+      "id": 25504,
+      "y": 185
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "Schema",
+      "Local committed"
+    ]
+  },
+  {
+    "name": "08-schema-readonly-source",
+    "text": "●●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1Local...Schema・presentation.kdl:3:21.Slideid=introunknownelement”mysteryLocalcommittedslideid=\"intro\"{mystery\"Invalidelement\"読み取り専用のソース行・presentation.kdl:3:21slideid=\"intro\"{mystery\"Invalidelement\"}^Externalrecovery・未保存documenthassyntaxorschemaerrors表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "y": 185,
+      "isOffscreen": false,
+      "height": 892,
+      "title": "",
+      "platform": {
+        "layer": 0
+      },
+      "isMinimized": false,
+      "id": 25504,
+      "x": 320,
+      "width": 1280,
+      "screenIndex": 0
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "読み取り専用",
+      "mystery",
+      "Invalid element"
+    ]
+  },
+  {
+    "name": "09-deleted-failed-retry",
+    "text": "●●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1Local...外部ファイルを読み込めませんNosuchfileordirectory(oserrorLocalcommittedExternalrecovery・未保存外部ファイルが削除されています。編集中の内容を保持しています。ファイルを復元して再読み込みしてください。表示中の内容は現在の外部ファイルと一致していません。外部ファイルを読み込めません:Nosuchfileordirectory(oserror2)",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "y": 185,
+      "width": 1280,
+      "title": "",
+      "platform": {
+        "layer": 0
+      },
+      "isMinimized": false,
+      "x": 320,
+      "screenIndex": 0,
+      "id": 25504,
+      "height": 892,
+      "isOffscreen": false
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "削除",
+      "Local committed",
+      "一致していません"
+    ]
+  },
+  {
+    "name": "10-recovered",
+    "text": "●●開く●保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表Slides>1Recove...InspectorElementsElement1・見出しPresentationtitleRecoveredheading編集値Externalrecovery適用入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Externalrecovery外部ファイルを再読み込みしました。",
+    "input": {
+      "text": "External recovery",
+      "selected": [
+        17,
+        17
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1148.8594,
+        260.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "platform": {
+        "layer": 0
+      },
+      "x": 320,
+      "width": 1280,
+      "title": "",
+      "height": 892,
+      "isMinimized": false,
+      "screenIndex": 0,
+      "isOffscreen": false,
+      "id": 25504,
+      "y": 185
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "Recovered heading",
+      "再読み込みしました"
+    ]
+  },
+  {
+    "name": "11-presentation-restored",
+    "text": "Recoveredheading",
+    "input": {
+      "text": "External recovery",
+      "selected": [
+        17,
+        17
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1148.8594,
+        260.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "y": 0,
+      "height": 1200,
+      "screenIndex": 0,
+      "isOffscreen": false,
+      "platform": {
+        "layer": 0
+      },
+      "id": 25504,
+      "width": 1920,
+      "isMinimized": false,
+      "x": 0,
+      "title": ""
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "Recovered heading"
+    ]
+  },
+  {
+    "name": "12-edit-save-restored",
+    "text": "●●開く●保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表Slides>1After...AfterrecoveryInspectorElementsElement1・見出しくPresentationtitleキャンバス上で編集中全文をInspectorで編集Elementを削除入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Externalrecovery保存しました。",
+    "input": {
+      "text": "After recovery",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        411.81,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "y": 185,
+      "height": 892,
+      "screenIndex": 0,
+      "isOffscreen": false,
+      "platform": {
+        "layer": 0
+      },
+      "id": 25504,
+      "width": 1280,
+      "isMinimized": false,
+      "x": 320,
+      "title": ""
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "After recovery"
+    ]
+  },
+  {
+    "name": "13-clean-deletion",
+    "text": "●●開く●保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1After...外部ファイルを読み込めませんNosuchfileordirectory(oserrorAfterrecoveryExternalrecovery外部ファイルが削除されています。編集中の内容を保持しています。ファイルを復元して再読み込みしてください。表示中の内容は現在の外部ファイルと一致していません。外部ファイルを読み込めません:Nosuchfileordirectory(oserror2)",
+    "input": {
+      "text": "After recovery",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        411.81,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "y": 185,
+      "isOffscreen": false,
+      "height": 892,
+      "title": "",
+      "platform": {
+        "layer": 0
+      },
+      "isMinimized": false,
+      "id": 25504,
+      "x": 320,
+      "width": 1280,
+      "screenIndex": 0
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "削除",
+      "After recovery",
+      "一致していません"
+    ]
+  },
+  {
+    "name": "14-clean-deletion-recovered",
+    "text": "●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表Slides>1After...InspectorElementsElement1・見出しPresentationtitleAfterrecovery編集値Externalrecovery適用入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Externalrecovery外部ファイルを再読み込みしました。",
+    "input": {
+      "text": "External recovery",
+      "selected": [
+        17,
+        17
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1148.8594,
+        260.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "y": 185,
+      "isOffscreen": false,
+      "height": 892,
+      "title": "",
+      "platform": {
+        "layer": 0
+      },
+      "isMinimized": false,
+      "id": 25504,
+      "x": 320,
+      "width": 1280,
+      "screenIndex": 0
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "After recovery",
+      "再読み込みしました"
+    ]
+  },
+  {
+    "name": "15-clean-invalid",
+    "text": "●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1After...KDL構文・presentation.kdl:1:14Noclosing'y'forchildblockpresentation{AfterrecoveryExternalrecovery外部ファイルが無効です。表示中の内容を保持し、編集・保存・発表を停止しました。外部で修正して再読み込みしてください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "External recovery",
+      "selected": [
+        17,
+        17
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1148.8594,
+        260.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "width": 1280,
+      "id": 25504,
+      "x": 320,
+      "height": 892,
+      "screenIndex": 0,
+      "y": 185,
+      "title": "",
+      "isMinimized": false,
+      "isOffscreen": false,
+      "platform": {
+        "layer": 0
+      }
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "KDL",
+      "After recovery",
+      "一致していません"
+    ]
+  },
+  {
+    "name": "16-clean-invalid-readonly",
+    "text": "●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1After...KDL構文・presentation.kdl:1:14Noclosing'yforchildblockpresentation{Afterrecovery読み取り専用のソース行・presentation.kdl:1:14presentationtExternalrecovery外部ファイルが無効です。表示中の内容を保持し、編集・保存・発表を停止しました。外部で修正して再読み込みしてください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "External recovery",
+      "selected": [
+        17,
+        17
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1148.8594,
+        260.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "y": 185,
+      "height": 892,
+      "screenIndex": 0,
+      "isOffscreen": false,
+      "platform": {
+        "layer": 0
+      },
+      "id": 25504,
+      "width": 1280,
+      "isMinimized": false,
+      "x": 320,
+      "title": ""
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "読み取り専用"
+    ]
+  },
+  {
+    "name": "17-clean-invalid-recovered",
+    "text": "●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表Slides>1After...InspectorElementsElement1・見出しPresentationtitleAfterrecovery編集値Externalrecovery適用入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Externalrecovery外部ファイルを再読み込みしました。",
+    "input": {
+      "text": "External recovery",
+      "selected": [
+        17,
+        17
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1148.8594,
+        260.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "width": 1280,
+      "id": 25504,
+      "x": 320,
+      "height": 892,
+      "screenIndex": 0,
+      "y": 185,
+      "title": "",
+      "isMinimized": false,
+      "isOffscreen": false,
+      "platform": {
+        "layer": 0
+      }
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "After recovery",
+      "再読み込みしました"
+    ]
+  },
+  {
+    "name": "18-retreat-conflict",
+    "text": "●●開く●保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1After...Inspector外部ファイルの問題を解決するまで編集できません。保持中の入力RetreatdraftAfterrecoveryExternalrecovery・未保存外部変更と未保存の編集が競合しています。編集を破棄して再読み込みするか、別名保存してください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "Retreat draft",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        388.76508,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "y": 185,
+      "height": 892,
+      "screenIndex": 0,
+      "isOffscreen": false,
+      "platform": {
+        "layer": 0
+      },
+      "id": 25504,
+      "width": 1280,
+      "isMinimized": false,
+      "x": 320,
+      "title": ""
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "競合",
+      "Retreat draft"
+    ]
+  },
+  {
+    "name": "19-retreat-failed",
+    "text": "●●開く●保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1After...AfterrecoveryInspector外部ファイルの問題を解決するまで編集できません。保持中の入力RetreatdraftExternalrecovery・未保存1tmpqOlqEc\"表示中の内容は現在の外部ファイルと一致していません。退避保存できませんでした:I/Oerror:Permissiondenied(oserror13)atpath\"/Users/daichikinoshita/orca/workspaces/psycho/issue-27/target/issue-27-gui-final/archive",
+    "input": {
+      "text": "Retreat draft",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        388.76508,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "y": 185,
+      "isOffscreen": false,
+      "height": 892,
+      "title": "",
+      "platform": {
+        "layer": 0
+      },
+      "isMinimized": false,
+      "id": 25504,
+      "x": 320,
+      "width": 1280,
+      "screenIndex": 0
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "退避保存できません",
+      "Retreat draft"
+    ]
+  },
+  {
+    "name": "20-retreat-recovered",
+    "text": "●●開く●保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表slides>1Retrea...RetreatdraftInspectorElementsElement1・見出しくPresentationtitleキャンバス上で編集中全文をInspectorで編集Elementを削除入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Externalrecovery別ファイルへ保存しました。",
+    "input": {
+      "text": "Retreat draft",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        388.76508,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "width": 1280,
+      "id": 25504,
+      "x": 320,
+      "height": 892,
+      "screenIndex": 0,
+      "y": 185,
+      "title": "",
+      "isMinimized": false,
+      "isOffscreen": false,
+      "platform": {
+        "layer": 0
+      }
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "別ファイルへ保存しました",
+      "Retreat draft"
+    ]
+  },
+  {
+    "name": "21-retreat-edit-save",
+    "text": "●●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表Slides>1Archiv...ArchiveeditedInspectorElementsElement1・見出しくPresentationtitleキャンバス上で編集中全文をInspectorで編集Elementを削除入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Externalrecovery保存しました。",
+    "input": {
+      "text": "Archive edited",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        414.069,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "width": 1280,
+      "id": 25504,
+      "x": 320,
+      "height": 892,
+      "screenIndex": 0,
+      "y": 185,
+      "title": "",
+      "isMinimized": false,
+      "isOffscreen": false,
+      "platform": {
+        "layer": 0
+      }
+    },
+    "tree": "App=psycho (pid 97825)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "expected": [
+      "Archive edited"
+    ]
+  }
+]
