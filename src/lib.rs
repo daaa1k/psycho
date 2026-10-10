@@ -75,6 +75,119 @@ pub struct PresentationModel {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LayoutDiagnostic {
+    pub slide_index: usize,
+    pub element_index: usize,
+    pub message: String,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum PresentationStart {
+    First,
+    Current(usize),
+}
+
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
+pub struct SlidePosition {
+    index: usize,
+    id: Option<String>,
+}
+
+impl SlidePosition {
+    pub fn capture(model: &PresentationModel, index: usize) -> Self {
+        Self {
+            index,
+            id: model.slides.get(index).and_then(|slide| slide.id.clone()),
+        }
+    }
+
+    pub fn resolve(&self, model: &PresentationModel) -> Option<usize> {
+        if model.slides.is_empty() {
+            return None;
+        }
+        self.id
+            .as_ref()
+            .and_then(|id| {
+                model
+                    .slides
+                    .iter()
+                    .position(|slide| slide.id.as_ref() == Some(id))
+            })
+            .or_else(|| Some(self.index.min(model.slides.len() - 1)))
+    }
+}
+
+pub struct PresentationSession {
+    model: PresentationModel,
+    images: HashMap<String, image::RgbaImage>,
+    current_index: usize,
+}
+
+impl PresentationSession {
+    pub fn model(&self) -> &PresentationModel {
+        &self.model
+    }
+    pub fn images(&self) -> &HashMap<String, image::RgbaImage> {
+        &self.images
+    }
+    pub fn current_index(&self) -> usize {
+        self.current_index
+    }
+    pub fn next(&mut self) {
+        self.current_index = (self.current_index + 1).min(self.model.slides.len() - 1);
+    }
+    pub fn previous(&mut self) {
+        self.current_index = self.current_index.saturating_sub(1);
+    }
+    pub fn position(&self) -> SlidePosition {
+        SlidePosition::capture(&self.model, self.current_index)
+    }
+}
+
+#[derive(Debug)]
+pub enum PresentationStartError {
+    Document(DocumentError),
+    Empty,
+    Layout(Vec<LayoutDiagnostic>),
+    Assets(Vec<AssetDiagnostic>),
+}
+
+impl fmt::Display for PresentationStartError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Document(error) => write!(f, "発表を開始できません: {error}"),
+            Self::Empty => f.write_str("Slide がないため発表を開始できません。"),
+            Self::Layout(issues) => {
+                let Some(issue) = issues.first() else {
+                    return f.write_str("発表を開始できません。");
+                };
+                write!(
+                    f,
+                    "発表を開始できません: Slide {}、Element {}: {}",
+                    issue.slide_index + 1,
+                    issue.element_index + 1,
+                    issue.message
+                )
+            }
+            Self::Assets(issues) => {
+                let Some(issue) = issues.first() else {
+                    return f.write_str("発表を開始できません。");
+                };
+                write!(
+                    f,
+                    "発表を開始できません: Slide {} の画像 {}: {}",
+                    issue.slide_index + 1,
+                    issue.path,
+                    issue.problem
+                )
+            }
+        }
+    }
+}
+
+impl std::error::Error for PresentationStartError {}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Slide {
     pub id: Option<String>,
     pub elements: Vec<Element>,
@@ -351,6 +464,43 @@ impl PresentationDocument {
 
     pub fn redo_description(&self) -> Option<&str> {
         self.redo_labels.last().map(String::as_str)
+    }
+
+    pub fn start_presentation(
+        &mut self,
+        start: PresentationStart,
+        validate_layout: impl FnOnce(&PresentationModel) -> Vec<LayoutDiagnostic>,
+    ) -> Result<PresentationSession, PresentationStartError> {
+        let position = match start {
+            PresentationStart::First => None,
+            PresentationStart::Current(index) => self
+                .model()
+                .map(|model| SlidePosition::capture(model, index)),
+        };
+        self.synchronize_external(false)
+            .map_err(PresentationStartError::Document)?;
+        let model = self.model().ok_or(PresentationStartError::Document(
+            DocumentError::InvalidDocument,
+        ))?;
+        if model.slides.is_empty() {
+            return Err(PresentationStartError::Empty);
+        }
+        let diagnostics = validate_layout(model);
+        if !diagnostics.is_empty() {
+            return Err(PresentationStartError::Layout(diagnostics));
+        }
+        let assets = self.load_assets();
+        if !assets.diagnostics.is_empty() {
+            return Err(PresentationStartError::Assets(assets.diagnostics));
+        }
+        let current_index = position
+            .and_then(|position| position.resolve(model))
+            .unwrap_or(0);
+        Ok(PresentationSession {
+            model: model.clone(),
+            images: assets.images,
+            current_index,
+        })
     }
 
     pub fn inspect_assets(&self) -> Vec<AssetDiagnostic> {
