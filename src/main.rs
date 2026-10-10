@@ -160,6 +160,7 @@ struct PsychoApp {
     pending_open: Option<PathBuf>,
     pending_close: bool,
     pending_external_reload: bool,
+    save_as_pending: bool,
     source_selection: Option<Diagnostic>,
     layout_diagnostics: Vec<LayoutDiagnostic>,
     asset_diagnostics: Vec<AssetDiagnostic>,
@@ -210,7 +211,8 @@ impl PsychoApp {
         .detach();
         let input_focus = editor.read(cx).focus_handle();
         cx.on_blur(&input_focus, window, |this, window, cx| {
-            if this.presentation.is_none()
+            if !this.save_as_pending
+                && this.presentation.is_none()
                 && !this.external_edit_blocked()
                 && (this.has_uncommitted_draft(cx)
                     || this.editor.read(cx).can_undo()
@@ -249,6 +251,7 @@ impl PsychoApp {
             pending_open: None,
             pending_close: false,
             pending_external_reload: false,
+            save_as_pending: false,
             source_selection: None,
             layout_diagnostics: Vec::new(),
             asset_diagnostics,
@@ -810,8 +813,36 @@ impl PsychoApp {
     }
 
     fn prompt_save_as(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        self.status = "別の場所へ保存すると画像参照を更新し、Undo / Redo 履歴を消去します。".into();
-        cx.notify();
+        if self.save_as_pending {
+            return;
+        }
+        self.save_as_pending = true;
+        let notice = window.prompt(
+            gpui::PromptLevel::Warning,
+            "退避保存すると Undo / Redo 履歴が消去されます。",
+            Some("別フォルダーでは、編集していない画像参照も更新されます。"),
+            &["退避先を選ぶ", "キャンセル"],
+            cx,
+        );
+        let view = cx.entity();
+        window
+            .spawn(cx, async move |cx| {
+                let proceed = matches!(notice.await, Ok(0));
+                let _ = cx.update(|window, cx| {
+                    view.update(cx, |this, cx| {
+                        if proceed {
+                            this.choose_save_as_path(window, cx);
+                        } else {
+                            this.save_as_pending = false;
+                            cx.notify();
+                        }
+                    })
+                });
+            })
+            .detach();
+    }
+
+    fn choose_save_as_path(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         let directory = self
             .document
             .path()
@@ -821,7 +852,14 @@ impl PsychoApp {
         let view = cx.entity();
         window
             .spawn(cx, async move |cx| {
-                let Ok(Ok(Some(path))) = receiver.await else {
+                let selected = receiver.await;
+                let _ = cx.update(|_, cx| {
+                    view.update(cx, |this, cx| {
+                        this.save_as_pending = false;
+                        cx.notify();
+                    })
+                });
+                let Ok(Ok(Some(path))) = selected else {
                     return;
                 };
                 let _ = cx.update(|window, cx| {
@@ -863,32 +901,21 @@ impl PsychoApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Result<(), String> {
-        if self.external_edit_blocked() {
-            if self.editor.read(cx).is_marked() && !self.finish_composition(window, cx) {
-                return Err("日本語変換を確定できませんでした。".into());
-            }
-            // Stage the retained content and input separately. A failed Save
-            // As must leave both the locked document and input history intact.
-            let mut candidate = PresentationDocument::from_source_with_asset_base(
-                self.document.source(),
-                self.document.asset_base(),
-            )
-            .map_err(|error| error.to_string())?;
-            apply_editor_value(&mut candidate, self.target, &self.editor.read(cx).value())
-                .map_err(|error| error.to_string())?;
-            candidate
-                .save_as_overwriting(path)
-                .map_err(|error| error.to_string())?;
-            self.document = candidate;
-            window.focus(&self.root_focus, cx);
-            Ok(())
-        } else {
-            self.commit_draft(window, cx)?;
-            window.focus(&self.root_focus, cx);
-            self.document
-                .save_as_overwriting(path)
-                .map_err(|error| error.to_string())
+        if self.editor.read(cx).is_marked() && !self.finish_composition(window, cx) {
+            return Err("日本語変換を確定できませんでした。".into());
         }
+        let mut candidate = PresentationDocument::from_source_with_asset_base(
+            self.document.source(),
+            self.document.asset_base(),
+        )
+        .map_err(|error| error.to_string())?;
+        apply_editor_value(&mut candidate, self.target, &self.editor.read(cx).value())
+            .map_err(|error| error.to_string())?;
+        self.document
+            .save_as_source_overwriting(path, candidate.source())
+            .map_err(|error| error.to_string())?;
+        window.focus(&self.root_focus, cx);
+        Ok(())
     }
 
     fn open_picker(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
