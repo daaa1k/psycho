@@ -13,7 +13,7 @@ def native_button(name):
     line=next(line for line in state['snapshot']['treeText'].splitlines() if line.strip().endswith('button '+name))
     gui.act('click','--element-index',line.strip().split()[0],'--no-screenshot')
 def choose_destination():
-    gui.press('別名保存');gui.hotkey('CmdOrCtrl+Shift+G');gui.hotkey('CmdOrCtrl+A')
+    gui.press('別名保存');native_button('退避先を選ぶ');gui.hotkey('CmdOrCtrl+Shift+G');gui.hotkey('CmdOrCtrl+A')
     gui.act('type-text','--text',str(archive),'--no-screenshot');gui.key('Return')
     assert 'Where:, Value: archive' in gui.act('get-app-state')['snapshot']['treeText']
 try:

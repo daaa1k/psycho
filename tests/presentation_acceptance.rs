@@ -303,7 +303,7 @@ fn failed_retreat_preserves_state_and_success_rebases_assets_and_clears_history(
     assert!(doc.is_dirty() && doc.can_undo());
     assert!(matches!(
         doc.save_as(&path),
-        Err(DocumentError::DestinationExists)
+        Err(DocumentError::OriginalDestination)
     ));
     fs::create_dir(dir.path().join("retreat")).unwrap();
     let target = dir.path().join("retreat/presentation.kdl");

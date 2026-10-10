@@ -1,0 +1,11 @@
+PASS 01-before-save-notice
+PASS 02-panel-cancel-preserves-input
+PASS 03-write-failure
+PASS 04-conflict
+PASS 05-native-overwrite-confirmation
+PASS 06-original-rejected
+PASS 07-existing-destination-confirmation
+PASS 08-retreat-success
+PASS 09-rebased-image
+PASS 10-nested-images
+PASS 11-editing-resumed

@@ -173,6 +173,7 @@ pub enum DocumentError {
     InvalidDocument,
     ExternalChange,
     DestinationExists,
+    OriginalDestination,
     UnsafeValue(String),
 }
 
@@ -185,6 +186,9 @@ impl fmt::Display for DocumentError {
             Self::ExternalChange => write!(f, "external change detected; save was stopped"),
             Self::DestinationExists => {
                 write!(f, "destination already exists; overwrite was stopped")
+            }
+            Self::OriginalDestination => {
+                write!(f, "retreat destination refers to the original file")
             }
             Self::UnsafeValue(message) => write!(f, "value was rejected: {message}"),
         }
@@ -226,6 +230,7 @@ pub struct PresentationDocument {
     source: String,
     saved_source: String,
     path: Option<PathBuf>,
+    backing_identity: Option<BackingIdentity>,
     asset_base: Option<PathBuf>,
     model: Option<PresentationModel>,
     diagnostics: Vec<Diagnostic>,
@@ -266,12 +271,10 @@ impl PresentationDocument {
             DocumentError::Io(std::io::Error::new(std::io::ErrorKind::InvalidData, error))
         })?;
         let asset_base = path.parent().map(Path::to_path_buf);
-        Ok(Self::from_source_at(
-            source.clone(),
-            Some(path),
-            source,
-            asset_base,
-        ))
+        let identity = BackingIdentity::read(&path)?;
+        let mut document = Self::from_source_at(source.clone(), Some(path), source, asset_base);
+        document.backing_identity = Some(identity);
+        Ok(document)
     }
 
     fn from_source_at(
@@ -285,6 +288,7 @@ impl PresentationDocument {
             source,
             saved_source,
             path,
+            backing_identity: None,
             asset_base,
             model,
             diagnostics,
@@ -1706,12 +1710,14 @@ impl PresentationDocument {
         if fs::read(&path)? != self.saved_source.as_bytes() {
             return Err(DocumentError::ExternalChange);
         }
+        let identity = BackingIdentity::for_replacement(&path, temp.as_file())?;
         temp.persist(&path)
             .map_err(|error| DocumentError::Io(error.error))?;
         if let Ok(directory) = fs::File::open(parent) {
             let _ = directory.sync_all();
         }
         self.saved_source.clone_from(&self.source);
+        self.backing_identity = Some(identity);
         Ok(())
     }
 
@@ -1730,16 +1736,42 @@ impl PresentationDocument {
         path: &Path,
         overwrite_confirmed: bool,
     ) -> Result<(), DocumentError> {
-        self.save_as_before_replace(path, overwrite_confirmed, || {})
+        let source = self.source.clone();
+        self.save_as_source_before_replace(path, overwrite_confirmed, &source, || {})
     }
 
+    #[cfg(test)]
     fn save_as_before_replace(
         &mut self,
         path: &Path,
         overwrite_confirmed: bool,
         before_replace: impl FnOnce(),
     ) -> Result<(), DocumentError> {
-        if self.model.is_none() || !self.diagnostics.is_empty() {
+        let source = self.source.clone();
+        self.save_as_source_before_replace(path, overwrite_confirmed, &source, before_replace)
+    }
+
+    /// Save a draft whose image paths use this document's Asset base to a
+    /// destination the user approved replacing. The original cannot be the
+    /// destination. Failure preserves this document; success clears its history.
+    pub fn save_as_source_overwriting(
+        &mut self,
+        path: impl AsRef<Path>,
+        source: &str,
+    ) -> Result<(), DocumentError> {
+        self.save_as_source_before_replace(path.as_ref(), true, source, || {})
+    }
+
+    fn save_as_source_before_replace(
+        &mut self,
+        path: &Path,
+        overwrite_confirmed: bool,
+        source: &str,
+        before_replace: impl FnOnce(),
+    ) -> Result<(), DocumentError> {
+        self.reject_original_destination(path)?;
+        let (model, diagnostics) = parse_and_validate(source, Some(path));
+        if model.is_none() || !diagnostics.is_empty() {
             return Err(DocumentError::InvalidDocument);
         }
         let path = path.to_path_buf();
@@ -1754,11 +1786,17 @@ impl PresentationDocument {
             .filter(|parent| !parent.as_os_str().is_empty())
             .unwrap_or(Path::new("."))
             .to_path_buf();
-        let rebased_source = rebase_image_paths(&self.source, self.asset_base(), &parent)?;
+        let rebased_source = rebase_image_paths(source, self.asset_base(), &parent)?;
+        let (model, diagnostics) = parse_and_validate(&rebased_source, Some(&path));
+        if model.is_none() || !diagnostics.is_empty() {
+            return Err(DocumentError::InvalidDocument);
+        }
         let mut temp = tempfile::NamedTempFile::new_in(&parent)?;
         temp.write_all(rebased_source.as_bytes())?;
         temp.as_file().sync_all()?;
+        let identity = BackingIdentity::for_replacement(&path, temp.as_file())?;
         before_replace();
+        self.reject_original_destination(&path)?;
         if let Some(previous_destination) = previous_destination {
             let metadata = fs::metadata(&path)?;
             if fs::read(&path)? != previous_destination {
@@ -1779,6 +1817,7 @@ impl PresentationDocument {
         if let Ok(directory) = fs::File::open(&parent) {
             let _ = directory.sync_all();
         }
+        self.backing_identity = Some(identity);
         self.source = rebased_source;
         self.path = Some(path);
         self.asset_base = Some(parent);
@@ -1788,9 +1827,94 @@ impl PresentationDocument {
         self.redo.clear();
         self.undo_labels.clear();
         self.redo_labels.clear();
-        self.refresh_model();
+        self.model = model;
+        self.diagnostics = diagnostics;
         Ok(())
     }
+
+    fn reject_original_destination(&self, path: &Path) -> Result<(), DocumentError> {
+        if let Some(original) = &self.backing_identity {
+            let resolved = resolve_file_path(path)?;
+            let same_live_path = self.path.as_ref().is_some_and(|original_path| {
+                resolve_file_path(original_path).is_ok_and(|original| original == resolved)
+            });
+            if resolved == original.resolved_path
+                || same_live_path
+                || fs::metadata(path).is_ok_and(|metadata| {
+                    original.file_id.is_some() && file_id(&metadata) == original.file_id
+                })
+            {
+                return Err(DocumentError::OriginalDestination);
+            }
+        }
+        Ok(())
+    }
+}
+
+#[derive(Clone)]
+struct BackingIdentity {
+    resolved_path: PathBuf,
+    file_id: Option<(u64, u64)>,
+}
+
+impl BackingIdentity {
+    fn read(path: &Path) -> Result<Self, DocumentError> {
+        Ok(Self {
+            resolved_path: resolve_file_path(path)?,
+            file_id: file_id(&fs::metadata(path)?),
+        })
+    }
+
+    fn for_replacement(path: &Path, file: &fs::File) -> Result<Self, DocumentError> {
+        let parent = path
+            .parent()
+            .filter(|p| !p.as_os_str().is_empty())
+            .unwrap_or(Path::new("."));
+        Ok(Self {
+            resolved_path: fs::canonicalize(parent)?
+                .join(path.file_name().ok_or(DocumentError::NoPath)?),
+            file_id: file_id(&file.metadata()?),
+        })
+    }
+}
+
+#[cfg(unix)]
+fn file_id(metadata: &fs::Metadata) -> Option<(u64, u64)> {
+    use std::os::unix::fs::MetadataExt;
+    Some((metadata.dev(), metadata.ino()))
+}
+
+#[cfg(not(unix))]
+fn file_id(_: &fs::Metadata) -> Option<(u64, u64)> {
+    None
+}
+
+fn resolve_file_path(path: &Path) -> Result<PathBuf, DocumentError> {
+    let mut path = path.to_path_buf();
+    for _ in 0..40 {
+        if let Ok(resolved) = fs::canonicalize(&path) {
+            return Ok(resolved);
+        }
+        if let Ok(target) = fs::read_link(&path) {
+            path = path.parent().unwrap_or(Path::new(".")).join(target);
+            continue;
+        }
+        let parent = path
+            .parent()
+            .filter(|p| !p.as_os_str().is_empty())
+            .unwrap_or(Path::new("."));
+        let parent = match fs::canonicalize(parent) {
+            Ok(parent) => parent,
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
+                absolute_lexical_path(parent)?
+            }
+            Err(error) => return Err(error.into()),
+        };
+        return Ok(parent.join(path.file_name().ok_or(DocumentError::NoPath)?));
+    }
+    Err(DocumentError::Io(std::io::Error::other(
+        "too many symbolic links",
+    )))
 }
 
 fn describe_model_change(
@@ -1997,8 +2121,17 @@ fn rebase_image_paths(
     new_base: &Path,
 ) -> Result<String, DocumentError> {
     let parsed = KdlDocument::parse_v2(source).map_err(|_| DocumentError::InvalidDocument)?;
-    let old_base = absolute_lexical_path(old_base)?;
-    let new_base = absolute_lexical_path(new_base)?;
+    let old_base = match fs::canonicalize(old_base) {
+        Ok(base) => base,
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
+            absolute_lexical_path(old_base)?
+        }
+        Err(error) => return Err(error.into()),
+    };
+    let new_base = fs::canonicalize(new_base)?;
+    if old_base == new_base {
+        return Ok(source.to_owned());
+    }
     let mut entries = Vec::new();
     for node in parsed.nodes() {
         collect_image_entries(node, &mut entries);
@@ -2009,7 +2142,15 @@ fn rebase_image_paths(
         let Some(path) = entry.value().as_string() else {
             continue;
         };
-        let asset_path = absolute_lexical_path(&old_base.join(path))?;
+        let joined = old_base.join(path);
+        let has_symlink = joined.ancestors().any(|ancestor| {
+            fs::symlink_metadata(ancestor).is_ok_and(|m| m.file_type().is_symlink())
+        });
+        let asset_path = if has_symlink {
+            joined
+        } else {
+            absolute_lexical_path(&joined)?
+        };
         let relative = relative_path(&new_base, &asset_path).ok_or_else(|| {
             DocumentError::UnsafeValue(
                 "image asset cannot be referenced from the save destination".into(),

@@ -183,6 +183,10 @@ def run(gui):
 
     def choose_destination():
         gui.press("別名保存")
+        state = gui.act("get-app-state")
+        row = next(row for row in state["snapshot"]["treeText"].splitlines()
+                   if row.strip().endswith("button 退避先を選ぶ"))
+        gui.act("click", "--element-index", row.strip().split()[0], "--no-screenshot")
         gui.hotkey("CmdOrCtrl+Shift+G")
         state = gui.act("get-app-state")
         assert "text" in state["snapshot"]["treeText"].lower()

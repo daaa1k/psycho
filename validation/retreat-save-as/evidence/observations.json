@@ -1,0 +1,277 @@
+[
+  {
+    "name": "01-before-save-notice",
+    "text": "•●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表Slides>1Retain...2Slide23Slide3Retaineddraft退避保存するとUndo/Redo履歴が消去されます。別フォルダーでは、編集していない画像参照も更新されます。キャンセル退避先を選ぶRetreatacceptance・未保存編集内容をKDLに反映しました。InspectorElementsElement1・見出しくPresentationtitleキャンバス上で編集中全文をInspectorで編集Elementを削除入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 81766)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button (disabled)\n\t2 zoom button\n\t3 minimize button\n\t4 text\n\t5 sheet alert\n\t\t6 text 退避保存すると Undo / Redo 履歴が消去されます。\n\t\t7 text 別フォルダーでは、編集していない画像参照も更新されます。\n\t\t8 button キャンセル\n\t\t9 button 退避先を選ぶ\n\nThe focused UI element is 5 sheet alert."
+  },
+  {
+    "name": "02-panel-cancel-preserves-input",
+    "text": "開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表Slides>1Retain...2Slide23slide3RetaineddraftInspectorElementsElement1・見出しくPresentationtitleキャンバス上で編集中全文をInspectorで編集Elementを削除入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Retreatacceptance・未保存編集内容をKDLに反映しました。",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 81766)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window."
+  },
+  {
+    "name": "03-write-failure",
+    "text": "●●開く●保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表Slides>1Retain...2Slide23slide3RetaineddraftInspectorElementsElement1・見出しくPresentationtitleキャンバス上で編集中全文をInspectorで編集Elementを削除入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Retreatacceptance・未保存1.tmpmafHBc\"退避保存できませんでした:IOerror:Permissiondenied(oserror13)atpath\"/Users/daichikinoshita/orca/workspaces/psycho/issue-28/target/issue-28-gui-final/archive",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        204.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 81766)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window."
+  },
+  {
+    "name": "04-conflict",
+    "text": "●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1Origin...2Slide23Slide3Inspector外部ファイルの問題を解決するまで編集できません。保持中の入力RetaineddraftOriginalRetreatacceptance・未保存外部変更と未保存の編集が競合しています。編集を破棄して再読み込みするか、別名保存してください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        204.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 81766)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window."
+  },
+  {
+    "name": "05-native-overwrite-confirmation",
+    "text": "SavelTeSharedFavorites4,ApplicationsDocumentsにくこっぷんDesktopPicturesDownloadsMoviesMusicdwhelperExercismgitgoInoreader_hermelibMoviesMusicOrbStackOrcalLocationsiCloudDrivelNewFolderSaveAs:!presentation.kdl\"presentation.kdl\"alreadyeXists.Doyouwanttoreplaceit?Afileorfolderwiththesamenamealreadyexistsinthefolder\"issue-28-gui-final\".Replacingitwilloverwriteitscurrentcontents.CancelReplacelへQSearchbend-tetrispsychoCancelSave",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        204.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 81766)\nWindow: \"Save\", App: psycho.\n\n0 standard window Save\n\t1 split group\n\t\t2 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t3 outline sidebar\n\t\t\t\t4 outline row Shared\n\t\t\t\t\t5 cell Shared, Secondary Actions: open\n\t\t\t\t\t\t6 text Shared\n\t\t\t\t\t\t7 image Shared Folder\n\t\t\t\t8 outline row Favorites\n\t\t\t\t\t9 cell Favorites\n\t\t\t\t\t\t10 text Favorites\n\t\t\t\t11 outline row Applications\n\t\t\t\t\t12 cell Applications, Secondary Actions: open\n\t\t\t\t\t\t13 text Applications\n\t\t\t\t\t\t14 image\n\t\t\t\t15 outline row Documents\n\t\t\t\t\t16 cell Documents, Secondary Actions: open\n\t\t\t\t\t\t17 text Documents\n\t\t\t\t\t\t18 image document\n\t\t\t\t19 outline row にくこっぷん\n\t\t\t\t\t20 cell にくこっぷん, Secondary Actions: open\n\t\t\t\t\t\t21 text にくこっぷん\n\t\t\t\t\t\t22 image move\n\t\t\t\t23 outline row Desktop\n\t\t\t\t\t24 cell Desktop, Secondary Actions: open\n\t\t\t\t\t\t25 text Desktop\n\t\t\t\t\t\t26 image\n\t\t\t\t27 outline row Pictures\n\t\t\t\t\t28 cell Pictures, Secondary Actions: open\n\t\t\t\t\t\t29 text Pictures\n\t\t\t\t\t\t30 image photo\n\t\t\t\t31 outline row Downloads\n\t\t\t\t\t32 cell Downloads, Secondary Actions: open\n\t\t\t\t\t\t33 text Downloads\n\t\t\t\t\t\t34 image Arrow Down Circle\n\t\t\t\t35 outline row Movies\n\t\t\t\t\t36 cell Movies, Secondary Actions: open\n\t\t\t\t\t\t37 text Movies\n\t\t\t\t\t\t38 image movie\n\t\t\t\t39 outline row Music\n\t\t\t\t\t40 cell Music, Secondary Actions: open\n\t\t\t\t\t\t41 text Music\n\t\t\t\t\t\t42 image\n\t\t\t\t43 outline row Locations\n\t\t\t\t\t44 cell Locations\n\t\t\t\t\t\t45 text Locations\n\t\t\t\t46 outline row iCloud Drive\n\t\t\t\t\t47 cell iCloud Drive, Secondary Actions: open\n\t\t\t\t\t\t48 text iCloud Drive\n\t\t\t\t\t\t49 image iCloud\n\t\t\t\t50 outline row (selected) daichikinoshita\n\t\t\t\t\t51 cell (selected) daichikinoshita, Secondary Actions: open\n\t\t\t\t\t\t52 text daichikinoshita\n\t\t\t\t\t\t53 image home\n\t\t\t\t54 outline row mac\n\t\t\t\t\t55 cell mac, Secondary Actions: open\n\t\t\t\t\t\t56 text mac\n\t\t\t\t\t\t57 image Macbook\n\t\t\t\t58 outline row Macintosh HD\n\t\t\t\t\t59 cell Macintosh HD, Secondary Actions: open\n\t\t\t\t\t\t60 text Macintosh HD\n\t\t\t\t\t\t61 image\n\t\t\t\t62 outline row Tags\n\t\t\t\t\t63 cell Tags\n\t\t\t\t\t\t64 text Tags\n\t\t\t\t65 outline row レッド\n\t\t\t\t\t66 cell レッド, Secondary Actions: open\n\t\t\t\t\t\t67 text レッド\n\t\t\t\t\t\t68 image\n\t\t\t\t69 outline row オレンジ\n\t\t\t\t\t70 cell オレンジ, Secondary Actions: open\n\t\t\t\t\t\t71 text オレンジ\n\t\t\t\t\t\t72 image\n\t\t\t\t73 outline row イエロー\n\t\t\t\t\t74 cell イエロー, Secondary Actions: open\n\t\t\t\t\t\t75 text イエロー\n\t\t\t\t\t\t76 image\n\t\t\t\t77 outline row グリーン\n\t\t\t\t\t78 cell グリーン, Secondary Actions: open\n\t\t\t\t\t\t79 text グリーン\n\t\t\t\t\t\t80 image\n\t\t\t81 scroll bar 0\n\t\t\t\t82 value indicator 0\n\t\t\t\t83 increment arrow button\n\t\t\t\t84 decrement arrow button\n\t\t\t\t85 increment page button\n\t\t\t\t86 decrement page button\n\t\t87 splitter, Value: 173\n\t\t88 split group\n\t\t\t89 browser column view\n\t\t\t\t90 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t91 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t92 list\n\t\t\t\t\t\t\t93 image\n\t\t\t\t\t\t\t94 text field (settable), Value: AppData, Secondary Actions: open\n\t\t\t\t\t\t\t95 image\n\t\t\t\t\t\t\t96 text field (settable), Value: Applications, Secondary Actions: open\n\t\t\t\t\t\t\t97 image\n\t\t\t\t\t\t\t98 text field (settable), Value: Applications (Parallels), Secondary Actions: open\n\t\t\t\t\t\t\t99 image\n\t\t\t\t\t\t\t100 text field (settable), Value: Desktop, Secondary Actions: open\n\t\t\t\t\t\t\t101 image\n\t\t\t\t\t\t\t102 text field (settable), Value: Documents, Secondary Actions: open\n\t\t\t\t\t\t\t103 image\n\t\t\t\t\t\t\t104 text field (settable), Value: Downloads, Secondary Actions: open\n\t\t\t\t\t\t\t105 image\n\t\t\t\t\t\t\t106 text field (settable), Value: dwhelper, Secondary Actions: open\n\t\t\t\t\t\t\t107 image\n\t\t\t\t\t\t\t108 text field (settable), Value: Exercism, Secondary Actions: open\n\t\t\t\t\t\t\t109 image\n\t\t\t\t\t\t\t110 text field (settable), Value: git, Secondary Actions: open\n\t\t\t\t\t\t\t111 image\n\t\t\t\t\t\t\t112 text field (settable), Value: go, Secondary Actions: open\n\t\t\t\t\t\t\t113 image\n\t\t\t\t\t\t\t114 text field (settable), Value: inoreader_hermes, Secondary Actions: open\n\t\t\t\t\t\t\t115 image\n\t\t\t\t\t\t\t116 text field (settable), Value: lib, Secondary Actions: open\n\t\t\t\t\t\t\t117 image\n\t\t\t\t\t\t\t118 text field (settable), Value: Movies, Secondary Actions: open\n\t\t\t\t\t\t\t119 image\n\t\t\t\t\t\t\t120 text field (settable), Value: Music, Secondary Actions: open\n\t\t\t\t\t\t\t121 image\n\t\t\t\t\t\t\t122 text field (settable), Value: OrbStack, Secondary Actions: open\n\t\t\t\t\t\t\t123 image\n\t\t\t\t\t\t\t124 text field (settable), Value: orca, Secondary Actions: open\n\t\t\t\t\t\t\t125 image\n\t\t\t\t\t\t\t126 text field (settable), Value: packages, Secondary Actions: open\n\t\t\t\t\t\t\t127 image\n\t\t\t\t\t\t\t128 text field (settable), Value: Pictures, Secondary Actions: open\n\t\t\t\t\t\t\t129 image\n\t\t\t\t\t\t\t130 text field (settable), Value: Public, Secondary Actions: open\n\t\t\t\t\t\t\t131 image\n\t\t\t\t\t\t\t132 text field (settable), Value: scripts, Secondary Actions: open\n\t\t\t\t\t\t\t133 image\n\t\t\t\t\t\t\t134 text field (settable), Value: Sites, Secondary Actions: open\n\t\t\t\t\t\t\t135 image\n\t\t\t\t\t\t\t136 text field (settable), Value: terminals, Secondary Actions: open\n\t\t\t\t\t\t\t137 image\n\t\t\t\t\t\t\t138 text field (settable), Value: test, Secondary Actions: open\n\t\t\t\t\t\t\t139 image\n\t\t\t\t\t\t\t140 text field (settable), Value: memo.md, Secondary Actions: open\n\t\t\t\t\t\t141 scroll bar 0.4359756097560976\n\t\t\t\t\t\t\t142 value indicator 0.4359756097560976\n\t\t\t\t\t\t\t143 increment arrow button\n\t\t\t\t\t\t\t144 decrement arrow button\n\t\t\t\t\t\t\t145 increment page button\n\t\t\t\t\t\t\t146 decrement page button\n\t\t\t\t\t147 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t148 list\n\t\t\t\t\t\t\t149 image\n\t\t\t\t\t\t\t150 text field (settable), Value: psycho, Secondary Actions: open\n\t\t\t\t\t\t\t151 image\n\t\t\t\t\t\t\t152 text field (settable), Value: scrapbook, Secondary Actions: open\n\t\t\t\t\t\t\t153 image\n\t\t\t\t\t\t\t154 text field (settable), Value: workspaces, Secondary Actions: open\n\t\t\t\t\t\t155 scroll bar (disabled) 0\n\t\t\t\t\t156 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t157 list\n\t\t\t\t\t\t\t158 image\n\t\t\t\t\t\t\t159 text field (settable), Value: bend-tetris, Secondary Actions: open\n\t\t\t\t\t\t\t160 image\n\t\t\t\t\t\t\t161 text field (settable), Value: psycho, Secondary Actions: open\n\t\t\t\t\t\t162 scroll bar (disabled) 0\n\t\t\t\t\t163 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t164 list\n\t\t\t\t\t\t\t165 image\n\t\t\t\t\t\t\t166 text field (settable), Value: issue-19-diagnostics, Secondary Actions: open\n\t\t\t\t\t\t\t167 image\n\t\t\t\t\t\t\t168 text field (settable), Value: issue-22-empty-bullets, Secondary Actions: open\n\t\t\t\t\t\t\t169 image\n\t\t\t\t\t\t\t170 text field (settable), Value: issue-28, Secondary Actions: open\n\t\t\t\t\t\t\t171 image\n\t\t\t\t\t\t\t172 text field (settable), Value: macos-gpui-probe, Secondary Actions: open\n\t\t\t\t\t\t173 scroll bar (disabled) 0\n\t\t\t\t\t174 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t175 list\n\t\t\t\t\t\t\t176 image\n\t\t\t\t\t\t\t177 text field (settable), Value: assets, Secondary Actions: open\n\t\t\t\t\t\t\t178 image\n\t\t\t\t\t\t\t179 text field (settable), Value: docs, Secondary Actions: open\n\t\t\t\t\t\t\t180 image\n\t\t\t\t\t\t\t181 text field (settable), Value: examples, Secondary Actions: open\n\t\t\t\t\t\t\t182 image\n\t\t\t\t\t\t\t183 text field (settable), Value: src, Secondary Actions: open\n\t\t\t\t\t\t\t184 image\n\t\t\t\t\t\t\t185 text field (settable), Value: target, Secondary Actions: open\n\t\t\t\t\t\t\t186 image\n\t\t\t\t\t\t\t187 text field (settable), Value: tests, Secondary Actions: open\n\t\t\t\t\t\t\t188 image\n\t\t\t\t\t\t\t189 text field (settable), Value: validation, Secondary Actions: open\n\t\t\t\t\t\t\t190 image\n\t\t\t\t\t\t\t191 text field (settable), Value: AGENTS.md, Secondary Actions: open\n\t\t\t\t\t\t\t192 image\n\t\t\t\t\t\t\t193 text field (settable), Value: Cargo.lock, Secondary Actions: open\n\t\t\t\t\t\t\t194 image\n\t\t\t\t\t\t\t195 text field (settable), Value: Cargo.toml, Secondary Actions: open\n\t\t\t\t\t\t\t196 image\n\t\t\t\t\t\t\t197 text field (settable), Value: CONTEXT.md, Secondary Actions: open\n\t\t\t\t\t\t\t198 image\n\t\t\t\t\t\t\t199 text field (settable), Value: idea.md, Secondary Actions: open\n\t\t\t\t\t\t\t200 image\n\t\t\t\t\t\t\t201 text field (settable), Value: LICENSE, Secondary Actions: open\n\t\t\t\t\t\t\t202 image\n\t\t\t\t\t\t\t203 text field (settable), Value: README.md, Secondary Actions: open\n\t\t\t\t\t\t\t204 image\n\t\t\t\t\t\t\t205 text field (settable), Value: referent-table-kdl-preserving-edits.md, Secondary Actions: open\n\t\t\t\t\t\t\t206 image\n\t\t\t\t\t\t\t207 text field (settable), Value: referent-table-macos-gpui-validation.md, Secondary Actions: open\n\t\t\t\t\t\t\t208 image\n\t\t\t\t\t\t\t209 text field (settable), Value: referent-table-presentation-kdl-v01.md, Secondary Actions: open\n\t\t\t\t\t\t210 scroll bar 0\n\t\t\t\t\t\t\t211 value indicator 0\n\t\t\t\t\t\t\t212 increment arrow button\n\t\t\t\t\t\t\t213 decrement arrow button\n\t\t\t\t\t\t\t214 increment page button\n\t\t\t\t\t\t\t215 decrement page button\n\t\t\t\t\t216 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t217 list\n\t\t\t\t\t\t\t218 image\n\t\t\t\t\t\t\t219 text field (settable), Value: debug, Secondary Actions: open\n\t\t\t\t\t\t\t220 image\n\t\t\t\t\t\t\t221 text field (settable), Value: issue-28-failure-baseline, Secondary Actions: open\n\t\t\t\t\t\t\t222 image\n\t\t\t\t\t\t\t223 text field (settable), Value: issue-28-gui-final, Secondary Actions: open\n\t\t\t\t\t\t\t224 image\n\t\t\t\t\t\t\t225 text field (settable), Value: issue-28-history-baseline, Secondary Actions: open\n\t\t\t\t\t\t\t226 image\n\t\t\t\t\t\t\t227 text field (settable), Value: issue-28-history-baseline-2, Secondary Actions: open\n\t\t\t\t\t\t\t228 image\n\t\t\t\t\t\t\t229 text field (settable), Value: issue-28-original-baseline, Secondary Actions: open\n\t\t\t\t\t\t\t230 image\n\t\t\t\t\t\t\t231 text field (settable), Value: tmp, Secondary Actions: open\n\t\t\t\t\t\t\t232 image\n\t\t\t\t\t\t\t233 text field (settable), Value: CACHEDIR.TAG, Secondary Actions: open\n\t\t\t\t\t\t234 scroll bar (disabled) 0\n\t\t\t\t\t235 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t236 list\n\t\t\t\t\t\t\t237 image\n\t\t\t\t\t\t\t238 text field (settable), Value: archive, Secondary Actions: open\n\t\t\t\t\t\t\t239 image\n\t\t\t\t\t\t\t240 text field (settable), Value: assets, Secondary Actions: open\n\t\t\t\t\t\t\t241 image\n\t\t\t\t\t\t\t242 text field (settable), Value: 01-before-save-notice.png, Secondary Actions: open\n\t\t\t\t\t\t\t243 image\n\t\t\t\t\t\t\t244 text field (settable), Value: 02-panel-cancel-preserves-input.png, Secondary Actions: open\n\t\t\t\t\t\t\t245 image\n\t\t\t\t\t\t\t246 text field (settable), Value: 03-write-failure.png, Secondary Actions: open\n\t\t\t\t\t\t\t247 image\n\t\t\t\t\t\t\t248 text field (settable), Value: 04-conflict.png, Secondary Actions: open\n\t\t\t\t\t\t\t249 image\n\t\t\t\t\t\t\t250 text field (settable), Value: observations.json, Secondary Actions: open\n\t\t\t\t\t\t\t251 image\n\t\t\t\t\t\t\t252 text field (settable), Value: presentation-glyphs.csv, Secondary Actions: open\n\t\t\t\t\t\t\t253 image\n\t\t\t\t\t\t\t254 text field (settable), Value: presentation-input.csv, Secondary Actions: open\n\t\t\t\t\t\t\t255 image\n\t\t\t\t\t\t\t256 text field (settable), Value: presentation.kdl, Secondary Actions: open\n\t\t\t\t\t\t\t257 image\n\t\t\t\t\t\t\t258 text field (settable), Value: recognize-bounds, Secondary Actions: open\n\t\t\t\t\t\t259 scroll bar 0\n\t\t\t\t\t\t\t260 value indicator 0\n\t\t\t\t\t\t\t261 increment arrow button\n\t\t\t\t\t\t\t262 decrement arrow button\n\t\t\t\t\t\t\t263 increment page button\n\t\t\t\t\t\t\t264 decrement page button\n\t\t\t\t\t265 scroll bar 0\n\t\t\t\t\t\t266 value indicator 0\n\t\t\t\t\t\t267 increment arrow button\n\t\t\t\t\t\t268 decrement arrow button\n\t\t\t\t\t\t269 increment page button\n\t\t\t\t\t\t270 decrement page button\n\t\t271 button (disabled) back\n\t\t272 button (disabled) forward\n\t\t273 menu button column view\n\t\t274 menu button\n\t\t275 pop up button Where:, Value: issue-28-gui-final\n\t\t276 disclosure triangle show less options, Value: 1\n\t\t277 search text field (settable)\n\t\t\t278 button search\n\t\t279 text Save As:\n\t\t280 text field (settable), Value: presentation.kdl\n\t\t281 text Tags:\n\t\t282 text field (settable) tag editor\n\t\t283 button (disabled) New Folder\n\t\t284 button Cancel\n\t\t285 button (disabled) Save\n\t286 close button (disabled)\n\t287 zoom button\n\t288 minimize button (disabled)\n\t289 text Save\n\t290 sheet\n\t\t291 image com.apple.appkit.xpc.openAndSavePanelService critical alert\n\t\t292 text “presentation.kdl” already exists. Do you want to replace it?\n\t\t293 text A file or folder with the same name already exists in the folder “issue-28-gui-final”. Replacing it will overwrite its current contents.\n\t\t294 button Cancel\n\t\t295 button Replace\n\nNo UI element is currently focused."
+  },
+  {
+    "name": "06-original-rejected",
+    "text": "●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides>1Origin...2Slide23Slide3Inspector外部ファイルの問題を解決するまで編集できません。保持中の入力RetaineddraftOriginalRetreatacceptance・未保存退避保存できませんでした:retreatdestinationreferstotheoriginalfile表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        204.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 81766)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window."
+  },
+  {
+    "name": "07-existing-destination-confirmation",
+    "text": "SavelTeSharedFavorites4,ApplicationsDocumentsにくこっぷんDesktopPicturesDownloadsMoviesMusicdwhelperExercismgitgoInoreader_hermelibMoviesMusicOrbStackOrcalLocationsiCloudDrivelNewFolderSaveAs:!presentation.kdl\"presentation.kdl”alreadyeXists.Doyouwanttoreplaceit?Afileorfolderwiththesamenamealreadyexistsinthefolder\"archive\".Replacingitwilloverwriteitscurrentcontents.CancelReplacelへQSearchbend-tetrispsychoCancelSave",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        204.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 1,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 81766)\nWindow: \"Save\", App: psycho.\n\n0 standard window Save\n\t1 split group\n\t\t2 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t3 outline sidebar\n\t\t\t\t4 outline row Shared\n\t\t\t\t\t5 cell Shared, Secondary Actions: open\n\t\t\t\t\t\t6 text Shared\n\t\t\t\t\t\t7 image Shared Folder\n\t\t\t\t8 outline row Favorites\n\t\t\t\t\t9 cell Favorites\n\t\t\t\t\t\t10 text Favorites\n\t\t\t\t11 outline row Applications\n\t\t\t\t\t12 cell Applications, Secondary Actions: open\n\t\t\t\t\t\t13 text Applications\n\t\t\t\t\t\t14 image\n\t\t\t\t15 outline row Documents\n\t\t\t\t\t16 cell Documents, Secondary Actions: open\n\t\t\t\t\t\t17 text Documents\n\t\t\t\t\t\t18 image document\n\t\t\t\t19 outline row にくこっぷん\n\t\t\t\t\t20 cell にくこっぷん, Secondary Actions: open\n\t\t\t\t\t\t21 text にくこっぷん\n\t\t\t\t\t\t22 image move\n\t\t\t\t23 outline row Desktop\n\t\t\t\t\t24 cell Desktop, Secondary Actions: open\n\t\t\t\t\t\t25 text Desktop\n\t\t\t\t\t\t26 image\n\t\t\t\t27 outline row Pictures\n\t\t\t\t\t28 cell Pictures, Secondary Actions: open\n\t\t\t\t\t\t29 text Pictures\n\t\t\t\t\t\t30 image photo\n\t\t\t\t31 outline row Downloads\n\t\t\t\t\t32 cell Downloads, Secondary Actions: open\n\t\t\t\t\t\t33 text Downloads\n\t\t\t\t\t\t34 image Arrow Down Circle\n\t\t\t\t35 outline row Movies\n\t\t\t\t\t36 cell Movies, Secondary Actions: open\n\t\t\t\t\t\t37 text Movies\n\t\t\t\t\t\t38 image movie\n\t\t\t\t39 outline row Music\n\t\t\t\t\t40 cell Music, Secondary Actions: open\n\t\t\t\t\t\t41 text Music\n\t\t\t\t\t\t42 image\n\t\t\t\t43 outline row Locations\n\t\t\t\t\t44 cell Locations\n\t\t\t\t\t\t45 text Locations\n\t\t\t\t46 outline row iCloud Drive\n\t\t\t\t\t47 cell iCloud Drive, Secondary Actions: open\n\t\t\t\t\t\t48 text iCloud Drive\n\t\t\t\t\t\t49 image iCloud\n\t\t\t\t50 outline row (selected) daichikinoshita\n\t\t\t\t\t51 cell (selected) daichikinoshita, Secondary Actions: open\n\t\t\t\t\t\t52 text daichikinoshita\n\t\t\t\t\t\t53 image home\n\t\t\t\t54 outline row mac\n\t\t\t\t\t55 cell mac, Secondary Actions: open\n\t\t\t\t\t\t56 text mac\n\t\t\t\t\t\t57 image Macbook\n\t\t\t\t58 outline row Macintosh HD\n\t\t\t\t\t59 cell Macintosh HD, Secondary Actions: open\n\t\t\t\t\t\t60 text Macintosh HD\n\t\t\t\t\t\t61 image\n\t\t\t\t62 outline row Tags\n\t\t\t\t\t63 cell Tags\n\t\t\t\t\t\t64 text Tags\n\t\t\t\t65 outline row レッド\n\t\t\t\t\t66 cell レッド, Secondary Actions: open\n\t\t\t\t\t\t67 text レッド\n\t\t\t\t\t\t68 image\n\t\t\t\t69 outline row オレンジ\n\t\t\t\t\t70 cell オレンジ, Secondary Actions: open\n\t\t\t\t\t\t71 text オレンジ\n\t\t\t\t\t\t72 image\n\t\t\t\t73 outline row イエロー\n\t\t\t\t\t74 cell イエロー, Secondary Actions: open\n\t\t\t\t\t\t75 text イエロー\n\t\t\t\t\t\t76 image\n\t\t\t\t77 outline row グリーン\n\t\t\t\t\t78 cell グリーン, Secondary Actions: open\n\t\t\t\t\t\t79 text グリーン\n\t\t\t\t\t\t80 image\n\t\t\t81 scroll bar 0\n\t\t\t\t82 value indicator 0\n\t\t\t\t83 increment arrow button\n\t\t\t\t84 decrement arrow button\n\t\t\t\t85 increment page button\n\t\t\t\t86 decrement page button\n\t\t87 splitter, Value: 173\n\t\t88 split group\n\t\t\t89 browser column view\n\t\t\t\t90 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t91 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t92 list\n\t\t\t\t\t\t\t93 image\n\t\t\t\t\t\t\t94 text field (settable), Value: AppData, Secondary Actions: open\n\t\t\t\t\t\t\t95 image\n\t\t\t\t\t\t\t96 text field (settable), Value: Applications, Secondary Actions: open\n\t\t\t\t\t\t\t97 image\n\t\t\t\t\t\t\t98 text field (settable), Value: Applications (Parallels), Secondary Actions: open\n\t\t\t\t\t\t\t99 image\n\t\t\t\t\t\t\t100 text field (settable), Value: Desktop, Secondary Actions: open\n\t\t\t\t\t\t\t101 image\n\t\t\t\t\t\t\t102 text field (settable), Value: Documents, Secondary Actions: open\n\t\t\t\t\t\t\t103 image\n\t\t\t\t\t\t\t104 text field (settable), Value: Downloads, Secondary Actions: open\n\t\t\t\t\t\t\t105 image\n\t\t\t\t\t\t\t106 text field (settable), Value: dwhelper, Secondary Actions: open\n\t\t\t\t\t\t\t107 image\n\t\t\t\t\t\t\t108 text field (settable), Value: Exercism, Secondary Actions: open\n\t\t\t\t\t\t\t109 image\n\t\t\t\t\t\t\t110 text field (settable), Value: git, Secondary Actions: open\n\t\t\t\t\t\t\t111 image\n\t\t\t\t\t\t\t112 text field (settable), Value: go, Secondary Actions: open\n\t\t\t\t\t\t\t113 image\n\t\t\t\t\t\t\t114 text field (settable), Value: inoreader_hermes, Secondary Actions: open\n\t\t\t\t\t\t\t115 image\n\t\t\t\t\t\t\t116 text field (settable), Value: lib, Secondary Actions: open\n\t\t\t\t\t\t\t117 image\n\t\t\t\t\t\t\t118 text field (settable), Value: Movies, Secondary Actions: open\n\t\t\t\t\t\t\t119 image\n\t\t\t\t\t\t\t120 text field (settable), Value: Music, Secondary Actions: open\n\t\t\t\t\t\t\t121 image\n\t\t\t\t\t\t\t122 text field (settable), Value: OrbStack, Secondary Actions: open\n\t\t\t\t\t\t\t123 image\n\t\t\t\t\t\t\t124 text field (settable), Value: orca, Secondary Actions: open\n\t\t\t\t\t\t\t125 image\n\t\t\t\t\t\t\t126 text field (settable), Value: packages, Secondary Actions: open\n\t\t\t\t\t\t\t127 image\n\t\t\t\t\t\t\t128 text field (settable), Value: Pictures, Secondary Actions: open\n\t\t\t\t\t\t\t129 image\n\t\t\t\t\t\t\t130 text field (settable), Value: Public, Secondary Actions: open\n\t\t\t\t\t\t\t131 image\n\t\t\t\t\t\t\t132 text field (settable), Value: scripts, Secondary Actions: open\n\t\t\t\t\t\t\t133 image\n\t\t\t\t\t\t\t134 text field (settable), Value: Sites, Secondary Actions: open\n\t\t\t\t\t\t\t135 image\n\t\t\t\t\t\t\t136 text field (settable), Value: terminals, Secondary Actions: open\n\t\t\t\t\t\t\t137 image\n\t\t\t\t\t\t\t138 text field (settable), Value: test, Secondary Actions: open\n\t\t\t\t\t\t\t139 image\n\t\t\t\t\t\t\t140 text field (settable), Value: memo.md, Secondary Actions: open\n\t\t\t\t\t\t141 scroll bar 0.4359756097560976\n\t\t\t\t\t\t\t142 value indicator 0.4359756097560976\n\t\t\t\t\t\t\t143 increment arrow button\n\t\t\t\t\t\t\t144 decrement arrow button\n\t\t\t\t\t\t\t145 increment page button\n\t\t\t\t\t\t\t146 decrement page button\n\t\t\t\t\t147 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t148 list\n\t\t\t\t\t\t\t149 image\n\t\t\t\t\t\t\t150 text field (settable), Value: psycho, Secondary Actions: open\n\t\t\t\t\t\t\t151 image\n\t\t\t\t\t\t\t152 text field (settable), Value: scrapbook, Secondary Actions: open\n\t\t\t\t\t\t\t153 image\n\t\t\t\t\t\t\t154 text field (settable), Value: workspaces, Secondary Actions: open\n\t\t\t\t\t\t155 scroll bar (disabled) 0\n\t\t\t\t\t156 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t157 list\n\t\t\t\t\t\t\t158 image\n\t\t\t\t\t\t\t159 text field (settable), Value: bend-tetris, Secondary Actions: open\n\t\t\t\t\t\t\t160 image\n\t\t\t\t\t\t\t161 text field (settable), Value: psycho, Secondary Actions: open\n\t\t\t\t\t\t162 scroll bar (disabled) 0\n\t\t\t\t\t163 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t164 list\n\t\t\t\t\t\t\t165 image\n\t\t\t\t\t\t\t166 text field (settable), Value: issue-19-diagnostics, Secondary Actions: open\n\t\t\t\t\t\t\t167 image\n\t\t\t\t\t\t\t168 text field (settable), Value: issue-22-empty-bullets, Secondary Actions: open\n\t\t\t\t\t\t\t169 image\n\t\t\t\t\t\t\t170 text field (settable), Value: issue-28, Secondary Actions: open\n\t\t\t\t\t\t\t171 image\n\t\t\t\t\t\t\t172 text field (settable), Value: macos-gpui-probe, Secondary Actions: open\n\t\t\t\t\t\t173 scroll bar (disabled) 0\n\t\t\t\t\t174 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t175 list\n\t\t\t\t\t\t\t176 image\n\t\t\t\t\t\t\t177 text field (settable), Value: assets, Secondary Actions: open\n\t\t\t\t\t\t\t178 image\n\t\t\t\t\t\t\t179 text field (settable), Value: docs, Secondary Actions: open\n\t\t\t\t\t\t\t180 image\n\t\t\t\t\t\t\t181 text field (settable), Value: examples, Secondary Actions: open\n\t\t\t\t\t\t\t182 image\n\t\t\t\t\t\t\t183 text field (settable), Value: src, Secondary Actions: open\n\t\t\t\t\t\t\t184 image\n\t\t\t\t\t\t\t185 text field (settable), Value: target, Secondary Actions: open\n\t\t\t\t\t\t\t186 image\n\t\t\t\t\t\t\t187 text field (settable), Value: tests, Secondary Actions: open\n\t\t\t\t\t\t\t188 image\n\t\t\t\t\t\t\t189 text field (settable), Value: validation, Secondary Actions: open\n\t\t\t\t\t\t\t190 image\n\t\t\t\t\t\t\t191 text field (settable), Value: AGENTS.md, Secondary Actions: open\n\t\t\t\t\t\t\t192 image\n\t\t\t\t\t\t\t193 text field (settable), Value: Cargo.lock, Secondary Actions: open\n\t\t\t\t\t\t\t194 image\n\t\t\t\t\t\t\t195 text field (settable), Value: Cargo.toml, Secondary Actions: open\n\t\t\t\t\t\t\t196 image\n\t\t\t\t\t\t\t197 text field (settable), Value: CONTEXT.md, Secondary Actions: open\n\t\t\t\t\t\t\t198 image\n\t\t\t\t\t\t\t199 text field (settable), Value: idea.md, Secondary Actions: open\n\t\t\t\t\t\t\t200 image\n\t\t\t\t\t\t\t201 text field (settable), Value: LICENSE, Secondary Actions: open\n\t\t\t\t\t\t\t202 image\n\t\t\t\t\t\t\t203 text field (settable), Value: README.md, Secondary Actions: open\n\t\t\t\t\t\t\t204 image\n\t\t\t\t\t\t\t205 text field (settable), Value: referent-table-kdl-preserving-edits.md, Secondary Actions: open\n\t\t\t\t\t\t\t206 image\n\t\t\t\t\t\t\t207 text field (settable), Value: referent-table-macos-gpui-validation.md, Secondary Actions: open\n\t\t\t\t\t\t\t208 image\n\t\t\t\t\t\t\t209 text field (settable), Value: referent-table-presentation-kdl-v01.md, Secondary Actions: open\n\t\t\t\t\t\t210 scroll bar 0\n\t\t\t\t\t\t\t211 value indicator 0\n\t\t\t\t\t\t\t212 increment arrow button\n\t\t\t\t\t\t\t213 decrement arrow button\n\t\t\t\t\t\t\t214 increment page button\n\t\t\t\t\t\t\t215 decrement page button\n\t\t\t\t\t216 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t217 list\n\t\t\t\t\t\t\t218 image\n\t\t\t\t\t\t\t219 text field (settable), Value: debug, Secondary Actions: open\n\t\t\t\t\t\t\t220 image\n\t\t\t\t\t\t\t221 text field (settable), Value: issue-28-failure-baseline, Secondary Actions: open\n\t\t\t\t\t\t\t222 image\n\t\t\t\t\t\t\t223 text field (settable), Value: issue-28-gui-final, Secondary Actions: open\n\t\t\t\t\t\t\t224 image\n\t\t\t\t\t\t\t225 text field (settable), Value: issue-28-history-baseline, Secondary Actions: open\n\t\t\t\t\t\t\t226 image\n\t\t\t\t\t\t\t227 text field (settable), Value: issue-28-history-baseline-2, Secondary Actions: open\n\t\t\t\t\t\t\t228 image\n\t\t\t\t\t\t\t229 text field (settable), Value: issue-28-original-baseline, Secondary Actions: open\n\t\t\t\t\t\t\t230 image\n\t\t\t\t\t\t\t231 text field (settable), Value: tmp, Secondary Actions: open\n\t\t\t\t\t\t\t232 image\n\t\t\t\t\t\t\t233 text field (settable), Value: CACHEDIR.TAG, Secondary Actions: open\n\t\t\t\t\t\t234 scroll bar (disabled) 0\n\t\t\t\t\t235 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t236 list\n\t\t\t\t\t\t\t237 image\n\t\t\t\t\t\t\t238 text field (settable), Value: archive, Secondary Actions: open\n\t\t\t\t\t\t\t239 image\n\t\t\t\t\t\t\t240 text field (settable), Value: assets, Secondary Actions: open\n\t\t\t\t\t\t\t241 image\n\t\t\t\t\t\t\t242 text field (settable), Value: 01-before-save-notice.png, Secondary Actions: open\n\t\t\t\t\t\t\t243 image\n\t\t\t\t\t\t\t244 text field (settable), Value: 02-panel-cancel-preserves-input.png, Secondary Actions: open\n\t\t\t\t\t\t\t245 image\n\t\t\t\t\t\t\t246 text field (settable), Value: 03-write-failure.png, Secondary Actions: open\n\t\t\t\t\t\t\t247 image\n\t\t\t\t\t\t\t248 text field (settable), Value: 04-conflict.png, Secondary Actions: open\n\t\t\t\t\t\t\t249 image\n\t\t\t\t\t\t\t250 text field (settable), Value: 05-native-overwrite-confirmation.png, Secondary Actions: open\n\t\t\t\t\t\t\t251 image\n\t\t\t\t\t\t\t252 text field (settable), Value: 06-original-rejected.png, Secondary Actions: open\n\t\t\t\t\t\t\t253 image\n\t\t\t\t\t\t\t254 text field (settable), Value: observations.json, Secondary Actions: open\n\t\t\t\t\t\t\t255 image\n\t\t\t\t\t\t\t256 text field (settable), Value: presentation-glyphs.csv, Secondary Actions: open\n\t\t\t\t\t\t\t257 image\n\t\t\t\t\t\t\t258 text field (settable), Value: presentation-input.csv, Secondary Actions: open\n\t\t\t\t\t\t\t259 image\n\t\t\t\t\t\t\t260 text field (settable), Value: presentation.kdl, Secondary Actions: open\n\t\t\t\t\t\t\t261 image\n\t\t\t\t\t\t\t262 text field (settable), Value: recognize-bounds, Secondary Actions: open\n\t\t\t\t\t\t263 scroll bar 0\n\t\t\t\t\t\t\t264 value indicator 0\n\t\t\t\t\t\t\t265 increment arrow button\n\t\t\t\t\t\t\t266 decrement arrow button\n\t\t\t\t\t\t\t267 increment page button\n\t\t\t\t\t\t\t268 decrement page button\n\t\t\t\t\t269 scroll area, Secondary Actions: scroll up, scroll down\n\t\t\t\t\t\t270 list\n\t\t\t\t\t\t\t271 image\n\t\t\t\t\t\t\t272 text field (settable), Value: presentation.kdl, Secondary Actions: open\n\t\t\t\t\t\t273 scroll bar (disabled) 0\n\t\t\t\t\t274 scroll bar 0\n\t\t\t\t\t\t275 value indicator 0\n\t\t\t\t\t\t276 increment arrow button\n\t\t\t\t\t\t277 decrement arrow button\n\t\t\t\t\t\t278 increment page button\n\t\t\t\t\t\t279 decrement page button\n\t\t280 button back\n\t\t281 button (disabled) forward\n\t\t282 menu button column view\n\t\t283 menu button\n\t\t284 pop up button Where:, Value: archive\n\t\t285 disclosure triangle show less options, Value: 1\n\t\t286 search text field (settable)\n\t\t\t287 button search\n\t\t288 text Save As:\n\t\t289 text field (settable), Value: presentation.kdl\n\t\t290 text Tags:\n\t\t291 text field (settable) tag editor\n\t\t292 button (disabled) New Folder\n\t\t293 button Cancel\n\t\t294 button (disabled) Save\n\t295 close button (disabled)\n\t296 zoom button\n\t297 minimize button (disabled)\n\t298 text Save\n\t299 sheet\n\t\t300 image com.apple.appkit.xpc.openAndSavePanelService critical alert\n\t\t301 text “presentation.kdl” already exists. Do you want to replace it?\n\t\t302 text A file or folder with the same name already exists in the folder “archive”. Replacing it will overwrite its current contents.\n\t\t303 button Cancel\n\t\t304 button Replace\n\nNo UI element is currently focused."
+  },
+  {
+    "name": "08-retreat-success",
+    "text": "●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表slides>1Retain...2Slide23Slide3RetaineddraftInspectorElementsElement1・見出しくPresentationtitleキャンバス上で編集中全文をInspectorで編集Elementを削除入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Retreatacceptance別ファイルへ保存しました。",
+    "input": {
+      "text": "Retained draft",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        410.87756,
+        204.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 81766)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window."
+  },
+  {
+    "name": "09-rebased-image",
+    "text": "●聞く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表Slides1Retain...>2Slide23Slide3InspectorElementsElement1・画像PresentationtitleFirst編集値Retreatacceptance適用入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Retreatacceptance編集内容をKDLに反映しました。",
+    "input": {
+      "text": "Retreat acceptance",
+      "selected": [
+        18,
+        18
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1164.3984,
+        260.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 81766)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window."
+  },
+  {
+    "name": "10-nested-images",
+    "text": "開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表Slides1Retain...2Slide2>3Slide3InspectorElementsElement1・2列左列・画像1右列・画像1Presentationtitle+キャプションを追加+キャプションを追加編集値Retreatacceptance適用入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Retreatacceptance編集内容をKDLに反映しました。",
+    "input": {
+      "text": "Retreat acceptance",
+      "selected": [
+        18,
+        18
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1164.3984,
+        330.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 81766)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window."
+  },
+  {
+    "name": "11-editing-resumed",
+    "text": "●●●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表slides>1Resume...2Slide23Slide3ResumededitingInspectorElementsElement1・見出しくPresentationtitleキャンバス上で編集中全文をInspectorで編集Elementを削除入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Retreatacceptance保存しました。",
+    "input": {
+      "text": "Resumed editing",
+      "selected": [
+        15,
+        15
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        448.06024,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 81766)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window."
+  }
+]
