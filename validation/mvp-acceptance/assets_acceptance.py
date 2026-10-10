@@ -87,6 +87,7 @@ try:
             print('PASS',format,flush=True)
     act('click','--x','683','--y','410','--no-screenshot') # select image path
     act('click','--x','145','--y','54','--no-screenshot')
+    press_button('退避先を選ぶ')
     act('hotkey','--key','CmdOrCtrl+Shift+G','--no-screenshot')
     act('hotkey','--key','CmdOrCtrl+A','--no-screenshot')
     act('type-text','--text',str(archive),'--no-screenshot')
