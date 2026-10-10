@@ -181,6 +181,7 @@ struct ColumnResizeDrag {
 struct GuiPresentation {
     session: PresentationSession,
     render_images: HashMap<String, Arc<gpui::RenderImage>>,
+    editor_was_fullscreen: bool,
 }
 
 impl PsychoApp {
@@ -2151,12 +2152,14 @@ impl PsychoApp {
         self.layout_diagnostics.clear();
         self.asset_diagnostics.clear();
         let render_images = load_asset_images(session.images().clone());
+        let editor_was_fullscreen = window.is_fullscreen();
         self.presentation = Some(GuiPresentation {
             session,
             render_images,
+            editor_was_fullscreen,
         });
         self.status = "発表中です。Escape で編集へ戻ります。".into();
-        if !window.is_fullscreen() {
+        if !editor_was_fullscreen {
             window.toggle_fullscreen();
         }
         self.schedule_cursor_hide(window, cx);
@@ -2202,7 +2205,7 @@ impl PsychoApp {
         });
         self.cursor_hide_generation = self.cursor_hide_generation.wrapping_add(1);
         self.show_presentation_cursor();
-        if window.is_fullscreen() {
+        if !presentation.editor_was_fullscreen && window.is_fullscreen() {
             window.toggle_fullscreen();
         }
         window.focus(&self.root_focus, cx);
