@@ -1,0 +1,2345 @@
+{
+  "product_commit": "c06369f",
+  "observations": [
+    {
+      "case": "cycle-1-start",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "title": "",
+        "height": 1200,
+        "isOffscreen": false,
+        "screenIndex": 0,
+        "id": 28173,
+        "platform": {
+          "layer": 0
+        },
+        "isMinimized": false,
+        "y": 0,
+        "x": 0
+      }
+    },
+    {
+      "case": "other-app-return",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "platform": {
+          "layer": 0
+        },
+        "id": 28173,
+        "x": 0,
+        "screenIndex": 0,
+        "y": 0,
+        "width": 1920,
+        "title": "",
+        "height": 1200,
+        "isMinimized": false,
+        "isOffscreen": false
+      }
+    },
+    {
+      "case": "cycle-1-Right",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "screenIndex": 0,
+        "x": 0,
+        "height": 1200,
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 0
+      }
+    },
+    {
+      "case": "cycle-1-Down",
+      "expected": "Third slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "y": 0,
+        "height": 1200,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "title": "",
+        "width": 1920,
+        "x": 0,
+        "platform": {
+          "layer": 0
+        }
+      }
+    },
+    {
+      "case": "cycle-1-Space",
+      "expected": "Third slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "screenIndex": 0,
+        "x": 0,
+        "height": 1200,
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 0
+      }
+    },
+    {
+      "case": "cycle-1-PageDown",
+      "expected": "Third slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "y": 0,
+        "height": 1200,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "title": "",
+        "width": 1920,
+        "x": 0,
+        "platform": {
+          "layer": 0
+        }
+      }
+    },
+    {
+      "case": "cycle-1-Left",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "screenIndex": 0,
+        "x": 0,
+        "height": 1200,
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 0
+      }
+    },
+    {
+      "case": "cycle-1-Up",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "y": 0,
+        "height": 1200,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "title": "",
+        "width": 1920,
+        "x": 0,
+        "platform": {
+          "layer": 0
+        }
+      }
+    },
+    {
+      "case": "cycle-1-PageUp",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "screenIndex": 0,
+        "x": 0,
+        "height": 1200,
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 0
+      }
+    },
+    {
+      "case": "cycle-1-Left",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "y": 0,
+        "height": 1200,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "title": "",
+        "width": 1920,
+        "x": 0,
+        "platform": {
+          "layer": 0
+        }
+      }
+    },
+    {
+      "case": "cycle-1-pointer-keeps-position",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 0,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "height": 1200,
+        "title": "",
+        "x": 0,
+        "id": 28173,
+        "width": 1920
+      }
+    },
+    {
+      "case": "cycle-1-return",
+      "expected": "First slide",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "height": 892,
+        "isMinimized": false,
+        "isOffscreen": false,
+        "y": 185,
+        "x": 320,
+        "screenIndex": 0,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "width": 1280,
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-2-start",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "y": 0,
+        "height": 1200,
+        "x": 0,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-2-Right",
+      "expected": "Third slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "y": 0,
+        "x": 0,
+        "screenIndex": 0,
+        "width": 1920,
+        "title": "",
+        "isOffscreen": false,
+        "platform": {
+          "layer": 0
+        },
+        "height": 1200,
+        "isMinimized": false
+      }
+    },
+    {
+      "case": "cycle-2-Left",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "y": 0,
+        "height": 1200,
+        "x": 0,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-2-pointer-keeps-position",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "y": 0,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "id": 28173,
+        "x": 0,
+        "height": 1200,
+        "isOffscreen": false
+      }
+    },
+    {
+      "case": "cycle-2-return",
+      "expected": "Second slide",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 185,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "height": 892,
+        "title": "",
+        "x": 320,
+        "id": 28173,
+        "width": 1280
+      }
+    },
+    {
+      "case": "cycle-3-start",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "screenIndex": 0,
+        "x": 0,
+        "height": 1200,
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 0
+      }
+    },
+    {
+      "case": "cycle-3-Right",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "title": "",
+        "height": 1200,
+        "isOffscreen": false,
+        "screenIndex": 0,
+        "id": 28173,
+        "platform": {
+          "layer": 0
+        },
+        "isMinimized": false,
+        "y": 0,
+        "x": 0
+      }
+    },
+    {
+      "case": "cycle-3-Left",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "platform": {
+          "layer": 0
+        },
+        "isOffscreen": false,
+        "height": 1200,
+        "title": "",
+        "isMinimized": false,
+        "screenIndex": 0,
+        "y": 0,
+        "x": 0,
+        "width": 1920
+      }
+    },
+    {
+      "case": "cycle-3-pointer-keeps-position",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "screenIndex": 0,
+        "x": 0,
+        "height": 1200,
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 0
+      }
+    },
+    {
+      "case": "cycle-3-return",
+      "expected": "First slide",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1280,
+        "y": 185,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "id": 28173,
+        "x": 320,
+        "height": 892,
+        "isOffscreen": false
+      }
+    },
+    {
+      "case": "cycle-4-start",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "y": 0,
+        "x": 0,
+        "screenIndex": 0,
+        "width": 1920,
+        "title": "",
+        "isOffscreen": false,
+        "platform": {
+          "layer": 0
+        },
+        "height": 1200,
+        "isMinimized": false
+      }
+    },
+    {
+      "case": "cycle-4-Right",
+      "expected": "Third slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "platform": {
+          "layer": 0
+        },
+        "x": 0,
+        "height": 1200,
+        "width": 1920,
+        "isOffscreen": false,
+        "y": 0,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "title": "",
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-4-Left",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "y": 0,
+        "x": 0,
+        "screenIndex": 0,
+        "width": 1920,
+        "title": "",
+        "isOffscreen": false,
+        "platform": {
+          "layer": 0
+        },
+        "height": 1200,
+        "isMinimized": false
+      }
+    },
+    {
+      "case": "cycle-4-pointer-keeps-position",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "title": "",
+        "isMinimized": false,
+        "id": 28173,
+        "height": 1200,
+        "platform": {
+          "layer": 0
+        },
+        "isOffscreen": false,
+        "screenIndex": 0,
+        "y": 0,
+        "x": 0
+      }
+    },
+    {
+      "case": "cycle-4-return",
+      "expected": "Second slide",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "screenIndex": 0,
+        "x": 320,
+        "height": 892,
+        "title": "",
+        "width": 1280,
+        "isOffscreen": false,
+        "id": 28173,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 185
+      }
+    },
+    {
+      "case": "cycle-5-start",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "y": 0,
+        "height": 1200,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "title": "",
+        "width": 1920,
+        "x": 0,
+        "platform": {
+          "layer": 0
+        }
+      }
+    },
+    {
+      "case": "cycle-5-Right",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "isMinimized": false,
+        "height": 1200,
+        "id": 28173,
+        "width": 1920,
+        "isOffscreen": false,
+        "title": "",
+        "screenIndex": 0,
+        "y": 0,
+        "platform": {
+          "layer": 0
+        },
+        "x": 0
+      }
+    },
+    {
+      "case": "cycle-5-Left",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "y": 0,
+        "height": 1200,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "title": "",
+        "width": 1920,
+        "x": 0,
+        "platform": {
+          "layer": 0
+        }
+      }
+    },
+    {
+      "case": "cycle-5-pointer-keeps-position",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "isMinimized": false,
+        "height": 1200,
+        "id": 28173,
+        "width": 1920,
+        "isOffscreen": false,
+        "title": "",
+        "screenIndex": 0,
+        "y": 0,
+        "platform": {
+          "layer": 0
+        },
+        "x": 0
+      }
+    },
+    {
+      "case": "cycle-5-return",
+      "expected": "First slide",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1280,
+        "title": "",
+        "isMinimized": false,
+        "id": 28173,
+        "height": 892,
+        "platform": {
+          "layer": 0
+        },
+        "isOffscreen": false,
+        "screenIndex": 0,
+        "y": 185,
+        "x": 320
+      }
+    },
+    {
+      "case": "cycle-6-start",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "platform": {
+          "layer": 0
+        },
+        "x": 0,
+        "height": 1200,
+        "width": 1920,
+        "isOffscreen": false,
+        "y": 0,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "title": "",
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-6-Right",
+      "expected": "Third slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "y": 0,
+        "height": 1200,
+        "x": 0,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-6-Left",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "platform": {
+          "layer": 0
+        },
+        "x": 0,
+        "height": 1200,
+        "width": 1920,
+        "isOffscreen": false,
+        "y": 0,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "title": "",
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-6-pointer-keeps-position",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "y": 0,
+        "height": 1200,
+        "x": 0,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-6-return",
+      "expected": "Second slide",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "isMinimized": false,
+        "height": 892,
+        "id": 28173,
+        "width": 1280,
+        "isOffscreen": false,
+        "title": "",
+        "screenIndex": 0,
+        "y": 185,
+        "platform": {
+          "layer": 0
+        },
+        "x": 320
+      }
+    },
+    {
+      "case": "cycle-7-start",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "platform": {
+          "layer": 0
+        },
+        "isOffscreen": false,
+        "height": 1200,
+        "title": "",
+        "isMinimized": false,
+        "screenIndex": 0,
+        "y": 0,
+        "x": 0,
+        "width": 1920
+      }
+    },
+    {
+      "case": "cycle-7-Right",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "screenIndex": 0,
+        "x": 0,
+        "height": 1200,
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 0
+      }
+    },
+    {
+      "case": "cycle-7-Left",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "platform": {
+          "layer": 0
+        },
+        "isOffscreen": false,
+        "height": 1200,
+        "title": "",
+        "isMinimized": false,
+        "screenIndex": 0,
+        "y": 0,
+        "x": 0,
+        "width": 1920
+      }
+    },
+    {
+      "case": "cycle-7-pointer-keeps-position",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "screenIndex": 0,
+        "x": 0,
+        "height": 1200,
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 0
+      }
+    },
+    {
+      "case": "cycle-7-return",
+      "expected": "First slide",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "y": 185,
+        "height": 892,
+        "x": 320,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "width": 1280,
+        "isOffscreen": false,
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-8-start",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "y": 0,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "id": 28173,
+        "x": 0,
+        "height": 1200,
+        "isOffscreen": false
+      }
+    },
+    {
+      "case": "cycle-8-Right",
+      "expected": "Third slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "title": "",
+        "isMinimized": false,
+        "id": 28173,
+        "height": 1200,
+        "platform": {
+          "layer": 0
+        },
+        "isOffscreen": false,
+        "screenIndex": 0,
+        "y": 0,
+        "x": 0
+      }
+    },
+    {
+      "case": "cycle-8-Left",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "y": 0,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "id": 28173,
+        "x": 0,
+        "height": 1200,
+        "isOffscreen": false
+      }
+    },
+    {
+      "case": "cycle-8-pointer-keeps-position",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "title": "",
+        "isMinimized": false,
+        "id": 28173,
+        "height": 1200,
+        "platform": {
+          "layer": 0
+        },
+        "isOffscreen": false,
+        "screenIndex": 0,
+        "y": 0,
+        "x": 0
+      }
+    },
+    {
+      "case": "cycle-8-return",
+      "expected": "Second slide",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "screenIndex": 0,
+        "x": 320,
+        "height": 892,
+        "title": "",
+        "width": 1280,
+        "isOffscreen": false,
+        "id": 28173,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 185
+      }
+    },
+    {
+      "case": "cycle-9-start",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "y": 0,
+        "height": 1200,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "title": "",
+        "width": 1920,
+        "x": 0,
+        "platform": {
+          "layer": 0
+        }
+      }
+    },
+    {
+      "case": "cycle-9-Right",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "isMinimized": false,
+        "height": 1200,
+        "id": 28173,
+        "width": 1920,
+        "isOffscreen": false,
+        "title": "",
+        "screenIndex": 0,
+        "y": 0,
+        "platform": {
+          "layer": 0
+        },
+        "x": 0
+      }
+    },
+    {
+      "case": "cycle-9-Left",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28173,
+        "y": 0,
+        "height": 1200,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "title": "",
+        "width": 1920,
+        "x": 0,
+        "platform": {
+          "layer": 0
+        }
+      }
+    },
+    {
+      "case": "cycle-9-pointer-keeps-position",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "isMinimized": false,
+        "height": 1200,
+        "id": 28173,
+        "width": 1920,
+        "isOffscreen": false,
+        "title": "",
+        "screenIndex": 0,
+        "y": 0,
+        "platform": {
+          "layer": 0
+        },
+        "x": 0
+      }
+    },
+    {
+      "case": "cycle-9-return",
+      "expected": "First slide",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1280,
+        "title": "",
+        "isMinimized": false,
+        "id": 28173,
+        "height": 892,
+        "platform": {
+          "layer": 0
+        },
+        "isOffscreen": false,
+        "screenIndex": 0,
+        "y": 185,
+        "x": 320
+      }
+    },
+    {
+      "case": "cycle-10-start",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "platform": {
+          "layer": 0
+        },
+        "x": 0,
+        "height": 1200,
+        "width": 1920,
+        "isOffscreen": false,
+        "y": 0,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "title": "",
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-10-Right",
+      "expected": "Third slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "y": 0,
+        "height": 1200,
+        "x": 0,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-10-Left",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "platform": {
+          "layer": 0
+        },
+        "x": 0,
+        "height": 1200,
+        "width": 1920,
+        "isOffscreen": false,
+        "y": 0,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "title": "",
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-10-pointer-keeps-position",
+      "expected": "Second slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "y": 0,
+        "height": 1200,
+        "x": 0,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "width": 1920,
+        "isOffscreen": false,
+        "id": 28173
+      }
+    },
+    {
+      "case": "cycle-10-return",
+      "expected": "Second slide",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "isMinimized": false,
+        "height": 892,
+        "id": 28173,
+        "width": 1280,
+        "isOffscreen": false,
+        "title": "",
+        "screenIndex": 0,
+        "y": 185,
+        "platform": {
+          "layer": 0
+        },
+        "x": 320
+      }
+    },
+    {
+      "case": "editor-already-fullscreen",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1843.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "y": 0,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "id": 28173,
+        "x": 0,
+        "height": 1200,
+        "isOffscreen": false
+      }
+    },
+    {
+      "case": "start-keeps-fullscreen",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1843.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "platform": {
+          "layer": 0
+        },
+        "x": 0,
+        "height": 1200,
+        "width": 1920,
+        "isOffscreen": false,
+        "y": 0,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "title": "",
+        "id": 28173
+      }
+    },
+    {
+      "case": "fullscreen-editor-return",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1843.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "title": "",
+        "isMinimized": false,
+        "id": 28173,
+        "height": 1200,
+        "platform": {
+          "layer": 0
+        },
+        "isOffscreen": false,
+        "screenIndex": 0,
+        "y": 0,
+        "x": 0
+      }
+    }
+  ]
+}

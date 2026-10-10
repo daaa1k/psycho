@@ -1,0 +1,77 @@
+{
+  "product_commit": "c06369f",
+  "source_run": "target/issue29-presentation-ime-final-verified",
+  "observations": [
+    {
+      "case": "marked-before-start",
+      "input": {
+        "text": "日本語の変換",
+        "selected": [
+          0,
+          6
+        ],
+        "marked": [
+          0,
+          6
+        ],
+        "cursor": [
+          379.42218,
+          217.05,
+          38.8125
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": true,
+        "focused": true
+      }
+    },
+    {
+      "case": "presentation",
+      "input": {
+        "text": "日本語の変換",
+        "selected": [
+          0,
+          6
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          379.42218,
+          217.05,
+          38.8125
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "unsaved_bytes_preserved": true
+    },
+    {
+      "case": "returned-and-saved",
+      "input": {
+        "text": "IME presentation",
+        "selected": [
+          16,
+          16
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1145.1094,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "saved": "presentation { metadata { title \"IME presentation\" }; slide { heading \"日本語の変換\"; }; }\n"
+    }
+  ]
+}

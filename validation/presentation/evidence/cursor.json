@@ -1,0 +1,13 @@
+[
+  {
+    "branch": "cursor",
+    "native_api": "CGCursorIsVisible",
+    "initial_visible": true,
+    "idle_elapsed_seconds": 2.1550837079999994,
+    "idle_visible": false,
+    "mousemove_visible": true,
+    "click_keeps_slide": true,
+    "scroll_keeps_slide": true,
+    "exit_visible": true
+  }
+]
