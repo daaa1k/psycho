@@ -1,0 +1,513 @@
+{
+  "product_commit": "b83d4df793287f667724a2cb8d7cbb9e0394073c",
+  "source_run": "target/issue29-presentation-run8",
+  "observations": [
+    {
+      "case": "conflict-frozen",
+      "expected": "Local unsaved",
+      "fullscreen": true,
+      "input": {
+        "text": "Local unsaved",
+        "selected": [
+          13,
+          13
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          412.34064,
+          217.05,
+          38.8125
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "title": "",
+        "height": 1200,
+        "isOffscreen": false,
+        "screenIndex": 0,
+        "id": 27915,
+        "platform": {
+          "layer": 0
+        },
+        "isMinimized": false,
+        "y": 0,
+        "x": 0
+      }
+    },
+    {
+      "case": "conflict-exit-blocked",
+      "expected": "競合",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          412.34064,
+          217.05,
+          38.8125
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1280,
+        "y": 185,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "id": 27915,
+        "x": 320,
+        "height": 892,
+        "isOffscreen": false
+      }
+    },
+    {
+      "case": "conflict-restart-blocked",
+      "expected": "競合",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          412.34064,
+          217.05,
+          38.8125
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "platform": {
+          "layer": 0
+        },
+        "x": 320,
+        "height": 892,
+        "width": 1280,
+        "isOffscreen": false,
+        "y": 185,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "title": "",
+        "id": 27915
+      }
+    },
+    {
+      "case": "conflict-retreat-preserves-content",
+      "expected": "Local unsaved",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1280,
+        "y": 185,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "id": 27915,
+        "x": 320,
+        "height": 892,
+        "isOffscreen": false
+      }
+    },
+    {
+      "case": "retreat-can-present",
+      "expected": "Local unsaved",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "y": 0,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "height": 1200,
+        "title": "",
+        "x": 0,
+        "id": 27915,
+        "width": 1920
+      }
+    },
+    {
+      "case": "deleted-frozen",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 27998,
+        "y": 0,
+        "height": 1200,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "title": "",
+        "width": 1920,
+        "x": 0,
+        "platform": {
+          "layer": 0
+        }
+      }
+    },
+    {
+      "case": "deleted-exit-blocked",
+      "expected": "削除",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "platform": {
+          "layer": 0
+        },
+        "x": 320,
+        "height": 892,
+        "width": 1280,
+        "isOffscreen": false,
+        "y": 185,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "title": "",
+        "id": 27998
+      }
+    },
+    {
+      "case": "deleted-restart-blocked",
+      "expected": "削除",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1280,
+        "y": 185,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "id": 27998,
+        "x": 320,
+        "height": 892,
+        "isOffscreen": false
+      }
+    },
+    {
+      "case": "deleted-recovered",
+      "expected": "First slide",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "platform": {
+          "layer": 0
+        },
+        "x": 320,
+        "height": 892,
+        "width": 1280,
+        "isOffscreen": false,
+        "y": 185,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "title": "",
+        "id": 27998
+      }
+    },
+    {
+      "case": "invalid-frozen",
+      "expected": "First slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "title": "",
+        "height": 1200,
+        "id": 28041,
+        "y": 0,
+        "platform": {
+          "layer": 0
+        },
+        "screenIndex": 0,
+        "x": 0,
+        "isOffscreen": false,
+        "isMinimized": false
+      }
+    },
+    {
+      "case": "invalid-exit-blocked",
+      "expected": "無効",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28041,
+        "y": 185,
+        "height": 892,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "title": "",
+        "width": 1280,
+        "x": 320,
+        "platform": {
+          "layer": 0
+        }
+      }
+    },
+    {
+      "case": "invalid-restart-blocked",
+      "expected": "無効",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28041,
+        "platform": {
+          "layer": 0
+        },
+        "isOffscreen": false,
+        "height": 892,
+        "title": "",
+        "isMinimized": false,
+        "screenIndex": 0,
+        "y": 185,
+        "x": 320,
+        "width": 1280
+      }
+    },
+    {
+      "case": "invalid-recovered",
+      "expected": "First slide",
+      "fullscreen": false,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 28041,
+        "y": 185,
+        "height": 892,
+        "isMinimized": false,
+        "screenIndex": 0,
+        "isOffscreen": false,
+        "title": "",
+        "width": 1280,
+        "x": 320,
+        "platform": {
+          "layer": 0
+        }
+      }
+    }
+  ]
+}

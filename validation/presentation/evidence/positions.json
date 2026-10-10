@@ -1,0 +1,474 @@
+{
+  "product_commit": "b83d4df793287f667724a2cb8d7cbb9e0394073c",
+  "source_run": "target/issue29-presentation-run7",
+  "observations": [
+    {
+      "case": "same-id-snapshot",
+      "expected": "Third slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "height": 1200,
+        "isMinimized": false,
+        "isOffscreen": false,
+        "y": 0,
+        "x": 0,
+        "screenIndex": 0,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "width": 1920,
+        "id": 27545
+      }
+    },
+    {
+      "case": "same-id-return",
+      "expected": "Third updated",
+      "fullscreen": false,
+      "input": {
+        "text": "External update",
+        "selected": [
+          15,
+          15
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1136.625,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1280,
+        "title": "",
+        "height": 892,
+        "isOffscreen": false,
+        "screenIndex": 0,
+        "id": 27545,
+        "platform": {
+          "layer": 0
+        },
+        "isMinimized": false,
+        "y": 185,
+        "x": 320
+      }
+    },
+    {
+      "case": "same-id-restart",
+      "expected": "Third updated",
+      "fullscreen": true,
+      "input": {
+        "text": "External update",
+        "selected": [
+          15,
+          15
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1136.625,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "isOffscreen": false,
+        "platform": {
+          "layer": 0
+        },
+        "x": 0,
+        "isMinimized": false,
+        "title": "",
+        "screenIndex": 0,
+        "height": 1200,
+        "width": 1920,
+        "id": 27545,
+        "y": 0
+      }
+    },
+    {
+      "case": "same-index-snapshot",
+      "expected": "Third slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 27615,
+        "y": 0,
+        "x": 0,
+        "screenIndex": 0,
+        "width": 1920,
+        "title": "",
+        "isOffscreen": false,
+        "platform": {
+          "layer": 0
+        },
+        "height": 1200,
+        "isMinimized": false
+      }
+    },
+    {
+      "case": "same-index-return",
+      "expected": "New third",
+      "fullscreen": false,
+      "input": {
+        "text": "External update",
+        "selected": [
+          15,
+          15
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1136.625,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "isOffscreen": false,
+        "platform": {
+          "layer": 0
+        },
+        "x": 320,
+        "isMinimized": false,
+        "title": "",
+        "screenIndex": 0,
+        "height": 892,
+        "width": 1280,
+        "id": 27615,
+        "y": 185
+      }
+    },
+    {
+      "case": "same-index-restart",
+      "expected": "New third",
+      "fullscreen": true,
+      "input": {
+        "text": "External update",
+        "selected": [
+          15,
+          15
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1136.625,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 27615,
+        "platform": {
+          "layer": 0
+        },
+        "isOffscreen": false,
+        "height": 1200,
+        "title": "",
+        "isMinimized": false,
+        "screenIndex": 0,
+        "y": 0,
+        "x": 0,
+        "width": 1920
+      }
+    },
+    {
+      "case": "last-index-snapshot",
+      "expected": "Third slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "title": "",
+        "height": 1200,
+        "id": 27681,
+        "y": 0,
+        "platform": {
+          "layer": 0
+        },
+        "screenIndex": 0,
+        "x": 0,
+        "isOffscreen": false,
+        "isMinimized": false
+      }
+    },
+    {
+      "case": "last-index-return",
+      "expected": "Only remaining",
+      "fullscreen": false,
+      "input": {
+        "text": "External update",
+        "selected": [
+          15,
+          15
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1136.625,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "id": 27681,
+        "platform": {
+          "layer": 0
+        },
+        "isOffscreen": false,
+        "height": 892,
+        "title": "",
+        "isMinimized": false,
+        "screenIndex": 0,
+        "y": 185,
+        "x": 320,
+        "width": 1280
+      }
+    },
+    {
+      "case": "last-index-restart",
+      "expected": "Only remaining",
+      "fullscreen": true,
+      "input": {
+        "text": "External update",
+        "selected": [
+          15,
+          15
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1136.625,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "platform": {
+          "layer": 0
+        },
+        "x": 0,
+        "height": 1200,
+        "width": 1920,
+        "isOffscreen": false,
+        "y": 0,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "title": "",
+        "id": 27681
+      }
+    },
+    {
+      "case": "no-slides-snapshot",
+      "expected": "Third slide",
+      "fullscreen": true,
+      "input": {
+        "text": "Presentation acceptance",
+        "selected": [
+          23,
+          23
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1203.2344,
+          260.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1920,
+        "title": "",
+        "height": 1200,
+        "isOffscreen": false,
+        "screenIndex": 0,
+        "id": 27750,
+        "platform": {
+          "layer": 0
+        },
+        "isMinimized": false,
+        "y": 0,
+        "x": 0
+      }
+    },
+    {
+      "case": "no-slides-return",
+      "expected": "+ Slide",
+      "fullscreen": false,
+      "input": {
+        "text": "External update",
+        "selected": [
+          15,
+          15
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1136.625,
+          229.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "platform": {
+          "layer": 0
+        },
+        "x": 320,
+        "height": 892,
+        "width": 1280,
+        "isOffscreen": false,
+        "y": 185,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "title": "",
+        "id": 27750
+      }
+    },
+    {
+      "case": "no-slides-restart-blocked",
+      "expected": "Slide がない",
+      "fullscreen": false,
+      "input": {
+        "text": "External update",
+        "selected": [
+          15,
+          15
+        ],
+        "marked": [
+          -1,
+          -1
+        ],
+        "cursor": [
+          1136.625,
+          229.0,
+          26.0
+        ],
+        "undo": 0,
+        "redo": 0,
+        "composing": false,
+        "focused": false
+      },
+      "window": {
+        "width": 1280,
+        "y": 185,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "platform": {
+          "layer": 0
+        },
+        "title": "",
+        "id": 27750,
+        "x": 320,
+        "height": 892,
+        "isOffscreen": false
+      }
+    }
+  ]
+}

@@ -19,7 +19,8 @@ use input::TextInputState;
 use objc::{msg_send, runtime::Object, sel, sel_impl};
 use psycho::{
     AssetDiagnostic, Diagnostic, DiagnosticKind, DocumentError, Element, ElementField, ElementKind,
-    ExternalState, PresentationDocument, PresentationModel,
+    ExternalState, LayoutDiagnostic, PresentationDocument, PresentationModel, PresentationSession,
+    PresentationStart, PresentationStartError, SlidePosition,
 };
 use raw_window_handle::{HasWindowHandle, RawWindowHandle};
 
@@ -151,9 +152,7 @@ struct PsychoApp {
     target: EditTarget,
     canvas_editing: bool,
     column_add_menu: Option<usize>,
-    presentation: Option<PresentationModel>,
-    presentation_slide: usize,
-    return_slide: usize,
+    presentation: Option<GuiPresentation>,
     presentation_cursor_hidden: bool,
     cursor_hide_generation: u64,
     status: String,
@@ -165,7 +164,6 @@ struct PsychoApp {
     layout_diagnostics: Vec<LayoutDiagnostic>,
     asset_diagnostics: Vec<AssetDiagnostic>,
     asset_images: HashMap<String, Arc<gpui::RenderImage>>,
-    presentation_assets: Option<HashMap<String, Arc<gpui::RenderImage>>>,
     column_resize_drag: Option<ColumnResizeDrag>,
     drop_destination: Option<DropDestination>,
 }
@@ -180,11 +178,10 @@ struct ColumnResizeDrag {
     usable_width: f32,
 }
 
-#[derive(Clone)]
-struct LayoutDiagnostic {
-    slide_index: usize,
-    element_index: usize,
-    message: String,
+struct GuiPresentation {
+    session: PresentationSession,
+    render_images: HashMap<String, Arc<gpui::RenderImage>>,
+    editor_was_fullscreen: bool,
 }
 
 impl PsychoApp {
@@ -243,8 +240,6 @@ impl PsychoApp {
             canvas_editing: false,
             column_add_menu: None,
             presentation: None,
-            presentation_slide: 0,
-            return_slide: 0,
             presentation_cursor_hidden: false,
             cursor_hide_generation: 0,
             status: "KDL ファイルを開いて編集できます。".into(),
@@ -256,7 +251,6 @@ impl PsychoApp {
             layout_diagnostics: Vec::new(),
             asset_diagnostics,
             asset_images,
-            presentation_assets: None,
             column_resize_drag: None,
             drop_destination: None,
         }
@@ -989,33 +983,20 @@ impl PsychoApp {
         window.focus(&self.root_focus, cx);
     }
 
-    fn reload_slide_position(&self) -> (usize, Option<String>) {
-        let id = self
-            .document
+    fn reload_slide_position(&self) -> SlidePosition {
+        self.document
             .model()
-            .and_then(|model| model.slides.get(self.current_slide))
-            .and_then(|slide| slide.id.clone());
-        (self.current_slide, id)
+            .map(|model| SlidePosition::capture(model, self.current_slide))
+            .unwrap_or_default()
     }
 
-    fn did_reload(
-        &mut self,
-        (previous_index, previous_id): (usize, Option<String>),
-        window: &mut Window,
-        cx: &mut Context<Self>,
-    ) {
+    fn did_reload(&mut self, position: SlidePosition, window: &mut Window, cx: &mut Context<Self>) {
         self.reset_document_view(window, cx);
-        if let Some(model) = self.document.model() {
-            self.current_slide = previous_id
-                .as_ref()
-                .and_then(|id| {
-                    model
-                        .slides
-                        .iter()
-                        .position(|slide| slide.id.as_ref() == Some(id))
-                })
-                .unwrap_or(previous_index.min(model.slides.len().saturating_sub(1)));
-        }
+        self.current_slide = self
+            .document
+            .model()
+            .and_then(|model| position.resolve(model))
+            .unwrap_or(0);
         self.status = "外部ファイルを再読み込みしました。".into();
     }
 
@@ -2141,66 +2122,62 @@ impl PsychoApp {
             cx.notify();
             return;
         }
-        self.poll_external_change(window, cx);
-        if self.external_edit_blocked() {
-            return;
-        }
-        let Some(model) = self.document.model().cloned() else {
-            self.status = "KDL または Schema の診断を修正してから発表してください。".into();
-            cx.notify();
-            return;
-        };
-        if model.slides.is_empty() {
-            self.status = "Slide がないため発表を開始できません。".into();
-            cx.notify();
-            return;
-        }
-        self.layout_diagnostics = collect_layout_diagnostics(&model, window);
-        if let Some(issue) = self.layout_diagnostics.first() {
-            self.status = format!(
-                "発表を開始できません: Slide {}、Element {} の配置がスライドからはみ出します。",
-                issue.slide_index + 1,
-                issue.element_index + 1
-            );
-            cx.notify();
-            return;
-        }
-        self.refresh_assets();
-        if let Some(issue) = self.asset_diagnostics.first() {
-            self.status = format!(
-                "発表を開始できません: Slide {} の画像 {}: {}",
-                issue.slide_index + 1,
-                issue.path,
-                issue.problem
-            );
-            cx.notify();
-            return;
-        }
-        self.return_slide = self.current_slide.min(model.slides.len() - 1);
-        self.presentation_slide = if start_at_current {
-            self.return_slide
+        let position = self.reload_slide_position();
+        let source = self.document.source().to_owned();
+        let start = if start_at_current {
+            PresentationStart::Current(self.current_slide)
         } else {
-            0
+            PresentationStart::First
         };
-        self.presentation = Some(model);
-        self.presentation_assets = Some(self.asset_images.clone());
+        let result = self
+            .document
+            .start_presentation(start, |model| collect_layout_diagnostics(model, window));
+        if self.document.source() != source {
+            self.did_reload(position, window, cx);
+        }
+        let session = match result {
+            Ok(session) => session,
+            Err(error) => {
+                self.status = error.to_string();
+                match error {
+                    PresentationStartError::Layout(issues) => self.layout_diagnostics = issues,
+                    PresentationStartError::Assets(issues) => self.asset_diagnostics = issues,
+                    PresentationStartError::Document(_) => self.show_external_problem(window, cx),
+                    PresentationStartError::Empty => {}
+                }
+                cx.notify();
+                return;
+            }
+        };
+        self.layout_diagnostics.clear();
+        self.asset_diagnostics.clear();
+        let render_images = load_asset_images(session.images().clone());
+        let editor_was_fullscreen = window.is_fullscreen();
+        self.presentation = Some(GuiPresentation {
+            session,
+            render_images,
+            editor_was_fullscreen,
+        });
         self.status = "発表中です。Escape で編集へ戻ります。".into();
-        window.toggle_fullscreen();
+        if !editor_was_fullscreen {
+            window.toggle_fullscreen();
+        }
         self.schedule_cursor_hide(window, cx);
         window.focus(&self.root_focus, cx);
         cx.notify();
     }
 
     fn next_slide(&mut self, _: &NextSlide, _: &mut Window, cx: &mut Context<Self>) {
-        if let Some(model) = self.presentation.as_ref() {
-            self.presentation_slide =
-                (self.presentation_slide + 1).min(model.slides.len().saturating_sub(1));
+        if let Some(presentation) = self.presentation.as_mut() {
+            presentation.session.next();
         }
         cx.notify();
     }
 
     fn previous_slide(&mut self, _: &PreviousSlide, _: &mut Window, cx: &mut Context<Self>) {
-        self.presentation_slide = self.presentation_slide.saturating_sub(1);
+        if let Some(presentation) = self.presentation.as_mut() {
+            presentation.session.previous();
+        }
         cx.notify();
     }
 
@@ -2210,15 +2187,25 @@ impl PsychoApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        if self.presentation.is_none() {
+        let Some(presentation) = self.presentation.take() else {
             return;
-        }
-        self.return_slide = self.presentation_slide;
-        self.current_slide = self.return_slide;
-        self.presentation = None;
-        self.presentation_assets = None;
+        };
+        self.current_slide = presentation
+            .session
+            .position()
+            .resolve(self.document.model().unwrap())
+            .unwrap_or(0);
+        self.target = EditTarget::Title;
+        self.canvas_editing = false;
+        self.column_add_menu = None;
+        let title = self.edit_value(EditTarget::Title);
+        self.editor.update(cx, |input, cx| {
+            input.set_multiline(false, cx);
+            input.set_value(&title, cx);
+        });
+        self.cursor_hide_generation = self.cursor_hide_generation.wrapping_add(1);
         self.show_presentation_cursor();
-        if window.is_fullscreen() {
+        if !presentation.editor_was_fullscreen && window.is_fullscreen() {
             window.toggle_fullscreen();
         }
         window.focus(&self.root_focus, cx);
@@ -2267,7 +2254,6 @@ impl PsychoApp {
             .as_ref()
             .map(|model| collect_layout_diagnostics(model, window))
             .unwrap_or_default();
-        let layout_valid = self.layout_diagnostics.is_empty();
         let title = model
             .as_ref()
             .map_or("新しい Presentation", |model| model.title.as_str())
@@ -2326,19 +2312,13 @@ impl PsychoApp {
             .child(button(
                 cx,
                 "最初から発表",
-                model.as_ref().is_some_and(|model| !model.slides.is_empty())
-                    && editing_available
-                    && !self.external_edit_blocked()
-                    && layout_valid,
+                model.is_some() && editing_available && !self.external_edit_blocked(),
                 |this, _, window, cx| this.start_presentation(false, window, cx),
             ))
             .child(button(
                 cx,
                 "現在から発表",
-                model.as_ref().is_some_and(|model| !model.slides.is_empty())
-                    && editing_available
-                    && !self.external_edit_blocked()
-                    && layout_valid,
+                model.is_some() && editing_available && !self.external_edit_blocked(),
                 |this, _, window, cx| this.start_presentation(true, window, cx),
             ));
         if self.pending_open.is_some() {
@@ -3804,8 +3784,9 @@ impl PsychoApp {
             let images = if editing {
                 &self.asset_images
             } else {
-                self.presentation_assets
+                self.presentation
                     .as_ref()
+                    .map(|presentation| &presentation.render_images)
                     .unwrap_or(&self.asset_images)
             };
             for (index, element) in slide.elements.iter().enumerate() {
@@ -4485,7 +4466,9 @@ impl Render for PsychoApp {
             MenuItem::action("貼り付け", input::Paste).disabled(!input_focused),
             MenuItem::action("すべてを選択", input::SelectAll).disabled(!input_focused),
         ])]);
-        if let Some(model) = self.presentation.clone() {
+        if let Some(presentation) = self.presentation.as_ref() {
+            let model = presentation.session.model().clone();
+            let slide_index = presentation.session.current_index();
             div()
                 .size_full()
                 .key_context("Presentation")
@@ -4495,7 +4478,7 @@ impl Render for PsychoApp {
                 .on_action(cx.listener(Self::next_slide))
                 .on_action(cx.listener(Self::previous_slide))
                 .on_action(cx.listener(Self::exit_presentation))
-                .child(self.render_canvas(&model, self.presentation_slide, false, window, cx))
+                .child(self.render_canvas(&model, slide_index, false, window, cx))
                 .into_any_element()
         } else {
             self.render_editor(window, cx).into_any_element()
