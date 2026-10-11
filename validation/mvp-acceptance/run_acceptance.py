@@ -7,7 +7,6 @@ from pathlib import Path
 import platform
 import subprocess
 import sys
-import time
 
 root = Path(__file__).resolve().parents[2]
 scripts = Path(__file__).resolve().parent
@@ -41,6 +40,7 @@ cases = {
     'assets': ('assets_acceptance.py', []),
     'save-failure': ('save_failure_acceptance.py', []),
     'conflict': ('conflict_acceptance.py', []),
+    'diagnostics': ('diagnostic_navigation_acceptance.py', []),
 }
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', type=Path, required=True)
@@ -89,36 +89,21 @@ for name in args.case or list(cases):
         command.insert(0, str(wrapper))
     environment = dict(os.environ, PSYCHO_ACCEPTANCE_FULLSCREEN_WIDTH=str(int(screens[0]['width'])),
                        PSYCHO_ACCEPTANCE_LARGE_HEIGHT=str(min(992,int(screens[0]['height'])-64)))
-    if name in {'keys', 'presentation-ime', 'ime-reconversion'}:
+    if name in {'keys', 'presentation-ime', 'ime-reconversion', 'diagnostics'}:
         environment['PSYCHO_ACCEPTANCE_RECORDER'] = str(recorder)
     entry = dict(case=name, command=command, expected='All runtime assertions pass',
                  started=datetime.datetime.now(datetime.timezone.utc).isoformat())
     print('RUN', name, flush=True)
     with (out / (name + '.log')).open('w') as log:
-        owned_app = None
         case_exit = 0
         try:
-            if name in {'assets', 'save-failure', 'conflict'}:
+            if name == 'assets':
                 subprocess.run([sys.executable, str(scripts / script), '--prepare'],
                                check=True, stdout=log, stderr=subprocess.STDOUT)
-            if name in {'save-failure', 'conflict'}:
-                fixture = root / 'target' / ('mvp-save-retry' if name == 'save-failure' else 'mvp-conflict-freeze') / 'presentation.kdl'
-                owned_app = subprocess.Popen([str(binary), str(fixture)], stdout=log, stderr=subprocess.STDOUT)
-                time.sleep(3)
-                subprocess.run(['orca', 'computer', 'get-app-state', '--restore-window',
-                                '--app', f'pid:{owned_app.pid}', '--json'], check=True, stdout=log, stderr=subprocess.STDOUT)
             result = subprocess.run(command, env=environment, stdout=log, stderr=subprocess.STDOUT)
             case_exit = result.returncode
         except subprocess.CalledProcessError as error:
             case_exit = error.returncode
-        finally:
-            if owned_app is not None:
-                owned_app.terminate()
-                try:
-                    owned_app.wait(timeout=5)
-                except subprocess.TimeoutExpired:
-                    owned_app.kill()
-                    owned_app.wait()
     if fingerprints() != identity:
         case_exit = 1
         entry['error'] = 'The source, driver or product binary changed during acceptance'

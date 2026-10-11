@@ -48,7 +48,7 @@ for branch in ([] if args.cursor_only else ['cancel','save','discard']):
             assert gui.fixture.read_bytes()==gui.original
             records.append(dict(branch=branch,input=gui.state(),alive=True,original_bytes=True))
         else:
-            try:gui.press('保存して閉じる' if branch=='save' else '破棄して閉じる',aliases=('破楽して閉じる',) if branch=='discard' else ())
+            try:gui.press('保存して閉じる' if branch=='save' else '破棄して閉じる',aliases=('破楽して閉じる','楽して閉じる') if branch=='discard' else ())
             except AssertionError as error:
                 (gui.out/'close-action-observation.txt').write_text(str(error))
             time.sleep(2);result=gui.app.poll();actual=gui.fixture.read_bytes()

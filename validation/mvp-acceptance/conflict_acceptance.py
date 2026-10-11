@@ -1,47 +1,57 @@
-import json,subprocess,time,shutil,argparse,shlex
+"""Native external conflict freezes a draft while allowing slide navigation."""
+import argparse,json,time
 from pathlib import Path
-root=Path(__file__).resolve().parents[2]
-p=root/'target/mvp-conflict-freeze/presentation.kdl'
-fixture='presentation { metadata { title "GUI dirty"; }; slide { heading "Conflict acceptance"; }; slide { heading "Frozen preview navigation"; }; }\n'
-parser=argparse.ArgumentParser(description='Owned scratch document: freeze edits during external conflict')
-parser.add_argument('--prepare',action='store_true')
+from gui_session import Gui,root
+
+parser=argparse.ArgumentParser()
 parser.add_argument('--output',type=Path,default=root/'target/mvp-conflict-evidence')
-args=parser.parse_args()
-if args.prepare:
- p.parent.mkdir(parents=True,exist_ok=True)
- if p.exists():assert p.read_text()==fixture, 'Refusing to replace an edited fixture'
- else:p.write_text(fixture)
- print(f'./target/debug/psycho {shlex.quote(str(p))}')
- raise SystemExit(0)
-assert p.read_text()==fixture, 'Run --prepare and open the scratch fixture'
-before=p.read_bytes();out=args.output;out.mkdir(parents=True,exist_ok=True)
-ocr=root/'target/mvp-recognize-text'
-subprocess.run(['xcrun','swiftc',str(Path(__file__).with_name('recognize_text.swift')),'-o',str(ocr)],check=True)
-def act(*cmd):
- r=json.loads(subprocess.check_output(['orca','computer',*cmd,'--app','psycho','--json'],text=True));assert r['ok'],r
- return r['result']
-def type_value(value):
- act('click','--x','1100','--y','231','--no-screenshot');act('hotkey','--key','CmdOrCtrl+A','--no-screenshot');act('type-text','--text',value,'--no-screenshot')
-def snap(name):
- time.sleep(1);r=act('get-app-state');shutil.copy(r['screenshot']['path'],out/name);print(name,flush=True)
-state=act('get-app-state')
-pid=state['snapshot']['app']['pid']
-command=shlex.split(subprocess.check_output(['ps','-p',str(pid),'-o','command='],text=True).strip())
-assert command[-1]==str(p) and Path(command[0]).resolve()==root/'target/debug/psycho', 'Open the owned scratch fixture'
-assert state['snapshot']['window']['width']==1280
+fixture='presentation { metadata { title "GUI dirty"; }; slide { heading "Conflict acceptance"; }; slide { heading "Frozen preview navigation"; }; }\n'
+gui=Gui(parser.parse_args().output,fixture)
+records=[]
+def observe(name):
+    text=gui.text(name);state=gui.state()
+    records.append(dict(name=name,text=text,input=state,source=gui.fixture.read_text()))
+    assert state['text']=='frozen draft',state
+    assert gui.fixture.read_bytes()==external
+    return text
 try:
- type_value('frozen draft')
- p.write_bytes(before.replace(b'GUI dirty',b'external edit'))
- snap('conflict-freeze-before.png')
- type_value('should be refused')
- act('click','--x','1140','--y','278','--no-screenshot')
- act('hotkey','--key','CmdOrCtrl+S','--no-screenshot')
- act('hotkey','--key','CmdOrCtrl+Z','--no-screenshot')
- act('click','--x','65','--y','183','--no-screenshot')
- snap('conflict-freeze-fixed.png')
- assert p.read_bytes()==before.replace(b'GUI dirty',b'external edit')
- text=subprocess.check_output([str(ocr),str(out/'conflict-freeze-fixed.png')],text=True)
- text=''.join(text.split())
- assert all(value in text for value in ['frozendraft','Frozenpreviewnavigation','GUIdirty']) and 'shouldberefused' not in text,text
- print('PASS: conflict preserves draft, ignores editor/save/undo actions',flush=True)
-finally:p.write_bytes(before)
+    gui.press('Presentation title')
+    _,rows=gui.snapshot('conflict-title-selected')
+    fields=[row for row in rows if row['text'] in ('GUI dirty','GUl dirty') and row['x']>1000]
+    assert len(fields)==1,rows
+    field=fields[0];gui.click(field['x'],field['y'])
+    assert gui.state()['focused'] and gui.state()['text']=='GUI dirty'
+    gui.replace('frozen draft')
+    _,rows=gui.snapshot('conflict-uncommitted-draft')
+    buttons=[row for row in rows if row['text']=='適用']
+    assert len(buttons)==1,rows
+    apply=buttons[0]
+    assert gui.fixture.read_bytes()==gui.original
+    external=gui.original.replace(b'GUI dirty',b'external edit')
+    gui.fixture.write_bytes(external)
+    deadline=time.monotonic()+10
+    while True:
+        text=gui.text()
+        if '競合' in text:break
+        assert time.monotonic()<deadline,text
+    observe('conflict-freeze-before')
+    gui.click(field['x'],field['y'])
+    gui.hotkey('CmdOrCtrl+A')
+    gui.act('type-text','--text','should be refused','--no-screenshot')
+    observe('conflict-input-refused')
+    _,rows=gui.snapshot()
+    assert not any(row['text']=='適用' for row in rows),rows
+    gui.click(apply['x'],apply['y'])
+    observe('conflict-apply-refused')
+    gui.hotkey('CmdOrCtrl+S');observe('conflict-save-refused')
+    gui.hotkey('CmdOrCtrl+Z');observe('conflict-undo-refused')
+    gui.select_slide(2)
+    text=observe('conflict-freeze-fixed')
+    assert all(value in text for value in ('frozendraft','Frozenpreviewnavigation','GUIdirty')),text
+    assert 'shouldberefused' not in text,text
+    print('PASS conflict preserves native draft and external bytes through blocked edits/save/Undo and slide navigation',flush=True)
+except Exception:
+    gui.snapshot('conflict-failure');raise
+finally:
+    try:(gui.out/'conflict-observations.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n')
+    finally:gui.stop()
