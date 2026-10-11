@@ -55,20 +55,25 @@ pub(super) struct EditorAvailability {
     pub(super) earlier: bool,
     pub(super) later: bool,
     pub(super) present: bool,
+    pub(super) present_reason: Option<&'static str>,
     pub(super) view: bool,
 }
 pub(super) trait EditorAction: gpui::Action + Clone {
     const LABEL: &'static str;
     const ICON: Option<&'static str> = None;
     fn enabled(&self, available: EditorAvailability) -> bool;
+    fn disabled_reason(&self, _: EditorAvailability) -> Option<&'static str> {
+        None
+    }
     fn execute(&self, app: &mut PsychoApp, window: &mut Window, cx: &mut Context<PsychoApp>);
 }
 macro_rules! editor_action {
-    ($action:ty, $label:literal, $availability:ident, |$app:ident, $window:ident, $cx:ident| $execute:block $(, $icon:literal)?) => {
+    ($action:ty, $label:literal, $availability:ident, |$app:ident, $window:ident, $cx:ident| $execute:block $(, $icon:literal)? $(, reason = $reason:ident)?) => {
         impl EditorAction for $action {
             const LABEL: &'static str = $label;
             $(const ICON: Option<&'static str> = Some($icon);)?
             fn enabled(&self, available: EditorAvailability) -> bool { available.$availability }
+            $(fn disabled_reason(&self, available: EditorAvailability) -> Option<&'static str> { available.$reason })?
             fn execute(&self, $app: &mut PsychoApp, $window: &mut Window, $cx: &mut Context<PsychoApp>) $execute
         }
     };
@@ -237,7 +242,8 @@ editor_action!(
     |app, window, cx| {
         app.start_presentation(true, window, cx);
     },
-    "icons/present.svg"
+    "icons/present.svg",
+    reason = present_reason
 );
 editor_action!(
     PresentFirst,
@@ -245,5 +251,6 @@ editor_action!(
     present,
     |app, window, cx| {
         app.start_presentation(false, window, cx);
-    }
+    },
+    reason = present_reason
 );

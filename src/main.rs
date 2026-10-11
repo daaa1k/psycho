@@ -178,12 +178,25 @@ struct GuiPresentation {
 }
 
 impl PsychoApp {
-    fn availability(&self, window: &Window, cx: &App) -> EditorAvailability {
+    fn availability(&self, window: &Window, cx: &Context<Self>) -> EditorAvailability {
         let model = self.document.model();
         let editor = self.editor.read(cx);
         let view = self.presentation.is_none();
         let edit = view && model.is_some() && !self.external_edit_blocked();
         let count = model.map_or(0, |model| model.slides.len());
+        let present_reason = if !edit {
+            Some("文書や外部ファイルの問題を解決してください。")
+        } else if count == 0 {
+            Some("発表するスライドがありません。")
+        } else if self.has_uncommitted_draft(cx) {
+            None
+        } else if !self.asset_diagnostics.is_empty() {
+            Some("画像の問題を修正してください。")
+        } else if !self.layout_diagnostics.is_empty() {
+            Some("スライド内に収まらない内容を修正してください。")
+        } else {
+            None
+        };
         EditorAvailability {
             open: view,
             save: edit,
@@ -205,7 +218,8 @@ impl PsychoApp {
             delete_slide: edit && count > 0,
             earlier: edit && self.current_slide > 0,
             later: edit && self.current_slide + 1 < count,
-            present: edit && count > 0,
+            present: present_reason.is_none(),
+            present_reason,
             view,
         }
     }
@@ -232,7 +246,12 @@ impl PsychoApp {
         window: &Window,
         cx: &mut Context<Self>,
     ) -> gpui::AnyElement {
-        let enabled = action.enabled(self.availability(window, cx));
+        let available = self.availability(window, cx);
+        let enabled = action.enabled(available);
+        let tooltip: gpui::SharedString = action.disabled_reason(available).map_or_else(
+            || A::LABEL.into(),
+            |reason| format!("{} · {reason}", A::LABEL).into(),
+        );
         let palette = self.palette;
         let click_action = action.clone();
         let a11y_action = action.clone();
@@ -266,7 +285,7 @@ impl PsychoApp {
             .border_1()
             .border_color(palette.border)
             .focus(|style| style.border_2().border_color(palette.focus))
-            .tooltip(|_, cx| cx.new(|_| EditorTooltip(A::LABEL)).into())
+            .tooltip(move |_, cx| cx.new(|_| EditorTooltip(tooltip.clone())).into())
             .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
             .on_click(cx.listener(move |this, _, window, cx| {
                 this.execute_action(&click_action, window, cx)
@@ -2429,10 +2448,6 @@ impl PsychoApp {
         self.palette = EditorPalette::for_appearance(window.appearance());
         let palette = self.palette;
         cx.set_global(palette);
-        self.layout_diagnostics = model
-            .as_ref()
-            .map(|model| collect_layout_diagnostics(model, window))
-            .unwrap_or_default();
         let title = model
             .as_ref()
             .map_or("新しい Presentation", |model| model.title.as_str())
@@ -2591,6 +2606,9 @@ impl PsychoApp {
                 }
             ))
             .child(self.status.clone());
+        if let Some(reason) = self.availability(window, cx).present_reason {
+            footer = footer.child(div().text_color(palette.warning).child(reason));
+        }
         for issue in &self.asset_diagnostics {
             let issue = issue.clone();
             footer = footer.child(button(
@@ -4811,6 +4829,13 @@ impl Render for PsychoApp {
         // canvas field is no longer mounted; paint updates its geometry later.
         self.editor.read(cx).record_acceptance_state(window);
         editor_validation::record(self, window, cx);
+        if self.presentation.is_none() {
+            self.layout_diagnostics = self
+                .preview_model(cx)
+                .as_ref()
+                .map(|model| collect_layout_diagnostics(model, window))
+                .unwrap_or_default();
+        }
         let available = self.availability(window, cx);
         let input = self.editor.read(cx);
         let input_focused = available.edit && input.has_focus(window);
@@ -6143,7 +6168,7 @@ fn action_menu<A: EditorAction>(action: A, available: EditorAvailability) -> Men
     MenuItem::action(A::LABEL, action).disabled(!enabled)
 }
 
-struct EditorTooltip(&'static str);
+struct EditorTooltip(gpui::SharedString);
 impl Render for EditorTooltip {
     fn render(&mut self, window: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
         let palette = EditorPalette::for_appearance(window.appearance());
@@ -6155,7 +6180,7 @@ impl Render for EditorTooltip {
             .text_color(palette.text)
             .border_1()
             .border_color(palette.border)
-            .child(self.0)
+            .child(self.0.clone())
     }
 }
 
