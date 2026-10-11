@@ -499,10 +499,11 @@ fn prototype_08_04() {
     let mut doc = PresentationDocument::open(&path).unwrap();
     assert!(doc.model().is_none());
     assert!(!doc.can_edit());
-    assert!(doc
-        .diagnostics()
-        .iter()
-        .any(|d| d.kind == DiagnosticKind::Schema && d.source_line.contains("language")));
+    assert!(
+        doc.diagnostics()
+            .iter()
+            .any(|d| d.kind == DiagnosticKind::Schema && d.source_line.contains("language"))
+    );
     assert!(doc.save().is_err());
     assert_eq!(fs::read(&path).unwrap(), source.as_bytes());
 }
@@ -665,10 +666,11 @@ fn schema_node_contracts_cover_unchecked_headers_children_and_empty_values() {
         fs::write(&path, source).unwrap();
         let mut doc = PresentationDocument::open(&path).unwrap();
         assert!(doc.model().is_none(), "{source}");
-        assert!(doc
-            .diagnostics()
-            .iter()
-            .all(|d| d.kind == DiagnosticKind::Schema));
+        assert!(
+            doc.diagnostics()
+                .iter()
+                .all(|d| d.kind == DiagnosticKind::Schema)
+        );
         assert!(doc.save().is_err());
         assert_eq!(fs::read(&path).unwrap(), source.as_bytes());
     }

@@ -32,7 +32,7 @@ def frame():
             current=[]
         current.append(r)
     if current:frames.append(current)
-    return next(rows for rows in reversed(frames) if len(rows)==len(reference[1]) and abs(float(rows[0][8]) - ((float(rows[0][0])-452)/1280 if rows[0][0]!='1920' else 1.5))<.000001 and all(row[:2]==rows[0][:2] and row[8]==rows[0][8] for row in rows))
+    return next(rows for rows in reversed(frames) if len(rows)==len(reference[1]) and abs(float(rows[0][8]) - ((float(rows[0][0])-452)/1280 if round(float(rows[0][0])) in (1280,1440) else min(float(rows[0][0])/1280,float(rows[0][1])/720)))<.000001 and all(row[:2]==rows[0][:2] and row[8]==rows[0][8] for row in rows))
 def glyphs(rows):
     occurrences={};result={}
     for row in rows:
@@ -42,9 +42,12 @@ def glyphs(rows):
     return result
 reference={};normals=[];checks=[]
 def capture(name,rows=None):
-    time.sleep(.7);state=act('get-app-state');assert state['screenshot']['width']==(1920 if 'fullscreen' in name else 1440 if 'large' in name else 1280);dest=out/name;shutil.copy(state['screenshot']['path'],dest)
+    time.sleep(.7);state=act('get-app-state')
+    window=state['snapshot']['window'];physical=state['screenshot'].get('scale',1)
+    assert state['screenshot']['width']==round(window['width']*physical)
+    if 'fullscreen' not in name:assert window['width']==(1440 if 'large' in name else 1280)
+    dest=out/name;shutil.copy(state['screenshot']['path'],dest)
     return dest
-# The frame length is discovered from the first complete fullscreen paint.
 def full_frame():
     rows=list(csv.reader(trace.open()));start=max(i for i,r in enumerate(rows) if len(r)==12 and r[2]=='48' and r[4]=='0')
     return rows[start:]
@@ -63,8 +66,9 @@ try:
         capture(f'layout-fullscreen-{slide}.png');reference[slide]=full_frame();assert len(reference[slide])>238,len(reference[slide])
         normals.extend(reference[slide])
     act('press-key','--key','Escape','--no-screenshot')
-    time.sleep(1.5);assert act('get-app-state')['screenshot']['width']==1280
-    for mode,w,h in [('small',1280,892),('large',1440,992)]:
+    time.sleep(1.5);assert act('get-app-state')['snapshot']['window']['width']==1280
+    for mode,w,h in [('small',1280,892),('large',1440,int(os.environ.get('PSYCHO_ACCEPTANCE_LARGE_HEIGHT','992')))]:
+        subprocess.run(['xcrun','swift',str(Path(__file__).with_name('move_window.swift')),str(app.pid),'10','33'],check=True,capture_output=True)
         subprocess.run(['xcrun','swift',str(Path(__file__).with_name('resize_window.swift')),str(app.pid),str(w),str(h)],check=True,capture_output=True)
         for slide in [1,2]:
             act('click','--x','60','--y',str(144+(slide-1)*40),'--no-screenshot')
@@ -85,10 +89,11 @@ try:
                     error=max(abs((float(r[i])-float(r[i+3]))/float(r[8])-(float(expected[i])-float(expected[i+3]))/float(expected[8])) for i in [6,7]);max_error=max(error,max_error)
                 assert max_error<.001,(mode,slide,target,max_error)
                 text=''.join(subprocess.check_output([str(ocr),str(file)],text=True).split());assert '全文をInspectorで編集' in text,(target,text)
-                ox,oy,scale=float(row[9]),float(row[10])+32,float(row[8]);x,y,rw,rh=rois[target]
+                physical=float(row[11])
+                ox,oy,scale=float(row[9])*physical,(float(row[10])+32)*physical,float(row[8])*physical;x,y,rw,rh=rois[target]
                 box=tuple(round(v) for v in (ox+x*scale,oy+y*scale,ox+(x+rw)*scale,oy+(y+rh)*scale))
                 a=np.array(Image.open(file).convert('RGB').crop(box));cursor=blue_cursor(a);assert cursor.sum()>2,(mode,slide,target,'missing cursor')
-                e=reference[slide][0];fx,fy,fs=float(e[9]),float(e[10]),float(e[8])
+                e=reference[slide][0];physical=float(e[11]);fx,fy,fs=float(e[9])*physical,float(e[10])*physical,float(e[8])*physical
                 full=Image.open(out/f'layout-fullscreen-{slide}.png').convert('RGB')
                 b=np.array(full.transform((box[2]-box[0],box[3]-box[1]),Image.Transform.EXTENT,(fx+(box[0]-ox)*fs/scale,fy+(box[1]-oy)*fs/scale,fx+(box[2]-ox)*fs/scale,fy+(box[3]-oy)*fs/scale),resample=Image.Resampling.BICUBIC))
                 af=a.mean(axis=2);bf=b.mean(axis=2);af[cursor]=255;bf[blue_cursor(b)]=255

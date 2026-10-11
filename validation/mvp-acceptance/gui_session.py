@@ -31,15 +31,40 @@ class Gui:
             time.sleep(.5)
         else:raise AssertionError('Scratch app did not register a GUI within 15 seconds')
         time.sleep(1);self.act('get-app-state','--restore-window')
+        self.act('click','--x','900','--y','750','--no-screenshot')
+        self.recorder=None
+        executable=os.environ.get('PSYCHO_ACCEPTANCE_RECORDER')
+        if executable:
+            log=self.out/f'window-{self.app.pid}.log'
+            with log.open('w') as output:
+                self.recorder=subprocess.Popen([executable,str(self.app.pid),
+                    str(self.out/f'window-{self.app.pid}.mov'),'3600'],stdout=output,stderr=subprocess.STDOUT)
+            deadline=time.monotonic()+15
+            while 'RECORDING' not in log.read_text():
+                assert self.recorder.poll() is None,log.read_text()
+                assert time.monotonic()<deadline,'Window recording did not start'
+                time.sleep(.1)
 
     def stop(self):
-        self.app.terminate()
-        try:self.app.wait(timeout=5)
-        except subprocess.TimeoutExpired:self.app.kill();self.app.wait()
+        recorder=getattr(self,'recorder',None)
+        try:
+            if recorder:
+                recorder.terminate()
+                recorder.wait(timeout=20)
+                self.recorder=None
+                assert recorder.returncode==0,'Window recording did not finish successfully'
+        finally:
+            self.app.terminate()
+            try:self.app.wait(timeout=5)
+            except subprocess.TimeoutExpired:self.app.kill();self.app.wait()
 
     def act(self,*args):
         result=subprocess.run(['orca','computer',*args,'--app',f'pid:{self.app.pid}','--json'],text=True,capture_output=True)
         value=json.loads(result.stdout)
+        if not value['ok'] and value.get('error',{}).get('code')=='window_not_focused' and args[0] in ('press-key','hotkey'):
+            self.act('get-app-state','--restore-window')
+            result=subprocess.run(['orca','computer',*args,'--app',f'pid:{self.app.pid}','--json'],text=True,capture_output=True)
+            value=json.loads(result.stdout)
         if not value['ok'] and args[0]=='click' and value.get('error',{}).get('code')=='window_not_focused':
             # A fullscreen/native-panel transition can deliver the press and
             # change the recipient before the provider verifies focus.
@@ -53,6 +78,10 @@ class Gui:
         time.sleep(.35);state=self.act('get-app-state')
         if name:shutil.copy(state['screenshot']['path'],self.out/f'{name}.png')
         rows=json.loads(subprocess.check_output([str(self.ocr),state['screenshot']['path']],text=True))
+        scale=state['screenshot'].get('scale',1)
+        for row in rows:
+            for key in ('x','y','width','height'):
+                row[key]/=scale
         return state,rows
 
     def press(self,label,scroll=False,aliases=()):
@@ -64,7 +93,7 @@ class Gui:
             if len(matches)==1:
                 row=matches[0];return self.act('click','--x',str(row['x']),'--y',str(row['y']),'--no-screenshot')
             if not scroll:break
-            self.act('scroll','--x',str(state['screenshot']['width']-130),'--y','710','--direction','down','--no-screenshot')
+            self.act('scroll','--x',str(state['snapshot']['window']['width']-130),'--y','710','--direction','down','--no-screenshot')
         raise AssertionError((label,rows))
 
     def key(self,key):return self.act('press-key','--key',key,'--no-screenshot')

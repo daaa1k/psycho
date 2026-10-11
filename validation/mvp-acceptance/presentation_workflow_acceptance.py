@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import subprocess
 import time
 from pathlib import Path
@@ -32,7 +33,7 @@ def observe(gui, name, expected, fullscreen=False, presenting=True):
     state, rows = gui.snapshot(name)
     text = ''.join(''.join(row['text'].split()) for row in rows)
     assert ''.join(expected.split()) in text, (name, expected, text)
-    assert state['snapshot']['window']['width'] == (1920 if fullscreen else 1280), state
+    assert state['snapshot']['window']['width'] == (int(os.environ.get('PSYCHO_ACCEPTANCE_FULLSCREEN_WIDTH','1920')) if fullscreen else 1280), state
     if fullscreen and presenting:
         assert not any(label in text for label in ['Inspector', '最初から発表', '現在から発表']), text
     if expected in {'First slide', 'Second slide', 'Third slide', 'Unsaved first', 'Local unsaved',
@@ -85,8 +86,8 @@ def check_snapshot():
         red = pixels(gui, 'red-image', (255, 0, 0))
         assert red > 10000, red
         frame = Image.open(gui.out / 'red-image.png').convert('RGB')
-        assert frame.getpixel((960, 30)) == frame.getpixel((960, 1170)) == (0, 0, 0)
-        assert frame.getpixel((20, 600)) == (255, 255, 255)
+        assert frame.getpixel((frame.width//2, 30)) == frame.getpixel((frame.width//2, frame.height-30)) == (0, 0, 0)
+        assert frame.getpixel((20, frame.height//2)) == (255, 255, 255)
         marker(gui, (0, 0, 255))
         assert pixels(gui, 'updated-image-stays-red', (255, 0, 0)) == red
         (gui.out / 'marker.png').unlink()
@@ -193,6 +194,12 @@ def check_keys():
             exit_presentation(gui)
             observe(gui, f'cycle-{cycle + 1}-return', headings[index])
         gui.select_slide(1)
+        if gui.recorder:
+            gui.recorder.terminate()
+            gui.recorder.wait(timeout=20)
+            assert gui.recorder.returncode == 0
+            gui.recorder = None
+            time.sleep(1)
         gui.click(60, 13)
         time.sleep(1)
         observe(gui, 'editor-already-fullscreen', 'First slide', True, presenting=False)

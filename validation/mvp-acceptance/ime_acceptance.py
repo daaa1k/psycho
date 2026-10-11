@@ -71,7 +71,8 @@ def press_label(label):
     rows=json.loads(subprocess.check_output([str(ocr),state['screenshot']['path']],text=True))
     matches=[row for row in rows if ''.join(row['text'].split())==''.join(label.split())]
     assert len(matches)==1,(label,rows)
-    row=matches[0];act('click','--x',str(row['x']),'--y',str(row['y']),'--no-screenshot')
+    row=matches[0];scale=state['screenshot'].get('scale',1)
+    act('click','--x',str(row['x']/scale),'--y',str(row['y']/scale),'--no-screenshot')
 
 def composition():
     act('hotkey','--key','CmdOrCtrl+A','--no-screenshot')
@@ -111,7 +112,8 @@ try:
         rows=json.loads(subprocess.check_output([str(ocr),state['screenshot']['path']],text=True))
         shutil.copy(state['screenshot']['path'],out/'initial.png')
         row=next(row for row in rows if ''.join(row['text'].split()).lower()=='originalcaption')
-        x,y=str(row['x']),str(row['y'])
+        scale=state['screenshot'].get('scale',1)
+        x,y=str(row['x']/scale),str(row['y']/scale)
         act('click','--x',x,'--y',y,'--click-count','2','--no-screenshot')
         assert input_state()['text']=='original caption' and input_state()['focused']
         composition()

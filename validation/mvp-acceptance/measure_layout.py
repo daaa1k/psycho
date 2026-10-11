@@ -21,19 +21,21 @@ actual={}
 for frame in frames:
     caption=next((r for r in frame if bytes.fromhex(r[3]).decode().startswith('画像の Caption')),None)
     if not caption:continue
-    mode={1280:'small',1440:'large',1920:'fullscreen'}.get(round(float(caption[0])))
-    if not mode:continue
+    mode={1280:'small',1440:'large'}.get(round(float(caption[0])), 'fullscreen')
     x=(float(caption[6])-float(caption[9]))/float(caption[8])
     slide=1 if abs(x-652)<.01 else 2 if abs(x-460.24)<.01 else None
-    expected_scale=(float(caption[0])-452)/1280 if mode!='fullscreen' else 1.5
+    if slide:
+        screenshot_scale=Image.open(root/f'layout-{mode}-{slide}.png').width/float(caption[0])
+        if any(abs(float(r[11])-screenshot_scale)>=.000001 for r in frame):continue
+    expected_scale=(float(caption[0])-452)/1280 if mode!='fullscreen' else min(float(caption[0])/1280,float(caption[1])/720)
     # Resize/fullscreen transitions can paint an old layout at a new viewport.
     # Use complete settled frames, matching the dimensions of saved screenshots.
     if any(r[0:2]!=caption[0:2] or abs(float(r[8])-expected_scale)>=.000001 for r in frame):continue
     if slide:
         occurrences={};glyphs={}
         for r in frame:
-            assert float(r[11]) == 1, 'acceptance requires physical window scale 1'
-            expected_scale=(float(r[0])-452)/1280 if mode!='fullscreen' else 1.5
+            assert float(r[11]) > 0, 'physical window scale must be positive'
+            expected_scale=(float(r[0])-452)/1280 if mode!='fullscreen' else min(float(r[0])/1280,float(r[1])/720)
             assert abs(float(r[8])-expected_scale)<.000001
             if r[4]=='0':occurrences[r[3]]=occurrences.get(r[3],0)+1
             key=(r[3],occurrences[r[3]],r[4])
@@ -49,8 +51,9 @@ def dilate(a):
 
 def stage(mode,slide):
     image=Image.open(root/f'layout-{mode}-{slide}.png').convert('RGB')
-    a=np.array(image);width=image.width if mode=='fullscreen' else image.width-452
-    x=0 if mode=='fullscreen' else 166
+    row=next(iter(actual[mode,slide].values()));physical=float(row[11])
+    a=np.array(image);width=float(row[8])*1280*physical
+    x=round(float(row[9])*physical)
     white=np.all(a[:,x+2]==255,axis=1);runs=[];start=None
     for i,on in enumerate([*white,False]):
         if on and start is None:start=i
@@ -73,9 +76,10 @@ with (root/'layout-glyph-comparison.csv').open('w',newline='') as f:
                 expected=[(float(e[i])-float(e[i+3]))/es for i in [6,7]]
                 error=max(abs(a-b) for a,b in zip(base,expected))
                 # GPUI quantizes glyph x to quarter-pixels, y to whole pixels.
-                quant=max(abs(math.floor(float(r[6])*4)/4-float(r[6])),abs(math.floor(float(r[7]))-float(r[7])))
+                px,py=(float(r[i])*float(r[11]) for i in [6,7])
+                quant=max(abs(math.floor(px*4)/4-px),abs(math.floor(py)-py))
                 writer.writerow([slide,mode,*key,*base,error,quant])
-                if error>.001 or quant>1:failures.append((slide,mode,key,error,quant))
+                if error>=.001 or quant>1:failures.append((slide,mode,key,error,quant))
             print(f'{mode} Slide {slide}: {len(observed)} glyphs share base positions')
 # Compare strong strokes against weak strokes within one physical pixel in both
 # directions. Intensities may differ due to native font antialiasing.
