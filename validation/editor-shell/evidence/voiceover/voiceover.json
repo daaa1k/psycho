@@ -1,0 +1,24 @@
+{
+  "status": "INCOMPLETE",
+  "sourceRevision": "ef4a9c9",
+  "speechVerified": false,
+  "unverified": [
+    "spoken control name",
+    "spoken button role",
+    "spoken disabled state",
+    "final caption visibility"
+  ],
+  "failure": {
+    "action": "enable AppleScript control checkbox",
+    "error": "window_not_focused",
+    "cleanupError": "runtime_unavailable: The Orca runtime closed the connection before responding. Restart Orca and try again."
+  },
+  "restoration": {
+    "scriptingInitial": 0,
+    "scriptingFinal": 0,
+    "welcomeFinal": 1,
+    "voiceOverEnabled": false,
+    "ownedProcessesRemaining": false
+  },
+  "notes": "Final UI and native AX readback recorded separately; no last phrase obtained. Scripted attempt did not reach caption setting changes. Earlier native symmetric caption key toggles had no final visibility readback."
+}

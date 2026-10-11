@@ -1,0 +1,57 @@
+{
+  "id": "c770c05e-23ab-4e2a-9613-f33017bb5d53",
+  "ok": true,
+  "result": {
+    "snapshot": {
+      "focusedElementId": 3,
+      "truncation": {
+        "maxDepth": 64,
+        "maxNodes": 1200,
+        "maxDepthReached": false,
+        "truncated": false
+      },
+      "treeText": "App=com.apple.VoiceOverUtility (pid 79574)\nWindow: \"VoiceOverユーティリティ\", App: VoiceOverユーティリティ.\n\n0 標準ウインドウ VoiceOverユーティリティ\n\t1 グループを分割\n\t\t2 スクロール領域, Secondary Actions: scroll up, scroll down\n\t\t\t3 ひょう ユーティリティのカテゴリ\n\t\t\t\t4 ひょうの行 一般\n\t\t\t\t\t5 セル 一般\n\t\t\t\t\t\t6 テキスト, Value: 一般\n\t\t\t\t7 ひょうの行 詳細度\n\t\t\t\t\t8 セル 詳細度\n\t\t\t\t\t\t9 テキスト, Value: 詳細度\n\t\t\t\t10 ひょうの行 スピーチ\n\t\t\t\t\t11 セル スピーチ\n\t\t\t\t\t\t12 テキスト, Value: スピーチ\n\t\t\t\t13 ひょうの行 ナビゲーション\n\t\t\t\t\t14 セル ナビゲーション\n\t\t\t\t\t\t15 テキスト, Value: ナビゲーション\n\t\t\t\t16 ひょうの行 Web\n\t\t\t\t\t17 セル Web\n\t\t\t\t\t\t18 テキスト, Value: Web\n\t\t\t\t19 ひょうの行 サウンド\n\t\t\t\t\t20 セル サウンド\n\t\t\t\t\t\t21 テキスト, Value: サウンド\n\t\t\t\t22 ひょうの行 ビジュアル\n\t\t\t\t\t23 セル ビジュアル\n\t\t\t\t\t\t24 テキスト, Value: ビジュアル\n\t\t\t\t25 ひょうの行 (selected) コマンド\n\t\t\t\t\t26 セル (selected) コマンド\n\t\t\t\t\t\t27 テキスト, Value: コマンド\n\t\t\t\t28 ひょうの行 点字\n\t\t\t\t\t29 セル 点字\n\t\t\t\t\t\t30 テキスト, Value: 点字\n\t\t\t\t31 ひょうの行 アクティビティ\n\t\t\t\t\t32 セル アクティビティ\n\t\t\t\t\t\t33 テキスト, Value: アクティビティ\n\t\t\t\t34 ひょうの行 VoiceOver認識\n\t\t\t\t\t35 セル VoiceOver認識\n\t\t\t\t\t\t36 テキスト, Value: VoiceOver認識\n\t\t\t\t37 ひょうの行 画面共有\n\t\t\t\t\t38 セル 画面共有\n\t\t\t\t\t\t39 テキスト, Value: 画面共有\n\t\t40 テキスト, Value: VoiceOver修飾キー:\n\t\t41 メニューボタン ⌃⌥ または ⇪\n\t\t42 テキスト, Value: VoiceOverのほかの制御方法:\n\t\t43 チェックボックス, Value: 0\n\t\t44 ボタン\n\t\t45 チェックボックス, Value: 0\n\t\t46 ポップアップボタン どちらかのOptionキー, Value: 右Optionキー\n\t\t47 ボタン\n\t\t48 チェックボックス, Value: 0\n\t\t49 ボタン\n\t\t50 ボタン\n\t\t51 テキスト, Value: クイックナビ:\n\t\t52 チェックボックス, Value: 0\n\t\t53 チェックボックス, Value: 0\n\t\t54 ボタン\n\t\t55 チェックボックス, Value: 1\n\t\t56 テキスト, Value: 左右の矢印キー:\n\t\t57 ポップアップボタン, Value: すべてのクイックナビを切り替え\n\t\t58 テキスト, Value: クイックナビを切り替えるとき:\n\t\t59 ポップアップボタン, Value: 読み上げる\n\t\t60 テキスト, Value: コマンドセット:\n\t\t61 ラジオグループ\n\t\t\t62 ラジオボタン, Value: 0\n\t\t\t63 ラジオボタン (selected), Value: 1\n\t\t64 ボタン\n\t\t65 ボタン ヘルプ\n\t66 ツールバー\n\t\t67 container, Secondary Actions: name:ツールバーから削除\n target:0x0\n selector:(null)\n\t\t\t68 検索テキストフィールド (settable)\n\t\t\t\t69 ボタン 検索\n\t70 閉じるボタン\n\t71 拡大/縮小ボタン (disabled)\n\t72 しまうボタン\n\t73 テキスト, Value: VoiceOverユーティリティ\n\nThe focused UI element is 3 ひょう ユーティリティのカテゴリ.",
+      "window": {
+        "id": 36675,
+        "title": "VoiceOverユーティリティ",
+        "height": 553,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "y": 249,
+        "width": 890,
+        "isOffscreen": false,
+        "platform": {
+          "layer": 0
+        },
+        "x": 359
+      },
+      "id": "BDCF6D2F-BBE7-4ECE-8E90-9BCF358C9AF8",
+      "app": {
+        "pid": 79574,
+        "name": "VoiceOverユーティリティ",
+        "bundleId": "com.apple.VoiceOverUtility"
+      },
+      "coordinateSpace": "window",
+      "elementCount": 74
+    },
+    "screenshotStatus": {
+      "state": "captured",
+      "metadata": {
+        "windowId": 36675,
+        "engine": "screenCaptureKit"
+      }
+    },
+    "screenshot": {
+      "format": "png",
+      "height": 553,
+      "width": 890,
+      "scale": 1,
+      "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/c770c05e-23ab-4e2a-9613-f33017bb5d53-screenshot.png",
+      "dataOmitted": true,
+      "expiresAt": "2026-10-12T13:03:11.209Z"
+    }
+  },
+  "_meta": {
+    "runtimeId": "dbd7545f-5ae1-4489-8fda-d0890960dd03"
+  }
+}

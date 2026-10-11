@@ -1,0 +1,73 @@
+[
+  {
+    "case": "marked-before-start",
+    "input": {
+      "text": "日本語の返還",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        384.26706,
+        244.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    }
+  },
+  {
+    "case": "presentation",
+    "input": {
+      "text": "日本語の返還",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        384.26706,
+        244.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "unsaved_bytes_preserved": true
+  },
+  {
+    "case": "returned-and-saved",
+    "input": {
+      "text": "IME presentation",
+      "selected": [
+        16,
+        16
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1135.1094,
+        290.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "saved": "presentation { metadata { title \"IME presentation\" }; slide { heading \"日本語の返還\"; }; }\n"
+  }
+]

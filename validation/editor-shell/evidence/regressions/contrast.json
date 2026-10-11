@@ -1,0 +1,101 @@
+{
+  "ratios": {
+    "dark-text-surface": 13.099181831865595,
+    "dark-text-background": 15.6775048460788,
+    "dark-text-selection": 8.809506320396467,
+    "dark-text-input": 16.62807699154857,
+    "dark-secondary-surface": 8.114911752908487,
+    "dark-secondary-background": 9.71217668131305,
+    "dark-secondary-selection": 5.45746805367656,
+    "dark-secondary-input": 10.301053847404077,
+    "dark-warning-surface": 8.777788342412519,
+    "dark-warning-background": 10.505527829323002,
+    "dark-warning-selection": 5.9032680723214614,
+    "dark-warning-input": 11.142508154065792,
+    "dark-focus-surface": 7.9290250268001525,
+    "dark-focus-background": 9.489701714037169,
+    "dark-focus-selection": 5.332454880369388,
+    "dark-focus-input": 10.065089583901974,
+    "light-text-surface": 14.494383216006364,
+    "light-text-background": 13.115353633105157,
+    "light-text-selection": 12.467843850919746,
+    "light-text-input": 15.420702107902873,
+    "light-secondary-surface": 6.6756068584013715,
+    "light-secondary-background": 6.0404739793846565,
+    "light-secondary-selection": 5.742253580598354,
+    "light-secondary-input": 7.102236998894849,
+    "light-warning-surface": 7.63722249621664,
+    "light-warning-background": 6.910599252127802,
+    "light-warning-selection": 6.569420451945002,
+    "light-warning-input": 8.125308355023657,
+    "light-focus-surface": 7.510468527590818,
+    "light-focus-background": 6.795904953091239,
+    "light-focus-selection": 6.460388652194743,
+    "light-focus-input": 7.990453690148042
+  },
+  "minimumRatio": 5.332454880369388,
+  "selectedDiagnosticPixels": {
+    "syntax": {
+      "screenshot": "target/issue49-regressions-final-2/syntax/selected-source-evidence.png",
+      "rawScreenshotColors": {
+        "surface": {
+          "rgb": "262a31",
+          "pixels": 540548
+        },
+        "text": {
+          "rgb": "f2f4f8",
+          "pixels": 1550
+        },
+        "warning": {
+          "rgb": "f4bcae",
+          "pixels": 843
+        },
+        "selection": {
+          "rgb": "344462",
+          "pixels": 112377
+        },
+        "focus": {
+          "rgb": "9cc3fa",
+          "pixels": 1451
+        }
+      },
+      "selectedSourceContrast": {
+        "text": 8.873495936106211,
+        "warning": 5.886343026845563,
+        "focus": 5.3973057826474085
+      },
+      "sourcePaletteMatchingChannelTolerance": 12
+    },
+    "schema": {
+      "screenshot": "target/issue49-regressions-final-2/schema/selected-source-evidence.png",
+      "rawScreenshotColors": {
+        "surface": {
+          "rgb": "262a31",
+          "pixels": 540548
+        },
+        "text": {
+          "rgb": "f2f4f8",
+          "pixels": 1547
+        },
+        "warning": {
+          "rgb": "f4bcae",
+          "pixels": 882
+        },
+        "selection": {
+          "rgb": "344462",
+          "pixels": 112406
+        },
+        "focus": {
+          "rgb": "9cc3fa",
+          "pixels": 1451
+        }
+      },
+      "selectedSourceContrast": {
+        "text": 8.873495936106211,
+        "warning": 5.886343026845563,
+        "focus": 5.3973057826474085
+      },
+      "sourcePaletteMatchingChannelTolerance": 12
+    }
+  }
+}

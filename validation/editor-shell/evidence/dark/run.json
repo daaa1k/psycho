@@ -1,0 +1,8 @@
+{
+  "revision": "c2a7f7717d0f35d6166cb09427c6a2004c33cfbe",
+  "binarySha256": "9fb7bb324eb0ac33bafd73f1555fc9c436f374485f4d45928d73d2d3c726a650",
+  "os": "ProductName:\t\tmacOS\nProductVersion:\t\t26.5.2\nBuildVersion:\t\t25F84\n",
+  "appearance": "dark",
+  "original": "presentation { metadata { title \"Editor shell\" }; slide id=\"first\" { heading \"Heading\"; text \"Original body\"; }; slide id=\"second\" { heading \"Second slide\"; }; }\n",
+  "saved": "presentation { metadata { title \"Editor shell\" }; slide id=\"first\" { heading \"Heading\"; text \"Edited body\"; }; slide id=\"second\" { heading \"Second slide\"; }; }\n"
+}
