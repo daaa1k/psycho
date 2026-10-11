@@ -234,7 +234,7 @@ impl PsychoApp {
             return;
         }
         if self.view.popup.take().is_some() {
-            self.restore_popup_focus(window, cx);
+            self.popup_return_focus = None;
         }
         action.execute(self, window, cx);
     }
