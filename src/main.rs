@@ -27,6 +27,7 @@ use raw_window_handle::{HasWindowHandle, RawWindowHandle};
 actions!(
     psycho,
     [
+        HideApp,
         SaveFile,
         SaveAs,
         UndoEdit,
@@ -4458,14 +4459,27 @@ impl Render for PsychoApp {
             MenuItem::action(redo_label, RedoEdit)
                 .disabled(!editing_enabled || !self.document.can_redo())
         };
-        cx.set_menus([Menu::new("編集").items([
-            undo_item,
-            redo_item,
-            MenuItem::action("切り取り", input::Cut).disabled(!can_copy),
-            MenuItem::action("コピー", input::Copy).disabled(!can_copy),
-            MenuItem::action("貼り付け", input::Paste).disabled(!input_focused),
-            MenuItem::action("すべてを選択", input::SelectAll).disabled(!input_focused),
-        ])]);
+        cx.set_menus([
+            Menu::new("psycho").items([MenuItem::action("psycho を隠す", HideApp)]),
+            Menu::new("編集").items([
+                undo_item,
+                redo_item,
+                MenuItem::action("切り取り", input::Cut).disabled(!can_copy),
+                MenuItem::action("コピー", input::Copy).disabled(!can_copy),
+                MenuItem::action("貼り付け", input::Paste).disabled(!input_focused),
+                MenuItem::action("すべてを選択", input::SelectAll).disabled(!input_focused),
+            ]),
+        ]);
+        unsafe {
+            let app: *mut Object = msg_send![objc::class!(NSApplication), sharedApplication];
+            let main_menu: *mut Object = msg_send![app, mainMenu];
+            let title: *mut Object =
+                msg_send![objc::class!(NSString), stringWithUTF8String: c"編集".as_ptr()];
+            let edit_item: *mut Object = msg_send![main_menu, itemWithTitle: title];
+            let edit_menu: *mut Object = msg_send![edit_item, submenu];
+            // AppKit's action validation would otherwise overwrite MenuItem::disabled.
+            let _: () = msg_send![edit_menu, setAutoenablesItems: objc::runtime::NO];
+        }
         if let Some(presentation) = self.presentation.as_ref() {
             let model = presentation.session.model().clone();
             let slide_index = presentation.session.current_index();
@@ -5663,7 +5677,9 @@ fn button(
 
 fn main() {
     application().run(|cx: &mut App| {
+        cx.on_action(|_: &HideApp, cx| cx.hide());
         cx.bind_keys([
+            KeyBinding::new("cmd-h", HideApp, None),
             KeyBinding::new("cmd-s", SaveFile, Some("Editor")),
             KeyBinding::new("cmd-shift-s", SaveAs, Some("Editor")),
             KeyBinding::new("cmd-z", UndoEdit, Some("Editor")),

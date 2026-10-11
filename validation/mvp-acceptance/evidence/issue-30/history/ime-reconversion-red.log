@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/ime_reconversion_acceptance.py", line 67, in <module>
+    assert gui.state()['text'] == original_text and gui.state()['undo'] == 0
+AssertionError
+selected=com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese
+restored=com.apple.keylayout.ABC; enablement_restored=true

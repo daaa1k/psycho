@@ -1,0 +1,80 @@
+[
+  {
+    "case": "rust",
+    "language": "rust",
+    "expected_highlight": true,
+    "colored_pixels": 187,
+    "crop": [
+      218,
+      313,
+      446,
+      334
+    ],
+    "result": "PASS"
+  },
+  {
+    "case": "yaml",
+    "language": "yaml",
+    "expected_highlight": true,
+    "colored_pixels": 318,
+    "crop": [
+      218,
+      313,
+      326,
+      334
+    ],
+    "result": "PASS"
+  },
+  {
+    "case": "json",
+    "language": "json",
+    "expected_highlight": true,
+    "colored_pixels": 239,
+    "crop": [
+      218,
+      313,
+      318,
+      334
+    ],
+    "result": "PASS"
+  },
+  {
+    "case": "toml",
+    "language": "toml",
+    "expected_highlight": true,
+    "colored_pixels": 196,
+    "crop": [
+      218,
+      313,
+      335,
+      334
+    ],
+    "result": "PASS"
+  },
+  {
+    "case": "unsupported",
+    "language": "python",
+    "expected_highlight": false,
+    "colored_pixels": 0,
+    "crop": [
+      218,
+      313,
+      446,
+      334
+    ],
+    "result": "PASS"
+  },
+  {
+    "case": "unspecified",
+    "language": null,
+    "expected_highlight": false,
+    "colored_pixels": 0,
+    "crop": [
+      218,
+      313,
+      446,
+      334
+    ],
+    "result": "PASS"
+  }
+]

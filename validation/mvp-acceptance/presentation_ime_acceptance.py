@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import subprocess
 import time
 from pathlib import Path
@@ -37,7 +38,7 @@ precondition(TISSelectInputSource(japanese) == noErr)
     gui.press('最初から発表')
     time.sleep(1)
     state, rows = gui.snapshot('composition-committed-in-presentation')
-    assert state['snapshot']['window']['width'] == 1920, state
+    assert state['snapshot']['window']['width'] == int(os.environ.get('PSYCHO_ACCEPTANCE_FULLSCREEN_WIDTH','1920')), state
     assert any(''.join(row['text'].split()) == composed for row in rows), rows
     assert not gui.state()['composing'] and not gui.state()['focused'], gui.state()
     assert gui.fixture.read_bytes() == gui.original

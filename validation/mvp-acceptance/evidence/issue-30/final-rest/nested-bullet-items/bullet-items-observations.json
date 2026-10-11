@@ -1,0 +1,10 @@
+[
+  {
+    "name": "bullet-item-move",
+    "source": "presentation { metadata { title \"Bullet items\" }; slide { heading \"Bullet items\"; columns { column width=50 { bullets { item \"First item\";     item \"Third item\"\nitem \"Second item\"; \n}; }; column width=50 { text \"Sibling untouched\"; }; }; }; }\n"
+  },
+  {
+    "name": "bullet-item-delete",
+    "source": "presentation { metadata { title \"Bullet items\" }; slide { heading \"Bullet items\"; columns { column width=50 { bullets { item \"First item\";     item \"Second item\"; \n}; }; column width=50 { text \"Sibling untouched\"; }; }; }; }\n"
+  }
+]

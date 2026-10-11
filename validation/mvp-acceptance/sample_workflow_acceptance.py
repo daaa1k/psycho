@@ -49,15 +49,27 @@ try:
     saved=history_check(saved,'sample-structure')
     expected=['CI のビルドを改善','キャッシュの境界を見直す','依存と成果物を分ける',
         '計測方法','ビルド時間を38%短縮','待ち時間を減らし、変更を速く届ける']
+    gui.stop();gui.start()
+    for i,heading in enumerate(expected):
+        select_slide(i+1);gui.edit(heading,48)
+        assert gui.state()['text']==heading and gui.state()['undo']==0
+        gui.key('Escape')
+    gui.hotkey('CmdOrCtrl+Z');gui.press('保存')
+    assert gui.fixture.read_bytes()==saved,'Reload must clear history and retain the saved edits'
+    gui.snapshot('sample-reloaded-before-presentation')
     gui.press('最初から発表')
     for i,heading in enumerate(expected):
         if i:gui.key('Right')
         state,rows=gui.snapshot(f'sample-presentation-{i+1}')
-        assert state['screenshot']['width']>1280 and compact(heading) in compact(''.join(row['text'] for row in rows))
+        assert state['snapshot']['window']['width']!=1280 and compact(heading) in compact(''.join(row['text'] for row in rows))
         assert gui.fixture.read_bytes()==saved
+    gui.key('Left')
+    _,rows=gui.snapshot('sample-presentation-previous')
+    assert compact(expected[-2]) in compact(''.join(row['text'] for row in rows))
+    gui.key('Right')
     gui.key('Escape');time.sleep(1)
     state,rows=gui.snapshot('sample-return')
-    assert state['screenshot']['width']==1280 and compact(expected[-1]) in compact(''.join(row['text'] for row in rows))
+    assert state['snapshot']['window']['width']==1280 and compact(expected[-1]) in compact(''.join(row['text'] for row in rows))
     gui.stop();gui.start()
     for i,heading in enumerate(expected):
         select_slide(i+1);gui.edit(heading,48)

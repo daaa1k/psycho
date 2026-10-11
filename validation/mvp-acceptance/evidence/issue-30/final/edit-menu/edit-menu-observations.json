@@ -1,0 +1,1888 @@
+[
+  {
+    "name": "empty-document",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Native menu",
+      "selected": [
+        11,
+        11
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1113.7656,
+        260.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "empty-field-selected",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "original",
+      "selected": [
+        0,
+        8
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        313.92972,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "copy-before",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "original",
+      "selected": [
+        0,
+        8
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        313.92972,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "copy-after",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "original",
+      "selected": [
+        0,
+        8
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        313.92972,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "cut-before",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "original",
+      "selected": [
+        0,
+        8
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        313.92972,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "cut-after",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "",
+      "selected": [
+        0,
+        0
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        207.4,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "cut-undo-before",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "",
+      "selected": [
+        0,
+        0
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        207.4,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "cut-undo-after",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "original",
+      "selected": [
+        8,
+        8
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        313.92972,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 1,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "paste-before",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "original",
+      "selected": [
+        0,
+        8
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        313.92972,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 1,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "paste-after",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "changed",
+      "selected": [
+        7,
+        7
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        332.94177,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "field-changed",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "changed",
+      "selected": [
+        0,
+        7
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        332.94177,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "field-undo-before",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "changed",
+      "selected": [
+        0,
+        7
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        332.94177,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "field-undo-after",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "original",
+      "selected": [
+        8,
+        8
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        313.92972,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 1,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "field-redo-before",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "original",
+      "selected": [
+        8,
+        8
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        313.92972,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 1,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "field-redo-after",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: 文字編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "changed",
+      "selected": [
+        7,
+        7
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        332.94177,
+        217.05,
+        38.8125
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "document-changed",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: テキストを編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "changed",
+      "selected": [
+        7,
+        7
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        332.94177,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "savedSha256": "fbc90dd0adaca9610ef25ef82eb75d33865133b69d9d782f4d92d0c0bdcdca95"
+  },
+  {
+    "name": "document-menu",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: テキストを編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "changed",
+      "selected": [
+        7,
+        7
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        332.94177,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "savedSha256": "fbc90dd0adaca9610ef25ef82eb75d33865133b69d9d782f4d92d0c0bdcdca95"
+  },
+  {
+    "name": "document-undo-before",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: テキストを編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "changed",
+      "selected": [
+        7,
+        7
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        332.94177,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "savedSha256": "fbc90dd0adaca9610ef25ef82eb75d33865133b69d9d782f4d92d0c0bdcdca95"
+  },
+  {
+    "name": "document-undo-after",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: テキストを編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "original",
+      "selected": [
+        8,
+        8
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        332.94177,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "savedSha256": "fbc90dd0adaca9610ef25ef82eb75d33865133b69d9d782f4d92d0c0bdcdca95"
+  },
+  {
+    "name": "document-undone",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: テキストを編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "original",
+      "selected": [
+        8,
+        8
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        332.94177,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "document-redo-before",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: テキストを編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "original",
+      "selected": [
+        8,
+        8
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        332.94177,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "document-redo-after",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す"
+                  },
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "やり直す: テキストを編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "changed",
+      "selected": [
+        7,
+        7
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        332.94177,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "savedSha256": "a63104cdbddd9067e5fd3c580fe02e85296a0ba15d41787bce21f51814ba117e"
+  },
+  {
+    "name": "complete",
+    "ax": {
+      "menuBar": {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [
+                  {
+                    "children": [],
+                    "enabled": true,
+                    "role": "AXMenuItem",
+                    "title": "元に戻す: テキストを編集"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "やり直す"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "切り取り"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "コピー"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "貼り付け"
+                  },
+                  {
+                    "children": [],
+                    "enabled": false,
+                    "role": "AXMenuItem",
+                    "title": "すべてを選択"
+                  }
+                ],
+                "enabled": true,
+                "role": "AXMenu"
+              }
+            ],
+            "enabled": true,
+            "role": "AXMenuBarItem",
+            "title": "編集"
+          }
+        ],
+        "role": "AXMenuBar"
+      },
+      "pid": 6640
+    },
+    "tree": "App=psycho (pid 6640)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "changed",
+      "selected": [
+        7,
+        7
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        332.94177,
+        217.05,
+        38.8125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "savedSha256": "fbc90dd0adaca9610ef25ef82eb75d33865133b69d9d782f4d92d0c0bdcdca95"
+  }
+]

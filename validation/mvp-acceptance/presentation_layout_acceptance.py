@@ -17,7 +17,9 @@ source = Path(__file__).with_name('layout.kdl').read_text().replace(
 gui = Gui(directory, source)
 try:
     gui.click(900, 750)
-    for mode, width, height in [('small', 1280, 892), ('large', 1440, 992)]:
+    for mode, width, height in [('small', 1280, 892), ('large', 1440, int(os.environ.get('PSYCHO_ACCEPTANCE_LARGE_HEIGHT','992')))]:
+        subprocess.run(['xcrun', 'swift', str(Path(__file__).with_name('move_window.swift')),
+                        str(gui.app.pid), '10', '33'], check=True, capture_output=True)
         subprocess.run(['xcrun', 'swift', str(Path(__file__).with_name('resize_window.swift')),
                         str(gui.app.pid), str(width), str(height)], check=True, capture_output=True)
         time.sleep(.5)

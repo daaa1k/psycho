@@ -1,0 +1,2 @@
+presentation { metadata { title "Bullet items" }; slide { heading "Bullet items"; columns { column width=50 { bullets { item "First item";     item "Second item"; 
+}; }; column width=50 { text "Sibling untouched"; }; }; }; }

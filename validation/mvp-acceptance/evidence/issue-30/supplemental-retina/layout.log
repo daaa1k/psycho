@@ -1,0 +1,18 @@
+small Slide 1: 256 glyphs share base positions
+large Slide 1: 256 glyphs share base positions
+fullscreen Slide 1: 256 glyphs share base positions
+small Slide 2: 256 glyphs share base positions
+large Slide 2: 256 glyphs share base positions
+fullscreen Slide 2: 256 glyphs share base positions
+Traceback (most recent call last):
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/measure_layout.py", line 90, in <module>
+    image,ox,oy,scale=stage(mode,slide)
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/measure_layout.py", line 59, in stage
+    assert abs((end-y)-width*720/1280)<=1
+AssertionError
+Traceback (most recent call last):
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/presentation_layout_acceptance.py", line 38, in <module>
+    subprocess.run([sys.executable, str(Path(__file__).with_name('measure_layout.py')),
+  File "/Applications/Xcode_26.5.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/target/issue30-python/bin/python', '/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/measure_layout.py', '--evidence', '/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/target/issue30/round3/layout']' returned non-zero exit status 1.

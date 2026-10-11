@@ -1,0 +1,8 @@
+caption-before-inspector {"text": "日本語の変換", "selected": [0, 6], "marked": [0, 6], "cursor": [279.0759, 486.15002, 18.112501], "undo": 0, "redo": 0, "composing": true, "focused": true}
+caption-inspector {"text": "日本語の変換", "selected": [0, 6], "marked": [0, 6], "cursor": [1111.6427, 438.0, 26.0], "undo": 0, "redo": 0, "composing": true, "focused": true}
+caption-canvas {"text": "日本語の変換", "selected": [0, 6], "marked": [0, 6], "cursor": [279.0759, 486.15002, 18.112501], "undo": 0, "redo": 0, "composing": true, "focused": true}
+caption-inspector-again {"text": "日本語の変換", "selected": [0, 6], "marked": [0, 6], "cursor": [1111.6427, 438.0, 26.0], "undo": 0, "redo": 0, "composing": true, "focused": true}
+image-path-after-caption {"text": "orientation-6.jpg", "selected": [17, 17], "marked": [-1, -1], "cursor": [1144.2578, 438.0, 26.0], "undo": 0, "redo": 0, "composing": false, "focused": false}
+PASS native Caption Canvas/Inspector roundtrip and commit on different field
+selected=com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese
+restored=com.apple.keylayout.ABC; enablement_restored=true

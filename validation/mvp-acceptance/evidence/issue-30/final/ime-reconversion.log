@@ -1,0 +1,3 @@
+PASS native reconversion, candidate change, one Undo/Redo, Save and Reload
+selected=com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese
+restored=com.apple.keylayout.ABC; enablement_restored=true

@@ -19,9 +19,12 @@ class Gui:
         except Exception:self.stop();raise
 
     def start(self):
-        self.app=subprocess.Popen([str(root/'target/debug/psycho'),str(self.fixture)],
-            env=dict(os.environ,PSYCHO_INPUT_STATE=str(self.input),PSYCHO_GLYPH_TRACE=str(self.trace)),
-            stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+        self.launch_number=getattr(self,'launch_number',0)+1
+        self.product_log=self.out/f'product-{self.launch_number}.log'
+        with self.product_log.open('w') as log:
+            self.app=subprocess.Popen([str(root/'target/debug/psycho'),str(self.fixture)],
+                env=dict(os.environ,PSYCHO_INPUT_STATE=str(self.input),PSYCHO_GLYPH_TRACE=str(self.trace),RUST_BACKTRACE='1'),
+                stdout=subprocess.DEVNULL,stderr=log)
         deadline=time.monotonic()+15
         while time.monotonic()<deadline:
             assert self.app.poll() is None,'Scratch app exited during startup'
@@ -31,21 +34,70 @@ class Gui:
             time.sleep(.5)
         else:raise AssertionError('Scratch app did not register a GUI within 15 seconds')
         time.sleep(1);self.act('get-app-state','--restore-window')
+        self.act('click','--x','900','--y','750','--no-screenshot')
+        self.recorder=None
+        executable=os.environ.get('PSYCHO_ACCEPTANCE_RECORDER')
+        if executable:
+            log=self.out/f'window-{self.app.pid}.log'
+            with log.open('w') as output:
+                self.recorder=subprocess.Popen([executable,str(self.app.pid),
+                    str(self.out/f'window-{self.app.pid}.mov'),'3600'],stdout=output,stderr=subprocess.STDOUT)
+            deadline=time.monotonic()+15
+            while 'RECORDING' not in log.read_text():
+                assert self.recorder.poll() is None,log.read_text()
+                assert time.monotonic()<deadline,'Window recording did not start'
+                time.sleep(.1)
 
     def stop(self):
-        self.app.terminate()
-        try:self.app.wait(timeout=5)
-        except subprocess.TimeoutExpired:self.app.kill();self.app.wait()
+        recorder=getattr(self,'recorder',None)
+        try:
+            if recorder:
+                recorder.terminate()
+                recorder.wait(timeout=20)
+                self.recorder=None
+                assert recorder.returncode==0,'Window recording did not finish successfully'
+        finally:
+            self.app.terminate()
+            try:self.app.wait(timeout=5)
+            except subprocess.TimeoutExpired:self.app.kill();self.app.wait()
 
     def act(self,*args):
         result=subprocess.run(['orca','computer',*args,'--app',f'pid:{self.app.pid}','--json'],text=True,capture_output=True)
         value=json.loads(result.stdout)
+        if not value['ok'] and value.get('error',{}).get('code')=='app_not_found' and args==('get-app-state',):
+            evidence=dict(pid=self.app.pid,original=value,returncode=self.app.poll(),retried=False)
+            try:
+                if evidence['returncode'] is None:
+                    available=subprocess.run(['orca','computer','list-apps','--json'],text=True,capture_output=True,timeout=15)
+                    evidence['list_apps']=dict(returncode=available.returncode)
+                    listed=json.loads(available.stdout)
+                    evidence['list_apps'].update(ok=listed.get('ok'),owned_pid_present=any(
+                        app.get('pid')==self.app.pid for app in listed.get('result',{}).get('apps',[])))
+                    if available.returncode==0 and listed.get('ok') and any(
+                        app.get('pid')==self.app.pid for app in listed.get('result',{}).get('apps',[])
+                    ) and self.app.poll() is None:
+                        evidence['retried']=True
+                        result=subprocess.run(['orca','computer',*args,'--app',f'pid:{self.app.pid}','--json'],text=True,capture_output=True,timeout=15)
+                        evidence['retry']=dict(returncode=result.returncode)
+                        value=json.loads(result.stdout)
+                        evidence['retry'].update(ok=value.get('ok'),error=value.get('error'))
+            except (subprocess.TimeoutExpired,ValueError,AttributeError,TypeError) as error:
+                evidence['recovery_error']=str(error)
+            finally:
+                evidence['returncode']=self.app.poll()
+                with (self.out/'observation-recovery.jsonl').open('a') as log:
+                    log.write(json.dumps(evidence)+'\n')
+            assert evidence['returncode'] is None,dict(observation=evidence,product_log=str(self.product_log))
+        if not value['ok'] and value.get('error',{}).get('code')=='window_not_focused' and args[0] in ('press-key','hotkey'):
+            self.act('get-app-state','--restore-window')
+            result=subprocess.run(['orca','computer',*args,'--app',f'pid:{self.app.pid}','--json'],text=True,capture_output=True)
+            value=json.loads(result.stdout)
         if not value['ok'] and args[0]=='click' and value.get('error',{}).get('code')=='window_not_focused':
             # A fullscreen/native-panel transition can deliver the press and
             # change the recipient before the provider verifies focus.
             # Observe once; the caller must assert the intended effect.
             return dict(unverified_click=value['error'],observation=self.act('get-app-state'))
-        assert value['ok'],value
+        assert value['ok'],dict(error=value,returncode=self.app.poll(),product_log=str(self.product_log))
         time.sleep(.25)
         return value['result']
 
@@ -53,6 +105,10 @@ class Gui:
         time.sleep(.35);state=self.act('get-app-state')
         if name:shutil.copy(state['screenshot']['path'],self.out/f'{name}.png')
         rows=json.loads(subprocess.check_output([str(self.ocr),state['screenshot']['path']],text=True))
+        scale=state['screenshot'].get('scale',1)
+        for row in rows:
+            for key in ('x','y','width','height'):
+                row[key]/=scale
         return state,rows
 
     def press(self,label,scroll=False,aliases=()):
@@ -64,7 +120,7 @@ class Gui:
             if len(matches)==1:
                 row=matches[0];return self.act('click','--x',str(row['x']),'--y',str(row['y']),'--no-screenshot')
             if not scroll:break
-            self.act('scroll','--x',str(state['screenshot']['width']-130),'--y','710','--direction','down','--no-screenshot')
+            self.act('scroll','--x',str(state['snapshot']['window']['width']-130),'--y','710','--direction','down','--no-screenshot')
         raise AssertionError((label,rows))
 
     def key(self,key):return self.act('press-key','--key',key,'--no-screenshot')

@@ -1,0 +1,10 @@
+{
+  "case": "columns",
+  "original_manifest": "../final/manifest.json",
+  "observed_error": "Orca get-app-state app_not_found for owned PID50408",
+  "log_timezone": "Asia/Tokyo",
+  "provider_lookup": "2026-10-11 12:05:01.065",
+  "process_death": "2026-10-11 12:05:01.857",
+  "inference": "Death followed the failed observation and aligns with finally cleanup; the observation failure cause remains undetermined.",
+  "diagnostic_replay": "columns-diagnosis complete PASS; same binary/source, stderr recording added; empty product stderr"
+}

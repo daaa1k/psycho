@@ -1,0 +1,177 @@
+[
+  {
+    "case": "reconverting",
+    "input": {
+      "text": "日本語の変換",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        307.74628,
+        217.05,
+        27.16875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "windows": [
+      {
+        "bounds": {
+          "Height": 146,
+          "Width": 416,
+          "X": 845,
+          "Y": 467
+        },
+        "id": 31980,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 140,
+          "Width": 326,
+          "X": 519,
+          "Y": 470
+        },
+        "id": 31978,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 20,
+          "Width": 66,
+          "X": 326,
+          "Y": 191
+        },
+        "id": 31973,
+        "layer": 0
+      },
+      {
+        "bounds": {
+          "Height": 892,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 31964,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "case": "different-candidate",
+    "input": {
+      "text": "日本後の変換",
+      "selected": [
+        0,
+        4
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        274.29752,
+        217.05,
+        27.16875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "windows": [
+      {
+        "bounds": {
+          "Height": 298,
+          "Width": 416,
+          "X": 933,
+          "Y": 467
+        },
+        "id": 31982,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 292,
+          "Width": 422,
+          "X": 511,
+          "Y": 470
+        },
+        "id": 31981,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 20,
+          "Width": 66,
+          "X": 326,
+          "Y": 191
+        },
+        "id": 31973,
+        "layer": 0
+      },
+      {
+        "bounds": {
+          "Height": 892,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 31964,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "case": "confirmed",
+    "input": {
+      "text": "日本後の変換",
+      "selected": [
+        6,
+        6
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        307.74628,
+        217.05,
+        27.16875
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "windows": [
+      {
+        "bounds": {
+          "Height": 20,
+          "Width": 66,
+          "X": 326,
+          "Y": 191
+        },
+        "id": 31973,
+        "layer": 0
+      },
+      {
+        "bounds": {
+          "Height": 892,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 31964,
+        "layer": 0
+      }
+    ]
+  }
+]

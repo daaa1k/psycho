@@ -1,0 +1,5 @@
+MOUSE 950.0 242.0 to 700.0 400.0 visible True
+MOUSE 700.0 400.0 to 800.0 400.0 visible True
+PASS presentation native cursor idle/move/exit and click/scroll
+RESULT [{"branch": "cursor", "native_api": "CGCursorIsVisible", "initial_visible": true, "idle_elapsed_seconds": 2.151725292, "idle_visible": false, "mousemove_visible": true, "click_keeps_slide": true, "scroll_keeps_slide": true, "exit_visible": true}]
+All scratch processes stopped; last-window close permits macOS process retention

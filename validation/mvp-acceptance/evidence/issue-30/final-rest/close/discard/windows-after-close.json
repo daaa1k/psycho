@@ -1,0 +1,87 @@
+[
+  {
+    "kCGWindowAlpha": 1,
+    "kCGWindowBounds": {
+      "Height": 30,
+      "Width": 1920,
+      "X": 0,
+      "Y": 0
+    },
+    "kCGWindowLayer": 0,
+    "kCGWindowMemoryUsage": 2368,
+    "kCGWindowName": "",
+    "kCGWindowNumber": 34875,
+    "kCGWindowOwnerName": "psycho",
+    "kCGWindowOwnerPID": 20575,
+    "kCGWindowSharingState": 1,
+    "kCGWindowStoreType": 1
+  },
+  {
+    "kCGWindowAlpha": 1,
+    "kCGWindowBounds": {
+      "Height": 500,
+      "Width": 500,
+      "X": 0,
+      "Y": 700
+    },
+    "kCGWindowLayer": 0,
+    "kCGWindowMemoryUsage": 2368,
+    "kCGWindowName": "",
+    "kCGWindowNumber": 34877,
+    "kCGWindowOwnerName": "psycho",
+    "kCGWindowOwnerPID": 20575,
+    "kCGWindowSharingState": 1,
+    "kCGWindowStoreType": 1
+  },
+  {
+    "kCGWindowAlpha": 1,
+    "kCGWindowBounds": {
+      "Height": 30,
+      "Width": 1920,
+      "X": 0,
+      "Y": 0
+    },
+    "kCGWindowLayer": 0,
+    "kCGWindowMemoryUsage": 2368,
+    "kCGWindowName": "",
+    "kCGWindowNumber": 34876,
+    "kCGWindowOwnerName": "psycho",
+    "kCGWindowOwnerPID": 20575,
+    "kCGWindowSharingState": 1,
+    "kCGWindowStoreType": 1
+  },
+  {
+    "kCGWindowAlpha": 1,
+    "kCGWindowBounds": {
+      "Height": 30,
+      "Width": 1920,
+      "X": 0,
+      "Y": 0
+    },
+    "kCGWindowLayer": 0,
+    "kCGWindowMemoryUsage": 2368,
+    "kCGWindowName": "",
+    "kCGWindowNumber": 34874,
+    "kCGWindowOwnerName": "psycho",
+    "kCGWindowOwnerPID": 20575,
+    "kCGWindowSharingState": 1,
+    "kCGWindowStoreType": 1
+  },
+  {
+    "kCGWindowAlpha": 1,
+    "kCGWindowBounds": {
+      "Height": 30,
+      "Width": 1920,
+      "X": 0,
+      "Y": 0
+    },
+    "kCGWindowLayer": 0,
+    "kCGWindowMemoryUsage": 2368,
+    "kCGWindowName": "",
+    "kCGWindowNumber": 34873,
+    "kCGWindowOwnerName": "psycho",
+    "kCGWindowOwnerPID": 20575,
+    "kCGWindowSharingState": 1,
+    "kCGWindowStoreType": 1
+  }
+]

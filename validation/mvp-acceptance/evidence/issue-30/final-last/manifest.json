@@ -1,0 +1,85 @@
+{
+  "started": "2026-10-11T07:13:28.403345+00:00",
+  "revision": "8dc2ce3ce02722bac9d743cc54e92fc5f8d8ef60",
+  "dirty": true,
+  "binary_sha256": "e2b32805cb3af5ad01fcc72c997d31cb819220fb14f757dc57c773e7d3e55170",
+  "source_sha256": {
+    "src/ime.rs": "201b65663ed327a83f0f251369fba889273ff81d1ac81903ab72a047cf31ae13",
+    "src/input.rs": "d16ccf1ef6f6f6f72beb4f9ad248cd70767b5ce1246c3bbac871fcd7e182fa46",
+    "src/lib.rs": "8a99080f68ffcbd5c7c012ba0392bd304aa921bcc249d504777e101ffefaa3c8",
+    "src/main.rs": "57c6ce5429edfa7bf655622f535076f1bb80ba305a5827528f04090d833f4667",
+    "src/text.rs": "487b8e4556baf8ed68d4eeea4a44fd21b83e8e804f8e3ad3db1d8c10b990dd65"
+  },
+  "driver_sha256": {
+    "assets_acceptance.py": "cb31ae701b0344f7a50cfdbd73347d089516b20690d8ce608e0bbf70cc2106ac",
+    "blank_slide_acceptance.py": "de2adf4fd575d86a8eb089907a933454c5572715185b308d960531682639b48b",
+    "bullet_items_acceptance.py": "df36cb0ae1b84158c90a98ce6fd1c328f45bec42784d22245d4e0e1ca81b7fd9",
+    "capture_layout.py": "7de30f990e1e66fc7e708676fbdd5399edd4ae9cbbe5e504eae1bdf60416b763",
+    "close_cursor_acceptance.py": "5fe0fd605687e3d81bb88f6c626c3b52791fc67e48712f04ab8b4f3247a98629",
+    "code_colors_acceptance.py": "3dfc36848252514fca92bc5e2e882d276e08f3684f7d2845ccf44f096a040d74",
+    "column_width_drag_acceptance.py": "673bb77e31b9285258a8e10cfe33a4cfe579c1b357d07db8a347f717d1fdc47e",
+    "columns_workflow_acceptance.py": "1b91221d736f409cf40ad6c7303371667f4618e915be04ca4d2bcebab1c5a4fb",
+    "conflict_acceptance.py": "ea8f6ce80e12e6703f4397d53c2fc41c756c1bc55a322ca4fcb28b3571731df0",
+    "direct_layout_acceptance.py": "f32a055d2340f8e0efae274b5e696db49294053b80b98aebb49401f8bf91b9f0",
+    "edit_menu_acceptance.py": "4d004f8f7bc230030d6f6f939e73ff47350f5cf3afafd61145820281921a293e",
+    "edit_menu_state.swift": "67da27e4d5ce2e00c3477a7b40505fec7ef9743cbbf171643a42c19a187b2d8d",
+    "following_layout_acceptance.py": "bf6ddb8393127e2b2b505f16ddfaa37954a81be395628ca17b7c8279db69a5f6",
+    "font_resolution_acceptance.py": "3bdeb3a82f26301f1b7cdad5898c5a00bb84150b74a2936afe8d777dbc4093c7",
+    "fullscreen_acceptance.py": "fc6f8b7fe272444789152f1333a4f02fcedc88392a3e4b18dc4600456ea7452b",
+    "gui_session.py": "795af4c2b659ddd0ee42614ef0cfae9f2a7083e6de9a28d64134648a0ca788aa",
+    "history_keys.swift": "9ec9a752edb8c64744ec3ea8b1c96b88bdcdab161f90e0a1b50a86e5d45f7206",
+    "ime_acceptance.py": "f7ffd95b45a1d67b31087c40d680737558084924871373c81e567fe6494a7685",
+    "ime_reconversion_acceptance.py": "7afe566980a661dcccf01d09703d1348c4eef7f3ad604a5a39daed75ff4ea12f",
+    "ime_windows.swift": "ab390d582b4b83ed16bb7932380c9190ea80d4795425e680f8f1b805e1d4f305",
+    "input_history_limit_acceptance.py": "8e5db1aed2eb9c56d175bbb0149b09609678fb2b05d3dab89fcb3b5bed46c6c9",
+    "input_redo_transfer_acceptance.py": "893bf5d1b79bfbd6d2f489d34e5ef7ca4abb442149344d064d81f5be8b80a97a",
+    "input_scope_acceptance.py": "983eb109493ceeec0515e3bf9906158ff372748f21af5e4d88843669888451b0",
+    "layout_repair_acceptance.py": "125430ef52f543f9e9a0921d1faf7777d97153074c8b89d916459709416c5dbf",
+    "measure_layout.py": "ce9398d3315548639c958748aa7cd56f0e89c3bdb98fc8f5dbe7b804e322ed28",
+    "move_window.swift": "449301d0f7b69d4ee3f1a4f20be9cd8df50316d9de8460680e4fd84a125eebef",
+    "native_windows.swift": "6df3412afc7b68d9fb9be842bf79cf8d478bd72232d4c7948e650663de1bfea4",
+    "no_edit_save_acceptance.py": "a52c080ef5f61582fcbf3eea520e24a4317d07065d62f6c8780007934c296f60",
+    "presentation_external_change_acceptance.py": "ca32b99b2c5bcc8c22ada21efb54c737c68bcafa9782ae814433aebf502b08de",
+    "presentation_ime_acceptance.py": "3736d90d71210721920f9200fea8cc06f8dbfab7738501f799d939cb3e473840",
+    "presentation_layout_acceptance.py": "ede6e410c75f6861b70752307f0e3b296f902a5c1ac6e99740da37dfc1741586",
+    "presentation_workflow_acceptance.py": "4c21bb974d9d91212ed7ab50c800429c1a914d7dc3228d86ae9563f2acc97625",
+    "recognize_bounds.swift": "08a9aa41156fadf64128037ae1febc918ae4e62b863f9b2f24c1e469f0462e63",
+    "recognize_text.swift": "9728682486f513bcdc63f5f19ff3441222bc2e3818e8d2cd371c57a3c1a8d614",
+    "record_window.swift": "12614c9cc0af49eff881440b7c9eb1d933f8fcfa9faa418af2e3b54d7f7ccedf",
+    "resize_window.swift": "0388cdb16bdbf91b97302eb2a76337e726786f2411c83af3c50006c958aa2423",
+    "run_acceptance.py": "11d5cd13db47d285b371ec9a01467ef66a242bdb2adace0ef38f3477e38307a7",
+    "sample_workflow_acceptance.py": "c370f1fc914cb6c0640aafb891d5df8a67a482ac12f5749cce2e61497c798019",
+    "save_as_retry_acceptance.py": "24876b89e0464b1d154a91609692422c6fc805b71383e32045746b760256da28",
+    "save_failure_acceptance.py": "0983f4c2f98080327f4057da6869243d625e4010f8d0eac94d68853ef2b1531d",
+    "slow_drag.swift": "4f645a3ecc6fa3d8fdd04a378936195a7698d809080ad5cc6cdd6b867d65411c",
+    "text_workflow_acceptance.py": "f515d754f2220531944ba1eef1da93a55f4796041c43a07993eead485c2f8509",
+    "with_japanese_ime.swift": "9c3727052f289c246a91580b71631ac9c5027e198872dbf408b94326782ea999"
+  },
+  "os": "macOS-26.5.2-arm64-arm-64bit",
+  "screens": [
+    {
+      "y": 0,
+      "x": 0,
+      "height": 1200,
+      "scale": 1,
+      "width": 1920,
+      "name": "Built-in Display"
+    }
+  ],
+  "cases": [
+    {
+      "case": "save-failure",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/target/issue30-python/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/save_failure_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/target/issue30/final-last/save-failure"
+      ],
+      "expected": "All runtime assertions pass",
+      "started": "2026-10-11T07:13:29.805546+00:00",
+      "exit_code": 1,
+      "result": "FAIL",
+      "finished": "2026-10-11T07:13:41.901052+00:00"
+    }
+  ]
+}

@@ -734,7 +734,7 @@ impl EntityInputHandler for TextInputState {
         _: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        if self.marked_range.is_none() {
+        if self.composition_before.is_none() {
             self.break_undo_group();
             self.composition_before = Some(self.content.to_string());
         }

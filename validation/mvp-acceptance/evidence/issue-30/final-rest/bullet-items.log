@@ -1,0 +1,3 @@
+PASS bullet-item-move
+PASS bullet-item-delete
+PASS bullet item add, text, move, delete and exact history; nested=False

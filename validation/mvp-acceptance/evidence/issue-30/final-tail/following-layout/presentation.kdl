@@ -1,0 +1,9 @@
+presentation {
+ metadata { title "Following layout" }
+ slide { heading "Empty columns"; columns { column width=50 {}; column width=50 {}; }; image "marker.png"; }
+ slide { heading "Tall columns"; columns { column width=50 { text "First\nSecond\nThird"; }; column width=50 { text "Short"; }; }; image "marker.png"; }
+ slide { heading "No caption"; image "marker.png"; code "marker();"; }
+ slide { heading "Empty caption"; image "marker.png" { caption ""; }; code "marker();"; }
+ slide { heading "Nested tall"; columns { column width=50 { text "First\nSecond\nThird"; image "marker.png"; }; column width=50 { text "Short"; }; }; }
+ slide { heading "Nested caption"; columns { column width=50 { image "marker.png" { caption ""; }; code "marker();"; }; column width=50 {}; }; }
+}

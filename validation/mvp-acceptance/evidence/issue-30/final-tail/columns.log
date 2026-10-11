@@ -1,0 +1,15 @@
+PASS columns-root-to-column one Undo/Redo and exact bytes
+PASS columns-column-to-root one Undo/Redo and exact bytes
+PASS columns-nested-reorder one Undo/Redo and exact bytes
+PASS columns-between-blocks one Undo/Redo and exact bytes
+PASS columns-delete-subtree one Undo/Redo and exact bytes
+PASS columns-heading-persist-column one Undo/Redo and exact bytes
+PASS columns-heading-persist-column saved KDL and canvas survive restart
+PASS columns-heading-persist-root one Undo/Redo and exact bytes
+PASS columns-heading-persist-root saved KDL and canvas survive restart
+PASS columns-text-persist-column one Undo/Redo and exact bytes
+PASS columns-text-persist-column saved KDL and canvas survive restart
+PASS columns-text-persist-root one Undo/Redo and exact bytes
+PASS columns-text-persist-root saved KDL and canvas survive restart
+PASS invalid numeric width blocks save until repaired
+PASS root/column moves, nested reorder, inter-block drag, invalid nesting, Columns subtree deletion, selection restoration and heading/body persistence

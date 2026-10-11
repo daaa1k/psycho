@@ -1,0 +1,67 @@
+   Compiling cfg-if v1.0.5
+   Compiling autocfg v1.5.1
+   Compiling libc v0.2.189
+   Compiling simd-adler32 v0.3.10
+   Compiling adler2 v2.0.1
+   Compiling crc32fast v1.5.2
+   Compiling bitflags v2.13.2
+   Compiling getrandom v0.3.4
+   Compiling miniz_oxide v0.9.1
+   Compiling rustix v1.1.5
+   Compiling fdeflate v0.3.7
+   Compiling miniz_oxide v0.8.9
+   Compiling num-traits v0.2.19
+   Compiling unicode-width v0.1.14
+   Compiling flate2 v1.1.10
+   Compiling quick-error v2.0.1
+   Compiling pxfm v0.1.30
+   Compiling byteorder-lite v0.1.0
+   Compiling zune-core v0.5.3
+   Compiling image-webp v0.2.4
+   Compiling png v0.18.1
+   Compiling zune-jpeg v0.5.15
+   Compiling miette v7.6.0
+   Compiling winnow v0.7.15
+   Compiling fastrand v2.5.0
+   Compiling errno v0.3.14
+   Compiling once_cell v1.21.4
+   Compiling bytemuck v1.25.2
+   Compiling moxcms v0.8.1
+   Compiling tempfile v3.23.0
+   Compiling kdl v6.7.1
+   Compiling image v0.25.10
+   Compiling psycho v0.1.0 (/Users/daichikinoshita/orca/workspaces/psycho/6-mvp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.10s
+     Running tests/mvp_regression.rs (target/debug/deps/mvp_regression-f3ed24ebbfe0a278)
+
+running 27 tests
+test prototype_02_01 ... ok
+test prototype_03_01 ... ok
+test prototype_02_03 ... ok
+test prototype_01_02 ... ok
+test prototype_01_03 ... ok
+test deleting_images_preserves_shared_asset_bytes_and_exact_history ... ok
+test prototype_02_02 ... ok
+test prototype_01_01 ... ok
+test prototype_04_01 ... ok
+test prototype_03_02 ... ok
+test prototype_04_02 ... ok
+test prototype_05_02 ... ok
+test prototype_06_01 ... ok
+test prototype_05_01 ... ok
+test prototype_08_04 ... ok
+test prototype_07_01 ... ok
+test prototype_06_02 ... ok
+test prototype_08_01 ... ok
+test prototype_08_03 ... ok
+test prototype_07_03 ... ok
+test prototype_08_02 ... ok
+test prototype_07_02 ... ok
+test prototype_09_02 ... ok
+test prototype_09_03 ... ok
+test prototype_10_01 ... ok
+test prototype_10_02 ... ok
+test schema_node_contracts_cover_unchecked_headers_children_and_empty_values ... ok
+
+test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+

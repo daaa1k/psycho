@@ -1,0 +1,152 @@
+[
+  {
+    "name": "conflict-freeze-before",
+    "text": "●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むslides>1Confli..2Frozen...Inspector外部ファイルの問題を解決するまで編集できません。保持中の入力frozendraftConflictacceptanceGUIdirty・未保存外部変更と未保存の編集が競合しています。編集を破棄して再読み込みするか、別名保存してください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "frozen draft",
+      "selected": [
+        12,
+        12
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1107.8359,
+        260.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"external edit\"; }; slide { heading \"Conflict acceptance\"; }; slide { heading \"Frozen preview navigation\"; }; }\n"
+  },
+  {
+    "name": "conflict-input-refused",
+    "text": "●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むslides>1Confli..2Frozen...Inspector外部ファイルの問題を解決するまで編集できません。保持中の入力frozendraftConflictacceptanceGUIdirty・未保存外部変更と未保存の編集が競合しています。編集を破棄して再読み込みするか、別名保存してください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "frozen draft",
+      "selected": [
+        12,
+        12
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1107.8359,
+        260.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"external edit\"; }; slide { heading \"Conflict acceptance\"; }; slide { heading \"Frozen preview navigation\"; }; }\n"
+  },
+  {
+    "name": "conflict-apply-refused",
+    "text": "●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むslides>1Confli..2Frozen...Inspector外部ファイルの問題を解決するまで編集できません。保持中の入力frozendraftConflictacceptanceGUIdirty・未保存外部変更と未保存の編集が競合しています。編集を破棄して再読み込みするか、別名保存してください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "frozen draft",
+      "selected": [
+        12,
+        12
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1107.8359,
+        260.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"external edit\"; }; slide { heading \"Conflict acceptance\"; }; slide { heading \"Frozen preview navigation\"; }; }\n"
+  },
+  {
+    "name": "conflict-save-refused",
+    "text": "●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むslides>1Confli..2Frozen...Inspector外部ファイルの問題を解決するまで編集できません。保持中の入力frozendraftConflictacceptanceGUIdirty・未保存外部ファイルの問題を解決するか、別名保存してください。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "frozen draft",
+      "selected": [
+        12,
+        12
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1107.8359,
+        260.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"external edit\"; }; slide { heading \"Conflict acceptance\"; }; slide { heading \"Frozen preview navigation\"; }; }\n"
+  },
+  {
+    "name": "conflict-undo-refused",
+    "text": "●開く保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むslides>1Confli..2Frozen...Inspector外部ファイルの問題を解決するまで編集できません。保持中の入力frozendraftConflictacceptanceGUIdirty・未保存外部ファイルの競合を解決するまでUndoは使えません。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "frozen draft",
+      "selected": [
+        12,
+        12
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1107.8359,
+        260.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"external edit\"; }; slide { heading \"Conflict acceptance\"; }; slide { heading \"Frozen preview navigation\"; }; }\n"
+  },
+  {
+    "name": "conflict-freeze-fixed",
+    "text": "●●開く●保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表外部変更を読み込むSlides1Confli...>2Frozen...Inspector外部ファイルの問題を解決するまで編集できません。保持中の入力frozendraftFrozenpreviewnavigationGUIdirty・未保存外部ファイルの競合を解決するまでUndoは使えません。表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "frozen draft",
+      "selected": [
+        12,
+        12
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1107.8359,
+        260.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"external edit\"; }; slide { heading \"Conflict acceptance\"; }; slide { heading \"Frozen preview navigation\"; }; }\n"
+  }
+]

@@ -1,0 +1,24 @@
+   Compiling psycho v0.1.0 (/Users/daichikinoshita/orca/workspaces/psycho/6-mvp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.39s
+     Running tests/moved_trivia.rs (target/debug/deps/moved_trivia-21d0a7fbae97cf6f)
+
+running 1 test
+test destination_newline_style_excludes_quoted_token_newlines ... FAILED
+
+failures:
+
+---- destination_newline_style_excludes_quoted_token_newlines stdout ----
+
+thread 'destination_newline_style_excludes_quoted_token_newlines' (53277479) panicked at tests/moved_trivia.rs:10:5:
+assertion `left == right` failed
+  left: "presentation {\n    metadata { title \"style\" }\n    slide {\n        columns {\n            column width=50 { code #\"\"\"\rbody\r\"\"\"#; \r                text \"move\"\r            }\n            column width=50 {}\n        }\n    }\n}\n"
+ right: "presentation {\n    metadata { title \"style\" }\n    slide {\n        columns {\n            column width=50 { code #\"\"\"\rbody\r\"\"\"#; \n                text \"move\"\n            }\n            column width=50 {}\n        }\n    }\n}\n"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    destination_newline_style_excludes_quoted_token_newlines
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `--test moved_trivia`

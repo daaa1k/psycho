@@ -1,0 +1,3 @@
+PASS continuous divider preview, clamp, one Undo/Redo, Save/reload
+PASS lower-limit divider preview, clamp, one Undo/Redo, Save/reload
+PASS upper-limit divider preview, clamp, one Undo/Redo, Save/reload

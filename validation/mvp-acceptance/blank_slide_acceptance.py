@@ -33,7 +33,7 @@ try:
     gui.press('Slide ↑');up=gui.save()
     assert up.index(b'heading "Second slide"')<up.index(b'slide id="blank"')
     checkpoint('slide-move-up')
-    gui.press('Slide ↓');down=gui.save()
+    gui.press('Slide ↓',aliases=('Slide ←',));down=gui.save()
     assert down.index(b'heading "Second slide"')>down.index(b'slide id="blank"')
     checkpoint('slide-move-down')
     gui.press('Undo');assert gui.save()==up

@@ -1,0 +1,31 @@
+{
+  "source_commit": "8dc2ce3ce02722bac9d743cc54e92fc5f8d8ef60",
+  "gpui": "git+https://github.com/zed-industries/zed?rev=14dd03e89676e7fe74bc205001bfb32c8cfc3952#14dd03e89676e7fe74bc205001bfb32c8cfc3952",
+  "roles": {
+    "heading": [
+      ".HiraKakuInterface-W6",
+      ".SFNS-Bold"
+    ],
+    "body": [
+      ".HiraKakuInterface-W4",
+      ".SFNS-Regular"
+    ],
+    "code": [
+      "HiraginoSans-W3",
+      "Menlo-Regular"
+    ],
+    "caption": [
+      ".HiraKakuInterface-W4",
+      ".SFNS-Regular"
+    ]
+  },
+  "all_names": [
+    ".HiraKakuInterface-W4",
+    ".HiraKakuInterface-W6",
+    ".SFNS-Bold",
+    ".SFNS-Regular",
+    "HiraginoSans-W3",
+    "Menlo-Regular"
+  ],
+  "measurement": "Resolved CTFont from each actual GPUI CoreText glyph run. Probe only appends font ID, PostScript name, size and text bytes."
+}

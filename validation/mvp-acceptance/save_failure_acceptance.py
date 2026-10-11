@@ -1,42 +1,53 @@
-import json,subprocess,time,shutil,os,argparse,shlex,stat
+"""Native write failure retains the edit for retry and document Undo."""
+import argparse,json,os,stat
 from pathlib import Path
-root=Path(__file__).resolve().parents[2]
-p=root/'target/mvp-save-retry/presentation.kdl'
-fixture='presentation { metadata { title "GUI dirty"; }; slide { heading "Save retry acceptance"; }; }\n'
-parser=argparse.ArgumentParser(description='Owned scratch document: GUI write failure and retry regression')
-parser.add_argument('--prepare',action='store_true')
-parser.add_argument('--output',type=Path,default=root/'target/mvp-save-retry-evidence')
-args=parser.parse_args()
-if args.prepare:
-    p.parent.mkdir(parents=True,exist_ok=True)
-    if p.exists():assert p.read_text()==fixture, 'Refusing to replace an edited fixture'
-    else:p.write_text(fixture)
-    print(f'./target/debug/psycho {shlex.quote(str(p))}')
-    raise SystemExit(0)
-assert p.read_text()==fixture, 'Run --prepare and open the scratch fixture'
-out=args.output;out.mkdir(parents=True,exist_ok=True)
-before=p.read_bytes();directory_mode=stat.S_IMODE(p.parent.stat().st_mode)
-def act(*cmd):
- r=json.loads(subprocess.check_output(['orca','computer',*cmd,'--app','psycho','--json'],text=True));assert r['ok'],r
- return r['result']
-def snap(name):
- time.sleep(1);r=act('get-app-state');shutil.copy(r['screenshot']['path'],out/name);print(name,flush=True)
-state=act('get-app-state')
-pid=state['snapshot']['app']['pid']
-command=shlex.split(subprocess.check_output(['ps','-p',str(pid),'-o','command='],text=True).strip())
-assert command[-1]==str(p), 'psycho must have the owned scratch document open'
-assert Path(command[0]).resolve()==root/'target/debug/psycho'
-assert state['snapshot']['window']['width']==1280, 'Use the initial 1280px editor'
-act('click','--x','1140','--y','148','--no-screenshot')
-act('click','--x','1100','--y','231','--no-screenshot');act('hotkey','--key','CmdOrCtrl+A','--no-screenshot');act('type-text','--text','after failure','--no-screenshot');act('click','--x','1140','--y','278','--no-screenshot')
-try:
- os.chmod(p.parent,0o500)
- act('click','--x','84','--y','54','--no-screenshot');snap('save-failure-keeps-draft.png')
- assert p.read_bytes()==before
-finally:os.chmod(p.parent,directory_mode)
-act('click','--x','84','--y','54','--no-screenshot');snap('save-failure-retried.png')
-assert 'title "after failure"' in p.read_text()
-act('click','--x','214','--y','54','--no-screenshot');act('click','--x','84','--y','54','--no-screenshot');snap('save-failure-undo.png')
-assert p.read_bytes()==before
+from gui_session import Gui,root
 
-print('PASS failure/retry: source intact; dirty input/history retained; one Undo restores saved bytes',flush=True)
+parser=argparse.ArgumentParser()
+parser.add_argument('--output',type=Path,default=root/'target/mvp-save-retry-evidence')
+fixture='presentation { metadata { title "GUI dirty"; }; slide { heading "Save retry acceptance"; }; }\n'
+gui=Gui(parser.parse_args().output,fixture)
+source_dir=gui.out/'source'
+mode=None;records=[]
+try:
+    gui.stop()
+    source_dir.mkdir()
+    mode=stat.S_IMODE(source_dir.stat().st_mode)
+    gui.fixture=source_dir/'presentation.kdl'
+    gui.fixture.write_bytes(gui.original)
+    gui.start()
+    gui.press('Presentation title')
+    _,rows=gui.snapshot('save-failure-title-selected')
+    fields=[row for row in rows if row['text'] in ('GUI dirty','GUl dirty') and row['x']>1000]
+    assert len(fields)==1,rows
+    gui.click(fields[0]['x'],fields[0]['y'])
+    assert gui.state()['focused'] and gui.state()['text']=='GUI dirty'
+    gui.replace('after failure');gui.press('適用')
+    expected=gui.original.replace(b'GUI dirty',b'after failure')
+    assert gui.fixture.read_bytes()==gui.original
+    try:
+        os.chmod(gui.fixture.parent,0o500)
+        gui.press('保存')
+        assert gui.fixture.read_bytes()==gui.original
+    finally:
+        os.chmod(gui.fixture.parent,mode)
+    text=gui.text('save-failure-keeps-draft')
+    assert '保存できませんでした' in text,text
+    state=gui.state()
+    assert state['text']=='after failure',state
+    records.append(dict(name='failure',text=text,input=state,source=gui.fixture.read_text()))
+    assert gui.save()==expected,'Retry must save exactly the title edit'
+    gui.snapshot('save-failure-retried')
+    records.append(dict(name='retry',input=gui.state(),source=gui.fixture.read_text()))
+    gui.press('Undo')
+    assert gui.save()==gui.original,'One document Undo must restore the original bytes'
+    gui.snapshot('save-failure-undo')
+    records.append(dict(name='undo',input=gui.state(),source=gui.fixture.read_text()))
+    print('PASS failure/retry: source intact; edit/history retained; one Undo restores original bytes',flush=True)
+except Exception:
+    gui.snapshot('save-failure-error');raise
+finally:
+    try:
+        if mode is not None:os.chmod(source_dir,mode)
+        (gui.out/'save-failure-observations.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n')
+    finally:gui.stop()

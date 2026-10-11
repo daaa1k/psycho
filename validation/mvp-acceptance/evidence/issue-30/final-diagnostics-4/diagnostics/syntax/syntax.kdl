@@ -1,0 +1,4 @@
+presentation {
+ metadata { title "x" }
+ slide { text "日本語\q"; }
+}

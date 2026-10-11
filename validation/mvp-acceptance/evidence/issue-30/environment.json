@@ -1,0 +1,10 @@
+{
+  "machine_name": "MacBook Air",
+  "machine_model": "Mac15,12",
+  "chip_type": "Apple M3",
+  "physical_memory": "16 GB",
+  "os": "ProductName:\t\tmacOS\nProductVersion:\t\t26.5.2\nBuildVersion:\t\t25F84",
+  "rust": "rustc 1.98.1 (48a229cea 2026-09-01)",
+  "xcode": "Xcode 26.5\nBuild version 17F42",
+  "gpui": "14dd03e89676e7fe74bc205001bfb32c8cfc3952"
+}

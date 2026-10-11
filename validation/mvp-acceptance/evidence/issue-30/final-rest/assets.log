@@ -1,0 +1,5 @@
+Prepared owned assets. Run this script without --prepare; it launches its own app.
+PASS JPEG
+PASS PNG
+PASS WebP
+PASS retreat/resave: all rebased references and original bytes preserved

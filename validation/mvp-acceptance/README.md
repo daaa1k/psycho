@@ -1,5 +1,7 @@
 # Issue #17 製品受け入れ確認
 
+Issue #30の再検証と追加回帰は[今回の記録](issue-30.md)と[保証の対応表](coverage.md)に記載する。以下は2026-10-03〜04の検証記録である。
+
 2026-10-03〜04に製品バイナリーで実施した確認を記録する。最終ソースは`84dffd4`。この差分で自動テスト44件、終了時の3分岐、発表中のカーソル・クリック・スクロール、実際に解決されたフォント名を確認した。標準IMEの本文20状態とCaption5状態、直接編集20ケースと通常表示6画面の配置比較は`ba16784`で確認した。`84dffd4`の変更はカーソルの非表示・再表示APIと未使用importだけで、文字組み・入力・文書操作は変更していない。代表例、Columns操作、画面外修復、発表中の外部変更、履歴上限は`1930beb`までのバイナリーで実施した。先行試作の結果は製品の合格証拠として数えない。実施時の判断は[decisions.tsv](decisions.tsv)に残した。
 
 全画面10回は`0ec3116`、保存失敗の再試行は`f66d593`、外部競合と再読み込みは`6ccb562`、画像のEXIF回転・透過と退避後の再保存は`ccd45d2`で確認した。コードの貼り付けは`4db1eda`、入力欄のUndo範囲は`bcbad54`、同値保存と入力Redoの引継ぎは`cc15124`、空列・高い列の後続配置は`5bac00b`で修正・確認した。
@@ -95,16 +97,11 @@ target/mvp-layout-venv/bin/python validation/mvp-acceptance/measure_layout.py --
 python3 validation/mvp-acceptance/fullscreen_acceptance.py --record
 ```
 
-書込み失敗と競合の回帰確認は、次のコードで専用のscratch文書を作成して実行できる。`--prepare`が表示した起動コマンドでpsychoを開き、その後に同じスクリプトを`--prepare`なしで実行する。プロセス引数が専用文書を指すことを検査してからGUIを操作する。
+書込み失敗と競合の回帰確認は、それぞれ新しい出力先に専用文書を作り、検証用のpsychoを起動・終了する。所有プロセスと入力状態を確認して操作する。出力先を再利用しない。
 
 ```sh
-python3 validation/mvp-acceptance/save_failure_acceptance.py --prepare
-# 表示されたコマンドでpsychoを起動する
-python3 validation/mvp-acceptance/save_failure_acceptance.py
-# 上の専用文書を閉じてから次へ進む
-python3 validation/mvp-acceptance/conflict_acceptance.py --prepare
-# 表示されたコマンドでpsychoを起動する
-python3 validation/mvp-acceptance/conflict_acceptance.py
+python3 validation/mvp-acceptance/save_failure_acceptance.py --output target/mvp-save-retry-new
+python3 validation/mvp-acceptance/conflict_acceptance.py --output target/mvp-conflict-new
 ```
 
 画像確認は上で作成したPillow入りvenvで次を実行する。画面ロックを解除し、ほかのpsychoを閉じてから実行する。専用文書と画像を作成し、新しいpsychoプロセスを起動・終了する。

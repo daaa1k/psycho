@@ -1,0 +1,8 @@
+small Slide 1: 256 glyphs share base positions
+large Slide 1: 256 glyphs share base positions
+fullscreen Slide 1: 256 glyphs share base positions
+small Slide 2: 256 glyphs share base positions
+large Slide 2: 256 glyphs share base positions
+fullscreen Slide 2: 256 glyphs share base positions
+PASS: base glyph positions, glyph identities, quantization and raster strokes
+PASS identical Japanese glyphs, wrapping and base placement in two editor sizes and fullscreen

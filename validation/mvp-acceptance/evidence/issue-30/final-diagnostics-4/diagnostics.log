@@ -1,0 +1,3 @@
+PASS syntax: diagnostic selection, source line and read-only input
+PASS schema: diagnostic selection, source line and read-only input
+PASS asset: footer diagnostic selects slide 2 image without history

@@ -1,0 +1,13 @@
+PASS blank-add-heading
+PASS blank-add-text
+PASS blank-add-bullets
+PASS blank-add-code
+PASS blank-add-image
+PASS blank-image-delete-undo
+PASS blank-add-columns
+PASS slide-populated
+PASS slide-move-up
+PASS slide-move-down
+PASS slide-delete-populated
+PASS slide-delete-undo
+PASS all six Element additions, image deletion without Asset deletion, Slide add/move/delete and exact Undo
