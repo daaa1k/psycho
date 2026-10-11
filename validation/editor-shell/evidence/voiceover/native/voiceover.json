@@ -1,0 +1,948 @@
+{
+  "initialVoiceOver": false,
+  "records": [
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    },
+    {
+      "phrase": "",
+      "captionRows": [],
+      "voiceoverWindows": [
+        {
+          "kCGWindowAlpha": 1,
+          "kCGWindowBounds": {
+            "Height": 1200,
+            "Width": 1920,
+            "X": 0,
+            "Y": 0
+          },
+          "kCGWindowIsOnscreen": true,
+          "kCGWindowLayer": 2997,
+          "kCGWindowMemoryUsage": 2368,
+          "kCGWindowName": "",
+          "kCGWindowNumber": 36618,
+          "kCGWindowOwnerName": "VoiceOver",
+          "kCGWindowOwnerPID": 68082,
+          "kCGWindowSharingState": 1,
+          "kCGWindowStoreType": 1
+        }
+      ],
+      "tree": "App=psycho (pid 67710)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: VoiceOver acceptance\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+    }
+  ],
+  "quickstart": {
+    "id": "0053b74f-c619-4477-a353-2ff19c4a48f0",
+    "ok": true,
+    "result": {
+      "snapshot": {
+        "id": "C4CDEBF8-BE38-486E-83BD-E3DB685BB381",
+        "coordinateSpace": "window",
+        "treeText": "App=com.apple.VoiceOverQuickstart (pid 67997)\nWindow: \"VoiceOver\", App: VoiceOverクイックスタート.\n\n0 標準ウインドウ VoiceOver\n\t1 イメージ Accessibility\n\t2 テキスト, Value: ようこそVoiceOverへ\n\t3 テキスト, Value: VoiceOverは画面上の項目の説明を読み上げる機能です。VoiceOverを使うと、キーボードだけでコンピュータを制御できます。\n\t4 チェックボックス 今後このメッセージを表示しない, Value: 0\n\t5 ボタン 詳しい情報\n\t6 ボタン VoiceOverを使用\n\t7 ボタン VoiceOverをオフにする\n\t8 テキスト, Value: VoiceOver\n\nThe focused UI element is 5 ボタン 詳しい情報.",
+        "window": {
+          "width": 570,
+          "title": "VoiceOver",
+          "x": 675,
+          "screenIndex": 0,
+          "isMinimized": false,
+          "height": 253,
+          "id": 36613,
+          "isOffscreen": false,
+          "y": 474,
+          "platform": {
+            "layer": 0
+          }
+        },
+        "elementCount": 9,
+        "app": {
+          "pid": 67997,
+          "bundleId": "com.apple.VoiceOverQuickstart",
+          "name": "VoiceOverクイックスタート"
+        },
+        "truncation": {
+          "maxNodes": 1200,
+          "maxDepth": 64,
+          "maxDepthReached": false,
+          "truncated": false
+        },
+        "focusedElementId": 5
+      },
+      "screenshotStatus": {
+        "state": "captured",
+        "metadata": {
+          "windowId": 36613,
+          "engine": "screenCaptureKit"
+        }
+      },
+      "screenshot": {
+        "scale": 1,
+        "format": "png",
+        "height": 253,
+        "width": 570,
+        "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/0053b74f-c619-4477-a353-2ff19c4a48f0-screenshot.png",
+        "dataOmitted": true,
+        "expiresAt": "2026-10-12T12:57:17.377Z"
+      }
+    },
+    "_meta": {
+      "runtimeId": "dbd7545f-5ae1-4489-8fda-d0890960dd03"
+    }
+  },
+  "enable": "AXPress exact observed VoiceOverを使用",
+  "actualEnabled": true,
+  "running": "68082 /System/Library/CoreServices/VoiceOver.app/Contents/MacOS/VoiceOver launchd -s\n",
+  "captionToggle": true,
+  "spokenChecks": {
+    "role": false,
+    "disabled": false,
+    "controls": false
+  },
+  "status": "INCOMPLETE expected spoken controls absent",
+  "restoredVoiceOverOff": true
+}

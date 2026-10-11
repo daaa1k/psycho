@@ -1,5 +1,8 @@
 #![allow(unexpected_cfgs)]
 
+mod editor_actions;
+mod editor_validation;
+mod editor_view;
 mod ime;
 mod input;
 mod text;
@@ -9,6 +12,8 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
 
+use editor_actions::*;
+use editor_view::{EditorPalette, EditorViewState, Pane, PaneResize, Popup, ZoomMode};
 use gpui::{
     App, Bounds, Context, DragMoveEvent, FocusHandle, Focusable, InteractiveElement, KeyBinding,
     Menu, MenuItem, MouseButton, MouseDownEvent, MouseMoveEvent, MouseUpEvent, Window,
@@ -23,22 +28,6 @@ use psycho::{
     PresentationStart, PresentationStartError, SlidePosition,
 };
 use raw_window_handle::{HasWindowHandle, RawWindowHandle};
-
-actions!(
-    psycho,
-    [
-        HideApp,
-        SaveFile,
-        SaveAs,
-        UndoEdit,
-        RedoEdit,
-        NextSlide,
-        PreviousSlide,
-        ExitPresentation,
-        DeleteSelection,
-        CommitTextEdit
-    ]
-);
 
 const DEMO: &str = include_str!("../examples/build-time.kdl");
 const WINDOW_SIZE: gpui::Size<gpui::Pixels> = size(px(1280.0), px(860.0));
@@ -144,6 +133,9 @@ struct OutlinePage {
 }
 
 struct PsychoApp {
+    view: EditorViewState,
+    palette: EditorPalette,
+    popup_return_focus: Option<FocusHandle>,
     document: PresentationDocument,
     editor: gpui::Entity<TextInputState>,
     root_focus: FocusHandle,
@@ -186,6 +178,227 @@ struct GuiPresentation {
 }
 
 impl PsychoApp {
+    fn availability(&self, window: &Window, cx: &Context<Self>) -> EditorAvailability {
+        let model = self.document.model();
+        let editor = self.editor.read(cx);
+        let view = self.presentation.is_none();
+        let edit = view && model.is_some() && !self.external_edit_blocked();
+        let count = model.map_or(0, |model| model.slides.len());
+        let present_reason = if !edit {
+            Some("文書や外部ファイルの問題を解決してください。")
+        } else if count == 0 {
+            Some("発表するスライドがありません。")
+        } else if self.has_uncommitted_draft(cx) {
+            None
+        } else if !self.asset_diagnostics.is_empty() {
+            Some("画像の問題を修正してください。")
+        } else if !self.layout_diagnostics.is_empty() {
+            Some("スライド内に収まらない内容を修正してください。")
+        } else {
+            None
+        };
+        EditorAvailability {
+            open: view,
+            save: edit,
+            save_as: view && model.is_some(),
+            edit,
+            insert: edit && self.current_slide < count,
+            undo: edit
+                && if editor.has_focus(window) {
+                    editor.can_undo()
+                } else {
+                    self.document.can_undo()
+                },
+            redo: edit
+                && if editor.has_focus(window) {
+                    editor.can_redo()
+                } else {
+                    self.document.can_redo()
+                },
+            delete_slide: edit && count > 0,
+            earlier: edit && self.current_slide > 0,
+            later: edit && self.current_slide + 1 < count,
+            present: present_reason.is_none(),
+            present_reason,
+            view,
+        }
+    }
+
+    fn execute_action<A: EditorAction>(
+        &mut self,
+        action: &A,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if !action.enabled(self.availability(window, cx)) {
+            return;
+        }
+        if self.view.popup.take().is_some() {
+            self.popup_return_focus = None;
+        }
+        action.execute(self, window, cx);
+    }
+
+    fn action_button<A: EditorAction>(
+        &self,
+        action: A,
+        compact: bool,
+        window: &Window,
+        cx: &mut Context<Self>,
+    ) -> gpui::AnyElement {
+        let available = self.availability(window, cx);
+        let enabled = action.enabled(available);
+        let tooltip: gpui::SharedString = action.disabled_reason(available).map_or_else(
+            || A::LABEL.into(),
+            |reason| format!("{} · {reason}", A::LABEL).into(),
+        );
+        let palette = self.palette;
+        let click_action = action.clone();
+        let a11y_action = action.clone();
+        let weak = cx.entity().downgrade();
+        let mut button = div()
+            .id(A::LABEL)
+            .accessibility_id(A::LABEL)
+            .focusable()
+            .tab_stop(enabled)
+            .role(gpui::Role::Button)
+            .aria_label(A::LABEL)
+            .a11y_synthetic_children(move |builder| {
+                if !enabled {
+                    builder.parent_node().set_disabled();
+                }
+            })
+            .flex()
+            .items_center()
+            .justify_center()
+            .gap(px(4.))
+            .min_h(px(32.))
+            .px(px(8.))
+            .rounded_md()
+            .text_size(px(13.))
+            .bg(palette.surface)
+            .text_color(if enabled {
+                palette.text
+            } else {
+                palette.secondary
+            })
+            .border_1()
+            .border_color(palette.border)
+            .focus(|style| style.border_2().border_color(palette.focus))
+            .tooltip(move |_, cx| cx.new(|_| EditorTooltip(tooltip.clone())).into())
+            .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
+            .on_click(cx.listener(move |this, _, window, cx| {
+                this.execute_action(&click_action, window, cx)
+            }))
+            .on_a11y_action(gpui::AccessibleAction::Click, move |_, window, cx| {
+                weak.update(cx, |this, cx| this.execute_action(&a11y_action, window, cx))
+                    .ok();
+            });
+        if let Some(icon) = A::ICON {
+            button = button.child(gpui::svg().path(icon).size(px(20.)).text_color(if enabled {
+                palette.text
+            } else {
+                palette.secondary
+            }));
+        }
+        if !compact || A::ICON.is_none() {
+            button = button.child(A::LABEL);
+        }
+        button.into_any_element()
+    }
+
+    fn show_popup(&mut self, popup: Popup, window: &mut Window, cx: &mut Context<Self>) {
+        self.popup_return_focus = window.focused(cx);
+        if let Err(error) = self.commit_draft(window, cx) {
+            self.status = error;
+            cx.notify();
+            return;
+        }
+        self.view.popup = Some(popup);
+        window.focus(&self.root_focus, cx);
+        cx.notify();
+    }
+    fn restore_popup_focus(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        if let Some(focus) = self.popup_return_focus.take() {
+            window.focus(&focus, cx);
+        }
+    }
+    fn toggle_pane(&mut self, pane: Pane, window: &mut Window, cx: &mut Context<Self>) {
+        if pane == Pane::Inspector
+            && self.view.inspector.visible
+            && self.editor.read(cx).has_focus(window)
+            && !self.canvas_editing
+        {
+            if let Err(error) = self.commit_draft(window, cx) {
+                self.status = error;
+                cx.notify();
+                return;
+            }
+            window.focus(&self.root_focus, cx);
+        }
+        let pane = self.view.pane(pane);
+        pane.visible = !pane.visible;
+        cx.notify();
+    }
+    fn change_pane_width(&mut self, pane: Pane, delta: f32, cx: &mut Context<Self>) {
+        let state = self.view.pane(pane);
+        let (min, max) = match pane {
+            Pane::Navigator => (120., 360.),
+            Pane::Inspector => (220., 440.),
+        };
+        state.preferred_width = (state.preferred_width + delta).clamp(min, max);
+        cx.notify();
+    }
+    fn render_pane_resizer(
+        &self,
+        pane: Pane,
+        width: f32,
+        cx: &mut Context<Self>,
+    ) -> gpui::AnyElement {
+        div()
+            .id(match pane {
+                Pane::Navigator => "navigator-resizer",
+                Pane::Inspector => "inspector-resizer",
+            })
+            .w(px(8.))
+            .h_full()
+            .flex_shrink_0()
+            .cursor(gpui::CursorStyle::ResizeLeftRight)
+            .border_l_1()
+            .border_color(self.palette.border)
+            .on_mouse_down(
+                MouseButton::Left,
+                cx.listener(move |this, event: &MouseDownEvent, window, cx| {
+                    window.prevent_default();
+                    this.view.resize = Some(PaneResize {
+                        pane,
+                        start_x: f32::from(event.position.x),
+                        start_width: width,
+                    });
+                    cx.notify();
+                }),
+            )
+            .into_any_element()
+    }
+    fn update_pane_resize(&mut self, event: &MouseMoveEvent, cx: &mut Context<Self>) {
+        if let Some(resize) = self.view.resize {
+            let delta = (f32::from(event.position.x) - resize.start_x)
+                * if resize.pane == Pane::Navigator {
+                    1.
+                } else {
+                    -1.
+                };
+            let pane = self.view.pane(resize.pane);
+            let (min, max) = if resize.pane == Pane::Navigator {
+                (120., 360.)
+            } else {
+                (220., 440.)
+            };
+            pane.preferred_width = (resize.start_width + delta).clamp(min, max);
+            cx.notify();
+        }
+    }
+
     fn new(
         cx: &mut Context<Self>,
         document: PresentationDocument,
@@ -223,6 +436,7 @@ impl PsychoApp {
             }
         })
         .detach();
+        cx.set_global(EditorPalette::for_appearance(window.appearance()));
         let current_title = document
             .model()
             .map_or_else(String::new, |model| model.title.clone());
@@ -230,7 +444,12 @@ impl PsychoApp {
         let assets = document.load_assets();
         let asset_diagnostics = assets.diagnostics;
         let asset_images = load_asset_images(assets.images);
+        cx.observe_window_appearance(window, |_, _, cx| cx.notify())
+            .detach();
         Self {
+            view: EditorViewState::default(),
+            palette: EditorPalette::for_appearance(window.appearance()),
+            popup_return_focus: None,
             document,
             editor,
             root_focus: cx.focus_handle(),
@@ -795,16 +1014,12 @@ impl PsychoApp {
         cx.notify();
     }
 
-    fn save_as(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
-        self.prompt_save_as(window, cx);
-    }
-
     fn save_as_action(&mut self, _: &SaveAs, window: &mut Window, cx: &mut Context<Self>) {
-        self.prompt_save_as(window, cx);
+        self.execute_action(&SaveAs, window, cx);
     }
 
     fn save_action(&mut self, _: &SaveFile, window: &mut Window, cx: &mut Context<Self>) {
-        self.save(window, cx);
+        self.execute_action(&SaveFile, window, cx);
     }
 
     fn prompt_save_as(&mut self, window: &mut Window, cx: &mut Context<Self>) {
@@ -1897,19 +2112,11 @@ impl PsychoApp {
     }
 
     fn undo(&mut self, _: &UndoEdit, window: &mut Window, cx: &mut Context<Self>) {
-        self.undo_changes(window, cx);
-    }
-
-    fn undo_button(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
-        self.undo_changes(window, cx);
+        self.execute_action(&UndoEdit, window, cx);
     }
 
     fn redo(&mut self, _: &RedoEdit, window: &mut Window, cx: &mut Context<Self>) {
-        self.redo_changes(window, cx);
-    }
-
-    fn redo_button(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
-        self.redo_changes(window, cx);
+        self.execute_action(&RedoEdit, window, cx);
     }
 
     fn refresh_editor_value(&mut self, cx: &mut Context<Self>) {
@@ -2238,92 +2445,57 @@ impl PsychoApp {
         self.editor
             .update(cx, |input, _| input.set_canvas_layout(None));
         let model = self.preview_model(cx);
-        let editing_available = !self.external_edit_blocked();
-        let input = self.editor.read(cx);
-        let input_focused = input.has_focus(window);
-        let can_undo = if input_focused {
-            input.can_undo()
-        } else {
-            self.document.can_undo()
-        };
-        let can_redo = if input_focused {
-            input.can_redo()
-        } else {
-            self.document.can_redo()
-        };
-        self.layout_diagnostics = model
-            .as_ref()
-            .map(|model| collect_layout_diagnostics(model, window))
-            .unwrap_or_default();
+        self.palette = EditorPalette::for_appearance(window.appearance());
+        let palette = self.palette;
+        cx.set_global(palette);
         let title = model
             .as_ref()
             .map_or("新しい Presentation", |model| model.title.as_str())
             .to_owned();
-        let mut toolbar = div()
+        let dirty = self.document.is_dirty() || self.has_uncommitted_draft(cx);
+        let header = div()
+            .flex()
+            .items_center()
+            .gap(px(12.))
+            .px(px(12.))
+            .py(px(8.))
+            .bg(palette.surface)
+            .text_size(px(13.))
+            .child(
+                div()
+                    .flex_1()
+                    .min_w_0()
+                    .font_weight(gpui::FontWeight::BOLD)
+                    .child(title.clone()),
+            )
+            .child(div().text_color(palette.secondary).child(if dirty {
+                "未保存"
+            } else {
+                "保存済み"
+            }));
+        let toolbar = div()
             .flex()
             .flex_row()
             .items_center()
-            .gap_2()
-            .px_3()
-            .py_2()
-            .bg(rgb(0xf0f1f3));
-        toolbar = toolbar
-            .child(button(cx, "開く", true, Self::open_picker))
-            .child(button(
-                cx,
-                "保存",
-                model.is_some() && !self.external_edit_blocked(),
-                |this, _, window, cx| this.save(window, cx),
-            ))
-            .child(button(cx, "別名保存", model.is_some(), Self::save_as))
-            .child(button(
-                cx,
-                "Undo",
-                can_undo && editing_available,
-                Self::undo_button,
-            ))
-            .child(button(
-                cx,
-                "Redo",
-                can_redo && editing_available,
-                Self::redo_button,
-            ))
-            .child(button(cx, "＋ Slide", editing_available, Self::add_slide))
-            .child(button(
-                cx,
-                "− Slide",
-                editing_available && model.as_ref().is_some_and(|model| !model.slides.is_empty()),
-                Self::delete_slide,
-            ))
-            .child(button(
-                cx,
-                "Slide ↑",
-                editing_available && self.current_slide > 0,
-                |this, _, window, cx| this.move_slide_selection(-1, window, cx),
-            ))
-            .child(button(
-                cx,
-                "Slide ↓",
-                model
-                    .as_ref()
-                    .is_some_and(|model| self.current_slide + 1 < model.slides.len())
-                    && editing_available,
-                |this, _, window, cx| this.move_slide_selection(1, window, cx),
-            ))
-            .child(button(
-                cx,
-                "最初から発表",
-                model.is_some() && editing_available && !self.external_edit_blocked(),
-                |this, _, window, cx| this.start_presentation(false, window, cx),
-            ))
-            .child(button(
-                cx,
-                "現在から発表",
-                model.is_some() && editing_available && !self.external_edit_blocked(),
-                |this, _, window, cx| this.start_presentation(true, window, cx),
-            ));
+            .gap(px(8.))
+            .px(px(12.))
+            .py(px(4.))
+            .bg(palette.surface)
+            .child(self.action_button(UndoEdit, true, window, cx))
+            .child(self.action_button(RedoEdit, true, window, cx))
+            .child(self.action_button(AddSlide, false, window, cx))
+            .child(self.action_button(ShowInsertMenu, false, window, cx))
+            .child(self.action_button(ShowViewMenu, false, window, cx))
+            .child(div().flex_1())
+            .child(self.action_button(PresentCurrent, false, window, cx));
+        let mut notices = div()
+            .flex()
+            .flex_wrap()
+            .gap(px(8.))
+            .px(px(12.))
+            .bg(palette.surface);
         if self.pending_open.is_some() {
-            toolbar = toolbar
+            notices = notices
                 .child(button(
                     cx,
                     "保存して開く",
@@ -2343,7 +2515,7 @@ impl PsychoApp {
                 }));
         }
         if self.pending_close {
-            toolbar = toolbar
+            notices = notices
                 .child(button(
                     cx,
                     "保存して閉じる",
@@ -2355,7 +2527,7 @@ impl PsychoApp {
         }
         if self.external_edit_blocked() {
             if self.pending_external_reload {
-                toolbar = toolbar
+                notices = notices
                     .child(button(cx, "編集を破棄して再読み込み", true, |this, _, window, cx| {
                         this.reload_external_change(window, cx)
                     }))
@@ -2365,7 +2537,7 @@ impl PsychoApp {
                         cx.notify();
                     }));
             } else {
-                toolbar = toolbar.child(button(
+                notices = notices.child(button(
                     cx,
                     "外部変更を読み込む",
                     true,
@@ -2389,7 +2561,7 @@ impl PsychoApp {
         {
             div()
                 .id("external-diagnostics")
-                .w(px(270.0))
+                .w_full()
                 .flex_shrink_0()
                 .h_full()
                 .overflow_y_scroll()
@@ -2405,9 +2577,9 @@ impl PsychoApp {
             div()
                 .flex()
                 .flex_col()
-                .w(px(270.0))
+                .w_full()
                 .p_3()
-                .text_color(rgb(0x991b1b))
+                .text_color(self.palette.warning)
                 .child("外部ファイルを読み込めません")
                 .child(error.clone())
                 .into_any_element()
@@ -2419,17 +2591,24 @@ impl PsychoApp {
             .flex_col()
             .px_3()
             .py_2()
-            .bg(rgb(0xf7f7f8))
+            .bg(palette.surface)
+            .text_size(px(12.))
+            .text_color(palette.secondary)
             .child(format!(
-                "{}{}",
-                title,
-                if self.document.is_dirty() || self.has_uncommitted_draft(cx) {
-                    "  • 未保存"
+                "スライド {} / {} · {}% · {}",
+                self.current_slide + 1,
+                model.as_ref().map_or(0, |model| model.slides.len()),
+                (self.view.scale() * 100.).round(),
+                if self.view.zoom == ZoomMode::Fit {
+                    "全体に合わせる"
                 } else {
-                    ""
+                    "100%表示"
                 }
             ))
             .child(self.status.clone());
+        if let Some(reason) = self.availability(window, cx).present_reason {
+            footer = footer.child(div().text_color(palette.warning).child(reason));
+        }
         for issue in &self.asset_diagnostics {
             let issue = issue.clone();
             footer = footer.child(button(
@@ -2487,27 +2666,147 @@ impl PsychoApp {
         if self.external_edit_blocked() {
             footer = footer.child(
                 div()
-                    .text_color(rgb(0x991b1b))
+                    .text_color(self.palette.warning)
                     .child("表示中の内容は現在の外部ファイルと一致していません。"),
             );
         }
         if let ExternalState::Unavailable { message: error, .. } = self.document.external_state() {
             footer = footer.child(
                 div()
-                    .text_color(rgb(0x991b1b))
+                    .text_color(self.palette.warning)
                     .child(format!("外部ファイルを読み込めません: {error}")),
             );
         }
+        let (navigator_width, inspector_width) =
+            self.view.widths(f32::from(window.viewport_size().width));
+        let weak = cx.entity().downgrade();
+        let viewport = div()
+            .id("canvas-viewport")
+            .relative()
+            .flex_1()
+            .min_w_0()
+            .min_h_0()
+            .h_full()
+            .overflow_x_scroll()
+            .overflow_y_scroll()
+            .child(
+                gpui::canvas(
+                    move |bounds, _, cx| {
+                        cx.defer(move |cx| {
+                            weak.update(cx, |this, cx| {
+                                if this.view.canvas_area != bounds.size {
+                                    this.view.canvas_area = bounds.size;
+                                    cx.notify();
+                                }
+                            })
+                            .ok();
+                        });
+                    },
+                    |_, _, _, _| {},
+                )
+                .absolute()
+                .inset_0(),
+            )
+            .child(
+                div()
+                    .flex()
+                    .items_center()
+                    .justify_center()
+                    .when(model.is_some(), |element| {
+                        element
+                            .w(px(1280. * self.view.scale()))
+                            .h(px(720. * self.view.scale()))
+                    })
+                    .min_w_full()
+                    .min_h_full()
+                    .child(canvas),
+            );
+        let mut workspace = div()
+            .flex()
+            .flex_row()
+            .flex_1()
+            .min_h_0()
+            .gap(px(0.))
+            .p(px(8.));
+        if self.view.navigator.visible {
+            workspace = workspace
+                .child(
+                    div()
+                        .w(px(navigator_width))
+                        .h_full()
+                        .flex_shrink_0()
+                        .min_w_0()
+                        .child(side),
+                )
+                .child(self.render_pane_resizer(Pane::Navigator, navigator_width, cx));
+        }
+        workspace = workspace.child(viewport);
+        if self.view.inspector.visible {
+            workspace = workspace
+                .child(self.render_pane_resizer(Pane::Inspector, inspector_width, cx))
+                .child(
+                    div()
+                        .w(px(inspector_width))
+                        .h_full()
+                        .flex_shrink_0()
+                        .min_w_0()
+                        .child(inspector),
+                );
+        }
+        let popup = self.view.popup.map(|popup| {
+            let mut panel = div()
+                .id("toolbar-popup")
+                .role(gpui::Role::Group)
+                .aria_label(if popup == Popup::Insert {
+                    "挿入"
+                } else {
+                    "表示"
+                })
+                .absolute()
+                .top(px(88.))
+                .left(px(240.))
+                .w(px(260.))
+                .p(px(8.))
+                .flex()
+                .flex_col()
+                .gap(px(4.))
+                .bg(palette.surface)
+                .border_1()
+                .border_color(palette.border);
+            match popup {
+                Popup::Insert => {
+                    panel = panel
+                        .child(self.action_button(InsertHeading, false, window, cx))
+                        .child(self.action_button(InsertText, false, window, cx))
+                        .child(self.action_button(InsertBullets, false, window, cx))
+                        .child(self.action_button(InsertCode, false, window, cx))
+                        .child(self.action_button(InsertImage, false, window, cx))
+                        .child(self.action_button(InsertColumns, false, window, cx));
+                }
+                Popup::View => {
+                    panel = panel
+                        .child(self.action_button(ToggleNavigator, false, window, cx))
+                        .child(self.action_button(ToggleInspector, false, window, cx))
+                        .child(self.action_button(FitCanvas, false, window, cx))
+                        .child(self.action_button(ActualSize, false, window, cx));
+                }
+            }
+            panel.into_any_element()
+        });
         div()
             .size_full()
             .flex()
             .flex_col()
             .key_context("Editor")
             .track_focus(&self.root_focus)
-            .on_mouse_move(cx.listener(|this, event, _, cx| this.update_column_resize(event, cx)))
+            .on_mouse_move(cx.listener(|this, event, _, cx| {
+                this.update_column_resize(event, cx);
+                this.update_pane_resize(event, cx);
+            }))
             .on_mouse_up(
                 MouseButton::Left,
                 cx.listener(|this, _, window, cx| {
+                    this.view.resize = None;
                     this.finish_column_resize(window, cx);
                     if this.drop_destination.take().is_some() {
                         cx.notify();
@@ -2517,6 +2816,7 @@ impl PsychoApp {
             .on_mouse_up_out(
                 MouseButton::Left,
                 cx.listener(|this, _, window, cx| {
+                    this.view.resize = None;
                     this.finish_column_resize(window, cx);
                     if this.drop_destination.take().is_some() {
                         cx.notify();
@@ -2532,21 +2832,92 @@ impl PsychoApp {
             .on_action(cx.listener(Self::paste_input))
             .on_action(cx.listener(Self::save_action))
             .on_action(cx.listener(Self::save_as_action))
-            .bg(rgb(0xe5e7eb))
+            .on_action(cx.listener(|this, action: &OpenFile, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &AddSlide, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &DeleteSlide, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &MoveSlideEarlier, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &MoveSlideLater, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &InsertHeading, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &InsertText, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &InsertBullets, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &InsertCode, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &InsertImage, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &InsertColumns, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &ShowInsertMenu, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &ShowViewMenu, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &ToggleNavigator, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &ToggleInspector, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &NarrowNavigator, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &WidenNavigator, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &NarrowInspector, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &WidenInspector, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &FitCanvas, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &ActualSize, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &PresentCurrent, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &PresentFirst, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|_, _: &FocusNext, window, cx| window.focus_next(cx)))
+            .on_action(cx.listener(|_, _: &FocusPrevious, window, cx| window.focus_prev(cx)))
+            .on_action(cx.listener(|this, _: &ClosePopup, window, cx| {
+                if this.view.popup.take().is_some() {
+                    this.restore_popup_focus(window, cx);
+                    cx.notify();
+                }
+            }))
+            .relative()
+            .text_color(palette.text)
+            .bg(palette.background)
+            .child(header)
             .child(toolbar)
-            .child(
-                div()
-                    .flex()
-                    .flex_row()
-                    .flex_1()
-                    .min_h_0()
-                    .gap_2()
-                    .p_2()
-                    .child(side)
-                    .child(div().flex_1().justify_center().items_center().child(canvas))
-                    .child(inspector),
-            )
+            .child(notices)
+            .child(workspace)
             .child(footer)
+            .children(popup)
     }
 
     fn render_slide_list(
@@ -2555,15 +2926,19 @@ impl PsychoApp {
         cx: &mut Context<Self>,
     ) -> gpui::AnyElement {
         let mut list = div()
+            .id("navigator")
+            .role(gpui::Role::List)
+            .aria_label("Navigator")
+            .overflow_y_scroll()
             .flex()
             .flex_col()
-            .w(px(150.0))
+            .w_full()
             .flex_shrink_0()
             .h_full()
             .gap_2()
             .p_2()
-            .bg(rgb(0xf3f4f6));
-        list = list.child(div().font_weight(gpui::FontWeight::BOLD).child("Slides"));
+            .bg(self.palette.surface);
+        list = list.child(div().font_weight(gpui::FontWeight::BOLD).child("Navigator"));
         if let Some(model) = model {
             for (index, slide) in model.slides.iter().enumerate() {
                 let selected = index == self.current_slide;
@@ -2575,6 +2950,7 @@ impl PsychoApp {
                         _ => None,
                     })
                     .unwrap_or_else(|| format!("Slide {}", index + 1));
+                let full_heading = heading.clone();
                 let heading = if heading.chars().count() > 7 {
                     format!("{}…", heading.chars().take(6).collect::<String>())
                 } else {
@@ -2586,23 +2962,41 @@ impl PsychoApp {
                     index + 1,
                     heading
                 );
-                list = list.child(button(cx, label, true, move |this, _, window, cx| {
-                    if this.external_edit_blocked() {
-                        // Navigate the frozen preview without committing or
-                        // replacing the draft belonging to the previous target.
-                        this.current_slide = index;
-                        window.focus(&this.root_focus, cx);
-                        cx.notify();
-                        return;
-                    }
-                    if let Err(error) = this.commit_draft(window, cx) {
-                        this.status = error;
-                        cx.notify();
-                        return;
-                    }
-                    this.current_slide = index;
-                    this.select_title(window, cx);
-                }));
+                list = list.child(
+                    div()
+                        .id(("slide-choice", index))
+                        .role(gpui::Role::ListItem)
+                        .aria_label(format!("スライド {} {}", index + 1, full_heading))
+                        .aria_selected(selected)
+                        .border_l(px(if selected { 4. } else { 1. }))
+                        .border_color(if selected {
+                            self.palette.focus
+                        } else {
+                            self.palette.border
+                        })
+                        .bg(if selected {
+                            self.palette.selection
+                        } else {
+                            self.palette.surface
+                        })
+                        .child(button(cx, label, true, move |this, _, window, cx| {
+                            if this.external_edit_blocked() {
+                                // Navigate the frozen preview without committing or
+                                // replacing the draft belonging to the previous target.
+                                this.current_slide = index;
+                                window.focus(&this.root_focus, cx);
+                                cx.notify();
+                                return;
+                            }
+                            if let Err(error) = this.commit_draft(window, cx) {
+                                this.status = error;
+                                cx.notify();
+                                return;
+                            }
+                            this.current_slide = index;
+                            this.select_title(window, cx);
+                        })),
+                );
             }
         }
         list.into_any_element()
@@ -2776,14 +3170,14 @@ impl PsychoApp {
             .id("inspector")
             .flex()
             .flex_col()
-            .w(px(270.0))
+            .w_full()
             .flex_shrink_0()
             .h_full()
             .min_h_0()
             .overflow_y_scroll()
             .gap_2()
             .p_3()
-            .bg(rgb(0xf8f8f8));
+            .bg(self.palette.surface);
         inspector = inspector.child(div().font_weight(gpui::FontWeight::BOLD).child("Inspector"));
         if self.external_edit_blocked() {
             return inspector
@@ -2876,8 +3270,9 @@ impl PsychoApp {
                                 .px_2()
                                 .py_1()
                                 .border_1()
-                                .border_color(rgb(0xb8bdc5))
-                                .bg(rgb(0xffffff))
+                                .border_color(self.palette.border)
+                                .bg(self.palette.input)
+                                .text_color(self.palette.text)
                                 .child(self.editor.clone()),
                         )
                         .child(button(cx, "幅を適用", true, |this, _, window, cx| {
@@ -3128,8 +3523,9 @@ impl PsychoApp {
                                 .px_2()
                                 .py_1()
                                 .border_1()
-                                .border_color(rgb(0xb8bdc5))
-                                .bg(rgb(0xffffff))
+                                .border_color(self.palette.border)
+                                .bg(self.palette.input)
+                                .text_color(self.palette.text)
                                 .child(self.editor.clone()),
                         )
                         .child(button(cx, "適用", true, |this, _, window, cx| {
@@ -3220,8 +3616,9 @@ impl PsychoApp {
                             .px_2()
                             .py_1()
                             .border_1()
-                            .border_color(rgb(0xb8bdc5))
-                            .bg(rgb(0xffffff))
+                            .border_color(self.palette.border)
+                            .bg(self.palette.input)
+                            .text_color(self.palette.text)
                             .child(self.editor.clone()),
                     )
                     .child(button(cx, "適用", true, |this, _, window, cx| {
@@ -3237,7 +3634,8 @@ impl PsychoApp {
                 if let Err(DocumentError::UnsafeValue(reason)) =
                     validate_editor_value(self.target, &self.editor.read(cx).value())
                 {
-                    inspector = inspector.child(div().text_color(rgb(0x991b1b)).child(reason));
+                    inspector =
+                        inspector.child(div().text_color(self.palette.warning).child(reason));
                 }
                 inspector = inspector.child(button(
                     cx,
@@ -3250,34 +3648,34 @@ impl PsychoApp {
                         cx,
                         "見出しを追加",
                         true,
-                        |this, _, window, cx| this.add_element(ElementKind::Heading, window, cx),
+                        |this, _, window, cx| this.execute_action(&InsertHeading, window, cx),
                     ))
                     .child(button(
                         cx,
                         "本文を追加",
                         true,
-                        |this, _, window, cx| this.add_element(ElementKind::Text, window, cx),
+                        |this, _, window, cx| this.execute_action(&InsertText, window, cx),
                     ))
                     .child(button(
                         cx,
                         "箇条書きを追加",
                         true,
-                        |this, _, window, cx| this.add_element(ElementKind::Bullets, window, cx),
+                        |this, _, window, cx| this.execute_action(&InsertBullets, window, cx),
                     ))
                     .child(button(
                         cx,
                         "コードを追加",
                         true,
-                        |this, _, window, cx| this.add_element(ElementKind::Code, window, cx),
+                        |this, _, window, cx| this.execute_action(&InsertCode, window, cx),
                     ))
                     .child(button(
                         cx,
                         "画像参照を追加",
                         true,
-                        |this, _, window, cx| this.add_element(ElementKind::Image, window, cx),
+                        |this, _, window, cx| this.execute_action(&InsertImage, window, cx),
                     ))
                     .child(button(cx, "2列を追加", true, |this, _, window, cx| {
-                        this.add_element(ElementKind::Columns, window, cx)
+                        this.execute_action(&InsertColumns, window, cx)
                     }));
             }
         }
@@ -3747,13 +4145,12 @@ impl PsychoApp {
         window: &Window,
         cx: &mut Context<Self>,
     ) -> gpui::AnyElement {
-        let viewport = window.viewport_size();
-        // 150px slide list + 270px inspector + 16px outer padding + 16px gaps.
-        let horizontal_panes = if editing { 452.0 } else { 0.0 };
-        let available_width = (f32::from(viewport.width) - horizontal_panes).max(320.0);
-        let available_height =
-            (f32::from(viewport.height) - if editing { 72.0 } else { 0.0 }).max(180.0);
-        let scale = (available_width / 1280.0).min(available_height / 720.0);
+        let scale = if editing {
+            self.view.scale()
+        } else {
+            let viewport = window.viewport_size();
+            (f32::from(viewport.width) / 1280.).min(f32::from(viewport.height) / 720.)
+        };
         let width = 1280.0 * scale;
         let height = 720.0 * scale;
         let slide = model.slides.get(slide_index);
@@ -3767,6 +4164,7 @@ impl PsychoApp {
             .gap(px(24.0 * scale))
             .w(px(width))
             .h(px(height))
+            .flex_shrink_0()
             .px(px(64.0 * scale))
             .py(px(48.0 * scale))
             .bg(rgb(0xffffff))
@@ -4435,32 +4833,51 @@ impl Render for PsychoApp {
         // Keep opt-in acceptance observations current when an unfocused
         // canvas field is no longer mounted; paint updates its geometry later.
         self.editor.read(cx).record_acceptance_state(window);
-        let editing_enabled = self.presentation.is_none() && !self.external_edit_blocked();
-        let undo_label = self.document.undo_description().map_or_else(
-            || "元に戻す".to_owned(),
-            |description| format!("元に戻す: {description}"),
-        );
-        let redo_label = self.document.redo_description().map_or_else(
-            || "やり直す".to_owned(),
-            |description| format!("やり直す: {description}"),
-        );
+        editor_validation::record(self, window, cx);
+        if self.presentation.is_none() {
+            self.layout_diagnostics = self
+                .preview_model(cx)
+                .as_ref()
+                .map(|model| collect_layout_diagnostics(model, window))
+                .unwrap_or_default();
+        }
+        let available = self.availability(window, cx);
         let input = self.editor.read(cx);
-        let input_focused = editing_enabled && input.has_focus(window);
+        let input_focused = available.edit && input.has_focus(window);
         let can_copy = input_focused && input.selected_text().is_some();
-        let undo_item = if input_focused {
-            MenuItem::action("元に戻す: 文字編集", input::Undo).disabled(!input.can_undo())
+        let undo_label = if input_focused {
+            "元に戻す: 文字編集".to_owned()
         } else {
-            MenuItem::action(undo_label, UndoEdit)
-                .disabled(!editing_enabled || !self.document.can_undo())
+            self.document.undo_description().map_or_else(
+                || "元に戻す".to_owned(),
+                |description| format!("元に戻す: {description}"),
+            )
+        };
+        let redo_label = if input_focused {
+            "やり直す: 文字編集".to_owned()
+        } else {
+            self.document.redo_description().map_or_else(
+                || "やり直す".to_owned(),
+                |description| format!("やり直す: {description}"),
+            )
+        };
+        let undo_item = if input_focused {
+            MenuItem::action(undo_label, input::Undo).disabled(!available.undo)
+        } else {
+            MenuItem::action(undo_label, UndoEdit).disabled(!available.undo)
         };
         let redo_item = if input_focused {
-            MenuItem::action("やり直す: 文字編集", input::Redo).disabled(!input.can_redo())
+            MenuItem::action(redo_label, input::Redo).disabled(!available.redo)
         } else {
-            MenuItem::action(redo_label, RedoEdit)
-                .disabled(!editing_enabled || !self.document.can_redo())
+            MenuItem::action(redo_label, RedoEdit).disabled(!available.redo)
         };
         cx.set_menus([
             Menu::new("psycho").items([MenuItem::action("psycho を隠す", HideApp)]),
+            Menu::new("ファイル").items([
+                action_menu(OpenFile, available),
+                action_menu(SaveFile, available),
+                action_menu(SaveAs, available),
+            ]),
             Menu::new("編集").items([
                 undo_item,
                 redo_item,
@@ -4469,16 +4886,63 @@ impl Render for PsychoApp {
                 MenuItem::action("貼り付け", input::Paste).disabled(!input_focused),
                 MenuItem::action("すべてを選択", input::SelectAll).disabled(!input_focused),
             ]),
+            Menu::new("挿入").items([
+                action_menu(InsertHeading, available),
+                action_menu(InsertText, available),
+                action_menu(InsertBullets, available),
+                action_menu(InsertCode, available),
+                action_menu(InsertImage, available),
+                action_menu(InsertColumns, available),
+            ]),
+            Menu::new("スライド").items([
+                action_menu(AddSlide, available),
+                action_menu(DeleteSlide, available),
+                action_menu(MoveSlideEarlier, available),
+                action_menu(MoveSlideLater, available),
+            ]),
+            Menu::new("表示").items([
+                MenuItem::action(
+                    if self.view.navigator.visible {
+                        "Navigatorを隠す"
+                    } else {
+                        "Navigatorを表示"
+                    },
+                    ToggleNavigator,
+                )
+                .disabled(!available.view),
+                MenuItem::action(
+                    if self.view.inspector.visible {
+                        "Inspectorを隠す"
+                    } else {
+                        "Inspectorを表示"
+                    },
+                    ToggleInspector,
+                )
+                .disabled(!available.view),
+                action_menu(NarrowNavigator, available),
+                action_menu(WidenNavigator, available),
+                action_menu(NarrowInspector, available),
+                action_menu(WidenInspector, available),
+                action_menu(FitCanvas, available),
+                action_menu(ActualSize, available),
+            ]),
+            Menu::new("発表").items([
+                MenuItem::action("現在から発表", PresentCurrent).disabled(!available.present),
+                action_menu(PresentFirst, available),
+            ]),
         ]);
         unsafe {
             let app: *mut Object = msg_send![objc::class!(NSApplication), sharedApplication];
             let main_menu: *mut Object = msg_send![app, mainMenu];
-            let title: *mut Object =
-                msg_send![objc::class!(NSString), stringWithUTF8String: c"編集".as_ptr()];
-            let edit_item: *mut Object = msg_send![main_menu, itemWithTitle: title];
-            let edit_menu: *mut Object = msg_send![edit_item, submenu];
-            // AppKit's action validation would otherwise overwrite MenuItem::disabled.
-            let _: () = msg_send![edit_menu, setAutoenablesItems: objc::runtime::NO];
+            let count: usize = msg_send![main_menu, numberOfItems];
+            for index in 0..count {
+                let item: *mut Object = msg_send![main_menu, itemAtIndex: index];
+                let menu: *mut Object = msg_send![item, submenu];
+                if !menu.is_null() {
+                    // AppKit validation otherwise overwrites MenuItem::disabled.
+                    let _: () = msg_send![menu, setAutoenablesItems: objc::runtime::NO];
+                }
+            }
         }
         if let Some(presentation) = self.presentation.as_ref() {
             let model = presentation.session.model().clone();
@@ -5539,6 +6003,7 @@ fn diagnostics_view(
     selected_source: Option<&Diagnostic>,
     cx: &mut Context<PsychoApp>,
 ) -> gpui::Div {
+    let palette = *cx.global::<EditorPalette>();
     let mut list = div()
         .flex()
         .flex_col()
@@ -5548,7 +6013,8 @@ fn diagnostics_view(
         .max_w(px(680.0))
         .whitespace_normal()
         .p_6()
-        .bg(rgb(0xffffff));
+        .bg(palette.surface)
+        .text_color(palette.text);
     if diagnostics.is_empty() {
         list = list.child("Presentation を読み込めませんでした。");
     }
@@ -5573,13 +6039,13 @@ fn diagnostics_view(
             .gap_1()
             .p_2()
             .border_1()
-            .border_color(rgb(0xe5e7eb))
+            .border_color(palette.border)
             .bg(if selected_source == Some(diagnostic) {
-                rgb(0xfff7ed)
+                palette.selection
             } else {
-                rgb(0xffffff)
+                palette.surface
             })
-            .text_color(rgb(0x991b1b))
+            .text_color(palette.warning)
             .child(format!(
                 "{kind} · {file_name}:{}:{}{}",
                 diagnostic.line,
@@ -5617,8 +6083,9 @@ fn diagnostics_view(
                 .mt_2()
                 .p_2()
                 .border_1()
-                .border_color(rgb(0x93c5fd))
-                .bg(rgb(0xeff6ff))
+                .border_color(palette.focus)
+                .bg(palette.selection)
+                .text_color(palette.text)
                 .child(format!(
                     "読み取り専用のソース行 · {file_name}:{}:{}",
                     diagnostic.line, diagnostic.column
@@ -5628,7 +6095,7 @@ fn diagnostics_view(
                     div()
                         .font_family("Menlo")
                         .text_size(px(13.0))
-                        .text_color(rgb(0x2563eb))
+                        .text_color(palette.focus)
                         .child(format!(
                             "{}^",
                             " ".repeat(diagnostic.column.saturating_sub(1))
@@ -5645,41 +6112,97 @@ fn button(
     enabled: bool,
     handler: impl Fn(&mut PsychoApp, &MouseUpEvent, &mut Window, &mut Context<PsychoApp>) + 'static,
 ) -> impl IntoElement {
+    let label = label.into();
+    let palette = *cx.global::<EditorPalette>();
+    let handler = std::rc::Rc::new(handler);
+    let click_handler = handler.clone();
+    let weak = cx.entity().downgrade();
     div()
+        .id(label.clone())
+        .accessibility_id(label.clone())
+        .role(gpui::Role::Button)
+        .aria_label(label.clone())
+        .focusable()
+        .tab_stop(enabled)
+        .a11y_synthetic_children(move |builder| {
+            if !enabled {
+                builder.parent_node().set_disabled();
+            }
+        })
         .flex()
         .items_center()
         .justify_center()
+        .min_h(px(28.))
         .px_2()
         .py_1()
         .rounded_md()
-        .text_size(px(13.0))
-        .bg(if enabled {
-            rgb(0xffffff)
+        .text_size(px(13.))
+        .bg(palette.surface)
+        .text_color(if enabled {
+            palette.text
         } else {
-            rgb(0xe5e7eb)
+            palette.secondary
         })
         .border_1()
-        .border_color(rgb(0xb8bdc5))
+        .border_color(palette.border)
+        .focus(|style| style.border_2().border_color(palette.focus))
         .cursor_pointer()
-        .child(label.into())
-        // A toolbar press must not focus the Editor ancestor before its
-        // handler decides whether Undo belongs to the active text field.
+        .child(label)
         .on_mouse_down(MouseButton::Left, |_, window, _| window.prevent_default())
-        .on_mouse_up(
-            MouseButton::Left,
-            cx.listener(move |this, event, window, cx| {
-                if enabled {
-                    handler(this, event, window, cx);
-                }
-            }),
-        )
+        .on_click(cx.listener(move |this, event, window, cx| {
+            if enabled {
+                let event = match event {
+                    gpui::ClickEvent::Mouse(mouse) => mouse.up.clone(),
+                    _ => MouseUpEvent::default(),
+                };
+                click_handler(this, &event, window, cx);
+            }
+        }))
+        .on_a11y_action(gpui::AccessibleAction::Click, move |_, window, cx| {
+            if enabled {
+                weak.update(cx, |this, cx| {
+                    handler(this, &MouseUpEvent::default(), window, cx)
+                })
+                .ok();
+            }
+        })
+}
+
+fn action_menu<A: EditorAction>(action: A, available: EditorAvailability) -> MenuItem {
+    let enabled = action.enabled(available);
+    MenuItem::action(A::LABEL, action).disabled(!enabled)
+}
+
+struct EditorTooltip(gpui::SharedString);
+impl Render for EditorTooltip {
+    fn render(&mut self, window: &mut Window, _: &mut Context<Self>) -> impl IntoElement {
+        let palette = EditorPalette::for_appearance(window.appearance());
+        div()
+            .p(px(8.))
+            .rounded_md()
+            .text_size(px(12.))
+            .bg(palette.surface)
+            .text_color(palette.text)
+            .border_1()
+            .border_color(palette.border)
+            .child(self.0.clone())
+    }
 }
 
 fn main() {
-    application().run(|cx: &mut App| {
+    application().with_assets(editor_view::IconAssets).run(|cx: &mut App| {
         cx.on_action(|_: &HideApp, cx| cx.hide());
         cx.bind_keys([
             KeyBinding::new("cmd-h", HideApp, None),
+            KeyBinding::new("cmd-o", OpenFile, Some("Editor")),
+            KeyBinding::new("tab", FocusNext, Some("Editor")),
+            KeyBinding::new("shift-tab", FocusPrevious, Some("Editor")),
+            KeyBinding::new("escape", ClosePopup, Some("Editor")),
+            KeyBinding::new("cmd-alt-1", ToggleNavigator, Some("Editor")),
+            KeyBinding::new("cmd-alt-2", ToggleInspector, Some("Editor")),
+            KeyBinding::new("cmd-0", FitCanvas, Some("Editor")),
+            KeyBinding::new("cmd-1", ActualSize, Some("Editor")),
+            KeyBinding::new("cmd-alt-p", PresentCurrent, Some("Editor")),
             KeyBinding::new("cmd-s", SaveFile, Some("Editor")),
             KeyBinding::new("cmd-shift-s", SaveAs, Some("Editor")),
             KeyBinding::new("cmd-z", UndoEdit, Some("Editor")),
@@ -5730,6 +6253,7 @@ fn main() {
                     ..Default::default()
                 },
                 |window, cx| {
+                    editor_validation::configure_appearance(window);
                     let editor = cx.new(|cx| TextInputState::new(cx, &title));
                     let view = cx.new(|cx| PsychoApp::new(cx, document, editor, window));
                     let weak_view = view.downgrade();

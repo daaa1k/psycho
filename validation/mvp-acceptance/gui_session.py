@@ -7,7 +7,7 @@ root = Path(__file__).resolve().parents[2]
 class Gui:
     def __init__(self, out, source, name='presentation'):
         self.out=Path(out).resolve();self.out.mkdir(parents=True,exist_ok=True)
-        assert self.out.is_relative_to(root/'target'), 'Scratch files must be under target/'
+        assert self.out.is_relative_to((root/'target').resolve()), 'Scratch files must be under target/'
         self.fixture=self.out/f'{name}.kdl'
         assert not self.fixture.exists(), 'Use a fresh directory; existing files are never replaced'
         self.fixture.write_text(source)
@@ -111,7 +111,42 @@ class Gui:
                 row[key]/=scale
         return state,rows
 
+    def menu(self, category, title):
+        helper = self.out / 'native-menu'
+        if not helper.exists():
+            subprocess.run(['xcrun', 'swiftc', str(Path(__file__).with_name('edit_menu_state.swift')),
+                            '-o', str(helper)], check=True)
+        self.act('get-app-state', '--restore-window')
+        subprocess.run([str(helper), str(self.app.pid), category], check=True, stdout=subprocess.DEVNULL)
+        if title in ('元に戻す', 'やり直す'):
+            metadata = json.loads(subprocess.check_output([str(helper), str(self.app.pid)], text=True))
+            def nodes(node):
+                yield node
+                for child in node.get('children', []):
+                    yield from nodes(child)
+            title = next(node['title'] for node in nodes(metadata['menuBar'])
+                         if node.get('title', '').startswith(title))
+        subprocess.run([str(helper), str(self.app.pid), title], check=True, stdout=subprocess.DEVNULL)
+        self.act('get-app-state')
+
     def press(self,label,scroll=False,aliases=()):
+        if label in ('Undo', 'Redo'):
+            label = {'Undo': '元に戻す', 'Redo': 'やり直す'}[label]
+            state = self.act('get-app-state')
+            match = next(re.finditer(r'^\s*(\d+) button (\(disabled\) )?' + re.escape(label) + r'$',
+                                     state['snapshot']['treeText'], re.MULTILINE), None)
+            assert match, state['snapshot']['treeText']
+            if match.group(2):
+                return state
+            return self.act('click', '--element-index', match.group(1), '--no-screenshot')
+        actions = {
+            '開く': ('ファイル', '開く'), '保存': ('ファイル', '保存'), '別名保存': ('ファイル', '別名保存'),
+                        '＋ Slide': ('スライド', 'スライド追加'), '− Slide': ('スライド', 'スライドを削除'),
+            'Slide ↑': ('スライド', '前へ移動'), 'Slide ↓': ('スライド', '後ろへ移動'),
+            '現在から発表': ('発表', '現在から発表'), '最初から発表': ('発表', '最初から発表'),
+        }
+        if label in actions:
+            return self.menu(*actions[label])
         for attempt in range(5 if scroll else 1):
             state,rows=self.snapshot()
             normalize=lambda text:unicodedata.normalize('NFKC',''.join(text.split())).replace('−','-').replace('–','-').replace('・','').replace('·','')

@@ -5,7 +5,7 @@ use gpui::{
     App, Bounds, Context, CursorStyle, Element, ElementId, ElementInputHandler, Entity,
     EntityInputHandler, FocusHandle, Focusable, GlobalElementId, LayoutId, MouseButton,
     MouseDownEvent, MouseMoveEvent, MouseUpEvent, PaintQuad, Pixels, Point, SharedString, Style,
-    TextRun, UTF16Selection, UnderlineStyle, Window, WrappedLine, actions, div, fill, hsla, point,
+    TextRun, UTF16Selection, UnderlineStyle, Window, WrappedLine, actions, div, fill, point,
     prelude::*, px, relative, rgba, size,
 };
 
@@ -168,7 +168,7 @@ pub struct TextInputState {
 impl TextInputState {
     pub fn new(cx: &mut Context<Self>, initial_text: &str) -> Self {
         Self {
-            focus_handle: cx.focus_handle(),
+            focus_handle: cx.focus_handle().tab_stop(true),
             content: initial_text.into(),
             placeholder: "タイトルを入力".into(),
             multiline: false,
@@ -386,6 +386,8 @@ impl TextInputState {
         if self.multiline && self.marked_range.is_none() {
             self.pending_undo_group = Some(UndoGroup::Typing);
             self.replace_text_in_range(None, "\t", window, cx);
+        } else if !self.multiline && self.marked_range.is_none() {
+            window.focus_next(cx);
         }
     }
 
@@ -883,6 +885,12 @@ mod tests {
 impl Render for TextInputState {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         div()
+            .id("text-input")
+            .accessibility_id("text-input")
+            .role(gpui::Role::TextInput)
+            .aria_label("編集値")
+            .aria_value(self.value())
+            .tab_stop(true)
             .w_full()
             .flex_shrink_0()
             .key_context("TextInput")
@@ -1058,7 +1066,7 @@ impl Element for TextElement {
         let cursor_offset = display.display_offset(input.cursor_offset());
         let style = window.text_style();
         let text_color = if input.content.is_empty() {
-            hsla(0.0, 0.0, 0.0, 0.3)
+            super::editor_view::EditorPalette::for_appearance(window.appearance()).secondary
         } else {
             style.color
         };

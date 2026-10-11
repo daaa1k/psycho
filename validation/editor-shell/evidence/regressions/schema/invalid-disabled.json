@@ -1,0 +1,72 @@
+{
+  "editor": {
+    "revision": "9041f7b73ed65a6b178b8dc7a544e36e94cf86c3",
+    "sourceHex": "70726573656e746174696f6e207b0a206d65746164617461207b207469746c6520227822207d0a20736c696465207b20746578742034323b207d0a7d0a",
+    "dirty": false,
+    "undo": false,
+    "redo": false,
+    "draft": false,
+    "navigator": true,
+    "inspector": true,
+    "navigatorWidth": 160,
+    "inspectorWidth": 280,
+    "canvasWidth": 808,
+    "canvasHeight": 694,
+    "scale": 0.63125,
+    "actual": false,
+    "presenting": false,
+    "dark": true
+  },
+  "input": {
+    "text": "",
+    "selected": [
+      0,
+      0
+    ],
+    "marked": [
+      -1,
+      -1
+    ],
+    "cursor": [
+      0.0,
+      0.0,
+      20.0
+    ],
+    "undo": 0,
+    "redo": 0,
+    "composing": false,
+    "focused": false
+  },
+  "snapshot": {
+    "focusedElementId": 0,
+    "truncation": {
+      "maxNodes": 1200,
+      "maxDepth": 64,
+      "maxDepthReached": false,
+      "truncated": false
+    },
+    "treeText": "App=psycho (pid 32768)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button (disabled) スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) 発表\n\t7 list Navigator\n\t8 close button\n\t9 full screen button, Secondary Actions: zoom the window\n\t10 minimize button\n\t11 text\n\nThe focused UI element is 0 standard window.",
+    "window": {
+      "id": 36286,
+      "title": "",
+      "height": 892,
+      "screenIndex": 0,
+      "isMinimized": false,
+      "y": 185,
+      "width": 1280,
+      "isOffscreen": false,
+      "platform": {
+        "layer": 0
+      },
+      "x": 320
+    },
+    "id": "9190F106-C11A-4A6E-B5A9-0D3DAD51201A",
+    "app": {
+      "bundleId": null,
+      "pid": 32768,
+      "name": "psycho"
+    },
+    "coordinateSpace": "window",
+    "elementCount": 12
+  }
+}

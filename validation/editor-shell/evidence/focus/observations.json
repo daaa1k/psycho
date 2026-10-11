@@ -1,0 +1,548 @@
+[
+  {
+    "name": "input-before-popup",
+    "input": {
+      "text": "Original body",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        317.86728,
+        244.3,
+        26.5125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 text field (settable) 編集値, Value: Original body\n\t11 button Element 1 · 本文 ✓\n\t12 button Presentation title\n\t13 button 全文をInspectorで編集\n\t14 button Element を削除\n\t15 button (disabled) 入力を取り消す\n\t16 button 見出しを追加\n\t17 button 本文を追加\n\t18 button 箇条書きを追加\n\t19 button コードを追加\n\t20 button 画像参照を追加\n\t21 button 2列を追加\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224f726967696e616c20626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  },
+  {
+    "name": "popup-root-focus",
+    "input": {
+      "text": "Original body",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        317.86728,
+        244.3,
+        26.5125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文 ✓\n\t11 button Presentation title\n\t12 button 全文をInspectorで編集\n\t13 button Element を削除\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 container 表示\n\t\t22 button Navigatorの表示切り替え\n\t\t23 button Inspectorの表示切り替え\n\t\t24 button 全体に合わせる\n\t\t25 button 100%表示\n\t26 close button\n\t27 full screen button, Secondary Actions: zoom the window\n\t28 minimize button\n\t29 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224f726967696e616c20626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  },
+  {
+    "name": "escape-restores-input",
+    "input": {
+      "text": "Original body",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        317.86728,
+        244.3,
+        26.5125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 text field (settable) 編集値, Value: Original body\n\t11 button Element 1 · 本文 ✓\n\t12 button Presentation title\n\t13 button 全文をInspectorで編集\n\t14 button Element を削除\n\t15 button (disabled) 入力を取り消す\n\t16 button 見出しを追加\n\t17 button 本文を追加\n\t18 button 箇条書きを追加\n\t19 button コードを追加\n\t20 button 画像参照を追加\n\t21 button 2列を追加\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224f726967696e616c20626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  },
+  {
+    "name": "inspector-editor-before-tab",
+    "input": {
+      "text": "Original body",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1109.5391,
+        316.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文 ✓\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: Original body\n\t13 button 適用\n\t14 button Element を削除\n\t15 button (disabled) 入力を取り消す\n\t16 button 見出しを追加\n\t17 button 本文を追加\n\t18 button 箇条書きを追加\n\t19 button コードを追加\n\t20 button 画像参照を追加\n\t21 button 2列を追加\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224f726967696e616c20626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  },
+  {
+    "name": "tab-00",
+    "input": {
+      "text": "Original body",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1109.5391,
+        316.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文 ✓\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: Original body\n\t13 button 適用\n\t14 button Element を削除\n\t15 button (disabled) 入力を取り消す\n\t16 button 見出しを追加\n\t17 button 本文を追加\n\t18 button 箇条書きを追加\n\t19 button コードを追加\n\t20 button 画像参照を追加\n\t21 button 2列を追加\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224f726967696e616c20626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  },
+  {
+    "name": "tab-01",
+    "input": {
+      "text": "Original body",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1109.5391,
+        316.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文 ✓\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: Original body\n\t13 button 適用\n\t14 button Element を削除\n\t15 button (disabled) 入力を取り消す\n\t16 button 見出しを追加\n\t17 button 本文を追加\n\t18 button 箇条書きを追加\n\t19 button コードを追加\n\t20 button 画像参照を追加\n\t21 button 2列を追加\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224f726967696e616c20626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  },
+  {
+    "name": "tab-02",
+    "input": {
+      "text": "Original body",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1109.5391,
+        316.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文 ✓\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: Original body\n\t13 button 適用\n\t14 button Element を削除\n\t15 button (disabled) 入力を取り消す\n\t16 button 見出しを追加\n\t17 button 本文を追加\n\t18 button 箇条書きを追加\n\t19 button コードを追加\n\t20 button 画像参照を追加\n\t21 button 2列を追加\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224f726967696e616c20626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  },
+  {
+    "name": "tab-03",
+    "input": {
+      "text": "Original body",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1109.5391,
+        316.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文 ✓\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: Original body\n\t13 button 適用\n\t14 button Element を削除\n\t15 button (disabled) 入力を取り消す\n\t16 button 見出しを追加\n\t17 button 本文を追加\n\t18 button 箇条書きを追加\n\t19 button コードを追加\n\t20 button 画像参照を追加\n\t21 button 2列を追加\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224f726967696e616c20626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  },
+  {
+    "name": "tab-04",
+    "input": {
+      "text": "Original body",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1109.5391,
+        316.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文 ✓\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: Original body\n\t13 button 適用\n\t14 button Element を削除\n\t15 button (disabled) 入力を取り消す\n\t16 button 見出しを追加\n\t17 button 本文を追加\n\t18 button 箇条書きを追加\n\t19 button コードを追加\n\t20 button 画像参照を追加\n\t21 button 2列を追加\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224f726967696e616c20626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  },
+  {
+    "name": "tab-05",
+    "input": {
+      "text": "Original body",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1109.5391,
+        318.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文 ✓\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: Original body\n\t13 button 適用\n\t14 button Element を削除\n\t15 button (disabled) 入力を取り消す\n\t16 button 見出しを追加\n\t17 button 本文を追加\n\t18 button 箇条書きを追加\n\t19 button コードを追加\n\t20 button 画像参照を追加\n\t21 button 2列を追加\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224f726967696e616c20626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  },
+  {
+    "name": "tab-06",
+    "input": {
+      "text": "Original body",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1109.5391,
+        318.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文 ✓\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: Original body\n\t13 button 適用\n\t14 button Element を削除\n\t15 button (disabled) 入力を取り消す\n\t16 button 見出しを追加\n\t17 button 本文を追加\n\t18 button 箇条書きを追加\n\t19 button コードを追加\n\t20 button 画像参照を追加\n\t21 button 2列を追加\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224f726967696e616c20626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  },
+  {
+    "name": "tab-07",
+    "input": {
+      "text": "Original bodyx",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1117.6172,
+        316.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文 ✓\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: Original bodyx\n\t13 button 適用\n\t14 button Element を削除\n\t15 button 入力を取り消す\n\t16 button 見出しを追加\n\t17 button 本文を追加\n\t18 button 箇条書きを追加\n\t19 button コードを追加\n\t20 button 画像参照を追加\n\t21 button 2列を追加\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224f726967696e616c20626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": true,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  },
+  {
+    "name": "tab-edit-keyboard-save",
+    "input": {
+      "text": "Keyboard body",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1122.6172,
+        316.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 89224)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 本文 ✓\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: Keyboard body\n\t13 button 適用\n\t14 button Element を削除\n\t15 button (disabled) 入力を取り消す\n\t16 button 見出しを追加\n\t17 button 本文を追加\n\t18 button 箇条書きを追加\n\t19 button コードを追加\n\t20 button 画像参照を追加\n\t21 button 2列を追加\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "editor": {
+      "revision": "ef4a9c953a72f176507318265a3079e6666ebc1a",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022466f63757322207d3b20736c696465207b207465787420224b6579626f61726420626f6479223b207d3b207d0a",
+      "dirty": false,
+      "undo": true,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": true
+    }
+  }
+]

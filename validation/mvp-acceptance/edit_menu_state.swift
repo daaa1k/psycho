@@ -26,9 +26,7 @@ guard AXUIElementCopyAttributeValue(app, kAXMenuBarAttribute as CFString, &bar) 
     fatalError("Owned process has no readable AX menu bar")
 }
 let menuBar = unsafeBitCast(bar, to: AXUIElement.self)
-let editMenus = (attribute(menuBar, kAXChildrenAttribute) as? [AXUIElement] ?? []).filter {
-    attribute($0, kAXTitleAttribute) as? String == "編集"
-}
+let editMenus = attribute(menuBar, kAXChildrenAttribute) as? [AXUIElement] ?? []
 if CommandLine.arguments.count == 3 {
     guard NSWorkspace.shared.frontmostApplication?.processIdentifier == pid else {
         fatalError("Owned process must be foreground for native menu actions")

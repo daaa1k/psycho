@@ -1,0 +1,72 @@
+{
+  "editor": {
+    "revision": "9041f7b73ed65a6b178b8dc7a544e36e94cf86c3",
+    "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c65202241737365742072657061697222207d3b20736c696465207b20696d616765202272657061697265642e706e67223b207d3b207d0a",
+    "dirty": true,
+    "undo": true,
+    "redo": false,
+    "draft": false,
+    "navigator": true,
+    "inspector": true,
+    "navigatorWidth": 160,
+    "inspectorWidth": 280,
+    "canvasWidth": 808,
+    "canvasHeight": 682,
+    "scale": 0.63125,
+    "actual": false,
+    "presenting": true,
+    "dark": true
+  },
+  "input": {
+    "text": "repaired.png",
+    "selected": [
+      12,
+      12
+    ],
+    "marked": [
+      -1,
+      -1
+    ],
+    "cursor": [
+      1105.2266,
+      421.0,
+      26.0
+    ],
+    "undo": 0,
+    "redo": 0,
+    "composing": false,
+    "focused": false
+  },
+  "snapshot": {
+    "id": "872B552E-9A4D-4F31-8BC2-9271F21BE297",
+    "coordinateSpace": "window",
+    "treeText": "App=psycho (pid 31506)\nWindow: \"\", App: psycho.\n\n0 window\n\nNo UI element is currently focused.",
+    "window": {
+      "width": 1920,
+      "title": "",
+      "x": 0,
+      "screenIndex": 0,
+      "isMinimized": false,
+      "height": 1200,
+      "id": 36245,
+      "isOffscreen": false,
+      "y": 0,
+      "platform": {
+        "layer": 0
+      }
+    },
+    "elementCount": 1,
+    "app": {
+      "name": "psycho",
+      "pid": 31506,
+      "bundleId": null
+    },
+    "truncation": {
+      "maxDepth": 64,
+      "maxNodes": 1200,
+      "maxDepthReached": false,
+      "truncated": false
+    },
+    "focusedElementId": null
+  }
+}

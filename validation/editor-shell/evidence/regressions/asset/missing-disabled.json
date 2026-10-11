@@ -1,0 +1,72 @@
+{
+  "editor": {
+    "revision": "9041f7b73ed65a6b178b8dc7a544e36e94cf86c3",
+    "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c65202241737365742072657061697222207d3b20736c696465207b20696d61676520226d697373696e672e706e67223b207d3b207d0a",
+    "dirty": false,
+    "undo": false,
+    "redo": false,
+    "draft": false,
+    "navigator": true,
+    "inspector": true,
+    "navigatorWidth": 160,
+    "inspectorWidth": 280,
+    "canvasWidth": 808,
+    "canvasHeight": 663,
+    "scale": 0.63125,
+    "actual": false,
+    "presenting": false,
+    "dark": true
+  },
+  "input": {
+    "text": "Asset repair",
+    "selected": [
+      12,
+      12
+    ],
+    "marked": [
+      -1,
+      -1
+    ],
+    "cursor": [
+      1099.5625,
+      290.0,
+      26.0
+    ],
+    "undo": 0,
+    "redo": 0,
+    "composing": false,
+    "focused": false
+  },
+  "snapshot": {
+    "focusedElementId": 0,
+    "truncation": {
+      "maxDepth": 64,
+      "maxDepthReached": false,
+      "maxNodes": 1200,
+      "truncated": false
+    },
+    "treeText": "App=psycho (pid 31506)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) 発表\n\t7 list Navigator\n\t\t8 container (selected) スライド 1 Slide 1\n\t\t\t9 button › 1  Slide 1\n\t10 button Element 1 · 画像\n\t11 button Presentation title\n\t12 text field (settable) 編集値, Value: Asset repair\n\t13 button 適用\n\t14 button (disabled) 入力を取り消す\n\t15 button 見出しを追加\n\t16 button 本文を追加\n\t17 button 箇条書きを追加\n\t18 button コードを追加\n\t19 button 画像参照を追加\n\t20 button 2列を追加\n\t21 button 画像 · Slide 1 · missing.png · 画像ファイルがありません\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "window": {
+      "id": 36230,
+      "title": "",
+      "height": 892,
+      "screenIndex": 0,
+      "isMinimized": false,
+      "y": 185,
+      "width": 1280,
+      "isOffscreen": false,
+      "platform": {
+        "layer": 0
+      },
+      "x": 320
+    },
+    "id": "83E6038E-6306-436E-8347-927A9F6B609B",
+    "app": {
+      "bundleId": null,
+      "name": "psycho",
+      "pid": 31506
+    },
+    "coordinateSpace": "window",
+    "elementCount": 26
+  }
+}
