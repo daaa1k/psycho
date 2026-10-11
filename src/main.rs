@@ -132,6 +132,12 @@ struct OutlinePage {
     index: usize,
 }
 
+#[derive(Clone, Copy, Eq, PartialEq)]
+enum SlideInteraction {
+    Editor,
+    ReadOnly,
+}
+
 struct PsychoApp {
     view: EditorViewState,
     palette: EditorPalette,
@@ -4151,9 +4157,54 @@ impl PsychoApp {
             let viewport = window.viewport_size();
             (f32::from(viewport.width) / 1280.).min(f32::from(viewport.height) / 720.)
         };
+        let images = if editing {
+            &self.asset_images
+        } else {
+            self.presentation
+                .as_ref()
+                .map(|presentation| &presentation.render_images)
+                .unwrap_or(&self.asset_images)
+        };
+        let canvas = self.render_slide_body(
+            model.slides.get(slide_index),
+            slide_index,
+            scale,
+            if editing {
+                SlideInteraction::Editor
+            } else {
+                SlideInteraction::ReadOnly
+            },
+            images,
+            window,
+            cx,
+        );
+        div()
+            .size_full()
+            .flex()
+            .justify_center()
+            .items_center()
+            .bg(if editing {
+                rgb(0xe5e7eb)
+            } else {
+                rgb(0x000000)
+            })
+            .child(canvas)
+            .into_any_element()
+    }
+
+    fn render_slide_body(
+        &self,
+        slide: Option<&psycho::Slide>,
+        slide_index: usize,
+        scale: f32,
+        interaction: SlideInteraction,
+        images: &HashMap<String, Arc<gpui::RenderImage>>,
+        window: &Window,
+        cx: &mut Context<Self>,
+    ) -> gpui::AnyElement {
         let width = 1280.0 * scale;
         let height = 720.0 * scale;
-        let slide = model.slides.get(slide_index);
+        let editing = interaction == SlideInteraction::Editor;
         let canvas_origin = std::rc::Rc::new(std::cell::Cell::new(gpui::point(px(0.), px(0.))));
         let placement = text::TextPlacement::new(canvas_origin.clone(), 64., 48.);
         let mut cursor_y = 0.;
@@ -4180,14 +4231,6 @@ impl PsychoApp {
             .inset_0(),
         );
         if let Some(slide) = slide {
-            let images = if editing {
-                &self.asset_images
-            } else {
-                self.presentation
-                    .as_ref()
-                    .map(|presentation| &presentation.render_images)
-                    .unwrap_or(&self.asset_images)
-            };
             for (index, element) in slide.elements.iter().enumerate() {
                 let selected = editing
                     && (matches!(self.target, EditTarget::Element { slide: selected_slide, index: selected_index, .. } if selected_slide == slide_index && selected_index == index)
@@ -4222,18 +4265,7 @@ impl PsychoApp {
                 cursor_y += measure_element(element, 1152., window, &mut Vec::new()) + 24.;
             }
         }
-        div()
-            .size_full()
-            .flex()
-            .justify_center()
-            .items_center()
-            .bg(if editing {
-                rgb(0xe5e7eb)
-            } else {
-                rgb(0x000000)
-            })
-            .child(canvas)
-            .into_any_element()
+        canvas.into_any_element()
     }
 
     fn render_canvas_element(
@@ -4249,6 +4281,7 @@ impl PsychoApp {
         placement: &text::TextPlacement,
         cx: &mut Context<Self>,
     ) -> gpui::AnyElement {
+        let selected = editing && selected;
         let field = match element {
             Element::Image { .. } => ElementField::ImagePath,
             Element::Columns { .. } => ElementField::Text,
@@ -4471,10 +4504,13 @@ impl PsychoApp {
                     CanvasTarget::Element { slide, index } => (slide, index),
                     CanvasTarget::NestedElement { .. } => unreachable!(),
                 };
-                let preview_width = self
-                    .column_resize_drag
-                    .filter(|drag| drag.slide == parent_slide && drag.index == parent_columns)
-                    .map_or(*left_width, |drag| drag.preview_width);
+                let preview_width = if editing {
+                    self.column_resize_drag
+                        .filter(|drag| drag.slide == parent_slide && drag.index == parent_columns)
+                        .map_or(*left_width, |drag| drag.preview_width)
+                } else {
+                    *left_width
+                };
                 let left_column_width = column_content_width * f32::from(preview_width) / 100.0;
                 let right_column_width =
                     column_content_width * f32::from(100 - preview_width) / 100.0;
