@@ -205,10 +205,7 @@ impl PsychoApp {
             delete_slide: edit && count > 0,
             earlier: edit && self.current_slide > 0,
             later: edit && self.current_slide + 1 < count,
-            present: edit
-                && count > 0
-                && self.asset_diagnostics.is_empty()
-                && self.layout_diagnostics.is_empty(),
+            present: edit && count > 0,
             view,
         }
     }
@@ -2677,13 +2674,15 @@ impl PsychoApp {
             .child(
                 gpui::canvas(
                     move |bounds, _, cx| {
-                        weak.update(cx, |this, cx| {
-                            if this.view.canvas_area != bounds.size {
-                                this.view.canvas_area = bounds.size;
-                                cx.notify();
-                            }
-                        })
-                        .ok();
+                        cx.defer(move |cx| {
+                            weak.update(cx, |this, cx| {
+                                if this.view.canvas_area != bounds.size {
+                                    this.view.canvas_area = bounds.size;
+                                    cx.notify();
+                                }
+                            })
+                            .ok();
+                        });
                     },
                     |_, _, _, _| {},
                 )
@@ -2928,6 +2927,7 @@ impl PsychoApp {
                         _ => None,
                     })
                     .unwrap_or_else(|| format!("Slide {}", index + 1));
+                let full_heading = heading.clone();
                 let heading = if heading.chars().count() > 7 {
                     format!("{}…", heading.chars().take(6).collect::<String>())
                 } else {
@@ -2943,7 +2943,7 @@ impl PsychoApp {
                     div()
                         .id(("slide-choice", index))
                         .role(gpui::Role::ListItem)
-                        .aria_label(format!("スライド {} {}", index + 1, heading))
+                        .aria_label(format!("スライド {} {}", index + 1, full_heading))
                         .aria_selected(selected)
                         .border_l(px(if selected { 4. } else { 1. }))
                         .border_color(if selected {
@@ -5973,6 +5973,7 @@ fn diagnostics_view(
     selected_source: Option<&Diagnostic>,
     cx: &mut Context<PsychoApp>,
 ) -> gpui::Div {
+    let palette = *cx.global::<EditorPalette>();
     let mut list = div()
         .flex()
         .flex_col()
@@ -5982,7 +5983,8 @@ fn diagnostics_view(
         .max_w(px(680.0))
         .whitespace_normal()
         .p_6()
-        .bg(rgb(0xffffff));
+        .bg(palette.surface)
+        .text_color(palette.text);
     if diagnostics.is_empty() {
         list = list.child("Presentation を読み込めませんでした。");
     }
@@ -6007,13 +6009,13 @@ fn diagnostics_view(
             .gap_1()
             .p_2()
             .border_1()
-            .border_color(rgb(0xe5e7eb))
+            .border_color(palette.border)
             .bg(if selected_source == Some(diagnostic) {
-                rgb(0xfff7ed)
+                palette.selection
             } else {
-                rgb(0xffffff)
+                palette.surface
             })
-            .text_color(rgb(0x991b1b))
+            .text_color(palette.warning)
             .child(format!(
                 "{kind} · {file_name}:{}:{}{}",
                 diagnostic.line,
@@ -6051,8 +6053,9 @@ fn diagnostics_view(
                 .mt_2()
                 .p_2()
                 .border_1()
-                .border_color(rgb(0x93c5fd))
-                .bg(rgb(0xeff6ff))
+                .border_color(palette.focus)
+                .bg(palette.selection)
+                .text_color(palette.text)
                 .child(format!(
                     "読み取り専用のソース行 · {file_name}:{}:{}",
                     diagnostic.line, diagnostic.column
@@ -6062,7 +6065,7 @@ fn diagnostics_view(
                     div()
                         .font_family("Menlo")
                         .text_size(px(13.0))
-                        .text_color(rgb(0x2563eb))
+                        .text_color(palette.focus)
                         .child(format!(
                             "{}^",
                             " ".repeat(diagnostic.column.saturating_sub(1))
