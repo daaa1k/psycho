@@ -2712,6 +2712,11 @@ impl PsychoApp {
                     .flex()
                     .items_center()
                     .justify_center()
+                    .when(model.is_some(), |element| {
+                        element
+                            .w(px(1280. * self.view.scale()))
+                            .h(px(720. * self.view.scale()))
+                    })
                     .min_w_full()
                     .min_h_full()
                     .child(canvas),
