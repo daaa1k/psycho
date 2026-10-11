@@ -3019,12 +3019,7 @@ fn child_insertion(
     child_source: &str,
 ) -> Result<(usize, usize, String), DocumentError> {
     let parent_indent = line_indent(source, parent.name().span().offset());
-    let child_indent = parent
-        .children()
-        .and_then(|children| children.nodes().first())
-        .map(|child| line_indent(source, child.name().span().offset()))
-        .filter(|indent| indent.len() > parent_indent.len())
-        .unwrap_or_else(|| format!("{parent_indent}    "));
+    let child_indent = destination_child_indent(source, parent)?;
     let insertion_context = if parent.children().is_some() {
         node_children_close(source, parent)?
     } else {
@@ -3034,7 +3029,7 @@ fn child_insertion(
     let indented_child = child_source.replace('\n', &format!("{line_ending}{child_indent}"));
     if parent.children().is_some() {
         let close = node_children_close(source, parent)?;
-        let line_start = source[..close].rfind('\n').map_or(0, |index| index + 1);
+        let line_start = line_start_at(source, close);
         if source[line_start..close].chars().all(char::is_whitespace) {
             Ok((
                 line_start,
@@ -3068,7 +3063,7 @@ fn insert_moved_source_at(
         let insertion = node_header_end(source, parent)?;
         let line_ending = line_ending_near(source, insertion);
         let mut moving = normalize_line_endings_outside_strings(moving, line_ending);
-        if !moving.ends_with('\n') {
+        if !ends_with_kdl_newline(&moving) {
             moving.push_str(line_ending);
         }
         let parent_indent = line_indent(source, parent.name().span().offset());
@@ -3083,7 +3078,7 @@ fn insert_moved_source_at(
         let insertion = node_source_start(source, target);
         let line_ending = line_ending_near(source, insertion);
         let mut moving = normalize_line_endings_outside_strings(moving, line_ending);
-        if !moving.ends_with('\n') {
+        if !ends_with_kdl_newline(&moving) {
             moving.push_str(line_ending);
         }
         source.insert_str(insertion, &moving);
@@ -3091,7 +3086,7 @@ fn insert_moved_source_at(
     }
 
     let close = node_children_close(source, parent)?;
-    let line_start = source[..close].rfind('\n').map_or(0, |index| index + 1);
+    let line_start = line_start_at(source, close);
     let line_ending = line_ending_near(
         source,
         if line_start < close {
@@ -3101,7 +3096,7 @@ fn insert_moved_source_at(
         },
     );
     let mut moving = normalize_line_endings_outside_strings(moving, line_ending);
-    if !moving.ends_with('\n') {
+    if !ends_with_kdl_newline(&moving) {
         moving.push_str(line_ending);
     }
     if source[line_start..close].chars().all(char::is_whitespace) {
@@ -3121,78 +3116,130 @@ fn reindent_moved_source(
     destination_source: &str,
     destination_parent: &KdlNode,
 ) -> Result<String, DocumentError> {
-    let parent_indent = line_indent(
-        destination_source,
-        destination_parent.name().span().offset(),
-    );
-    let child_indent = destination_parent
-        .children()
-        .and_then(|children| children.nodes().first())
-        .map(|child| line_indent(destination_source, child.name().span().offset()))
-        .filter(|indent| indent.len() > parent_indent.len())
-        .unwrap_or_else(|| format!("{parent_indent}    "));
-    let mut node_offsets = Vec::new();
-    collect_node_offsets(moved_node, 0, &mut node_offsets);
-    let mut replacements = Vec::new();
-    for (name_offset, depth) in node_offsets {
-        if name_offset < moved_start {
-            continue;
-        }
-        let line_start = original_source[..name_offset]
-            .rfind('\n')
-            .map_or(0, |index| index + 1);
-        if !original_source[line_start..name_offset]
-            .chars()
-            .all(|ch| matches!(ch, ' ' | '\t'))
+    let child_indent = destination_child_indent(destination_source, destination_parent)?;
+    let old_indent = line_indent(original_source, moved_node.name().span().offset());
+    let quoted = quoted_ranges(moving);
+    let mut adjusted = String::with_capacity(moving.len());
+    let mut offset = 0;
+    for line in kdl_lines(moving) {
+        let prefix_len = line
+            .bytes()
+            .take_while(|byte| matches!(byte, b' ' | b'\t'))
+            .count();
+        let protected = quoted.iter().any(|range| range.contains(&offset));
+        if offset == 0
+            && moved_start == moved_node.span().offset()
+            && !line.starts_with(&old_indent)
         {
-            continue;
+            adjusted.push_str(&child_indent);
+            adjusted.push_str(line);
+        } else if !protected && line[..prefix_len].starts_with(&old_indent) {
+            adjusted.push_str(&child_indent);
+            adjusted.push_str(&line[old_indent.len()..]);
+        } else {
+            adjusted.push_str(line);
         }
-        let local_line_start = line_start
-            .checked_sub(moved_start)
-            .ok_or_else(|| DocumentError::UnsafeValue("cannot reindent a moved node".into()))?;
-        let local_name_offset = name_offset - moved_start;
-        if local_name_offset > moving.len() || local_line_start > local_name_offset {
-            return Err(DocumentError::UnsafeValue(
-                "cannot reindent a moved node".into(),
-            ));
-        }
-        let target_indent = format!("{child_indent}{}", "    ".repeat(depth));
-        replacements.push((local_line_start..local_name_offset, target_indent));
-    }
-    replacements.sort_by_key(|(range, _)| std::cmp::Reverse(range.start));
-    let mut adjusted = moving.to_owned();
-    for (range, indent) in replacements {
-        adjusted.replace_range(range, &indent);
+        offset += line.len();
     }
     Ok(adjusted)
 }
 
-fn collect_node_offsets(node: &KdlNode, depth: usize, offsets: &mut Vec<(usize, usize)>) {
-    offsets.push((node.name().span().offset(), depth));
-    if let Some(children) = node.children() {
-        for child in children.nodes() {
-            collect_node_offsets(child, depth + 1, offsets);
+fn destination_child_indent(source: &str, parent: &KdlNode) -> Result<String, DocumentError> {
+    fn own_indent(source: &str, node: &KdlNode) -> Option<String> {
+        let offset = node.name().span().offset();
+        let start = line_start_at(source, offset);
+        source[start..offset]
+            .bytes()
+            .all(|byte| matches!(byte, b' ' | b'\t'))
+            .then(|| source[start..offset].to_owned())
+    }
+    let parent_indent = line_indent(source, parent.name().span().offset());
+    if let Some(indent) = parent
+        .children()
+        .into_iter()
+        .flat_map(|children| children.nodes())
+        .filter_map(|child| own_indent(source, child))
+        .find(|indent| indent.starts_with(&parent_indent) && indent.len() > parent_indent.len())
+    {
+        return Ok(indent);
+    }
+    let document = KdlDocument::parse_v2(source).map_err(|_| DocumentError::InvalidDocument)?;
+    let mut pending: Vec<_> = document.nodes().iter().collect();
+    let mut best = None;
+    while let Some(node) = pending.pop() {
+        if let Some(children) = node.children() {
+            pending.extend(children.nodes());
+            if let Some(indent) = own_indent(source, node) {
+                for child in children.nodes() {
+                    if let Some(child_indent) = own_indent(source, child)
+                        && let Some(unit) = child_indent.strip_prefix(&indent)
+                        && !unit.is_empty()
+                    {
+                        let rank = (
+                            indent.len().abs_diff(parent_indent.len()),
+                            node.name()
+                                .span()
+                                .offset()
+                                .abs_diff(parent.name().span().offset()),
+                        );
+                        if best.as_ref().is_none_or(|(best_rank, _)| rank < *best_rank) {
+                            best = Some((rank, unit.to_owned()));
+                        }
+                    }
+                }
+            }
         }
     }
+    let unit = best.map_or_else(|| "    ".to_owned(), |(_, unit)| unit);
+    Ok(format!("{parent_indent}{unit}"))
 }
 
-fn line_ending_near(source: &str, offset: usize) -> &'static str {
-    let before = &source[..offset.min(source.len())];
-    if let Some(line_break) = before.rfind('\n') {
-        return if before.as_bytes().get(line_break.saturating_sub(1)) == Some(&b'\r') {
-            "\r\n"
-        } else {
-            "\n"
-        };
-    }
-    if source[offset.min(source.len())..].find("\r\n").is_some() {
-        "\r\n"
-    } else {
-        "\n"
-    }
+fn line_ending_near(source: &str, offset: usize) -> &str {
+    let quoted = quoted_ranges(source);
+    let newlines = || {
+        source.char_indices().filter_map(|(index, _)| {
+            let width = kdl_newline_width(source.as_bytes(), index);
+            if width == 0
+                || (index > 0 && &source.as_bytes()[index - 1..=index] == b"\r\n")
+                || quoted.iter().any(|range| range.contains(&index))
+            {
+                None
+            } else {
+                Some(index..index + width)
+            }
+        })
+    };
+    newlines()
+        .take_while(|range| range.start < offset)
+        .last()
+        .or_else(|| newlines().find(|range| range.start >= offset))
+        .map_or("\n", |range| &source[range])
 }
 
 fn normalize_line_endings_outside_strings(source: &str, line_ending: &str) -> String {
+    let mut output = Vec::with_capacity(source.len());
+    let mut index = 0;
+    for range in quoted_ranges(source)
+        .into_iter()
+        .chain(std::iter::once(source.len()..source.len()))
+    {
+        while index < range.start {
+            let width = kdl_newline_width(source.as_bytes(), index);
+            if width > 0 {
+                output.extend_from_slice(line_ending.as_bytes());
+                index += width;
+            } else {
+                output.push(source.as_bytes()[index]);
+                index += 1;
+            }
+        }
+        output.extend_from_slice(&source.as_bytes()[range.clone()]);
+        index = range.end;
+    }
+    String::from_utf8(output).expect("line ending normalization preserves UTF-8")
+}
+
+fn quoted_ranges(source: &str) -> Vec<std::ops::Range<usize>> {
     #[derive(Clone, Copy)]
     enum StringState {
         None,
@@ -3200,129 +3247,97 @@ fn normalize_line_endings_outside_strings(source: &str, line_ending: &str) -> St
         Multiline,
         Raw { hashes: usize, multiline: bool },
     }
-
     let bytes = source.as_bytes();
-    let mut output = Vec::with_capacity(bytes.len());
+    let mut ranges = Vec::new();
     let mut index = 0;
-    let mut string_state = StringState::None;
+    let mut start = 0;
+    let mut state = StringState::None;
     let mut block_comment_depth = 0usize;
     let mut line_comment = false;
     while index < bytes.len() {
         if block_comment_depth > 0 {
             if bytes.get(index..index + 2) == Some(b"/*") {
                 block_comment_depth += 1;
-                output.extend_from_slice(b"/*");
                 index += 2;
             } else if bytes.get(index..index + 2) == Some(b"*/") {
                 block_comment_depth -= 1;
-                output.extend_from_slice(b"*/");
                 index += 2;
-            } else if bytes[index] == b'\n' || bytes[index] == b'\r' {
-                index = push_normalized_line_ending(bytes, index, line_ending, &mut output);
             } else {
-                output.push(bytes[index]);
                 index += 1;
             }
             continue;
         }
         if line_comment {
-            if bytes[index] == b'\n' || bytes[index] == b'\r' {
-                index = push_normalized_line_ending(bytes, index, line_ending, &mut output);
-                line_comment = false;
-            } else {
-                output.push(bytes[index]);
-                index += 1;
-            }
+            line_comment = kdl_newline_width(bytes, index) == 0;
+            index += 1;
             continue;
         }
-
-        match string_state {
-            StringState::Quoted => {
+        match state {
+            StringState::Quoted | StringState::Multiline => {
+                let width = if matches!(state, StringState::Multiline) {
+                    3
+                } else {
+                    1
+                };
                 if bytes[index] == b'\\' {
-                    output.push(bytes[index]);
-                    index += 1;
-                    if index < bytes.len() {
-                        if bytes[index] == b'\n' || bytes[index] == b'\r' {
-                            index =
-                                push_normalized_line_ending(bytes, index, line_ending, &mut output);
-                        } else {
-                            output.push(bytes[index]);
-                            index += 1;
-                        }
-                    }
-                } else if bytes[index] == b'"' {
-                    output.push(bytes[index]);
-                    index += 1;
-                    string_state = StringState::None;
+                    index = (index + 2).min(bytes.len());
+                } else if bytes
+                    .get(index..index + width)
+                    .is_some_and(|quote| quote.iter().all(|byte| *byte == b'"'))
+                {
+                    index += width;
+                    ranges.push(start..index);
+                    state = StringState::None;
                 } else {
-                    output.push(bytes[index]);
-                    index += 1;
-                }
-            }
-            StringState::Multiline => {
-                if bytes.get(index..index + 3) == Some(b"\"\"\"") {
-                    output.extend_from_slice(b"\"\"\"");
-                    index += 3;
-                    string_state = StringState::None;
-                } else {
-                    output.push(bytes[index]);
                     index += 1;
                 }
             }
             StringState::Raw { hashes, multiline } => {
-                let quote_width = if multiline { 3 } else { 1 };
-                let quote_matches = if multiline {
-                    bytes.get(index..index + 3) == Some(b"\"\"\"")
+                let width = if multiline { 3 } else { 1 };
+                let end = index + width + hashes;
+                if bytes
+                    .get(index..index + width)
+                    .is_some_and(|quote| quote.iter().all(|byte| *byte == b'"'))
+                    && bytes
+                        .get(index + width..end)
+                        .is_some_and(|suffix| suffix.iter().all(|byte| *byte == b'#'))
+                {
+                    index = end;
+                    ranges.push(start..index);
+                    state = StringState::None;
                 } else {
-                    bytes[index] == b'"'
-                };
-                let hashes_start = index + quote_width;
-                let hashes_match = hashes_start + hashes <= bytes.len()
-                    && bytes[hashes_start..hashes_start + hashes]
-                        .iter()
-                        .all(|byte| *byte == b'#');
-                if quote_matches && hashes_match {
-                    output.extend_from_slice(&bytes[index..hashes_start + hashes]);
-                    index = hashes_start + hashes;
-                    string_state = StringState::None;
-                } else {
-                    output.push(bytes[index]);
                     index += 1;
                 }
             }
             StringState::None => {
+                start = index;
                 if bytes.get(index..index + 2) == Some(b"//") {
-                    output.extend_from_slice(b"//");
                     index += 2;
                     line_comment = true;
                 } else if bytes.get(index..index + 2) == Some(b"/*") {
-                    output.extend_from_slice(b"/*");
                     index += 2;
                     block_comment_depth = 1;
                 } else if bytes[index] == b'#'
-                    && let Some((hashes, multiline, open_width)) = raw_string_open(bytes, index)
+                    && let Some((hashes, multiline, width)) = raw_string_open(bytes, index)
                 {
-                    output.extend_from_slice(&bytes[index..index + open_width]);
-                    index += open_width;
-                    string_state = StringState::Raw { hashes, multiline };
+                    index += width;
+                    state = StringState::Raw { hashes, multiline };
                 } else if bytes.get(index..index + 3) == Some(b"\"\"\"") {
-                    output.extend_from_slice(b"\"\"\"");
                     index += 3;
-                    string_state = StringState::Multiline;
+                    state = StringState::Multiline;
                 } else if bytes[index] == b'"' {
-                    output.push(bytes[index]);
                     index += 1;
-                    string_state = StringState::Quoted;
-                } else if bytes[index] == b'\n' || bytes[index] == b'\r' {
-                    index = push_normalized_line_ending(bytes, index, line_ending, &mut output);
+                    state = StringState::Quoted;
                 } else {
-                    output.push(bytes[index]);
                     index += 1;
                 }
             }
         }
     }
-    String::from_utf8(output).expect("line ending normalization preserves UTF-8")
+    if !matches!(state, StringState::None) {
+        ranges.push(start..bytes.len());
+    }
+    ranges
 }
 
 fn raw_string_open(bytes: &[u8], start: usize) -> Option<(usize, bool, usize)> {
@@ -3339,24 +3354,62 @@ fn raw_string_open(bytes: &[u8], start: usize) -> Option<(usize, bool, usize)> {
     Some((hashes, multiline, quote + quote_width - start))
 }
 
-fn push_normalized_line_ending(
-    bytes: &[u8],
-    start: usize,
-    line_ending: &str,
-    output: &mut Vec<u8>,
-) -> usize {
-    if bytes.get(start..start + 2) == Some(b"\r\n") {
-        output.extend_from_slice(line_ending.as_bytes());
-        start + 2
-    } else {
-        output.extend_from_slice(line_ending.as_bytes());
-        start + 1
+fn kdl_newline_width(bytes: &[u8], start: usize) -> usize {
+    match bytes.get(start) {
+        Some(b'\r') if bytes.get(start + 1) == Some(&b'\n') => 2,
+        Some(b'\r' | b'\n' | 0x0b | 0x0c) => 1,
+        _ if bytes.get(start..start + 2) == Some(b"\xc2\x85") => 2,
+        _ if matches!(
+            bytes.get(start..start + 3),
+            Some(b"\xe2\x80\xa8" | b"\xe2\x80\xa9")
+        ) =>
+        {
+            3
+        }
+        _ => 0,
     }
+}
+
+fn kdl_lines(source: &str) -> impl Iterator<Item = &str> {
+    let mut remaining = source;
+    std::iter::from_fn(move || {
+        if remaining.is_empty() {
+            return None;
+        }
+        let end = remaining
+            .char_indices()
+            .find_map(|(index, _)| {
+                let width = kdl_newline_width(remaining.as_bytes(), index);
+                (width > 0).then_some(index + width)
+            })
+            .unwrap_or(remaining.len());
+        let (line, rest) = remaining.split_at(end);
+        remaining = rest;
+        Some(line)
+    })
+}
+
+fn line_start_at(source: &str, offset: usize) -> usize {
+    source[..offset]
+        .char_indices()
+        .rev()
+        .find_map(|(index, _)| {
+            let width = kdl_newline_width(source.as_bytes(), index);
+            (width > 0).then_some((index + width).min(offset))
+        })
+        .unwrap_or(0)
+}
+
+fn ends_with_kdl_newline(source: &str) -> bool {
+    source
+        .char_indices()
+        .next_back()
+        .is_some_and(|(index, _)| kdl_newline_width(source.as_bytes(), index) > 0)
 }
 
 fn line_indent(source: &str, offset: usize) -> String {
     let offset = offset.min(source.len());
-    let line_start = source[..offset].rfind('\n').map_or(0, |index| index + 1);
+    let line_start = line_start_at(source, offset);
     source[line_start..offset]
         .chars()
         .take_while(|ch| matches!(ch, ' ' | '\t'))
@@ -3365,9 +3418,7 @@ fn line_indent(source: &str, offset: usize) -> String {
 
 fn node_line_range(source: &str, node: &KdlNode) -> Result<(usize, usize), DocumentError> {
     let name_start = node.name().span().offset();
-    let line_start = source[..name_start]
-        .rfind('\n')
-        .map_or(0, |index| index + 1);
+    let line_start = line_start_at(source, name_start);
     let starts_on_own_line = source[line_start..name_start]
         .chars()
         .all(|ch| matches!(ch, ' ' | '\t'));
@@ -3383,8 +3434,9 @@ fn node_line_range(source: &str, node: &KdlNode) -> Result<(usize, usize), Docum
         ));
     }
     let line_end = source[span_end..]
-        .find('\n')
-        .map_or(source.len(), |index| span_end + index);
+        .char_indices()
+        .find(|(index, _)| kdl_newline_width(source.as_bytes(), span_end + index) > 0)
+        .map_or(source.len(), |(index, _)| span_end + index);
     let bytes = source.as_bytes();
     let mut cursor = span_end;
     let mut owned_end = span_end;
@@ -3408,7 +3460,7 @@ fn node_line_range(source: &str, node: &KdlNode) -> Result<(usize, usize), Docum
         }
     }
     let end = if line_end < source.len() {
-        line_end + 1
+        line_end + kdl_newline_width(bytes, line_end)
     } else {
         line_end
     };
@@ -3417,9 +3469,7 @@ fn node_line_range(source: &str, node: &KdlNode) -> Result<(usize, usize), Docum
 
 fn node_source_start(source: &str, node: &KdlNode) -> usize {
     let name_start = node.name().span().offset();
-    let line_start = source[..name_start]
-        .rfind('\n')
-        .map_or(0, |index| index + 1);
+    let line_start = line_start_at(source, name_start);
     if source[line_start..name_start]
         .chars()
         .all(|ch| matches!(ch, ' ' | '\t'))
@@ -3436,9 +3486,12 @@ fn node_header_end(source: &str, node: &KdlNode) -> Result<usize, DocumentError>
     let bytes = source.as_bytes();
     let mut cursor = start;
     while cursor < end {
+        if kdl_newline_width(bytes, cursor) > 0 {
+            return Ok(cursor);
+        }
         match bytes[cursor] {
             b'{' => return Ok(cursor),
-            b'\n' | b';' => return Ok(cursor),
+            b';' => return Ok(cursor),
             b'/' if bytes.get(cursor + 1) == Some(&b'/') => return Ok(cursor),
             b'/' if bytes.get(cursor + 1) == Some(&b'*') => {
                 cursor = skip_block_comment(bytes, cursor, end)?
@@ -3460,7 +3513,7 @@ fn node_children_close(source: &str, node: &KdlNode) -> Result<usize, DocumentEr
     while cursor < end {
         if bytes[cursor] == b'/' && bytes.get(cursor + 1) == Some(&b'/') {
             cursor += 2;
-            while cursor < end && bytes[cursor] != b'\n' {
+            while cursor < end && kdl_newline_width(bytes, cursor) == 0 {
                 cursor += 1;
             }
             continue;
@@ -3580,13 +3633,15 @@ fn find_attribute_value(
     let bytes = source.as_bytes();
     let mut cursor = start;
     loop {
-        while cursor < end && matches!(bytes[cursor], b' ' | b'\t' | b'\r' | b'\n') {
-            cursor += 1;
+        while cursor < end
+            && (matches!(bytes[cursor], b' ' | b'\t') || kdl_newline_width(bytes, cursor) > 0)
+        {
+            cursor += kdl_newline_width(bytes, cursor).max(1);
         }
         if cursor + 1 < end && bytes[cursor..cursor + 2] == *b"/*" {
             cursor = skip_block_comment(bytes, cursor, end)?;
         } else if bytes.get(cursor..cursor + 2) == Some(b"//") {
-            while cursor < end && bytes[cursor] != b'\n' {
+            while cursor < end && kdl_newline_width(bytes, cursor) == 0 {
                 cursor += 1;
             }
         } else if bytes.get(cursor) == Some(&b'=') {
@@ -3610,13 +3665,15 @@ fn find_attribute_value_token(
     let bytes = source.as_bytes();
     let mut cursor = start;
     loop {
-        while cursor < end && matches!(bytes[cursor], b' ' | b'\t' | b'\r' | b'\n') {
-            cursor += 1;
+        while cursor < end
+            && (matches!(bytes[cursor], b' ' | b'\t') || kdl_newline_width(bytes, cursor) > 0)
+        {
+            cursor += kdl_newline_width(bytes, cursor).max(1);
         }
         if bytes.get(cursor..cursor + 2) == Some(b"/*") {
             cursor = skip_block_comment(bytes, cursor, end)?;
         } else if bytes.get(cursor..cursor + 2) == Some(b"//") {
-            while cursor < end && bytes[cursor] != b'\n' {
+            while cursor < end && kdl_newline_width(bytes, cursor) == 0 {
                 cursor += 1;
             }
         } else if bytes.get(cursor) == Some(&b'=') {
@@ -3632,13 +3689,15 @@ fn find_attribute_value_token(
     }
 
     loop {
-        while cursor < end && matches!(bytes[cursor], b' ' | b'\t' | b'\r' | b'\n') {
-            cursor += 1;
+        while cursor < end
+            && (matches!(bytes[cursor], b' ' | b'\t') || kdl_newline_width(bytes, cursor) > 0)
+        {
+            cursor += kdl_newline_width(bytes, cursor).max(1);
         }
         if bytes.get(cursor..cursor + 2) == Some(b"/*") {
             cursor = skip_block_comment(bytes, cursor, end)?;
         } else if bytes.get(cursor..cursor + 2) == Some(b"//") {
-            while cursor < end && bytes[cursor] != b'\n' {
+            while cursor < end && kdl_newline_width(bytes, cursor) == 0 {
                 cursor += 1;
             }
         } else {
@@ -3665,7 +3724,10 @@ fn find_attribute_value_token(
             return Ok((value_start, skip_quoted(bytes, value_start, end)));
         }
     }
-    while cursor < end && !matches!(bytes[cursor], b' ' | b'\t' | b'\r' | b'\n' | b';' | b'}') {
+    while cursor < end
+        && kdl_newline_width(bytes, cursor) == 0
+        && !matches!(bytes[cursor], b' ' | b'\t' | b';' | b'}')
+    {
         if bytes.get(cursor..cursor + 2) == Some(b"//")
             || bytes.get(cursor..cursor + 2) == Some(b"/*")
         {
@@ -3687,10 +3749,11 @@ fn find_string_token(
     let mut cursor = start;
     while cursor < end {
         match bytes[cursor] {
-            b' ' | b'\t' | b'\r' | b'\n' => cursor += 1,
+            _ if kdl_newline_width(bytes, cursor) > 0 => cursor += kdl_newline_width(bytes, cursor),
+            b' ' | b'\t' => cursor += 1,
             b'/' if cursor + 1 < end && bytes[cursor + 1] == b'/' => {
                 cursor += 2;
-                while cursor < end && bytes[cursor] != b'\n' {
+                while cursor < end && kdl_newline_width(bytes, cursor) == 0 {
                     cursor += 1;
                 }
             }
@@ -3787,18 +3850,15 @@ fn diagnostic(
     let mut line = 1;
     let mut line_start = 0;
     let mut line_end = source.len();
-    let mut chars = source.char_indices().peekable();
-    while let Some((index, character)) = chars.next() {
-        if !matches!(
-            character,
-            '\r' | '\n' | '\u{85}' | '\u{c}' | '\u{2028}' | '\u{2029}'
-        ) {
+    let mut indices = source.char_indices().map(|(index, _)| index).peekable();
+    while let Some(index) = indices.next() {
+        let width = kdl_newline_width(source.as_bytes(), index);
+        if width == 0 {
             continue;
         }
-        let mut next_line = index + character.len_utf8();
-        if character == '\r' && chars.peek().is_some_and(|(_, next)| *next == '\n') {
-            chars.next();
-            next_line += 1;
+        let next_line = index + width;
+        if indices.peek().is_some_and(|next| *next < next_line) {
+            indices.next();
         }
         if offset < next_line {
             line_end = index;
