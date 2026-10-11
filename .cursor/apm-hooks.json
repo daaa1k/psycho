@@ -1,0 +1,27 @@
+{
+  "SessionStart": [
+    {
+      "matcher": "startup|resume|clear|compact",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "\"${COPILOT_PLUGIN_ROOT}/hooks/session-start.sh\" copilot"
+        }
+      ],
+      "_apm_source": "michael-denyer/pstack-claude/plugins/pstack"
+    }
+  ],
+  "PreToolUse": [
+    {
+      "matcher": "view|task|bash",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "\"${COPILOT_PLUGIN_ROOT}/hooks/pre-tool-use.sh\"",
+          "timeout": 5
+        }
+      ],
+      "_apm_source": "michael-denyer/pstack-claude/plugins/pstack"
+    }
+  ]
+}
