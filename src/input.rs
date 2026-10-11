@@ -168,7 +168,7 @@ pub struct TextInputState {
 impl TextInputState {
     pub fn new(cx: &mut Context<Self>, initial_text: &str) -> Self {
         Self {
-            focus_handle: cx.focus_handle(),
+            focus_handle: cx.focus_handle().tab_stop(true),
             content: initial_text.into(),
             placeholder: "タイトルを入力".into(),
             multiline: false,
