@@ -15,6 +15,9 @@ cases = {
     'sample': ('sample_workflow_acceptance.py', []),
     'blank': ('blank_slide_acceptance.py', []),
     'code-colors': ('code_colors_acceptance.py', []),
+    'column-width-drag': ('column_width_drag_acceptance.py', []),
+    'edit-menu': ('edit_menu_acceptance.py', []),
+    'ime-reconversion': ('ime_reconversion_acceptance.py', []),
     'layout': ('presentation_layout_acceptance.py', []),
     'direct-layout': ('direct_layout_acceptance.py', []),
     'ime': ('ime_acceptance.py', []),
@@ -82,11 +85,11 @@ for name in args.case or list(cases):
     assert fingerprints() == identity, 'The source, driver or product binary changed during acceptance'
     script, options = cases[name]
     command = [sys.executable, str(scripts / script), '--output', str(out / name), *options]
-    if name in {'ime', 'ime-caption', 'presentation-ime'}:
+    if name in {'ime', 'ime-caption', 'presentation-ime', 'ime-reconversion'}:
         command.insert(0, str(wrapper))
     environment = dict(os.environ, PSYCHO_ACCEPTANCE_FULLSCREEN_WIDTH=str(int(screens[0]['width'])),
                        PSYCHO_ACCEPTANCE_LARGE_HEIGHT=str(min(992,int(screens[0]['height'])-64)))
-    if name in {'keys', 'presentation-ime'}:
+    if name in {'keys', 'presentation-ime', 'ime-reconversion'}:
         environment['PSYCHO_ACCEPTANCE_RECORDER'] = str(recorder)
     entry = dict(case=name, command=command, expected='All runtime assertions pass',
                  started=datetime.datetime.now(datetime.timezone.utc).isoformat())

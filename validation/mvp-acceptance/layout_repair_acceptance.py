@@ -68,7 +68,7 @@ gui=Gui(output/'outline',outline_source)
 try:
     _,rows=gui.snapshot('offscreen-element')
     assert not any(166<row['x']<995 and row['text']=='Hidden text' for row in rows),'The text Element must be offscreen'
-    gui.press('Element 1 · コード')
+    gui.press('Element 1 · コード',aliases=('Element 1 · コード ✓','Element 1 · コードく'))
     _,rows=gui.snapshot()
     row=next(row for row in rows if row['x']>1000 and 'overflow' in row['text'])
     gui.click(row['x'],row['y'])
