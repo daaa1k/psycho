@@ -1,0 +1,3 @@
+presentation { metadata { title "Input scope" }; slide id="one" {
+    text "New text"
+}; }

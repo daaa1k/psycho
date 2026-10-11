@@ -1,0 +1,1450 @@
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: 文字編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: テキストを編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: テキストを編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す: テキストを編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "やり直す"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: テキストを編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: テキストを編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "やり直す: テキストを編集"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 52197
+}
+PASS native Edit menu history, dynamic labels, disabled states and clipboard scope

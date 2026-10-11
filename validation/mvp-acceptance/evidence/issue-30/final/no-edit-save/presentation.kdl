@@ -1,0 +1,1 @@
+presentation { metadata { title #"Raw title"# }; slide { heading #"Raw heading"#; bullets {}; image "missing.png"; code #"body"#; }; }

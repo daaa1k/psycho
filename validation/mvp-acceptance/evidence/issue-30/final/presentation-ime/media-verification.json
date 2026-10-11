@@ -1,0 +1,12 @@
+[
+  {
+    "movie": "window-21796.mov",
+    "duration_seconds": 25.398333,
+    "decoded_frames": 621,
+    "width": 1920,
+    "height": 1080,
+    "codec": "h264",
+    "audio": false,
+    "frame": "window-21796.frame.png"
+  }
+]

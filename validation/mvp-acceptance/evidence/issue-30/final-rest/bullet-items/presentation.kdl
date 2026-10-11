@@ -1,0 +1,2 @@
+presentation { metadata { title "Bullet items" }; slide { heading "Bullet items"; bullets { item "First item";     item "Second item"; 
+}; }; }

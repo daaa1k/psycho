@@ -1,0 +1,64 @@
+./target/debug/psycho /Users/daichikinoshita/orca/workspaces/psycho/6-mvp/target/mvp-save-retry/presentation.kdl
+{
+  "id": "d3e83a34-015d-4a97-a3d8-21f7398aaa0d",
+  "ok": true,
+  "result": {
+    "snapshot": {
+      "focusedElementId": 0,
+      "truncation": {
+        "maxDepth": 64,
+        "maxDepthReached": false,
+        "maxNodes": 1200,
+        "truncated": false
+      },
+      "treeText": "App=psycho (pid 38106)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.",
+      "window": {
+        "id": 35093,
+        "title": "",
+        "height": 892,
+        "screenIndex": 0,
+        "isMinimized": false,
+        "y": 185,
+        "width": 1280,
+        "isOffscreen": false,
+        "platform": {
+          "layer": 0
+        },
+        "x": 320
+      },
+      "id": "642D9A43-3DAF-41A8-B55D-B96FAE827893",
+      "app": {
+        "pid": 38106,
+        "name": "psycho",
+        "bundleId": null
+      },
+      "coordinateSpace": "window",
+      "elementCount": 5
+    },
+    "screenshotStatus": {
+      "state": "captured",
+      "metadata": {
+        "windowId": 35093,
+        "engine": "screenCaptureKit"
+      }
+    },
+    "screenshot": {
+      "format": "png",
+      "width": 1280,
+      "height": 892,
+      "scale": 1,
+      "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/d3e83a34-015d-4a97-a3d8-21f7398aaa0d-screenshot.png",
+      "dataOmitted": true,
+      "expiresAt": "2026-10-12T03:37:56.679Z"
+    }
+  },
+  "_meta": {
+    "runtimeId": "dbd7545f-5ae1-4489-8fda-d0890960dd03"
+  }
+}
+save-failure-keeps-draft.png
+save-failure-retried.png
+Traceback (most recent call last):
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/save_failure_acceptance.py", line 38, in <module>
+    assert 'title "after failure"' in p.read_text()
+AssertionError

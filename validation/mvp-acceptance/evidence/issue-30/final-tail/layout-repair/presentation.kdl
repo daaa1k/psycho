@@ -1,0 +1,1 @@
+presentation { metadata { title "Layout repair" }; slide id="good" { heading "Good slide"; }; slide id="bad" { heading "Offscreen code"; code "repaired();"; }; }

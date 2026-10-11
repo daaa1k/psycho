@@ -1,0 +1,32 @@
+[
+  {
+    "movie": "asset/window-60337.mov",
+    "duration_seconds": 6.705,
+    "decoded_frames": 193,
+    "width": 1920,
+    "height": 1080,
+    "codec": "h264",
+    "audio": false,
+    "frame": "asset/window-60337.frame.png"
+  },
+  {
+    "movie": "schema/window-59567.mov",
+    "duration_seconds": 14.573333,
+    "decoded_frames": 419,
+    "width": 1920,
+    "height": 1080,
+    "codec": "h264",
+    "audio": false,
+    "frame": "schema/window-59567.frame.png"
+  },
+  {
+    "movie": "syntax/window-58914.mov",
+    "duration_seconds": 7.945,
+    "decoded_frames": 229,
+    "width": 1920,
+    "height": 1080,
+    "codec": "h264",
+    "audio": false,
+    "frame": "syntax/window-58914.frame.png"
+  }
+]

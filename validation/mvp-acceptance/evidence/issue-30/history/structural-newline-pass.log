@@ -1,0 +1,21 @@
+   Compiling psycho v0.1.0 (/Users/daichikinoshita/orca/workspaces/psycho/6-mvp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.76s
+     Running tests/moved_trivia.rs (target/debug/deps/moved_trivia-21d0a7fbae97cf6f)
+
+running 13 tests
+test moved_quoted_after_comment_line_separator ... ok
+test moved_quoted_after_comment_lf ... ok
+test moved_quoted_after_comment_form_feed ... ok
+test moved_quoted_after_comment_crlf ... ok
+test moved_quoted_after_comment_cr ... ok
+test moved_quoted_after_comment_paragraph_separator ... ok
+test moved_quoted_after_comment_nel ... ok
+test moved_quoted_after_comment_vertical_tab ... ok
+test moved_quoted_escaped_newlines_keep_original_bytes ... ok
+test tab_indented_comment_and_brace_move_out_and_back ... ok
+test destination_newline_style_excludes_quoted_token_newlines ... ok
+test all_kdl_newlines_allow_child_insertion_and_column_roundtrip ... ok
+test all_kdl_newlines_bound_owned_comment_and_header ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+

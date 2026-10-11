@@ -1,0 +1,10 @@
+2026-10-11 12:04:59.122 Df psycho[50408:333fe38] [com.apple.processmanager:front-35286506] DoShow(self): pid=50408 asn=0x0-0x1567165c
+2026-10-11 12:04:59.122 Df psycho[50408:333fe38] [com.apple.processmanager:front-35286506] PostShowProcess: pid=50408 processToShow=0x0-0x2 (ourselves)
+2026-10-11 12:05:01.065 Df orca-computer-use-macos[53828:333f208] (ScreenCaptureKit)  [INFO] -[SCRunningApplication initWithPID:]:318 (0xb01ec2580) processID=50408
+2026-10-11 12:05:01.065 Df orca-computer-use-macos[53828:333f208] (ScreenCaptureKit)  [INFO] -[SCRunningApplication initWithPID:]:318 (0xb01ec0cc0) processID=50408
+2026-10-11 12:05:01.065 Df orca-computer-use-macos[53828:333f208] (ScreenCaptureKit)  [INFO] -[SCRunningApplication initWithPID:]:318 (0xb01ec2500) processID=50408
+2026-10-11 12:05:01.065 Df orca-computer-use-macos[53828:333f208] (ScreenCaptureKit)  [INFO] -[SCRunningApplication initWithPID:]:318 (0xb01ec34e0) processID=50408
+2026-10-11 12:05:01.065 Df orca-computer-use-macos[53828:333f208] (ScreenCaptureKit)  [INFO] -[SCRunningApplication initWithPID:]:318 (0xb01ec3a60) processID=50408
+2026-10-11 12:05:01.078 Df orca-computer-use-macos[53828:333a244] (ScreenCaptureKit)  [INFO] -[SCRunningApplication initWithPID:]:318 (0xb01deb720) processID=50408
+2026-10-11 12:05:01.857 Df launchd[1:3340989] [gui/501 [100022]:] service inactive: com.apple.xpc.launchd.unmanaged.psycho.50408
+2026-10-11 12:05:01.857 Df WindowServer[418:e9f] [com.apple.SkyLight.processes:Lifecycle] 0[outside of RPC]: Process death: 0x0-0x1567165c (psycho) connectionID: 1CFC37 pid: 50408 in session 0x101

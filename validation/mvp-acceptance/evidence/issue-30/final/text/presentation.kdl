@@ -1,0 +1,1 @@
+presentation { metadata { title "Text workflow" }; slide { heading "Code workflow"; code language="rust" "fn\tmain() {\n\tlet 値 = 7;\n\tprintln!(\"{}\", 値);\n}\t"; }; }

@@ -1,0 +1,75 @@
+{
+  "menuBar" : {
+    "children" : [
+      {
+        "children" : [
+          {
+            "children" : [
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "元に戻す"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "やり直す"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "切り取り"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "コピー"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : true,
+                "role" : "AXMenuItem",
+                "title" : "貼り付け"
+              },
+              {
+                "children" : [
+
+                ],
+                "enabled" : false,
+                "role" : "AXMenuItem",
+                "title" : "すべてを選択"
+              }
+            ],
+            "enabled" : true,
+            "role" : "AXMenu"
+          }
+        ],
+        "enabled" : true,
+        "role" : "AXMenuBarItem",
+        "title" : "編集"
+      }
+    ],
+    "role" : "AXMenuBar"
+  },
+  "pid" : 48285
+}
+Traceback (most recent call last):
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/edit_menu_acceptance.py", line 77, in <module>
+    menu.check('empty-document', ('元に戻す', False), ('やり直す', False))
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/edit_menu_acceptance.py", line 53, in check
+    assert item[0].get('enabled') is expectation[1], (name, item[0], expectation)
+AssertionError: ('empty-document', {'children': [], 'enabled': True, 'role': 'AXMenuItem', 'title': '元に戻す'}, ('元に戻す', False))

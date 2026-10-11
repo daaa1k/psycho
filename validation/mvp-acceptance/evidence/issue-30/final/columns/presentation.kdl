@@ -1,0 +1,9 @@
+presentation {
+ metadata { title "Columns workflow" }
+ slide id="one" {
+  heading "Columns workflow"
+  text "Root payload"
+  columns { column width=50 { text "Left one"; text "Left two"; }; column width=50 { bullets { item "Right first"; item "Right second"; }; }; }
+  columns { column width=50 { text "Other left"; }; column width=50 { text "Other one"; text "Other two"; }; }
+ }
+}

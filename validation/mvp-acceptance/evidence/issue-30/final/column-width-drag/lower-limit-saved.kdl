@@ -1,0 +1,7 @@
+presentation {
+ metadata { title "Column divider acceptance" }
+ slide {
+  heading "Divider acceptance"
+  columns { column width=1 { text "LEFT"; }; column width=99 { text "RIGHT"; }; }
+ }
+}

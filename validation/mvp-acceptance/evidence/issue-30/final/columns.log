@@ -1,0 +1,12 @@
+PASS columns-root-to-column one Undo/Redo and exact bytes
+PASS columns-column-to-root one Undo/Redo and exact bytes
+Traceback (most recent call last):
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/columns_workflow_acceptance.py", line 49, in <module>
+    select('Left one');gui.press('列内 Element ↓')
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/columns_workflow_acceptance.py", line 18, in select
+    gui.snapshot();x,y=gui.glyph_position(prefix,font);gui.click(x,y)
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/gui_session.py", line 78, in snapshot
+    time.sleep(.35);state=self.act('get-app-state')
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/gui_session.py", line 73, in act
+    assert value['ok'],value
+AssertionError: {'id': '8170ac81-9669-4236-b528-e29e2e9b5e0c', 'ok': False, 'error': {'code': 'app_not_found', 'message': "app 'pid:50408' not found", 'data': {'nextSteps': ['Run `orca computer list-apps --json` and retry with the exact app name or bundle ID.', 'If the target is a website or web app such as Gmail, choose the desktop browser app/window that contains it; `orca computer` app selectors refer to desktop apps, not website names.', 'Do not retry the same `orca computer ... --app <web app>` command unchanged.', 'If the desired browser is not listed, open or focus that browser first, then retry `orca computer list-apps --json` and `orca computer list-windows --app <browser> --json`.']}}, '_meta': {'runtimeId': 'dbd7545f-5ae1-4489-8fda-d0890960dd03'}}

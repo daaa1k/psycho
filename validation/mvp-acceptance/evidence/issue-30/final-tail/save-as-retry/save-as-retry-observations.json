@@ -1,0 +1,12 @@
+[
+  {
+    "name": "failure",
+    "text": "●●開く保存別名保存UndoRedo+ Slide- SlideSlide ↑Slide ↓最初から発表現在から発表Slides> 1 Retain...Retained after failurelInspectorElementsElement 1・見出しくPresentation titleキャンバス上で編集中全文をInspectorで編集Element を削除入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Save As retry ・未保存/archivel.tmphKY9VP\"退避保存できませんでした： IO error: Permission denied （os error 13） at path \"/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/target/issue30/final-tail/save-as-retry",
+    "tree": "App=psycho (pid 8716)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window."
+  },
+  {
+    "name": "retry",
+    "source": "presentation { metadata { title \"Save As retry\" }; slide { heading \"Retained after failure\"; }; }\n",
+    "text": "●●開く保存別名保存UndoRedo+ Slide- SlideSlide ↑Slide ↓最初から発表現在から発表Slides> 1 Retain...Retained after failureInspectorElementsElement 1・見出しくPresentation titleキャンバス上で編集中全文をInspectorで編集Element を削除入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加Save As retry別ファイルへ保存しました。"
+  }
+]

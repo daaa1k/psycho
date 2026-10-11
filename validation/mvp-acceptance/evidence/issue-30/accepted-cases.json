@@ -1,0 +1,423 @@
+{
+  "product_revision": "8dc2ce3ce02722bac9d743cc54e92fc5f8d8ef60",
+  "binary_sha256": "e2b32805cb3af5ad01fcc72c997d31cb819220fb14f757dc57c773e7d3e55170",
+  "source_sha256": {
+    "src/ime.rs": "201b65663ed327a83f0f251369fba889273ff81d1ac81903ab72a047cf31ae13",
+    "src/input.rs": "d16ccf1ef6f6f6f72beb4f9ad248cd70767b5ce1246c3bbac871fcd7e182fa46",
+    "src/lib.rs": "8a99080f68ffcbd5c7c012ba0392bd304aa921bcc249d504777e101ffefaa3c8",
+    "src/main.rs": "57c6ce5429edfa7bf655622f535076f1bb80ba305a5827528f04090d833f4667",
+    "src/text.rs": "487b8e4556baf8ed68d4eeea4a44fd21b83e8e804f8e3ad3db1d8c10b990dd65"
+  },
+  "screens": [
+    {
+      "x": 0,
+      "scale": 1,
+      "y": 0,
+      "width": 1920,
+      "height": 1200,
+      "name": "Built-in Display"
+    }
+  ],
+  "os": "macOS-26.5.2-arm64-arm-64bit",
+  "driver_changes": {
+    "final_to_tail": [
+      "gui_session.py"
+    ],
+    "tail_to_rest": [
+      "close_cursor_acceptance.py"
+    ],
+    "rest_to_last": [
+      "conflict_acceptance.py",
+      "run_acceptance.py",
+      "save_failure_acceptance.py"
+    ],
+    "new_diagnostic_navigation": [
+      "run_acceptance.py",
+      "diagnostic_navigation_acceptance.py"
+    ]
+  },
+  "driver_change_scope": "Owned product stderr/backtrace recording and a single read-only get-app-state retry gated by live owned PID and fresh registration; no mutating action replay. The final rest run adds the observed OCR alias for the discard button, keeping window and raw-byte assertions. The final two legacy cases use the shared owned Gui with label selection and verified input state, retaining permission failure, retry, Undo and conflict invariants. A final new case verifies native syntax/Schema read-only source navigation and Asset diagnostic selection without changing the product.",
+  "original_failures_preserved": [
+    "final/manifest.json cases[16] columns FAIL",
+    "final-tail/manifest.json cases[5] close FAIL",
+    "final-rest/manifest.json cases[6] save-failure FAIL",
+    "final-last/manifest.json cases[0] save-failure FAIL",
+    "final-diagnostics/manifest.json cases[0] diagnostics FAIL",
+    "final-diagnostics-2/manifest.json cases[0] diagnostics FAIL",
+    "final-diagnostics-3/manifest.json cases[0] diagnostics FAIL"
+  ],
+  "manifests": [
+    "final/manifest.json",
+    "final-tail/manifest.json",
+    "final-rest/manifest.json",
+    "final-complete/manifest.json",
+    "final-last/manifest.json",
+    "final-diagnostics/manifest.json",
+    "final-diagnostics-2/manifest.json",
+    "final-diagnostics-3/manifest.json",
+    "final-diagnostics-4/manifest.json"
+  ],
+  "case_count": 30,
+  "cases": [
+    {
+      "case": "sample",
+      "expected": "6枚で本文・コード・構造・列幅・画像を編集し、Undo/Redo、明示保存、再読込、発表の前後移動と終了を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/sample.log",
+      "case_log_sha256": "bb0f0d493664ffd5616b01fb10893d71d9148ab1f74c7e50aefbd01d33648ef7",
+      "started": "2026-10-11T02:38:37.577245+00:00",
+      "finished": "2026-10-11T02:43:11.131639+00:00",
+      "observed": "8種の編集で保存原文とUndo/Redoが一致し、6枚を再読込して発表の前後移動・終了が成功"
+    },
+    {
+      "case": "blank",
+      "expected": "白紙Slideへ6種類のElementを追加し、Slide移動・Undo/Redo・保存を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/blank.log",
+      "case_log_sha256": "f2bceba8e04ea5c54769ace8e728c9cec864a845eaf732731bd8ed6c9784a97f",
+      "started": "2026-10-11T02:43:11.171898+00:00",
+      "finished": "2026-10-11T02:45:16.451340+00:00",
+      "observed": "6種類のElement追加とSlideの追加・移動・削除・復元が成功し、Image削除後も実画像を保持"
+    },
+    {
+      "case": "code-colors",
+      "expected": "Rust・YAML・JSON・TOMLの着色と、未対応言語・言語なしの表示を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/code-colors.log",
+      "case_log_sha256": "49336cad16a09fda303af9f94a04e5796ce3b212e2f287b1ddf624ec9d9517c6",
+      "started": "2026-10-11T02:45:16.487755+00:00",
+      "finished": "2026-10-11T02:45:42.745015+00:00",
+      "observed": "Rust・YAML・JSON・TOMLは着色され、未対応言語・言語なしは無着色"
+    },
+    {
+      "case": "column-width-drag",
+      "expected": "連続プレビュー、下限1・上限99・合計100、ドラッグ一回のUndo/Redo、保存再読込を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/column-width-drag.log",
+      "case_log_sha256": "5678e143c6d3519be654cf8c9112854d198420150875869cb809898f064f3938",
+      "started": "2026-10-11T02:45:42.780537+00:00",
+      "finished": "2026-10-11T02:47:52.355741+00:00",
+      "observed": "幅65と下限1・上限99を観測。保持中の保存は原文不変、完了後は一回Undo/Redoで全文一致"
+    },
+    {
+      "case": "edit-menu",
+      "expected": "ネイティブ編集メニューの操作名・空履歴無効表示・入力と文書のUndo/Redo・Copy/Cut/Pasteを確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/edit-menu.log",
+      "case_log_sha256": "3fb065fab673b3ca67b5e835b17eae00420e7e2c5f7a0587fdae4e809064bef8",
+      "started": "2026-10-11T02:47:52.394602+00:00",
+      "finished": "2026-10-11T02:48:48.280869+00:00",
+      "observed": "空履歴が無効、操作名が更新。native項目のCopy/Cut/Pasteと入力・文書のUndo/Redoが成功"
+    },
+    {
+      "case": "ime-reconversion",
+      "expected": "標準IMEで再変換・候補変更・確定し、全文の一回Undo/Redo、保存再読込を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/ime-reconversion.log",
+      "case_log_sha256": "d75df69a11eb8fe38e13037c2249acf4ef88c83a0141da7bf0df9dcc21089c2b",
+      "started": "2026-10-11T02:48:48.319896+00:00",
+      "finished": "2026-10-11T02:49:29.660034+00:00",
+      "observed": "標準IME候補を変更して確定し、全文が一回Undo/Redoで復元。保存・再読込が一致"
+    },
+    {
+      "case": "layout",
+      "expected": "編集2サイズと発表で全グリフ・折返し・基準座標を照合し、描画像を物理1px以内で比較する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/layout.log",
+      "case_log_sha256": "b941e4f2521d206a610278809ee1abab617e748be35b72467a2fafcbbc3072d6",
+      "started": "2026-10-11T02:49:29.701077+00:00",
+      "finished": "2026-10-11T02:50:01.282751+00:00",
+      "observed": "6画面それぞれ全256グリフが一致。編集2サイズと発表の描画像比較が物理1px以内"
+    },
+    {
+      "case": "direct-layout",
+      "expected": "直接編集20ケースでグリフ位置、折返し、1px描画、実カーソルとInspector表示を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/direct-layout.log",
+      "case_log_sha256": "1f04761b3827cae9a23e064534dffcf3a93a904c87bdf2698fc90aa5ece872dd",
+      "started": "2026-10-11T02:50:01.319870+00:00",
+      "finished": "2026-10-11T02:51:27.254840+00:00",
+      "observed": "直接編集20ケースでグリフ・折返し・描画像比較と実カーソル・Inspectorの検査が成功"
+    },
+    {
+      "case": "ime",
+      "expected": "標準日本語IMEの候補・確定・移動・履歴・保存・取消・無効入力を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/ime.log",
+      "case_log_sha256": "d66e3f070cdb28573a4f87903678b353e02895a33f523e081adc82d2e524f5be",
+      "started": "2026-10-11T02:51:27.292472+00:00",
+      "finished": "2026-10-11T02:52:41.584886+00:00",
+      "observed": "20状態のnative変換・候補位置・キー優先・履歴・取消・無効入力の検査が成功"
+    },
+    {
+      "case": "ime-caption",
+      "expected": "CaptionのCanvasとInspectorの往復で変換状態と候補位置を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/ime-caption.log",
+      "case_log_sha256": "2d33d2f2f6b9208268613cb6400119cdb2f02e2e180b1ace1c2bca6adcaeb594",
+      "started": "2026-10-11T02:52:41.622218+00:00",
+      "finished": "2026-10-11T02:53:15.361886+00:00",
+      "observed": "5種のnative変換状態とCaptionのCanvas／Inspector往復、別欄への確定が成功"
+    },
+    {
+      "case": "presentation-ime",
+      "expected": "変換中の発表開始で確定し、終了後の編集・保存・Undoを確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/presentation-ime.log",
+      "case_log_sha256": "63473902e085f1dbff0d335f41f41fb4a1f638ffdc014fd0d46f132fc23053b4",
+      "started": "2026-10-11T02:53:15.398412+00:00",
+      "finished": "2026-10-11T02:53:45.208818+00:00",
+      "observed": "未保存の変換を確定して発表し、終了後のCanvas・明示保存・Undoが成功"
+    },
+    {
+      "case": "keys",
+      "expected": "全画面開始と終了を10回反復し、キー・ポインター・Finder復帰・既存全画面からの発表を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/keys.log",
+      "case_log_sha256": "2d552b0dc7546c22d0634c302fd0beeb75d25f0420bec0b7e5b2416df84b8e0b",
+      "started": "2026-10-11T02:53:45.247618+00:00",
+      "finished": "2026-10-11T02:56:55.945056+00:00",
+      "observed": "10回の全画面往復、全キー・ポインター、Finder復帰、既存全画面からの開始が成功"
+    },
+    {
+      "case": "presentation",
+      "expected": "開始可否、固定snapshot、開始位置、保存の扱い、外部変更後の復帰を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/presentation.log",
+      "case_log_sha256": "74c7ae283d50ea3d46b00b5eead4857e3e8d324a785b2e425adb6188fdddd7e0",
+      "started": "2026-10-11T02:56:55.993019+00:00",
+      "finished": "2026-10-11T03:01:47.580212+00:00",
+      "observed": "開始禁止・固定snapshot・開始位置・外部変更時の凍結と復帰が成功"
+    },
+    {
+      "case": "text",
+      "expected": "直接編集、選択・削除、コードのTab、言語変更、入力履歴を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/text.log",
+      "case_log_sha256": "912a6e3f7d3b8031d25f754456aaac3b5d06a9b407ee2e4a0c5a84cc577d8457",
+      "started": "2026-10-11T03:01:47.618520+00:00",
+      "finished": "2026-10-11T03:02:52.935836+00:00",
+      "observed": "直接編集・コードTab・言語変更・入力履歴・明示保存・全文Undo/Redo・再読込が成功"
+    },
+    {
+      "case": "no-edit-save",
+      "expected": "通常・生・複数行引用とCRLFの無編集保存で原文全バイトを保持する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/no-edit-save.log",
+      "case_log_sha256": "6c9b04d23e7270d741a250bf3795b30cd09d7a24ae0a78cbf4f19dc0f733fdf6",
+      "started": "2026-10-11T03:02:52.979871+00:00",
+      "finished": "2026-10-11T03:03:24.177598+00:00",
+      "observed": "通常・生・複数行引用とCRLFで保存バイト不変、空履歴を保持"
+    },
+    {
+      "case": "redo",
+      "expected": "欄内Undo後の編集終了で文書履歴へ引き継ぎ、Redoを保持する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final/manifest.json",
+      "case_log": "final/redo.log",
+      "case_log_sha256": "5ce525abc678a7419f58c827ab5c9d271890b8398bb252bea3d01a982aa23bf1",
+      "started": "2026-10-11T03:03:24.213986+00:00",
+      "finished": "2026-10-11T03:04:00.138519+00:00",
+      "observed": "Escapeで編集を終えた後も文書履歴のRedoが残り、保存原文が一致"
+    },
+    {
+      "case": "columns",
+      "expected": "列内外・別Columns・各挿入位置の移動、数値入力と無効値、履歴と保存を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-tail/manifest.json",
+      "case_log": "final-tail/columns.log",
+      "case_log_sha256": "4876696748629bad275f43fcd8a5e49aebefe2914f4c22d26d645db0b72194db",
+      "started": "2026-10-11T03:17:27.542071+00:00",
+      "finished": "2026-10-11T03:23:05.918427+00:00",
+      "observed": "列内外・別Columns・挿入位置の移動と全文Undo/Redo、再起動後の表示、無効幅の保存禁止が成功"
+    },
+    {
+      "case": "layout-repair",
+      "expected": "画面外と非表示Slideの診断、全文修正、一覧のページ切替、保存と再読込を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-tail/manifest.json",
+      "case_log": "final-tail/layout-repair.log",
+      "case_log_sha256": "a962cbf1c68603624dffa95b30529e4cadb42abf6e200d54e89374a0759cba33",
+      "started": "2026-10-11T03:23:05.959917+00:00",
+      "finished": "2026-10-11T03:25:17.859531+00:00",
+      "observed": "非表示Slide・画面外の診断、Inspector修正、一覧ページ切替、保存・再読込が成功"
+    },
+    {
+      "case": "following-layout",
+      "expected": "空Caption・縦長画像・列内要素の後続配置を編集と発表で確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-tail/manifest.json",
+      "case_log": "final-tail/following-layout.log",
+      "case_log_sha256": "563374f9901424a739ab4b405d97ad6a880648346634525e9930aca5656bddf4",
+      "started": "2026-10-11T03:25:17.908956+00:00",
+      "finished": "2026-10-11T03:26:22.940330+00:00",
+      "observed": "空Caption・縦長画像・列内後続要素の実測座標が編集と発表で期待範囲に一致"
+    },
+    {
+      "case": "save-as-retry",
+      "expected": "別名保存の失敗で原本・入力・履歴を保持し、権限復旧後の同じ保存先へ再試行する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-tail/manifest.json",
+      "case_log": "final-tail/save-as-retry.log",
+      "case_log_sha256": "93a7ff49ac8d91904d5e9b56b6517d8388e5940aa5a4e575af9239eef1e4088c",
+      "started": "2026-10-11T03:26:22.984829+00:00",
+      "finished": "2026-10-11T03:27:47.525699+00:00",
+      "observed": "native別名保存の書込み失敗後も原文と入力を保持し、同じ保存先への再試行と履歴初期化が成功"
+    },
+    {
+      "case": "cursor",
+      "expected": "発表中のnativeカーソルを無操作時に隠し、移動と終了で再表示し、クリック・スクロールでSlideを変えない",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-tail/manifest.json",
+      "case_log": "final-tail/cursor.log",
+      "case_log_sha256": "e57604625f77e4c5fc71a7f2915f4ad1da9f1bf14da3b4623c90a4f88d878e8c",
+      "started": "2026-10-11T03:27:47.570840+00:00",
+      "finished": "2026-10-11T03:28:10.721482+00:00",
+      "observed": "native APIで初期表示・2秒無操作後の非表示・移動後と終了後の表示を確認し、クリック・スクロールでSlide不変"
+    },
+    {
+      "case": "close",
+      "expected": "未保存時の保存・破棄・取消と、発表カーソルの非表示・再表示を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-rest/manifest.json",
+      "case_log": "final-rest/close.log",
+      "case_log_sha256": "976624498ca59e71a169bf7a5b1d60451fd5752365eca1a804e4f228f7cd3aad",
+      "started": "2026-10-11T03:30:19.779057+00:00",
+      "finished": "2026-10-11T03:31:41.808477+00:00",
+      "observed": "取消後は入力・原本保持、保存／破棄後は対象ウィンドウが消滅し、保存先の全バイトが期待値に一致"
+    },
+    {
+      "case": "input-scope",
+      "expected": "入力内容を欄別に扱い、編集終了時に文書の履歴へ引き継ぐ",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-rest/manifest.json",
+      "case_log": "final-rest/input-scope.log",
+      "case_log_sha256": "0e54d7d91f858a9a41b5c2840bc5fa48adf269bed227bb8a15b677cedfe73f80",
+      "started": "2026-10-11T03:31:41.848824+00:00",
+      "finished": "2026-10-11T03:32:22.892306+00:00",
+      "observed": "入力欄のtoolbar Undo/Redo境界と、保存後の文書履歴の検査が成功"
+    },
+    {
+      "case": "history-limit",
+      "expected": "入力履歴の1000操作上限と、文書履歴への引き継ぎを確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-rest/manifest.json",
+      "case_log": "final-rest/history-limit.log",
+      "case_log_sha256": "4beef79d34fa471b3d2dad5b15e1ec4d7be9291067d55c193dc0b16aa1d39a0a",
+      "started": "2026-10-11T03:32:22.931502+00:00",
+      "finished": "2026-10-11T03:35:11.011748+00:00",
+      "observed": "1,001入力で履歴1,000件、local Undoの基準値保持、文書の全Redo・全Undoと保存原文が一致"
+    },
+    {
+      "case": "bullet-items",
+      "expected": "箇条書きの空項目・追加削除・並替え・入力履歴を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-rest/manifest.json",
+      "case_log": "final-rest/bullet-items.log",
+      "case_log_sha256": "e864db183629407338985ea5e725cec32d6b07fada98fa48af958ef25c87b9f8",
+      "started": "2026-10-11T03:35:11.048452+00:00",
+      "finished": "2026-10-11T03:36:15.994488+00:00",
+      "observed": "空項目からの追加・入力・並替え・削除と、各操作の一回Undo/Redoで保存原文が一致"
+    },
+    {
+      "case": "nested-bullet-items",
+      "expected": "列内の箇条書き項目を編集し、履歴と保存を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-rest/manifest.json",
+      "case_log": "final-rest/nested-bullet-items.log",
+      "case_log_sha256": "2199110d86104c3d2052d5bd53f99bb113e3873aa681e3646d0ddb1a0eeb53c9",
+      "started": "2026-10-11T03:36:16.032505+00:00",
+      "finished": "2026-10-11T03:37:21.306485+00:00",
+      "observed": "列内で同じ項目操作と原文履歴が一致し、隣の本文を保持"
+    },
+    {
+      "case": "assets",
+      "expected": "実画像のEXIF・透過・形式の画素と、別名保存後の参照・原本保持を確認する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-rest/manifest.json",
+      "case_log": "final-rest/assets.log",
+      "case_log_sha256": "369331b52b1a5cc445a2bdc9132ad4143124c8157dea5df4b2d7b737ddd48038",
+      "started": "2026-10-11T03:37:21.345074+00:00",
+      "finished": "2026-10-11T03:37:52.915018+00:00",
+      "observed": "JPEG・PNG・WebPの画素検査が一致し、別名保存後の参照、再保存と原本全バイトを保持"
+    },
+    {
+      "case": "save-failure",
+      "expected": "書込み失敗で原本・入力・履歴を保持し、再試行とUndoで保存バイトを復元する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-complete/manifest.json",
+      "case_log": "final-complete/save-failure.log",
+      "case_log_sha256": "f28aa97e788eba6aecb20f4a1a06042ff14a668d9c70db877c3b4d461122fdc8",
+      "started": "2026-10-11T07:15:15.399706+00:00",
+      "finished": "2026-10-11T07:15:44.411160+00:00",
+      "observed": "書込み失敗後は原文と編集値を保持し、再保存で期待原文と一致。一回Undoで原本全バイトへ復元"
+    },
+    {
+      "case": "conflict",
+      "expected": "外部変更後の凍結で入力・適用・保存・Undoを無効にし、未確定の入力を保持してSlide閲覧を許可する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-complete/manifest.json",
+      "case_log": "final-complete/conflict.log",
+      "case_log_sha256": "77ff1315253ad1d45c80b9e35d52977be758d41ddbdb698901b746fd33264957",
+      "started": "2026-10-11T07:15:44.457949+00:00",
+      "finished": "2026-10-11T07:16:13.327547+00:00",
+      "observed": "各拒否操作後もnative入力と外部原文が不変。Slide 2を閲覧しても未確定の入力を保持"
+    },
+    {
+      "case": "diagnostics",
+      "expected": "構文・Schema診断の選択で該当する読み取り専用ソース行へ移動し、画像診断で該当Slide・Imageへ移動する",
+      "result": "PASS",
+      "exit_code": 0,
+      "manifest": "final-diagnostics-4/manifest.json",
+      "case_log": "final-diagnostics-4/diagnostics.log",
+      "case_log_sha256": "f55a12e19fe4f598d453dbf383f35f93574d88b0df06d103b9ffd2d8b9b0ddc4",
+      "started": "2026-10-11T07:34:51.828049+00:00",
+      "finished": "2026-10-11T07:35:32.657799+00:00",
+      "observed": "構文3:15とSchema4:3／5:3を選択し、同じソース行の描画と入力後の原文不変を確認。画像診断はSlide 2の画像を選択し、Undoで選択・原文を維持"
+    }
+  ]
+}

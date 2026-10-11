@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/edit_menu_acceptance.py", line 85, in <module>
+    menu.check('empty-document', ('元に戻す', False), ('やり直す', False))
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/edit_menu_acceptance.py", line 53, in check
+    self.click('編集')
+  File "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/edit_menu_acceptance.py", line 46, in click
+    assert len(exact) == 1, ('Native menu must have a unique fresh Orca AX index', title, lines,
+AssertionError: ('Native menu must have a unique fresh Orca AX index', '編集', [], 'App=psycho (pid 36758)\nWindow: "", App: psycho.\n\n0 standard window\n\t1 close button\n\t2 full screen button, Secondary Actions: zoom the window\n\t3 minimize button\n\t4 text\n\nThe focused UI element is 0 standard window.')

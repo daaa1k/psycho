@@ -1,0 +1,5 @@
+presentation {
+ metadata { title "Asset diagnostic navigation" }
+ slide { heading "First slide"; }
+ slide { heading "Missing image slide"; image "diagnostic-missing-image.png"; }
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "path": "final-rest/history-limit/presentation-glyphs.csv",
+    "bytes": 2829116914,
+    "sha256": "2bb0289d4dfe553df85cee03ba6fa891aa97bb46503febb281f4345ab2593d2f",
+    "reason": "Unused by the input-history assertions. Required layout coordinate CSVs are retained; history proof uses native input state, saved source and log. Full redundant render trace remains under target."
+  }
+]

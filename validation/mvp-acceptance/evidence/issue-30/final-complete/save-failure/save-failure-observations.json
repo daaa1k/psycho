@@ -1,0 +1,75 @@
+[
+  {
+    "name": "failure",
+    "text": "●●聞く●保存別名保存UndoRedo+Slide-SlideSlide↑Slide↓最初から発表現在から発表Slides>1Saver...InspectorElementsElement1・見出しPresentationtitleSaveretryacceptance編集値afterfailure適用入力を取り消す見出しを追加本文を追加箇条書きを追加コードを追加画像参照を追加2列を追加afterfailure・未保存/sourcel.tmpqOtJH6\"保存できませんでした：I/Oerror:Permissiondenied（oserror13）atpath\"/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/target/issue30/final-complete/save-failure",
+    "input": {
+      "text": "after failure",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1105.7031,
+        260.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"GUI dirty\"; }; slide { heading \"Save retry acceptance\"; }; }\n"
+  },
+  {
+    "name": "retry",
+    "input": {
+      "text": "after failure",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1105.7031,
+        260.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"after failure\"; }; slide { heading \"Save retry acceptance\"; }; }\n"
+  },
+  {
+    "name": "undo",
+    "input": {
+      "text": "GUI dirty",
+      "selected": [
+        9,
+        9
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1087.2422,
+        260.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"GUI dirty\"; }; slide { heading \"Save retry acceptance\"; }; }\n"
+  }
+]

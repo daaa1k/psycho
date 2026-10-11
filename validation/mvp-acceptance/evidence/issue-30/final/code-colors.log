@@ -1,0 +1,6 @@
+PASS rust highlighted
+PASS yaml highlighted
+PASS json highlighted
+PASS toml highlighted
+PASS unsupported plain text
+PASS unspecified plain text

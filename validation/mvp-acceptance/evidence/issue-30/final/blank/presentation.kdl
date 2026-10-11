@@ -1,0 +1,8 @@
+presentation {
+ metadata { title "Blank additions" }
+ slide id="blank" {}
+ slide {
+  heading "Second slide"
+  text "Body retained with slide"
+ }
+}

@@ -1,0 +1,7 @@
+presentation {
+ metadata { title "x" }
+ slide id="diag" {
+  text 42
+  heading 42
+ }
+}

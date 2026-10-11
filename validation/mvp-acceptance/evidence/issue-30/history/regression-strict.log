@@ -1,0 +1,114 @@
+   Compiling psycho v0.1.0 (/Users/daichikinoshita/orca/workspaces/psycho/6-mvp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.21s
+     Running tests/mvp_regression.rs (target/debug/deps/mvp_regression-f3ed24ebbfe0a278)
+
+running 27 tests
+test prototype_02_01 ... FAILED
+test prototype_02_03 ... FAILED
+test prototype_02_02 ... ok
+test prototype_01_02 ... ok
+test prototype_01_03 ... ok
+test deleting_images_preserves_shared_asset_bytes_and_exact_history ... ok
+test prototype_03_01 ... ok
+test prototype_05_01 ... FAILED
+test prototype_03_02 ... ok
+test prototype_01_01 ... ok
+test prototype_05_02 ... FAILED
+test prototype_07_02 ... FAILED
+test prototype_06_01 ... FAILED
+test prototype_04_01 ... ok
+test prototype_04_02 ... ok
+test prototype_06_02 ... FAILED
+test prototype_08_01 ... FAILED
+test prototype_08_04 ... ok
+test prototype_07_01 ... ok
+test prototype_10_01 ... FAILED
+test prototype_08_02 ... ok
+test prototype_09_02 ... ok
+test prototype_09_03 ... ok
+test prototype_07_03 ... ok
+test prototype_08_03 ... ok
+test prototype_10_02 ... ok
+test schema_node_contracts_cover_unchecked_headers_children_and_empty_values ... ok
+
+failures:
+
+---- prototype_02_01 stdout ----
+
+thread 'prototype_02_01' (49914549) panicked at tests/mvp_regression.rs:95:5:
+assertion `left == right` failed
+  left: "presentation {\n    metadata { title \"コメント\" }\n    slide {\n        // 独立コメント: この場所に残す\n        text \"残す\"; text \"同じ行\"; // 二つ目に伴う\n        columns {\n            column width=50 {\n                image \"a.png\" {\n            // 内部コメント: 画像に伴う\n                    caption \"図\"\n        }; // 末尾コメント: 画像に伴う\n            }\n            column width=50 {\n            }\n        }\n    }\n}\n"
+ right: "presentation {\n    metadata { title \"コメント\" }\n    slide {\n        // 独立コメント: この場所に残す\n        text \"残す\"; text \"同じ行\"; // 二つ目に伴う\n        columns {\n            column width=50 {\n                image \"a.png\" {\n                    // 内部コメント: 画像に伴う\n                    caption \"図\"\n                }; // 末尾コメント: 画像に伴う\n            }\n            column width=50 {\n            }\n        }\n    }\n}\n"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- prototype_02_03 stdout ----
+
+thread 'prototype_02_03' (49914551) panicked at tests/mvp_regression.rs:147:5:
+assertion `left == right` failed
+  left: "presentation {\n    metadata { title \"コメント\" }\n    slide {\n        // 独立コメント: この場所に残す\n        text \"残す\";         columns {\n            column width=50 {\n            }\n            column width=50 {\ntext \"同じ行\"; // 二つ目に伴う\n            }\n        }\n    }\n}\n"
+ right: "presentation {\n    metadata { title \"コメント\" }\n    slide {\n        // 独立コメント: この場所に残す\n        text \"残す\";         columns {\n            column width=50 {\n            }\n            column width=50 {\n                text \"同じ行\"; // 二つ目に伴う\n            }\n        }\n    }\n}\n"
+
+---- prototype_05_01 stdout ----
+
+thread 'prototype_05_01' (49914556) panicked at tests/mvp_regression.rs:277:5:
+assertion `left == right` failed
+  left: "presentation {\n    metadata { title \"移動\" }\n    slide {\n        columns {\n            column width=60 {\n                code language=\"rust\" \"\"\"\n            fn main() {\n                println!(\"日本\");\n            }\n\n            \"\"\"\n            }\n            column width=40 {\n            }\n        }\n    }\n}\n"
+ right: "presentation {\n    metadata { title \"移動\" }\n    slide {\n        columns {\n            column width=60 {\n                code language=\"rust\" \"\"\"\n                    fn main() {\n                        println!(\"日本\");\n                    }\n\n                    \"\"\"\n            }\n            column width=40 {\n            }\n        }\n    }\n}\n"
+
+---- prototype_05_02 stdout ----
+
+thread 'prototype_05_02' (49914557) panicked at tests/mvp_regression.rs:303:5:
+assertion `left == right` failed
+  left: "presentation {\n    metadata { title \"移動\" }\n    slide {\n        columns {\n            column width=60 {\n            }\n            column width=40 {\n            }\n        }\n        code language=\"rust\" \"\"\"\n                    fn main() {\n                        println!(\"日本\");\n                    }\n\n                    \"\"\"\n    }\n}\n"
+ right: "presentation {\n    metadata { title \"移動\" }\n    slide {\n        columns {\n            column width=60 {\n            }\n            column width=40 {\n            }\n        }\n        code language=\"rust\" \"\"\"\n            fn main() {\n                println!(\"日本\");\n            }\n\n            \"\"\"\n    }\n}\n"
+
+---- prototype_07_02 stdout ----
+
+thread 'prototype_07_02' (49914561) panicked at tests/mvp_regression.rs:409:5:
+assertion `left == right` failed
+  left: "presentation {\r\n\tmetadata { title \"追加\" }\r\n\tslide {\r\n\t\ttext \"既存\"\r\n\t\ttext \"追加\"\r\n\t}\r\n\tslide {\r\n\t    heading \"空の親へ\"\r\n\t}\r\n}\r\n"
+ right: "presentation {\r\n\tmetadata { title \"追加\" }\r\n\tslide {\r\n\t\ttext \"既存\"\r\n\t\ttext \"追加\"\r\n\t}\r\n\tslide {\r\n\t\theading \"空の親へ\"\r\n\t}\r\n}\r\n"
+
+---- prototype_06_01 stdout ----
+
+thread 'prototype_06_01' (49914558) panicked at tests/mvp_regression.rs:329:5:
+assertion `left == right` failed
+  left: "presentation {\n    metadata { title \"移動\" }\n    slide {\n        columns {\n            column width=60 {\n                code language=\"rust\" #\"\"\"\n            \\n はそのまま\n                二行目\n            \"\"\"#\n            }\n            column width=40 {\n            }\n        }\n    }\n}\n"
+ right: "presentation {\n    metadata { title \"移動\" }\n    slide {\n        columns {\n            column width=60 {\n                code language=\"rust\" #\"\"\"\n                    \\n はそのまま\n                        二行目\n                    \"\"\"#\n            }\n            column width=40 {\n            }\n        }\n    }\n}\n"
+
+---- prototype_06_02 stdout ----
+
+thread 'prototype_06_02' (49914559) panicked at tests/mvp_regression.rs:355:5:
+assertion `left == right` failed
+  left: "presentation {\n    metadata { title \"移動\" }\n    slide {\n        columns {\n            column width=60 {\n            }\n            column width=40 {\n            }\n        }\n        code language=\"rust\" #\"\"\"\n                    \\n はそのまま\n                        二行目\n                    \"\"\"#\n    }\n}\n"
+ right: "presentation {\n    metadata { title \"移動\" }\n    slide {\n        columns {\n            column width=60 {\n            }\n            column width=40 {\n            }\n        }\n        code language=\"rust\" #\"\"\"\n            \\n はそのまま\n                二行目\n            \"\"\"#\n    }\n}\n"
+
+---- prototype_08_01 stdout ----
+
+thread 'prototype_08_01' (49914563) panicked at tests/mvp_regression.rs:464:5:
+assertion `left == right` failed
+  left: "presentation {\n    metadata { title \"診断\" }\n    slide { code language /* 名 */ = /* 値 */ \"javascript\" /-language=\"ignored\" \"日本\" }\n}\n"
+ right: "presentation {\n    metadata { title \"診断\" }\n    slide { code language /* 名 */ = /* 値 */ javascript /-language=\"ignored\" \"日本\" }\n}\n"
+
+---- prototype_10_01 stdout ----
+
+thread 'prototype_10_01' (49914569) panicked at tests/mvp_regression.rs:613:5:
+assertion `left == right` failed
+  left: "presentation {\r\n\tmetadata { title \"字句の区別\" }\r\n\tslide {\r\n\t\tcolumns {\r\n\t\t\tcolumn width=50 {\r\n\t\t\t    code /* 外側 \" /* 内側 */ */ /-#\"\"\"\r\n\t\t無効化した文字列\r\n\"\"\"# #\"\"\"\r\n\t\t実際の文字列\r\n\"\"\"#; // 伴うコメント\r\n\t\t\t}\r\n\t\t\tcolumn width=50 {\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n"
+ right: "presentation {\r\n\tmetadata { title \"字句の区別\" }\r\n\tslide {\r\n\t\tcolumns {\r\n\t\t\tcolumn width=50 {\r\n\t\t\t\tcode /* 外側 \" /* 内側 */ */ /-#\"\"\"\r\n\t\t無効化した文字列\r\n\"\"\"# #\"\"\"\r\n\t\t実際の文字列\r\n\"\"\"#; // 伴うコメント\r\n\t\t\t}\r\n\t\t\tcolumn width=50 {\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n"
+
+
+failures:
+    prototype_02_01
+    prototype_02_03
+    prototype_05_01
+    prototype_05_02
+    prototype_06_01
+    prototype_06_02
+    prototype_07_02
+    prototype_08_01
+    prototype_10_01
+
+test result: FAILED. 18 passed; 9 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+error: test failed, to rerun pass `--test mvp_regression`

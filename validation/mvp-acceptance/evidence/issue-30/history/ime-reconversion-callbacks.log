@@ -1,0 +1,8 @@
+1791685866639 replace_and_mark_text_in_range content="日本語の変換" marked=None composition_before=None new=" " range=Some(0..6)
+1791685866640 replace_and_mark_text_in_range content=" " marked=Some(0..1) composition_before=Some("日本語の変換") new="" range=None
+1791685866672 replace_and_mark_text_in_range content="" marked=None composition_before=Some("日本語の変換") new="日本語の変換" range=None
+1791685866673 replace_and_mark_text_in_range content="日本語の変換" marked=Some(0..18) composition_before=Some("") new="日本語の変換" range=None
+1791685869961 replace_and_mark_text_in_range content="日本語の変換" marked=Some(0..18) composition_before=Some("") new="日本語の変換" range=None
+1791685870650 replace_and_mark_text_in_range content="日本語の変換" marked=Some(0..18) composition_before=Some("") new="日本語の変換" range=None
+1791685871330 replace_and_mark_text_in_range content="日本語の変換" marked=Some(0..18) composition_before=Some("") new="日本後の変換" range=None
+1791685874805 replace_text_in_range content="日本後の変換" marked=Some(0..18) composition_before=Some("") new="日本後の変換" range=None

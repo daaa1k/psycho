@@ -1,0 +1,247 @@
+[
+  {
+    "name": "caption-before-inspector",
+    "input": {
+      "text": "日本語の変換",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        279.0759,
+        486.15002,
+        18.112501
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "windows": [
+      {
+        "bounds": {
+          "Height": 140,
+          "Width": 178,
+          "X": 519,
+          "Y": 727
+        },
+        "id": 33014,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 892,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 32988,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "name": "caption-inspector",
+    "input": {
+      "text": "日本語の変換",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        1111.6427,
+        438.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "windows": [
+      {
+        "bounds": {
+          "Height": 146,
+          "Width": 416,
+          "X": 1504,
+          "Y": 684
+        },
+        "id": 33016,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 140,
+          "Width": 178,
+          "X": 1326,
+          "Y": 687
+        },
+        "id": 33014,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 892,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 32988,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "name": "caption-canvas",
+    "input": {
+      "text": "日本語の変換",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        279.0759,
+        486.15002,
+        18.112501
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "windows": [
+      {
+        "bounds": {
+          "Height": 146,
+          "Width": 416,
+          "X": 697,
+          "Y": 725
+        },
+        "id": 33016,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 140,
+          "Width": 178,
+          "X": 519,
+          "Y": 728
+        },
+        "id": 33014,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 892,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 32988,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "name": "caption-inspector-again",
+    "input": {
+      "text": "日本語の変換",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        1111.6427,
+        438.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "windows": [
+      {
+        "bounds": {
+          "Height": 146,
+          "Width": 416,
+          "X": 1504,
+          "Y": 685
+        },
+        "id": 33016,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 140,
+          "Width": 178,
+          "X": 1326,
+          "Y": 688
+        },
+        "id": 33014,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 892,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 32988,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "name": "image-path-after-caption",
+    "input": {
+      "text": "orientation-6.jpg",
+      "selected": [
+        17,
+        17
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1144.2578,
+        438.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "windows": [
+      {
+        "bounds": {
+          "Height": 892,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 32988,
+        "layer": 0
+      }
+    ]
+  }
+]

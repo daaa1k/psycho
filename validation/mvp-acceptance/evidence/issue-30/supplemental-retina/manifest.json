@@ -1,0 +1,41 @@
+{
+  "started": "2026-10-10T12:51:27.595242+00:00",
+  "revision": "40d4f0707c9a8519e3e8df508358240f8ba2cc20",
+  "dirty": true,
+  "binary_sha256": "5df065008ee2149c6cbbb8d181d0e1416213408929c65e829f22f3821760ee20",
+  "os": "macOS-26.5.2-arm64-arm-64bit",
+  "screens": [
+    {
+      "width": 1470,
+      "scale": 2,
+      "name": "Built-in Retina Display",
+      "x": 0,
+      "y": 0,
+      "height": 956
+    },
+    {
+      "width": 2560,
+      "height": 1440,
+      "x": -2560,
+      "name": "BenQ GW2765",
+      "y": -48,
+      "scale": 1
+    }
+  ],
+  "cases": [
+    {
+      "case": "layout",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/target/issue30-python/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/validation/mvp-acceptance/presentation_layout_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/6-mvp/target/issue30/round3/layout"
+      ],
+      "expected": "All runtime assertions pass",
+      "started": "2026-10-10T12:51:28.659363+00:00",
+      "exit_code": 1,
+      "result": "FAIL",
+      "finished": "2026-10-10T12:52:01.557752+00:00"
+    }
+  ]
+}

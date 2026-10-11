@@ -1,0 +1,7 @@
+            if let Some(path) = std::env::var_os("PSYCHO_FONT_RESOLUTION_TRACE") {
+                use std::io::Write;
+                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open(path) {
+                    let text_hex = text.as_bytes().iter().map(|byte| format!("{byte:02x}")).collect::<String>();
+                    let _ = writeln!(file, "{}\t{}\t{}\t{}", font_id.0, self.postscript_names_by_font_id[&font_id], f32::from(font_size), text_hex);
+                }
+            }
