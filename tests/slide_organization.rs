@@ -44,7 +44,7 @@ fn empty_presentation_can_insert_and_remove_without_removing_assets() {
     assert_eq!(document.insert_slide(0).unwrap(), 0);
     document.remove_slide(0).unwrap();
     assert!(document.model().unwrap().slides.is_empty());
-    assert_eq!(std::fs::read(asset).unwrap(), b"asset bytes");
+    assert_eq!(std::fs::read(&asset).unwrap(), b"asset bytes");
     assert!(document.undo());
     assert_eq!(document.model().unwrap().slides.len(), 1);
     assert!(document.undo());
@@ -69,4 +69,23 @@ fn insertion_and_move_preserve_unique_ids_and_inline_siblings() {
     assert!(document.undo());
     assert!(document.undo());
     assert_eq!(document.source(), original);
+}
+
+#[test]
+fn deleting_image_slide_leaves_its_referenced_asset_and_restores_content() {
+    let dir = tempfile::tempdir().unwrap();
+    let path = dir.path().join("presentation.kdl");
+    let asset = dir.path().join("asset.png");
+    std::fs::write(&asset, b"asset bytes").unwrap();
+    let original = "presentation { metadata { title \"asset\"; }; slide id=\"image\" { image \"asset.png\" { caption \"keep caption\"; }; }; }";
+    std::fs::write(&path, original).unwrap();
+    let mut document = PresentationDocument::open(&path).unwrap();
+    document.remove_slide(0).unwrap();
+    assert_eq!(std::fs::read(&asset).unwrap(), b"asset bytes");
+    assert!(document.undo());
+    assert_eq!(document.source(), original);
+    assert_eq!(
+        document.model().unwrap().slides[0].id.as_deref(),
+        Some("image")
+    );
 }
