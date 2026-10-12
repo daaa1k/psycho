@@ -15,8 +15,8 @@ def checkpoint(name):
     print('PASS',name,flush=True)
 def slides(data):return len(re.findall(rb'\bslide(?:\s+id="[^"]*")?\s*\{',data))
 try:
-    for kind,label in [('heading','見出しを追加'),('text','本文を追加'),('bullets','箇条書きを追加'),('code','コードを追加'),('image','画像参照を追加'),('columns','2列を追加')]:
-        gui.press(label);gui.key('Escape');added=gui.save()
+    for kind,label in [('heading','見出し'),('text','本文'),('bullets','箇条書き'),('code','コード'),('image','画像'),('columns','2列')]:
+        gui.press('挿入');gui.press(label);gui.key('Escape');added=gui.save()
         assert re.search(rb'\b'+kind.encode()+rb'\b',added) and slides(added)==1,(kind,added)
         checkpoint(f'blank-add-{kind}')
         if kind=='image':
@@ -26,8 +26,8 @@ try:
             checkpoint('blank-image-delete-undo')
         gui.press('Undo');assert gui.save()==gui.original,(kind,gui.fixture.read_bytes())
     gui.press('＋ Slide');assert slides(gui.save())==2
-    gui.press('見出しを追加');gui.replace('Second slide');gui.key('Escape')
-    gui.press('本文を追加');gui.replace('Body retained with slide');gui.key('Escape')
+    gui.press('挿入');gui.press('見出し');gui.replace('Second slide');gui.key('Escape')
+    gui.press('挿入');gui.press('本文');gui.replace('Body retained with slide');gui.key('Escape')
     populated=gui.save();assert b'heading "Second slide"' in populated and b'text "Body retained with slide"' in populated
     checkpoint('slide-populated')
     gui.press('Slide ↑');up=gui.save()

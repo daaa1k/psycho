@@ -130,8 +130,8 @@ class Gui:
         self.act('get-app-state')
 
     def press(self,label,scroll=False,aliases=()):
-        if label in ('Undo', 'Redo'):
-            label = {'Undo': '元に戻す', 'Redo': 'やり直す'}[label]
+        if label in ('Undo', 'Redo', '挿入', '見出し', '本文', '箇条書き', 'コード', '画像', '2列'):
+            label = {'Undo': '元に戻す', 'Redo': 'やり直す'}.get(label, label)
             state = self.act('get-app-state')
             match = next(re.finditer(r'^\s*(\d+) button (\(disabled\) )?' + re.escape(label) + r'$',
                                      state['snapshot']['treeText'], re.MULTILINE), None)

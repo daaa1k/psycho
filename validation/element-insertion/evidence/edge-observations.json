@@ -1,0 +1,202 @@
+[
+  {
+    "name": "small-window-four-columns",
+    "tree": "App=psycho (pid 33190)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 2列\n\t11 button Element 2 · 2列\n\t12 button Element 3 · 2列\n\t13 button Element 4 · 2列\n\t14 button Presentation title\n\t15 text field (settable) 編集値, Value: Edges\n\t16 button 適用\n\t17 button (disabled) 入力を取り消す\n\t18 button 要素を追加…\n\t19 container 挿入\n\t\t20 radio button (selected, settable) スライド直下, Secondary Actions: pick\n\t\t21 radio button (settable) 2列 1 の左列, Secondary Actions: pick\n\t\t22 radio button (settable) 2列 1 の右列, Secondary Actions: pick\n\t\t23 radio button (settable) 2列 2 の左列, Secondary Actions: pick\n\t\t24 radio button (settable) 2列 2 の右列, Secondary Actions: pick\n\t\t25 radio button (settable) 2列 3 の左列, Secondary Actions: pick\n\t\t26 radio button (settable) 2列 3 の右列, Secondary Actions: pick\n\t\t27 radio button (settable) 2列 4 の左列, Secondary Actions: pick\n\t\t28 radio button (settable) 2列 4 の右列, Secondary Actions: pick\n\t\t29 button 見出し\n\t\t30 button 本文\n\t\t31 button 箇条書き\n\t\t32 button コード\n\t\t33 button 画像\n\t\t34 button 2列\n\t35 close button\n\t36 full screen button, Secondary Actions: zoom the window\n\t37 minimize button\n\t38 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Edges\" }\n slide id=\"a\" {\n columns { column width=50; column width=50 }\n columns { column width=50; column width=50 }\n columns { column width=50; column width=50 }\n columns { column width=50; column width=50 }\n }\n}\n",
+    "input": {
+      "text": "Edges",
+      "selected": [
+        5,
+        5
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        802.0625,
+        362.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    }
+  },
+  {
+    "name": "keyboard-text-scrolled-visible",
+    "tree": "App=psycho (pid 33190)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 2列\n\t11 button Element 2 · 2列\n\t12 button Element 3 · 2列\n\t13 button Element 4 · 2列\n\t14 button Presentation title\n\t15 text field (settable) 編集値, Value: Edges\n\t16 button 適用\n\t17 button (disabled) 入力を取り消す\n\t18 button 要素を追加…\n\t19 container 挿入\n\t\t20 radio button (selected, settable) スライド直下, Secondary Actions: pick\n\t\t21 radio button (settable) 2列 1 の左列, Secondary Actions: pick\n\t\t22 radio button (settable) 2列 1 の右列, Secondary Actions: pick\n\t\t23 radio button (settable) 2列 2 の左列, Secondary Actions: pick\n\t\t24 radio button (settable) 2列 2 の右列, Secondary Actions: pick\n\t\t25 radio button (settable) 2列 3 の左列, Secondary Actions: pick\n\t\t26 radio button (settable) 2列 3 の右列, Secondary Actions: pick\n\t\t27 radio button (settable) 2列 4 の左列, Secondary Actions: pick\n\t\t28 radio button (settable) 2列 4 の右列, Secondary Actions: pick\n\t\t29 button 見出し\n\t\t30 button 本文\n\t\t31 button 箇条書き\n\t\t32 button コード\n\t\t33 button 画像\n\t\t34 button 2列\n\t35 close button\n\t36 full screen button, Secondary Actions: zoom the window\n\t37 minimize button\n\t38 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Edges\" }\n slide id=\"a\" {\n columns { column width=50; column width=50 }\n columns { column width=50; column width=50 }\n columns { column width=50; column width=50 }\n columns { column width=50; column width=50 }\n }\n}\n",
+    "input": {
+      "text": "Edges",
+      "selected": [
+        5,
+        5
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        802.0625,
+        362.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    }
+  },
+  {
+    "name": "keyboard-insert-root",
+    "tree": "App=psycho (pid 33190)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 2列\n\t11 button Element 2 · 2列\n\t12 button Element 3 · 2列\n\t13 button Element 4 · 2列\n\t14 button (disabled) 前の項目\n\t15 button 次の項目\n\t16 button Presentation title\n\t17 button 2列 1 · 左列へ移動\n\t18 button 2列 1 · 右列へ移動\n\t19 button 2列 2 · 左列へ移動\n\t20 button 2列 2 · 右列へ移動\n\t21 button 2列 3 · 左列へ移動\n\t22 button 2列 3 · 右列へ移動\n\t23 button 2列 4 · 左列へ移動\n\t24 button 2列 4 · 右列へ移動\n\t25 button 全文をInspectorで編集\n\t26 button Element ↑\n\t27 button (disabled) Element ↓\n\t28 button Element を削除\n\t29 button (disabled) 入力を取り消す\n\t30 button 要素を追加…\n\t31 close button\n\t32 full screen button, Secondary Actions: zoom the window\n\t33 minimize button\n\t34 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Edges\" }\n slide id=\"a\" {\n columns { column width=50; column width=50 }\n columns { column width=50; column width=50 }\n columns { column width=50; column width=50 }\n columns { column width=50; column width=50 }\n  text \"keyboard-root\"\n }\n}\n",
+    "input": {
+      "text": "keyboard-root",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        277.45917,
+        252.1,
+        18.112501
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    }
+  },
+  {
+    "name": "native-all-four-columns",
+    "tree": "App=psycho (pid 33190)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 2列\n\t11 button 左列 · 本文 1\n\t12 button 右列 · 本文 1\n\t13 button Element 2 · 2列\n\t14 button (disabled) 前の項目\n\t15 button 次の項目\n\t16 button Presentation title\n\t17 button 2列の内容へ戻る\n\t18 button Slide 直下へ移動\n\t19 button 全文をInspectorで編集\n\t20 button Element を削除\n\t21 button (disabled) 入力を取り消す\n\t22 button 要素を追加…\n\t23 close button\n\t24 full screen button, Secondary Actions: zoom the window\n\t25 minimize button\n\t26 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Edges\" }\n slide id=\"a\" {\n columns { column width=50 {\n  text \"native1左列\"\n }; column width=50  {\n  text \"native1右列\"\n }}\n columns { column width=50 {\n  text \"native2左列\"\n }; column width=50  {\n  text \"native2右列\"\n }}\n columns { column width=50 {\n  text \"native3左列\"\n }; column width=50  {\n  text \"native3右列\"\n }}\n columns { column width=50 {\n  text \"native4左列\"\n }; column width=50  {\n  text \"native4右列\"\n }}\n  text \"keyboard-root\"\n }\n}\n",
+    "input": {
+      "text": "native4右列",
+      "selected": [
+        9,
+        9
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        519.76746,
+        296.0875,
+        18.112501
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    }
+  },
+  {
+    "name": "inspector-parent-selection",
+    "tree": "App=psycho (pid 33190)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 2列\n\t11 button 左列 · 本文 1\n\t12 button 左列 · 本文 2 ✓\n\t13 button 右列 · 本文 1\n\t14 button (disabled) 前の項目\n\t15 button 次の項目\n\t16 button Presentation title\n\t17 button 2列の内容へ戻る\n\t18 button Slide 直下へ移動\n\t19 button 全文をInspectorで編集\n\t20 button 列内 Element ↑\n\t21 button (disabled) 列内 Element ↓\n\t22 button Element を削除\n\t23 button (disabled) 入力を取り消す\n\t24 button 要素を追加…\n\t25 close button\n\t26 full screen button, Secondary Actions: zoom the window\n\t27 minimize button\n\t28 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Edges\" }\n slide id=\"a\" {\n columns { column width=50 {\n  text \"native1左列\"\n  text \"inspector-left\"\n }; column width=50  {\n  text \"native1右列\"\n }}\n columns { column width=50 {\n  text \"native2左列\"\n }; column width=50  {\n  text \"native2右列\"\n }}\n columns { column width=50 {\n  text \"native3左列\"\n }; column width=50  {\n  text \"native3右列\"\n }}\n columns { column width=50 {\n  text \"native4左列\"\n }; column width=50  {\n  text \"native4右列\"\n }}\n  text \"keyboard-root\"\n }\n}\n",
+    "input": {
+      "text": "inspector-left",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        273.73288,
+        239.1625,
+        18.112501
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    }
+  },
+  {
+    "name": "invalid-width-toolbar",
+    "tree": "App=psycho (pid 33190)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 2列 ✓\n\t11 button 左列 · 本文 1\n\t12 button 左列 · 本文 2\n\t13 button 右列 · 本文 1\n\t14 button (disabled) 前の項目\n\t15 button 次の項目\n\t16 button Presentation title\n\t17 text field (settable) 編集値, Value: 0\n\t18 button 幅を適用\n\t19 button Element を削除\n\t20 button 左列幅を数値入力\n\t21 button 右列幅を数値入力\n\t22 button 左列を +5%\n\t23 button 左列を -5%\n\t24 button 左列に追加…\n\t25 button 右列に追加…\n\t26 button (disabled) Element ↑\n\t27 button Element ↓\n\t28 button 入力を取り消す\n\t29 button 要素を追加…\n\t30 close button\n\t31 full screen button, Secondary Actions: zoom the window\n\t32 minimize button\n\t33 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Edges\" }\n slide id=\"a\" {\n columns { column width=50 {\n  text \"native1左列\"\n  text \"inspector-left\"\n }; column width=50  {\n  text \"native1右列\"\n }}\n columns { column width=50 {\n  text \"native2左列\"\n }; column width=50  {\n  text \"native2右列\"\n }}\n columns { column width=50 {\n  text \"native3左列\"\n }; column width=50  {\n  text \"native3右列\"\n }}\n columns { column width=50 {\n  text \"native4左列\"\n }; column width=50  {\n  text \"native4右列\"\n }}\n  text \"keyboard-root\"\n }\n}\n",
+    "input": {
+      "text": "0",
+      "selected": [
+        1,
+        1
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        766.7656,
+        400.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    }
+  },
+  {
+    "name": "invalid-width-inspector",
+    "tree": "App=psycho (pid 33190)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 2列 ✓\n\t11 button 左列 · 本文 1\n\t12 button 左列 · 本文 2\n\t13 button 右列 · 本文 1\n\t14 button (disabled) 前の項目\n\t15 button 次の項目\n\t16 button Presentation title\n\t17 text field (settable) 編集値, Value: 0\n\t18 button 幅を適用\n\t19 button Element を削除\n\t20 button 左列幅を数値入力\n\t21 button 右列幅を数値入力\n\t22 button 左列を +5%\n\t23 button 左列を -5%\n\t24 button 左列に追加…\n\t25 button 右列に追加…\n\t26 button (disabled) Element ↑\n\t27 button Element ↓\n\t28 button 入力を取り消す\n\t29 button 要素を追加…\n\t30 close button\n\t31 full screen button, Secondary Actions: zoom the window\n\t32 minimize button\n\t33 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Edges\" }\n slide id=\"a\" {\n columns { column width=50 {\n  text \"native1左列\"\n  text \"inspector-left\"\n }; column width=50  {\n  text \"native1右列\"\n }}\n columns { column width=50 {\n  text \"native2左列\"\n }; column width=50  {\n  text \"native2右列\"\n }}\n columns { column width=50 {\n  text \"native3左列\"\n }; column width=50  {\n  text \"native3右列\"\n }}\n columns { column width=50 {\n  text \"native4左列\"\n }; column width=50  {\n  text \"native4右列\"\n }}\n  text \"keyboard-root\"\n }\n}\n",
+    "input": {
+      "text": "0",
+      "selected": [
+        1,
+        1
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        766.7656,
+        400.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    }
+  },
+  {
+    "name": "invalid-width-native",
+    "tree": "App=psycho (pid 33190)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 2列 ✓\n\t11 button 左列 · 本文 1\n\t12 button 左列 · 本文 2\n\t13 button 右列 · 本文 1\n\t14 button (disabled) 前の項目\n\t15 button 次の項目\n\t16 button Presentation title\n\t17 text field (settable) 編集値, Value: 0\n\t18 button 幅を適用\n\t19 button Element を削除\n\t20 button 左列幅を数値入力\n\t21 button 右列幅を数値入力\n\t22 button 左列を +5%\n\t23 button 左列を -5%\n\t24 button 左列に追加…\n\t25 button 右列に追加…\n\t26 button (disabled) Element ↑\n\t27 button Element ↓\n\t28 button 入力を取り消す\n\t29 button 要素を追加…\n\t30 close button\n\t31 full screen button, Secondary Actions: zoom the window\n\t32 minimize button\n\t33 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Edges\" }\n slide id=\"a\" {\n columns { column width=50 {\n  text \"native1左列\"\n  text \"inspector-left\"\n }; column width=50  {\n  text \"native1右列\"\n }}\n columns { column width=50 {\n  text \"native2左列\"\n }; column width=50  {\n  text \"native2右列\"\n }}\n columns { column width=50 {\n  text \"native3左列\"\n }; column width=50  {\n  text \"native3右列\"\n }}\n columns { column width=50 {\n  text \"native4左列\"\n }; column width=50  {\n  text \"native4右列\"\n }}\n  text \"keyboard-root\"\n }\n}\n",
+    "input": {
+      "text": "0",
+      "selected": [
+        1,
+        1
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        766.7656,
+        400.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    }
+  }
+]

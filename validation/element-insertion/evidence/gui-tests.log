@@ -1,0 +1,18 @@
+   Compiling psycho v0.1.0 (/private/tmp/psycho-issue-52-implementation)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.82s
+warning: the following packages contain code that will be rejected by a future version of Rust: block v0.1.6
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+     Running unittests src/main.rs (target/debug/deps/psycho-6c7cb39d907b33f0)
+
+running 8 tests
+test editor_view::tests::shrinking_window_keeps_preferred_pane_widths ... ok
+test input::tests::marked_text_selection_stays_within_a_fully_replaced_title ... ok
+test input::tests::marked_text_selection_is_relative_to_replacement_text ... ok
+test input::tests::display_tabs_keep_raw_unicode_and_utf16_edit_offsets ... ok
+test editor_view::tests::fit_uses_both_actual_dimensions_and_actual_size_is_unscaled ... ok
+test editor_insert::tests::columns_nesting_and_missing_parents_are_rejected ... ok
+test editor_insert::tests::stale_request_rejects_a_different_columns_at_the_same_index ... ok
+test editor_insert::tests::stale_slide_and_reordered_parent_are_rejected ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
