@@ -1,0 +1,45 @@
+# Weekly pass: keep .agents/skills/verify and its feature map aligned with the repo.
+# Full macOS GUI drives remain manual or acceptance scripts; this job runs the
+# automated maintain-verification-skill checks on every platform CI supports.
+
+name: Verify skill maintenance
+
+on:
+  schedule:
+    # Mondays 09:00 UTC
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: verify-skill-maintenance
+  cancel-in-progress: false
+
+jobs:
+  maintain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install Linux GUI dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            clang \
+            libasound2-dev \
+            libfontconfig1-dev \
+            libssl-dev \
+            libwayland-dev \
+            libx11-dev \
+            libxcb-render0-dev \
+            libxcb-shape0-dev \
+            libxcb-xfixes0-dev \
+            libxkbcommon-dev \
+            pkg-config
+      - name: Ensure psycho-verify is executable
+        run: chmod +x .agents/skills/verify/helpers/psycho-verify
+      - name: maintain-verification-skill
+        run: |
+          .agents/skills/verify/helpers/psycho-verify maintain-verification-skill \
+            --run-id "ci-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"

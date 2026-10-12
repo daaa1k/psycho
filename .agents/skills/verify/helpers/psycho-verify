@@ -1,0 +1,314 @@
+#!/usr/bin/env python3
+"""PSYCHO verification helper (not product code).
+
+Subcommands:
+  map-lint                      Feature map structure and index links
+  doctor                        Read-only preflight (map + toolchain + optional GUI run)
+  launch                        macOS: start scratch psycho for --kdl
+  drive-core --feature <id>     Headless cargo test mapped to a feature id
+  maintain-verification-skill   map-lint + core tests (+ macOS sanity when available)
+  cleanup --run-id <id>         Stop launched PID and remove scratch state only
+
+Scratch state: target/psycho-verify/<run_id>/
+Evidence (never deleted here): .agents/skills/verify/evidence/<run_id>/
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+SKILL_DIR = Path(__file__).resolve().parents[1]
+REPO_ROOT = SKILL_DIR.parents[2]
+FEATURES = SKILL_DIR / "features"
+EVIDENCE_ROOT = SKILL_DIR / "evidence"
+SCRATCH_ROOT = REPO_ROOT / "target" / "psycho-verify"
+STATE_NAME = "state.json"
+
+FEATURE_CORE_TESTS = {
+    "open-presentation": [],
+    "edit-slide-content": [],
+    "save-document": [
+        "save_rechecks_changes_after_the_temporary_file_is_synced",
+        "save_as_rechecks_destination_changes_and_preserves_the_original_document",
+    ],
+    "present-slideshow": [],
+    "diagnostic-navigation": [],
+}
+
+REQUIRED_H2 = (
+    "Sub-features",
+    "How to get to it (user POV)",
+    None,  # Driving it with <harness>
+    "Gotchas",
+)
+
+
+def _die(msg: str, code: int = 1) -> None:
+    print(f"psycho-verify: {msg}", file=sys.stderr)
+    raise SystemExit(code)
+
+
+def _ok(payload: dict) -> None:
+    print(json.dumps({"ok": True, **payload}, ensure_ascii=False))
+
+
+def _state_path(run_id: str) -> Path:
+    return SCRATCH_ROOT / run_id / STATE_NAME
+
+
+def _load_state(run_id: str) -> dict:
+    path = _state_path(run_id)
+    if not path.is_file():
+        _die(f"missing state for run_id={run_id}: {path}")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _save_state(state: dict) -> None:
+    path = _state_path(state["run_id"])
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+
+
+def _feature_files() -> list[Path]:
+    return sorted(p for p in FEATURES.glob("*.md") if p.name != "README.md")
+
+
+def _driving_heading(text: str) -> bool:
+    return text.startswith("Driving it with ")
+
+
+def cmd_map_lint(_: argparse.Namespace) -> None:
+    readme = FEATURES / "README.md"
+    if not readme.is_file():
+        _die(f"missing {readme}")
+    readme_text = readme.read_text(encoding="utf-8")
+    files = _feature_files()
+    if not files:
+        _die("no feature files beside README.md")
+    for path in files:
+        body = path.read_text(encoding="utf-8")
+        if not body.startswith("# "):
+            _die(f"{path.name}: missing H1 title")
+        h2s = re.findall(r"^## (.+)$", body, re.MULTILINE)
+        if len(h2s) < 4:
+            _die(f"{path.name}: expected four H2 sections, got {h2s}")
+        if h2s[0] != REQUIRED_H2[0] or h2s[1] != REQUIRED_H2[1]:
+            _die(f"{path.name}: first H2s must be Sub-features and user POV")
+        if not _driving_heading(h2s[2]):
+            _die(f"{path.name}: third H2 must be 'Driving it with <harness>'")
+        if h2s[3] != REQUIRED_H2[3]:
+            _die(f"{path.name}: fourth H2 must be Gotchas")
+        if "Preconditions:" not in body:
+            _die(f"{path.name}: driving section needs Preconditions:")
+        link = f"](./{path.name})"
+        if link not in readme_text and path.stem not in readme_text:
+            _die(f"{path.name}: not linked from features/README.md")
+    _ok({"command": "map-lint", "features": [p.stem for p in files]})
+
+
+def _cargo_available() -> str:
+    cargo = os.environ.get("CARGO", "cargo")
+    try:
+        subprocess.run([cargo, "--version"], check=True, capture_output=True, text=True)
+    except (OSError, subprocess.CalledProcessError) as exc:
+        _die(f"cargo not usable: {exc}")
+    return cargo
+
+
+def _run_id(args: argparse.Namespace) -> str:
+    return args.run_id or os.environ.get("PSYCHO_VERIFY_RUN_ID") or "local"
+
+
+def cmd_doctor(args: argparse.Namespace) -> None:
+    cmd_map_lint(args)
+    cargo = _cargo_available()
+    info = {"command": "doctor", "cargo": cargo, "platform": sys.platform}
+    if args.run_id is not None:
+        state = _load_state(args.run_id)
+        info["run_id"] = args.run_id
+        info["kdl"] = state.get("kdl")
+        info["pid"] = state.get("pid")
+        if sys.platform != "darwin":
+            info["gui"] = "skipped_non_macos"
+        else:
+            pid = state.get("pid")
+            if pid is None:
+                _die("state missing pid")
+            try:
+                subprocess.run(["orca", "computer", "list-apps", "--json"], check=True, capture_output=True, text=True)
+            except (OSError, subprocess.CalledProcessError) as exc:
+                _die(f"orca required for GUI doctor: {exc}")
+            listed = json.loads(
+                subprocess.check_output(["orca", "computer", "list-apps", "--json"], text=True)
+            )
+            owned = any(app.get("pid") == pid for app in listed.get("result", {}).get("apps", []))
+            if not owned:
+                _die(f"scratch pid {pid} not listed by orca")
+            info["gui"] = "ok"
+    _ok(info)
+
+
+def cmd_launch(args: argparse.Namespace) -> None:
+    if sys.platform != "darwin":
+        _die("launch requires macOS")
+    run_id = _run_id(args)
+    scratch = SCRATCH_ROOT / run_id
+    if scratch.exists() and not args.force:
+        _die(f"scratch exists: {scratch} (use --force or cleanup)")
+    kdl = Path(args.kdl)
+    if not kdl.is_file():
+        kdl = REPO_ROOT / args.kdl
+    if not kdl.is_file():
+        _die(f"KDL not found: {args.kdl}")
+    cargo = _cargo_available()
+    subprocess.run(
+        [cargo, "build", "--locked", "--features", "gui", "--bin", "psycho"],
+        cwd=REPO_ROOT,
+        check=True,
+    )
+    binary = REPO_ROOT / "target" / "debug" / "psycho"
+    if not binary.is_file():
+        _die(f"missing binary after build: {binary}")
+    scratch.mkdir(parents=True, exist_ok=True)
+    fixture = scratch / "presentation.kdl"
+    fixture.write_text(kdl.read_text(encoding="utf-8"))
+    log = scratch / "product.log"
+    with log.open("w") as err:
+        proc = subprocess.Popen(
+            [str(binary), str(fixture)],
+            cwd=REPO_ROOT,
+            stdout=subprocess.DEVNULL,
+            stderr=err,
+        )
+    state = {"run_id": run_id, "pid": proc.pid, "kdl": str(fixture), "log": str(log)}
+    _save_state(state)
+    _ok({"command": "launch", **state})
+
+
+def cmd_drive_core(args: argparse.Namespace) -> None:
+    feature = args.feature
+    tests = FEATURE_CORE_TESTS.get(feature)
+    if tests is None:
+        _die(f"unknown feature id: {feature}")
+    run_id = _run_id(args)
+    evidence = EVIDENCE_ROOT / run_id
+    evidence.mkdir(parents=True, exist_ok=True)
+    cargo = _cargo_available()
+    if not tests:
+        # Library still builds/tests; feature is GUI-primary.
+        cmd = [cargo, "test", "--locked", "--lib", "-q"]
+        note = "gui_primary_feature_smoke"
+    else:
+        # One cargo filter: all mapped tests share a prefix or stem pattern.
+        filter = tests[0].rsplit("_", 1)[0] + "_"
+        if not all(t.startswith(filter) for t in tests):
+            filter = tests[0]
+        cmd = [cargo, "test", "--locked", "--lib", filter, "--", "--nocapture"]
+        note = "mapped_tests"
+    log_path = evidence / f"{feature}-cargo-test.log"
+    result = subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True)
+    log_path.write_text(result.stdout + result.stderr, encoding="utf-8")
+    if result.returncode != 0:
+        _die(f"cargo test failed for {feature}; see {log_path}")
+    _ok(
+        {
+            "command": "drive-core",
+            "feature": feature,
+            "note": note,
+            "evidence": str(log_path),
+        }
+    )
+
+
+def cmd_maintain(args: argparse.Namespace) -> None:
+    run_id = _run_id(args)
+    cmd_map_lint(args)
+    cargo = _cargo_available()
+    subprocess.run([cargo, "test", "--locked", "-q"], cwd=REPO_ROOT, check=True)
+    helper = Path(__file__)
+    if not os.access(helper, os.X_OK):
+        _die(f"helper must be executable: {helper}")
+    acceptance = REPO_ROOT / "validation" / "mvp-acceptance" / "gui_session.py"
+    extras = {"acceptance_harness": str(acceptance), "acceptance_present": acceptance.is_file()}
+    if sys.platform == "darwin" and shutil_which("orca"):
+        extras["orca"] = "present"
+    else:
+        extras["orca"] = "absent_skip_gui_drives"
+    evidence = EVIDENCE_ROOT / run_id
+    evidence.mkdir(parents=True, exist_ok=True)
+    (evidence / "maintain-summary.json").write_text(
+        json.dumps(extras, indent=2) + "\n", encoding="utf-8"
+    )
+    _ok({"command": "maintain-verification-skill", "run_id": run_id, **extras})
+
+
+def shutil_which(name: str) -> str | None:
+    from shutil import which
+
+    return which(name)
+
+
+def cmd_cleanup(args: argparse.Namespace) -> None:
+    run_id = _run_id(args)
+    scratch = SCRATCH_ROOT / run_id
+    if _state_path(run_id).is_file():
+        state = _load_state(run_id)
+        pid = state.get("pid")
+        if pid is not None:
+            try:
+                os.kill(pid, 15)
+            except ProcessLookupError:
+                pass
+        _state_path(run_id).unlink(missing_ok=True)
+    if scratch.is_dir():
+        for child in scratch.iterdir():
+            if child.is_file():
+                child.unlink()
+            elif child.is_dir():
+                import shutil
+
+                shutil.rmtree(child)
+        scratch.rmdir()
+    _ok({"command": "cleanup", "run_id": run_id})
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(prog="psycho-verify")
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument(
+        "--run-id",
+        default=None,
+        help="Scratch/evidence id (defaults to $PSYCHO_VERIFY_RUN_ID or 'local')",
+    )
+
+    sub = parser.add_subparsers(dest="command", required=True)
+    sub.add_parser("map-lint", parents=[common])
+    sub.add_parser("doctor", parents=[common])
+    launch = sub.add_parser("launch", parents=[common])
+    launch.add_argument("--kdl", default="examples/build-time.kdl")
+    launch.add_argument("--force", action="store_true")
+    core = sub.add_parser("drive-core", parents=[common])
+    core.add_argument("--feature", required=True, choices=sorted(FEATURE_CORE_TESTS))
+    sub.add_parser("maintain-verification-skill", parents=[common])
+    sub.add_parser("cleanup", parents=[common])
+
+    args = parser.parse_args()
+    dispatch = {
+        "map-lint": cmd_map_lint,
+        "doctor": cmd_doctor,
+        "launch": cmd_launch,
+        "drive-core": cmd_drive_core,
+        "maintain-verification-skill": cmd_maintain,
+        "cleanup": cmd_cleanup,
+    }
+    dispatch[args.command](args)
+
+
+if __name__ == "__main__":
+    main()
