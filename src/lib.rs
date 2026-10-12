@@ -288,6 +288,7 @@ pub enum DocumentError {
     DestinationExists,
     OriginalDestination,
     UnsafeValue(String),
+    InvalidImagePath,
 }
 
 impl fmt::Display for DocumentError {
@@ -304,6 +305,7 @@ impl fmt::Display for DocumentError {
                 write!(f, "retreat destination refers to the original file")
             }
             Self::UnsafeValue(message) => write!(f, "value was rejected: {message}"),
+            Self::InvalidImagePath => write!(f, "image path is not valid UTF-8"),
         }
     }
 }
@@ -2300,8 +2302,9 @@ fn image_path_is_absolute(path: &str) -> bool {
     path.starts_with('/') || Path::new(path).is_absolute()
 }
 
-fn relative_path_for_kdl(path: &Path) -> String {
-    path.to_string_lossy().replace('\\', "/")
+fn relative_path_for_kdl(path: &Path) -> Result<String, DocumentError> {
+    let text = path.to_str().ok_or(DocumentError::InvalidImagePath)?;
+    Ok(text.replace('\\', "/"))
 }
 
 fn rebase_image_paths(
@@ -2345,7 +2348,7 @@ fn rebase_image_paths(
                 "image asset cannot be referenced from the save destination".into(),
             )
         })?;
-        let encoded = encode_kdl_string(&relative_path_for_kdl(&relative));
+        let encoded = encode_kdl_string(&relative_path_for_kdl(&relative)?);
         edits.push((entry_string_range(source, entry)?, encoded));
     }
 
