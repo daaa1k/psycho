@@ -2824,8 +2824,12 @@ impl PsychoApp {
                     div()
                         .w(px(navigator_width))
                         .h_full()
+                        .min_h_0()
+                        .flex()
+                        .flex_col()
                         .flex_shrink_0()
                         .min_w_0()
+                        .overflow_hidden()
                         .child(side),
                 )
                 .child(self.render_pane_resizer(Pane::Navigator, navigator_width, cx));
@@ -3173,15 +3177,14 @@ impl PsychoApp {
             }
             _ => false,
         };
-        div()
-            .flex_shrink_0()
-            .child(button(
-                cx,
-                format!("{label}{}", if selected { " ✓" } else { "" }),
-                true,
-                move |this, _, window, cx| this.select_canvas_source(source, window, cx),
-            ))
-            .into_any_element()
+        inspector_button(
+            cx,
+            format!("{label}{}", if selected { " ✓" } else { "" }),
+            true,
+            ButtonChrome::Inspector,
+            move |this, _, window, cx| this.select_canvas_source(source, window, cx),
+        )
+        .into_any_element()
     }
 
     fn render_inspector(
@@ -3189,6 +3192,7 @@ impl PsychoApp {
         model: Option<&PresentationModel>,
         cx: &mut Context<Self>,
     ) -> gpui::AnyElement {
+        let palette = self.palette;
         let mut inspector = div()
             .id("inspector")
             .flex()
@@ -3198,9 +3202,9 @@ impl PsychoApp {
             .h_full()
             .min_h_0()
             .overflow_y_scroll()
-            .gap_2()
+            .gap(px(4.))
             .p_3()
-            .bg(self.palette.surface);
+            .bg(palette.surface);
         inspector = inspector.child(div().font_weight(gpui::FontWeight::BOLD).child("Inspector"));
         if self.external_edit_blocked() {
             return inspector
@@ -3213,23 +3217,26 @@ impl PsychoApp {
             inspector = inspector
                 .child(div().font_weight(gpui::FontWeight::BOLD).child("Elements"))
                 .child(self.render_element_outline(model, cx));
-            inspector = inspector.child(button(
+            inspector = inspector.child(inspector_button(
                 cx,
                 "Presentation title",
                 true,
+                ButtonChrome::Inspector,
                 |this, _, window, cx| this.select_title(window, cx),
             ));
             if let EditTarget::NestedElement { slide, columns, .. } = self.target {
-                inspector = inspector.child(button(
+                inspector = inspector.child(inspector_button(
                     cx,
                     "2列の内容へ戻る",
                     true,
+                    ButtonChrome::Inspector,
                     move |this, _, window, cx| this.select_columns(slide, columns, window, cx),
                 ));
-                inspector = inspector.child(button(
+                inspector = inspector.child(inspector_button(
                     cx,
                     "Slide 直下へ移動",
                     true,
+                    ButtonChrome::Inspector,
                     |this, _, window, cx| this.move_nested_element_to_slide(window, cx),
                 ));
             }
@@ -3265,10 +3272,11 @@ impl PsychoApp {
                         .collect::<Vec<_>>();
                     for columns in destinations {
                         for (column, label) in [(0, "左列"), (1, "右列")] {
-                            inspector = inspector.child(button(
+                            inspector = inspector.child(inspector_button(
                                 cx,
                                 format!("2列 {} · {label}へ移動", columns + 1),
                                 true,
+                                ButtonChrome::Inspector,
                                 move |this, _, window, cx| {
                                     this.move_top_level_element_to_column(
                                         columns, column, window, cx,
@@ -3298,13 +3306,19 @@ impl PsychoApp {
                                 .text_color(self.palette.text)
                                 .child(self.editor.clone()),
                         )
-                        .child(button(cx, "幅を適用", true, |this, _, window, cx| {
-                            match this.commit_draft(window, cx) {
-                                Ok(()) => window.focus(&this.root_focus, cx),
-                                Err(error) => this.status = error,
-                            }
-                            cx.notify();
-                        }));
+                        .child(inspector_button(
+                            cx,
+                            "幅を適用",
+                            true,
+                            ButtonChrome::InspectorPrimary,
+                            |this, _, window, cx| {
+                                match this.commit_draft(window, cx) {
+                                    Ok(()) => window.focus(&this.root_focus, cx),
+                                    Err(error) => this.status = error,
+                                }
+                                cx.notify();
+                            },
+                        ));
                 }
                 match element {
                     Element::Heading(_) | Element::Text(_) => {}
@@ -3325,7 +3339,7 @@ impl PsychoApp {
                                     ..
                                 } if selected == item_index
                             );
-                            inspector = inspector.child(button(
+                            inspector = inspector.child(inspector_button(
                                 cx,
                                 format!(
                                     "項目 {}{}",
@@ -3333,6 +3347,7 @@ impl PsychoApp {
                                     if selected { " ✓" } else { "" }
                                 ),
                                 true,
+                                ButtonChrome::Inspector,
                                 move |this, _, window, cx| {
                                     this.select_current_field(
                                         ElementField::Bullet(item_index),
@@ -3343,26 +3358,24 @@ impl PsychoApp {
                             ));
                             if selected && item_actions_available {
                                 inspector = inspector
-                                    .child(button(
+                                    .child(inspector_button_pair(
                                         cx,
                                         "項目を上へ",
                                         item_index > 0,
                                         |this, _, window, cx| {
                                             this.move_bullet_selection(-1, window, cx)
                                         },
-                                    ))
-                                    .child(button(
-                                        cx,
                                         "項目を下へ",
                                         item_index + 1 < items.len(),
                                         |this, _, window, cx| {
                                             this.move_bullet_selection(1, window, cx)
                                         },
                                     ))
-                                    .child(button(
+                                    .child(inspector_button(
                                         cx,
                                         "項目を削除",
                                         true,
+                                        ButtonChrome::Inspector,
                                         |this, _, window, cx| {
                                             this.remove_bullet_selection(window, cx)
                                         },
@@ -3370,41 +3383,50 @@ impl PsychoApp {
                             }
                         }
                         if item_actions_available {
-                            inspector = inspector.child(button(
+                            inspector = inspector.child(inspector_button(
                                 cx,
                                 "項目を追加",
                                 true,
+                                ButtonChrome::Inspector,
                                 |this, _, window, cx| this.add_bullet_selection(window, cx),
                             ));
                         }
                     }
                     Element::Code { .. } => {
-                        inspector = inspector.child(button(
+                        inspector = inspector.child(inspector_button(
                             cx,
                             "コード言語",
                             true,
+                            ButtonChrome::Inspector,
                             |this, _, window, cx| {
                                 this.select_current_field(ElementField::CodeLanguage, window, cx)
                             },
                         ));
                     }
                     Element::Image { .. } => {
-                        inspector = inspector.child(button(
+                        inspector = inspector.child(inspector_button(
                             cx,
                             "画像パス",
                             true,
+                            ButtonChrome::Inspector,
                             |this, _, window, cx| {
                                 this.select_current_field(ElementField::ImagePath, window, cx)
                             },
                         ));
-                        inspector =
-                            inspector.child(button(cx, "Caption", true, |this, _, window, cx| {
+                        inspector = inspector.child(inspector_button(
+                            cx,
+                            "Caption",
+                            true,
+                            ButtonChrome::Inspector,
+                            |this, _, window, cx| {
                                 this.select_current_field(ElementField::Caption, window, cx)
-                            }));
-                        inspector = inspector.child(button(
+                            },
+                        ));
+                        inspector = inspector.child(inspector_button(
                             cx,
                             "画像を再読み込み",
                             true,
+                            ButtonChrome::Inspector,
                             |this, _, _, cx| {
                                 this.refresh_assets();
                                 this.status = if this.asset_diagnostics.is_empty() {
@@ -3423,16 +3445,18 @@ impl PsychoApp {
                     } => {
                         inspector =
                             inspector.child(format!("左列 {left_width}% / 右列 {right_width}%"));
-                        inspector = inspector.child(button(
+                        inspector = inspector.child(inspector_button(
                             cx,
                             "Element を削除",
                             true,
+                            ButtonChrome::Inspector,
                             Self::delete_element,
                         ));
-                        inspector = inspector.child(button(
+                        inspector = inspector.child(inspector_button(
                             cx,
                             "左列幅を数値入力",
                             true,
+                            ButtonChrome::Inspector,
                             |this, _, window, cx| {
                                 let (slide, index) = match this.target {
                                     EditTarget::Columns { slide, index }
@@ -3444,10 +3468,11 @@ impl PsychoApp {
                                 this.select_column_width(slide, index, true, window, cx);
                             },
                         ));
-                        inspector = inspector.child(button(
+                        inspector = inspector.child(inspector_button(
                             cx,
                             "右列幅を数値入力",
                             true,
+                            ButtonChrome::Inspector,
                             |this, _, window, cx| {
                                 let (slide, index) = match this.target {
                                     EditTarget::Columns { slide, index }
@@ -3459,14 +3484,11 @@ impl PsychoApp {
                                 this.select_column_width(slide, index, false, window, cx);
                             },
                         ));
-                        inspector = inspector.child(button(
+                        inspector = inspector.child(inspector_button_pair(
                             cx,
                             "左列を +5%",
                             *left_width <= 94,
                             |this, _, _, cx| this.resize_columns(5, cx),
-                        ));
-                        inspector = inspector.child(button(
-                            cx,
                             "左列を -5%",
                             *left_width >= 6,
                             |this, _, _, cx| this.resize_columns(-5, cx),
@@ -3486,10 +3508,11 @@ impl PsychoApp {
                                     (ElementKind::Code, "コード"),
                                     (ElementKind::Image, "画像"),
                                 ] {
-                                    inspector = inspector.child(button(
+                                    inspector = inspector.child(inspector_button(
                                         cx,
                                         format!("{label}に{kind_label}を追加"),
                                         true,
+                                        ButtonChrome::Inspector,
                                         move |this, _, window, cx| {
                                             this.add_column_element_selection(
                                                 column, kind, window, cx,
@@ -3498,10 +3521,11 @@ impl PsychoApp {
                                     ));
                                 }
                             } else {
-                                inspector = inspector.child(button(
+                                inspector = inspector.child(inspector_button(
                                     cx,
                                     format!("{label}に追加…"),
                                     true,
+                                    ButtonChrome::Inspector,
                                     move |this, _, _, cx| {
                                         this.column_add_menu = Some(column);
                                         cx.notify();
@@ -3519,10 +3543,11 @@ impl PsychoApp {
                                 .text_size(px(12.0))
                                 .child("キャンバス上で編集中"),
                         )
-                        .child(button(
+                        .child(inspector_button(
                             cx,
                             "全文をInspectorで編集",
                             true,
+                            ButtonChrome::Inspector,
                             |this, _, window, cx| {
                                 // Keep the same draft and IME session, but mount the input once.
                                 this.canvas_editing = false;
@@ -3534,11 +3559,17 @@ impl PsychoApp {
                         ));
                 } else if !matches!(element, Element::Columns { .. }) {
                     inspector = inspector
-                        .child(div().pt_2().child("編集値"))
+                        .child(inspector_section_label("編集値", palette))
                         .child(if self.editor.read(cx).is_multiline() {
-                            div().text_size(px(11.0)).child("Enter で改行できます")
+                            div()
+                                .text_size(px(11.0))
+                                .text_color(palette.secondary)
+                                .child("Enter で改行できます")
                         } else {
-                            div().text_size(px(11.0)).child("1 行で編集します")
+                            div()
+                                .text_size(px(11.0))
+                                .text_color(palette.secondary)
+                                .child("1 行で編集します")
                         })
                         .child(
                             div()
@@ -3546,18 +3577,24 @@ impl PsychoApp {
                                 .px_2()
                                 .py_1()
                                 .border_1()
-                                .border_color(self.palette.border)
-                                .bg(self.palette.input)
-                                .text_color(self.palette.text)
+                                .border_color(palette.border)
+                                .bg(palette.input)
+                                .text_color(palette.text)
                                 .child(self.editor.clone()),
                         )
-                        .child(button(cx, "適用", true, |this, _, window, cx| {
-                            match this.commit_draft(window, cx) {
-                                Ok(()) => window.focus(&this.root_focus, cx),
-                                Err(error) => this.status = error,
-                            }
-                            cx.notify();
-                        }));
+                        .child(inspector_button(
+                            cx,
+                            "適用",
+                            true,
+                            ButtonChrome::InspectorPrimary,
+                            |this, _, window, cx| {
+                                match this.commit_draft(window, cx) {
+                                    Ok(()) => window.focus(&this.root_focus, cx),
+                                    Err(error) => this.status = error,
+                                }
+                                cx.notify();
+                            },
+                        ));
                 }
                 let selected_element = match self.target {
                     EditTarget::Element { slide, index, .. }
@@ -3571,19 +3608,15 @@ impl PsychoApp {
                         .get(slide)
                         .map_or(0, |slide| slide.elements.len());
                     if count > 1 {
-                        inspector = inspector
-                            .child(button(
-                                cx,
-                                "Element ↑",
-                                index > 0,
-                                |this, _, window, cx| this.move_element_selection(-1, window, cx),
-                            ))
-                            .child(button(
-                                cx,
-                                "Element ↓",
-                                index + 1 < count,
-                                |this, _, window, cx| this.move_element_selection(1, window, cx),
-                            ));
+                        inspector = inspector.child(inspector_button_pair(
+                            cx,
+                            "Element ↑",
+                            index > 0,
+                            |this, _, window, cx| this.move_element_selection(-1, window, cx),
+                            "Element ↓",
+                            index + 1 < count,
+                            |this, _, window, cx| this.move_element_selection(1, window, cx),
+                        ));
                     }
                 }
                 if let EditTarget::NestedElement {
@@ -3606,32 +3639,31 @@ impl PsychoApp {
                         })
                         .map_or(0, Vec::len);
                     if count > 1 {
-                        inspector = inspector
-                            .child(button(
-                                cx,
-                                "列内 Element ↑",
-                                index > 0,
-                                |this, _, window, cx| {
-                                    this.move_nested_element_selection(-1, window, cx)
-                                },
-                            ))
-                            .child(button(
-                                cx,
-                                "列内 Element ↓",
-                                index + 1 < count,
-                                |this, _, window, cx| {
-                                    this.move_nested_element_selection(1, window, cx)
-                                },
-                            ));
+                        inspector = inspector.child(inspector_button_pair(
+                            cx,
+                            "列内 Element ↑",
+                            index > 0,
+                            |this, _, window, cx| {
+                                this.move_nested_element_selection(-1, window, cx)
+                            },
+                            "列内 Element ↓",
+                            index + 1 < count,
+                            |this, _, window, cx| this.move_nested_element_selection(1, window, cx),
+                        ));
                     }
                 }
                 if !matches!(element, Element::Columns { .. }) {
-                    inspector =
-                        inspector.child(button(cx, "Element を削除", true, Self::delete_element));
+                    inspector = inspector.child(inspector_button(
+                        cx,
+                        "Element を削除",
+                        true,
+                        ButtonChrome::Inspector,
+                        Self::delete_element,
+                    ));
                 }
             } else if let EditTarget::Title = self.target {
                 inspector = inspector
-                    .child(div().pt_2().child("編集値"))
+                    .child(inspector_section_label("編集値", palette))
                     .child(
                         div()
                             .h(px(38.0))
@@ -3639,19 +3671,25 @@ impl PsychoApp {
                             .px_2()
                             .py_1()
                             .border_1()
-                            .border_color(self.palette.border)
-                            .bg(self.palette.input)
-                            .text_color(self.palette.text)
+                            .border_color(palette.border)
+                            .bg(palette.input)
+                            .text_color(palette.text)
                             .child(self.editor.clone()),
                     )
-                    .child(button(cx, "適用", true, |this, _, window, cx| {
-                        if let Err(error) = this.commit_draft(window, cx) {
-                            this.status = error;
-                        } else {
-                            window.focus(&this.root_focus, cx);
-                        }
-                        cx.notify();
-                    }));
+                    .child(inspector_button(
+                        cx,
+                        "適用",
+                        true,
+                        ButtonChrome::InspectorPrimary,
+                        |this, _, window, cx| {
+                            if let Err(error) = this.commit_draft(window, cx) {
+                                this.status = error;
+                            } else {
+                                window.focus(&this.root_focus, cx);
+                            }
+                            cx.notify();
+                        },
+                    ));
             }
             if !matches!(self.target, EditTarget::Columns { .. }) {
                 if let Err(DocumentError::UnsafeValue(reason)) =
@@ -3660,46 +3698,57 @@ impl PsychoApp {
                     inspector =
                         inspector.child(div().text_color(self.palette.warning).child(reason));
                 }
-                inspector = inspector.child(button(
+                inspector = inspector.child(inspector_button(
                     cx,
                     "入力を取り消す",
                     self.has_uncommitted_draft(cx),
+                    ButtonChrome::Inspector,
                     |this, _, window, cx| this.cancel_input(window, cx),
                 ));
                 inspector = inspector
-                    .child(button(
+                    .child(inspector_section_label("要素を追加", palette))
+                    .child(inspector_button(
                         cx,
                         "見出しを追加",
                         true,
+                        ButtonChrome::InspectorGhost,
                         |this, _, window, cx| this.execute_action(&InsertHeading, window, cx),
                     ))
-                    .child(button(
+                    .child(inspector_button(
                         cx,
                         "本文を追加",
                         true,
+                        ButtonChrome::InspectorGhost,
                         |this, _, window, cx| this.execute_action(&InsertText, window, cx),
                     ))
-                    .child(button(
+                    .child(inspector_button(
                         cx,
                         "箇条書きを追加",
                         true,
+                        ButtonChrome::InspectorGhost,
                         |this, _, window, cx| this.execute_action(&InsertBullets, window, cx),
                     ))
-                    .child(button(
+                    .child(inspector_button(
                         cx,
                         "コードを追加",
                         true,
+                        ButtonChrome::InspectorGhost,
                         |this, _, window, cx| this.execute_action(&InsertCode, window, cx),
                     ))
-                    .child(button(
+                    .child(inspector_button(
                         cx,
                         "画像参照を追加",
                         true,
+                        ButtonChrome::InspectorGhost,
                         |this, _, window, cx| this.execute_action(&InsertImage, window, cx),
                     ))
-                    .child(button(cx, "2列を追加", true, |this, _, window, cx| {
-                        this.execute_action(&InsertColumns, window, cx)
-                    }));
+                    .child(inspector_button(
+                        cx,
+                        "2列を追加",
+                        true,
+                        ButtonChrome::InspectorGhost,
+                        |this, _, window, cx| this.execute_action(&InsertColumns, window, cx),
+                    ));
             }
         }
         inspector.into_any_element()
@@ -4979,8 +5028,9 @@ impl Render for PsychoApp {
                 action_menu(FitCanvas, available),
                 action_menu(ActualSize, available),
             ]),
-            Menu::new("発表").items([
-                MenuItem::action("現在から発表", PresentCurrent).disabled(!available.present),
+            Menu::new("プレゼンテーション").items([
+                MenuItem::action("現在からプレゼンテーション", PresentCurrent)
+                    .disabled(!available.present),
                 action_menu(PresentFirst, available),
             ]),
         ]);
@@ -6163,18 +6213,97 @@ fn diagnostics_view(
     list
 }
 
+#[derive(Clone, Copy)]
+enum ButtonChrome {
+    Panel,
+    Inspector,
+    InspectorPrimary,
+    InspectorGhost,
+}
+
 fn button(
     cx: &mut Context<PsychoApp>,
     label: impl Into<gpui::SharedString>,
     enabled: bool,
     handler: impl Fn(&mut PsychoApp, &MouseUpEvent, &mut Window, &mut Context<PsychoApp>) + 'static,
 ) -> impl IntoElement {
+    styled_button(cx, label, enabled, ButtonChrome::Panel, handler)
+}
+
+fn inspector_button(
+    cx: &mut Context<PsychoApp>,
+    label: impl Into<gpui::SharedString>,
+    enabled: bool,
+    chrome: ButtonChrome,
+    handler: impl Fn(&mut PsychoApp, &MouseUpEvent, &mut Window, &mut Context<PsychoApp>) + 'static,
+) -> impl IntoElement {
+    div()
+        .w_full()
+        .flex_shrink_0()
+        .child(styled_button(cx, label, enabled, chrome, handler))
+}
+
+fn inspector_button_pair(
+    cx: &mut Context<PsychoApp>,
+    left_label: impl Into<gpui::SharedString>,
+    left_enabled: bool,
+    left_handler: impl Fn(&mut PsychoApp, &MouseUpEvent, &mut Window, &mut Context<PsychoApp>) + 'static,
+    right_label: impl Into<gpui::SharedString>,
+    right_enabled: bool,
+    right_handler: impl Fn(&mut PsychoApp, &MouseUpEvent, &mut Window, &mut Context<PsychoApp>)
+    + 'static,
+) -> impl IntoElement {
+    div()
+        .flex()
+        .w_full()
+        .gap(px(4.))
+        .child(div().flex_1().min_w_0().child(styled_button(
+            cx,
+            left_label,
+            left_enabled,
+            ButtonChrome::Inspector,
+            left_handler,
+        )))
+        .child(div().flex_1().min_w_0().child(styled_button(
+            cx,
+            right_label,
+            right_enabled,
+            ButtonChrome::Inspector,
+            right_handler,
+        )))
+}
+
+fn inspector_section_label(
+    text: impl Into<gpui::SharedString>,
+    palette: EditorPalette,
+) -> impl IntoElement {
+    div()
+        .pt(px(8.))
+        .pb(px(4.))
+        .text_size(px(12.))
+        .text_color(palette.secondary)
+        .font_weight(gpui::FontWeight::SEMIBOLD)
+        .child(text.into())
+}
+
+fn styled_button(
+    cx: &mut Context<PsychoApp>,
+    label: impl Into<gpui::SharedString>,
+    enabled: bool,
+    chrome: ButtonChrome,
+    handler: impl Fn(&mut PsychoApp, &MouseUpEvent, &mut Window, &mut Context<PsychoApp>) + 'static,
+) -> impl IntoElement {
     let label = label.into();
     let palette = *cx.global::<EditorPalette>();
+    let (background, border_color, border_width) = match chrome {
+        ButtonChrome::Panel | ButtonChrome::Inspector => (palette.surface, palette.border, 1),
+        ButtonChrome::InspectorPrimary => (palette.selection, palette.focus, 1),
+        ButtonChrome::InspectorGhost => (palette.surface, palette.border, 0),
+    };
     let handler = std::rc::Rc::new(handler);
     let click_handler = handler.clone();
     let weak = cx.entity().downgrade();
-    div()
+    let mut control = div()
         .id(label.clone())
         .accessibility_id(label.clone())
         .role(gpui::Role::Button)
@@ -6190,18 +6319,17 @@ fn button(
         .items_center()
         .justify_center()
         .min_h(px(28.))
+        .w_full()
         .px_2()
         .py_1()
         .rounded_md()
         .text_size(px(13.))
-        .bg(palette.surface)
+        .bg(background)
         .text_color(if enabled {
             palette.text
         } else {
             palette.secondary
         })
-        .border_1()
-        .border_color(palette.border)
         .focus(|style| style.border_2().border_color(palette.focus))
         .cursor_pointer()
         .child(label)
@@ -6222,7 +6350,17 @@ fn button(
                 })
                 .ok();
             }
-        })
+        });
+    if border_width > 0 {
+        control = control.border_1().border_color(border_color);
+    }
+    if matches!(
+        chrome,
+        ButtonChrome::Inspector | ButtonChrome::InspectorPrimary | ButtonChrome::InspectorGhost
+    ) {
+        control = control.text_size(px(12.));
+    }
+    control
 }
 
 fn action_menu<A: EditorAction>(action: A, available: EditorAvailability) -> MenuItem {

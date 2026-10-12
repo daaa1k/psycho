@@ -237,7 +237,7 @@ editor_action!(ActualSize, "100%表示", view, |app, _window, cx| {
 });
 editor_action!(
     PresentCurrent,
-    "発表",
+    "プレゼンテーション",
     present,
     |app, window, cx| {
         app.start_presentation(true, window, cx);
@@ -247,7 +247,7 @@ editor_action!(
 );
 editor_action!(
     PresentFirst,
-    "最初から発表",
+    "最初からプレゼンテーション",
     present,
     |app, window, cx| {
         app.start_presentation(false, window, cx);
