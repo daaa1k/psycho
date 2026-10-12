@@ -1,9 +1,4 @@
-# PSYCHO CI: format, build, and tests on macOS, Linux, and Windows.
-#
-# Windows: GPUI (Zed) does not currently ship a supported Windows backend for this
-# pinned revision, and the `psycho` binary requires the `gui` feature. The Windows
-# job therefore validates the core library (default features) only — fmt, `cargo build`,
-# and `cargo test` without `gui`. macOS and Ubuntu run the full `--features gui` suite.
+# PSYCHO CI: format, build, and tests on macOS, Linux, and Windows with `gui`.
 
 name: CI
 
@@ -23,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -50,17 +45,3 @@ jobs:
         run: cargo build --locked --features gui
       - name: cargo test
         run: cargo test --locked --features gui
-
-  windows-core:
-    name: core (windows)
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-      - name: cargo fmt
-        run: cargo fmt --check
-      # No `gui`: GPUI platform support for Windows is not exercised in this repo yet.
-      - name: cargo build
-        run: cargo build --locked
-      - name: cargo test
-        run: cargo test --locked
