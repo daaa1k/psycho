@@ -1,0 +1,26 @@
+ts	phase	decision	why	evidence	result
+2026-10-11T22:05:05Z	ground	Issue #50 と親 #48 を正本として確認した	実サムネイルと非文書の選択・フォーカス状態を追加するため	https://github.com/daaa1k/psycho/issues/50	open
+2026-10-11T22:09:40Z	baseline	Xcode Clang を明示して baseline GUI 全対象テストを通した	PATH の Nix GCC では iconv ライブラリをリンクできなかったため	cargo test --all-targets --features gui @343cc05	tests green
+2026-10-11T22:12:30Z	architecture	A の共通描画抽出と NavigatorState を採用した	独立審査で選択の重複と eager 全スライド配置を避ける案が優位だった	.audit/issue-50.design.md	A24 B22 C14
+2026-10-12T02:52:01Z	start	2026-10-11T22:05:05Z to 2026-10-11T22:12:30Z inherited rows	Resume previous owner with exclusive checkout and native GUI	/root/issue50_finish	in progress
+2026-10-12T02:52:01Z	verification	Inherited native scroll direction/delivery investigation	Posting an event is not proof of list movement	target/navigator-scroll-probe-events2	native end range observed
+2026-10-12T02:52:01Z	verification	Adopted dominant color band correction from prior owner	Screenshot color transform and blue selection border contaminated image bounds	target/navigator-dark-06/image-ratios.json	thumbnail/canvas ratio2
+2026-10-12T02:52:01Z	review	Confirmed separated explicit/anonymous Slide ID namespaces	Independent review found index-1 colliding with anonymous index1	src/navigator.rs	fixed
+2026-10-12T02:52:01Z	review	Confirmed commit_draft runs only for changed input or input history	Independent review found all images decoded on every selection	src/navigator.rs	fixed
+2026-10-12T02:52:01Z	verification	Moved trace clear before keyboard movement	Screenshot observation does not guarantee another paint	validation/navigator/acceptance.py	85glyph position error0.000222
+2026-10-12T02:52:01Z	verification	Used reload button and disabled presentation to assert conflict	Conflict footer text is not exposed in native AX tree	target/navigator-dark-07/external-frozen-draft.png	instrument corrected
+2026-10-12T02:52:01Z	review	Root reports exact-source astra/sol/luna final review with no findings	Independent verdict after fixes	.audit/issue-50.review-brief.md	PASS
+2026-10-12T02:52:01Z	review	Deleted one final no-comments docstring finding	Script narrative duplicated behavior	validation/navigator/acceptance.py	0 suppressions/workarounds
+2026-10-12T02:52:01Z	implementation	Committed navigator implementation separately from shared body extraction	Sequence verifiable implementation units	4379632	committed
+2026-10-12T02:52:01Z	verification	Passed114 all-target GUI tests with explicit Rust linker	CC alone leaves Nix cc iconv link failure	target/issue-50-final-tests.log	PASS
+2026-10-12T02:52:01Z	accessibility	Live VoiceOver last phrase query failed with -10000	AX roles are not evidence of speech	target/navigator-voiceover/pickup-live2-error.txt	INCONCLUSIVE
+2026-10-12T02:59:13Z	verification	Separated frozen-conflict check into a fresh native instance	Existing poll intentionally stops on blocked external state; same-instance invalid test did not observe a new invalidation	validation/navigator/acceptance.py	corrected test order
+2026-10-12T02:59:13Z	accessibility	Restored original scripting0 and welcome1 then disabled VoiceOver through native shortcut	Quit stops process without resetting Workspace enabled flag	validation/navigator/evidence/voiceover/cleanup.json	Workspace false; no remaining processes
+2026-10-12T02:59:13Z	verification	Exact4379632 native100-slide dark and light acceptance passed	Verify actual image/text updates and document invariants on current build	validation/navigator/evidence/dark/run.json; validation/navigator/evidence/light/run.json	PASS
+2026-10-12T02:59:13Z	verification	Normalized85glyph positions and compared image2:1 and readonly thumbnail pixels	Common render must preserve columns and exclude editor selection controls	validation/navigator/evidence/dark/glyph-comparison.json; validation/navigator/evidence/dark/readonly-thumbnail.json	PASS
+2026-10-12T02:59:13Z	verification	Native hover and3window dimensions passed in dark	Observe tooltip pixels and endpoint selection after layout changes	validation/navigator/evidence/layout-dark/observations.json	PASS
+2026-10-12T03:02:29Z	verification	Native hover and3window dimensions passed in light	Confirm system appearance and endpoint accessibility in both themes	validation/navigator/evidence/layout-light/run.json	PASS
+2026-10-12T03:02:29Z	accessibility	Final native readback found welcome0; restored original1	Intermediate restoration did not prove the final welcome value	validation/navigator/evidence/voiceover/final-native-settings.json	scripting false; welcome true; VoiceOver false
+2026-10-12T03:02:29Z	review	Final review summary records root3model exact-source verdict	Keep source review evidence separate from runtime scripts	.audit/issue-50.final-review.md	no new source findings
+2026-10-12T03:05:07Z	review	Root final no-comments review found0 findings	Exact final validation and source artifacts checked independently	.audit/issue-50.final-review.md	PASS
+2026-10-12T03:05:07Z	review	Cross-model trail audit by dispatchedgpt-6-astra found no flags	Reviewer checked24rows actual root transcript and final artifacts	.audit/issue-50.final-review.md	PASS; actual spawn provenance gpt-6-astra

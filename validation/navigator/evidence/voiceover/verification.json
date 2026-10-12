@@ -1,0 +1,8 @@
+{
+  "result": "INCONCLUSIVE",
+  "required": "Slide number, full heading and selected state spoken by VoiceOver",
+  "scriptError": "63:70: execution error: VoiceOverでエラーが起きました: AppleEventのハンドラで誤りが起きました。 (-10000)\n",
+  "enabledDuringAttempt": true,
+  "appleScriptControlDuringAttempt": true,
+  "actualSpeechObtained": false
+}

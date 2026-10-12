@@ -5,6 +5,7 @@ mod editor_validation;
 mod editor_view;
 mod ime;
 mod input;
+mod navigator;
 mod text;
 
 use std::collections::HashMap;
@@ -132,6 +133,12 @@ struct OutlinePage {
     index: usize,
 }
 
+#[derive(Clone, Copy, Eq, PartialEq)]
+enum SlideInteraction {
+    Editor,
+    ReadOnly,
+}
+
 struct PsychoApp {
     view: EditorViewState,
     palette: EditorPalette,
@@ -139,6 +146,8 @@ struct PsychoApp {
     document: PresentationDocument,
     editor: gpui::Entity<TextInputState>,
     root_focus: FocusHandle,
+    canvas_focus: FocusHandle,
+    navigator: navigator::NavigatorState,
     ime_geometry: ime::Geometry,
     current_slide: usize,
     outline_page: OutlinePage,
@@ -453,6 +462,8 @@ impl PsychoApp {
             document,
             editor,
             root_focus: cx.focus_handle(),
+            canvas_focus: cx.focus_handle().tab_stop(true),
+            navigator: navigator::NavigatorState::new(cx.focus_handle().tab_stop(true)),
             ime_geometry: ime_rect,
             current_slide: 0,
             outline_page: OutlinePage::default(),
@@ -2444,7 +2455,7 @@ impl PsychoApp {
     fn render_editor(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         self.editor
             .update(cx, |input, _| input.set_canvas_layout(None));
-        let model = self.preview_model(cx);
+        let model = self.preview_model(cx).map(Arc::new);
         self.palette = EditorPalette::for_appearance(window.appearance());
         let palette = self.palette;
         cx.set_global(palette);
@@ -2546,7 +2557,7 @@ impl PsychoApp {
             }
         }
 
-        let side = self.render_slide_list(model.as_ref(), cx);
+        let side = self.render_slide_list(model.clone(), window, cx);
         let canvas = if let Some(model) = model.as_ref() {
             self.render_canvas(model, self.current_slide, true, window, cx)
         } else {
@@ -2584,7 +2595,7 @@ impl PsychoApp {
                 .child(error.clone())
                 .into_any_element()
         } else {
-            self.render_inspector(model.as_ref(), cx)
+            self.render_inspector(model.as_deref(), cx)
         };
         let mut footer = div()
             .flex()
@@ -2682,6 +2693,10 @@ impl PsychoApp {
         let weak = cx.entity().downgrade();
         let viewport = div()
             .id("canvas-viewport")
+            .track_focus(&self.canvas_focus)
+            .role(gpui::Role::Group)
+            .aria_label("スライドキャンバス")
+            .focus(|style| style.border_2().border_color(palette.focus))
             .relative()
             .flex_1()
             .min_w_0()
@@ -2918,88 +2933,6 @@ impl PsychoApp {
             .child(workspace)
             .child(footer)
             .children(popup)
-    }
-
-    fn render_slide_list(
-        &mut self,
-        model: Option<&PresentationModel>,
-        cx: &mut Context<Self>,
-    ) -> gpui::AnyElement {
-        let mut list = div()
-            .id("navigator")
-            .role(gpui::Role::List)
-            .aria_label("Navigator")
-            .overflow_y_scroll()
-            .flex()
-            .flex_col()
-            .w_full()
-            .flex_shrink_0()
-            .h_full()
-            .gap_2()
-            .p_2()
-            .bg(self.palette.surface);
-        list = list.child(div().font_weight(gpui::FontWeight::BOLD).child("Navigator"));
-        if let Some(model) = model {
-            for (index, slide) in model.slides.iter().enumerate() {
-                let selected = index == self.current_slide;
-                let heading = slide
-                    .elements
-                    .iter()
-                    .find_map(|element| match element {
-                        Element::Heading(text) => Some(text.clone()),
-                        _ => None,
-                    })
-                    .unwrap_or_else(|| format!("Slide {}", index + 1));
-                let full_heading = heading.clone();
-                let heading = if heading.chars().count() > 7 {
-                    format!("{}…", heading.chars().take(6).collect::<String>())
-                } else {
-                    heading
-                };
-                let label = format!(
-                    "{}{}  {}",
-                    if selected { "› " } else { "" },
-                    index + 1,
-                    heading
-                );
-                list = list.child(
-                    div()
-                        .id(("slide-choice", index))
-                        .role(gpui::Role::ListItem)
-                        .aria_label(format!("スライド {} {}", index + 1, full_heading))
-                        .aria_selected(selected)
-                        .border_l(px(if selected { 4. } else { 1. }))
-                        .border_color(if selected {
-                            self.palette.focus
-                        } else {
-                            self.palette.border
-                        })
-                        .bg(if selected {
-                            self.palette.selection
-                        } else {
-                            self.palette.surface
-                        })
-                        .child(button(cx, label, true, move |this, _, window, cx| {
-                            if this.external_edit_blocked() {
-                                // Navigate the frozen preview without committing or
-                                // replacing the draft belonging to the previous target.
-                                this.current_slide = index;
-                                window.focus(&this.root_focus, cx);
-                                cx.notify();
-                                return;
-                            }
-                            if let Err(error) = this.commit_draft(window, cx) {
-                                this.status = error;
-                                cx.notify();
-                                return;
-                            }
-                            this.current_slide = index;
-                            this.select_title(window, cx);
-                        })),
-                );
-            }
-        }
-        list.into_any_element()
     }
 
     fn render_element_outline(
@@ -4151,9 +4084,54 @@ impl PsychoApp {
             let viewport = window.viewport_size();
             (f32::from(viewport.width) / 1280.).min(f32::from(viewport.height) / 720.)
         };
+        let images = if editing {
+            &self.asset_images
+        } else {
+            self.presentation
+                .as_ref()
+                .map(|presentation| &presentation.render_images)
+                .unwrap_or(&self.asset_images)
+        };
+        let canvas = self.render_slide_body(
+            model.slides.get(slide_index),
+            slide_index,
+            scale,
+            if editing {
+                SlideInteraction::Editor
+            } else {
+                SlideInteraction::ReadOnly
+            },
+            images,
+            window,
+            cx,
+        );
+        div()
+            .size_full()
+            .flex()
+            .justify_center()
+            .items_center()
+            .bg(if editing {
+                rgb(0xe5e7eb)
+            } else {
+                rgb(0x000000)
+            })
+            .child(canvas)
+            .into_any_element()
+    }
+
+    fn render_slide_body(
+        &self,
+        slide: Option<&psycho::Slide>,
+        slide_index: usize,
+        scale: f32,
+        interaction: SlideInteraction,
+        images: &HashMap<String, Arc<gpui::RenderImage>>,
+        window: &Window,
+        cx: &mut Context<Self>,
+    ) -> gpui::AnyElement {
         let width = 1280.0 * scale;
         let height = 720.0 * scale;
-        let slide = model.slides.get(slide_index);
+        let editing = interaction == SlideInteraction::Editor;
         let canvas_origin = std::rc::Rc::new(std::cell::Cell::new(gpui::point(px(0.), px(0.))));
         let placement = text::TextPlacement::new(canvas_origin.clone(), 64., 48.);
         let mut cursor_y = 0.;
@@ -4180,14 +4158,6 @@ impl PsychoApp {
             .inset_0(),
         );
         if let Some(slide) = slide {
-            let images = if editing {
-                &self.asset_images
-            } else {
-                self.presentation
-                    .as_ref()
-                    .map(|presentation| &presentation.render_images)
-                    .unwrap_or(&self.asset_images)
-            };
             for (index, element) in slide.elements.iter().enumerate() {
                 let selected = editing
                     && (matches!(self.target, EditTarget::Element { slide: selected_slide, index: selected_index, .. } if selected_slide == slide_index && selected_index == index)
@@ -4222,18 +4192,7 @@ impl PsychoApp {
                 cursor_y += measure_element(element, 1152., window, &mut Vec::new()) + 24.;
             }
         }
-        div()
-            .size_full()
-            .flex()
-            .justify_center()
-            .items_center()
-            .bg(if editing {
-                rgb(0xe5e7eb)
-            } else {
-                rgb(0x000000)
-            })
-            .child(canvas)
-            .into_any_element()
+        canvas.into_any_element()
     }
 
     fn render_canvas_element(
@@ -4249,6 +4208,7 @@ impl PsychoApp {
         placement: &text::TextPlacement,
         cx: &mut Context<Self>,
     ) -> gpui::AnyElement {
+        let selected = editing && selected;
         let field = match element {
             Element::Image { .. } => ElementField::ImagePath,
             Element::Columns { .. } => ElementField::Text,
@@ -4471,10 +4431,13 @@ impl PsychoApp {
                     CanvasTarget::Element { slide, index } => (slide, index),
                     CanvasTarget::NestedElement { .. } => unreachable!(),
                 };
-                let preview_width = self
-                    .column_resize_drag
-                    .filter(|drag| drag.slide == parent_slide && drag.index == parent_columns)
-                    .map_or(*left_width, |drag| drag.preview_width);
+                let preview_width = if editing {
+                    self.column_resize_drag
+                        .filter(|drag| drag.slide == parent_slide && drag.index == parent_columns)
+                        .map_or(*left_width, |drag| drag.preview_width)
+                } else {
+                    *left_width
+                };
                 let left_column_width = column_content_width * f32::from(preview_width) / 100.0;
                 let right_column_width =
                     column_content_width * f32::from(100 - preview_width) / 100.0;
@@ -6208,6 +6171,9 @@ fn main() {
             KeyBinding::new("cmd-z", UndoEdit, Some("Editor")),
             KeyBinding::new("cmd-shift-z", RedoEdit, Some("Editor")),
             KeyBinding::new("delete", DeleteSelection, Some("Editor")),
+            KeyBinding::new("up", navigator::SelectPreviousSlide, Some("SlideNavigator")),
+            KeyBinding::new("down", navigator::SelectNextSlide, Some("SlideNavigator")),
+            KeyBinding::new("enter", navigator::FocusSlideCanvas, Some("SlideNavigator")),
             KeyBinding::new("right", NextSlide, Some("Presentation")),
             KeyBinding::new("down", NextSlide, Some("Presentation")),
             KeyBinding::new("space", NextSlide, Some("Presentation")),
