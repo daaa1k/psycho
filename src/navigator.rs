@@ -122,16 +122,6 @@ impl PsychoApp {
                     cx.propagate();
                 }
             }))
-            .on_mouse_up_out(
-                MouseButton::Left,
-                cx.listener(|_, _, window, cx| {
-                    cx.defer_in(window, |this, _, cx| {
-                        if this.navigator.drag.take().is_some() {
-                            cx.notify();
-                        }
-                    });
-                }),
-            )
             .flex()
             .flex_col()
             .size_full()
@@ -347,6 +337,16 @@ impl PsychoApp {
                     }),
                 )
                 .track_scroll(&self.navigator.scroll)
+                .on_mouse_up_out(
+                    MouseButton::Left,
+                    cx.listener(|_, _, window, cx| {
+                        cx.defer_in(window, |this, _, cx| {
+                            if this.navigator.drag.take().is_some() {
+                                cx.notify();
+                            }
+                        });
+                    }),
+                )
                 .on_drag_move(
                     cx.listener(|this, event: &DragMoveEvent<DraggedSlide>, _, cx| {
                         if let Some(drag) = this.navigator.drag.as_mut() {
