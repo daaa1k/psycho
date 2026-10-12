@@ -242,7 +242,10 @@ impl PsychoApp {
         if !action.enabled(self.availability(window, cx)) {
             return;
         }
-        if self.view.popup.take().is_some() {
+        let popup = self.view.popup.take();
+        if matches!(popup, Some(Popup::Slide(_))) {
+            self.restore_popup_focus(window, cx);
+        } else if popup.is_some() {
             self.popup_return_focus = None;
         }
         action.execute(self, window, cx);
@@ -1283,25 +1286,47 @@ impl PsychoApp {
     }
 
     fn add_slide(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
+        let navigator_focused = self.navigator.focused(window);
+        if let Err(error) = self.document.check_external_change() {
+            self.status = format!("外部変更があるためスライド操作を取り消しました: {error}");
+            cx.notify();
+            return;
+        }
+
         if self.external_edit_blocked() {
             return;
         }
         if let Err(error) = self.commit_draft(window, cx).and_then(|()| {
             self.document
-                .add_slide()
+                .insert_slide(
+                    self.document
+                        .model()
+                        .map_or(0, |model| (self.current_slide + 1).min(model.slides.len())),
+                )
                 .map(|index| self.current_slide = index)
                 .map_err(|error| error.to_string())
         }) {
             self.status = format!("Slide を追加できませんでした: {error}");
         } else {
             self.reset_editor_to_title(cx);
-            window.focus(&self.root_focus, cx);
+            if navigator_focused {
+                window.focus(&self.navigator.focus_handle(), cx);
+            } else {
+                window.focus(&self.root_focus, cx);
+            }
             self.status = "Slide を追加しました。".into();
         }
         cx.notify();
     }
 
     fn delete_slide(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
+        let navigator_focused = self.navigator.focused(window);
+        if let Err(error) = self.document.check_external_change() {
+            self.status = format!("外部変更があるためスライド操作を取り消しました: {error}");
+            cx.notify();
+            return;
+        }
+
         if self.external_edit_blocked() {
             return;
         }
@@ -1315,7 +1340,11 @@ impl PsychoApp {
             let count = self.document.model().map_or(0, |model| model.slides.len());
             self.current_slide = self.current_slide.min(count.saturating_sub(1));
             self.reset_editor_to_title(cx);
-            window.focus(&self.root_focus, cx);
+            if navigator_focused {
+                window.focus(&self.navigator.focus_handle(), cx);
+            } else {
+                window.focus(&self.root_focus, cx);
+            }
             self.status = "Slide を削除しました。".into();
         }
         cx.notify();
@@ -1449,6 +1478,31 @@ impl PsychoApp {
         if from == to {
             return;
         }
+        self.move_slide_to(from, to, window, cx);
+    }
+
+    fn move_slide_to(
+        &mut self,
+        from: usize,
+        to: usize,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        let navigator_focused = self.navigator.focused(window);
+        if let Err(error) = self.document.check_external_change() {
+            self.status = format!("外部変更があるためスライド操作を取り消しました: {error}");
+            cx.notify();
+            return;
+        }
+
+        if from == to {
+            return;
+        }
+        if self.external_edit_blocked() {
+            self.status = "外部変更との競合があるためスライドを移動できません。".into();
+            cx.notify();
+            return;
+        }
         if let Err(error) = self.commit_draft(window, cx).and_then(|()| {
             self.document
                 .move_slide(from, to)
@@ -1459,10 +1513,12 @@ impl PsychoApp {
             return;
         }
         self.current_slide = to;
-        // The draft was committed before moving. Its numeric target now
-        // refers to another slide, so selection must not commit it again.
         self.reset_editor_to_title(cx);
-        window.focus(&self.root_focus, cx);
+        if navigator_focused {
+            window.focus(&self.navigator.focus_handle(), cx);
+        } else {
+            window.focus(&self.root_focus, cx);
+        }
         self.status = "Slide の順序を変更しました。".into();
         cx.notify();
     }
@@ -2788,17 +2844,24 @@ impl PsychoApp {
                 );
         }
         let popup = self.view.popup.map(|popup| {
+            let (left, top) = match popup {
+                Popup::Slide(position) => (
+                    f32::from(position.x).min(f32::from(window.viewport_size().width) - 260.),
+                    f32::from(position.y).min(f32::from(window.viewport_size().height) - 160.),
+                ),
+                _ => (240., 88.),
+            };
             let mut panel = div()
                 .id("toolbar-popup")
                 .role(gpui::Role::Group)
-                .aria_label(if popup == Popup::Insert {
-                    "挿入"
-                } else {
-                    "表示"
+                .aria_label(match popup {
+                    Popup::Insert => "挿入",
+                    Popup::View => "表示",
+                    Popup::Slide(_) => "スライド",
                 })
                 .absolute()
-                .top(px(88.))
-                .left(px(240.))
+                .top(px(top))
+                .left(px(left))
                 .w(px(260.))
                 .p(px(8.))
                 .flex()
@@ -2816,6 +2879,13 @@ impl PsychoApp {
                         .child(self.action_button(InsertCode, false, window, cx))
                         .child(self.action_button(InsertImage, false, window, cx))
                         .child(self.action_button(InsertColumns, false, window, cx));
+                }
+                Popup::Slide(_) => {
+                    panel = panel
+                        .child(self.action_button(AddSlide, false, window, cx))
+                        .child(self.action_button(DeleteSlide, false, window, cx))
+                        .child(self.action_button(MoveSlideEarlier, false, window, cx))
+                        .child(self.action_button(MoveSlideLater, false, window, cx));
                 }
                 Popup::View => {
                     panel = panel
@@ -2835,6 +2905,7 @@ impl PsychoApp {
             .track_focus(&self.root_focus)
             .on_mouse_move(cx.listener(|this, event, _, cx| {
                 this.update_column_resize(event, cx);
+                this.update_slide_drag_pointer(event.position);
                 this.update_pane_resize(event, cx);
             }))
             .on_mouse_up(
@@ -6194,6 +6265,11 @@ fn main() {
             KeyBinding::new("cmd-z", UndoEdit, Some("Editor")),
             KeyBinding::new("cmd-shift-z", RedoEdit, Some("Editor")),
             KeyBinding::new("delete", DeleteSelection, Some("Editor")),
+            KeyBinding::new("backspace", DeleteSlide, Some("SlideNavigator")),
+            KeyBinding::new("delete", DeleteSlide, Some("SlideNavigator")),
+            KeyBinding::new("cmd-up", MoveSlideEarlier, Some("SlideNavigator")),
+            KeyBinding::new("cmd-down", MoveSlideLater, Some("SlideNavigator")),
+            KeyBinding::new("cmd-shift-n", AddSlide, Some("SlideNavigator")),
             KeyBinding::new("up", navigator::SelectPreviousSlide, Some("SlideNavigator")),
             KeyBinding::new("down", navigator::SelectNextSlide, Some("SlideNavigator")),
             KeyBinding::new("enter", navigator::FocusSlideCanvas, Some("SlideNavigator")),

@@ -1,0 +1,7 @@
+{
+  "result": "PASS",
+  "pid": 64935,
+  "revision": "7675694ea290aa27c429ef2213ebad79d443b787",
+  "macOS": "ProductName:\t\tmacOS\nProductVersion:\t\t26.5.2\nBuildVersion:\t\t25F84\n",
+  "display": "Graphics/Displays:\n\n    Apple M3:\n\n      Chipset Model: Apple M3\n      Type: GPU\n      Bus: Built-In\n      Total Number of Cores: 10\n      Vendor: Apple (0x106b)\n      Metal Support: Metal 4\n      Displays:\n        Color LCD:\n          Display Type: Built-in Liquid Retina Display\n          Resolution: 2560 x 1664 Retina\n          Main Display: Yes\n          Mirror: Off\n          Online: Yes\n          Automatically Adjust Brightness: Yes\n          Connection Type: Internal\n\n"
+}

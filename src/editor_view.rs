@@ -21,8 +21,9 @@ pub struct PaneResize {
     pub start_x: f32,
     pub start_width: f32,
 }
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Popup {
+    Slide(gpui::Point<Pixels>),
     Insert,
     View,
 }

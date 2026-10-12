@@ -980,14 +980,32 @@ impl PresentationDocument {
     }
 
     pub fn add_slide(&mut self) -> Result<usize, DocumentError> {
+        let count = self.model.as_ref().map_or(0, |model| model.slides.len());
+        self.insert_slide(count)
+    }
+
+    pub fn insert_slide(&mut self, at: usize) -> Result<usize, DocumentError> {
         let parsed = self.editable_document()?;
+        let count = self.model.as_ref().map_or(0, |model| model.slides.len());
+        if at > count {
+            return Err(DocumentError::UnsafeValue(
+                "slide position is outside the presentation".into(),
+            ));
+        }
         let root = parsed
             .nodes()
             .first()
             .ok_or(DocumentError::InvalidDocument)?;
-        let slide_index = self.model.as_ref().map_or(0, |model| model.slides.len());
-        self.append_child(root, "slide {}")?;
-        Ok(slide_index)
+        if at == count {
+            self.append_child(root, "slide {}")?;
+        } else {
+            let node = slide_node(&parsed, at).ok_or(DocumentError::InvalidDocument)?;
+            let indent = line_indent(&self.source, node.name().span().offset());
+            let mut candidate = self.source.clone();
+            insert_moved_source_at(&mut candidate, root, at + 1, &format!("{indent}slide {{}}"))?;
+            self.commit_candidate(candidate)?;
+        }
+        Ok(at)
     }
 
     pub fn remove_slide(&mut self, slide_index: usize) -> Result<(), DocumentError> {
