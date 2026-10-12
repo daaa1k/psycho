@@ -242,7 +242,10 @@ impl PsychoApp {
         if !action.enabled(self.availability(window, cx)) {
             return;
         }
-        if self.view.popup.take().is_some() {
+        let popup = self.view.popup.take();
+        if matches!(popup, Some(Popup::Slide(_))) {
+            self.restore_popup_focus(window, cx);
+        } else if popup.is_some() {
             self.popup_return_focus = None;
         }
         action.execute(self, window, cx);
@@ -2851,10 +2854,10 @@ impl PsychoApp {
             let mut panel = div()
                 .id("toolbar-popup")
                 .role(gpui::Role::Group)
-                .aria_label(if popup == Popup::Insert {
-                    "挿入"
-                } else {
-                    "表示"
+                .aria_label(match popup {
+                    Popup::Insert => "挿入",
+                    Popup::View => "表示",
+                    Popup::Slide(_) => "スライド",
                 })
                 .absolute()
                 .top(px(top))

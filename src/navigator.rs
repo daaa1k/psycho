@@ -118,6 +118,8 @@ impl PsychoApp {
                     cx.stop_active_drag(window);
                     cx.notify();
                     cx.stop_propagation();
+                } else {
+                    cx.propagate();
                 }
             }))
             .on_mouse_up_out(
