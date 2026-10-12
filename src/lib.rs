@@ -1805,6 +1805,11 @@ impl PresentationDocument {
                     kind: error.kind(),
                     message: error.to_string(),
                 };
+                if let Some(identity) = &mut self.backing_identity {
+                    if !backing_inode_still_live(identity) {
+                        identity.file_id = None;
+                    }
+                }
             }
         })
     }
@@ -2026,6 +2031,31 @@ impl BackingIdentity {
             file_id: file_id(&file.metadata()?),
         })
     }
+}
+
+#[cfg(unix)]
+fn backing_inode_still_live(identity: &BackingIdentity) -> bool {
+    let Some((dev, ino)) = identity.file_id else {
+        return false;
+    };
+    let parent = identity
+        .resolved_path
+        .parent()
+        .filter(|parent| !parent.as_os_str().is_empty())
+        .unwrap_or(Path::new("."));
+    fs::read_dir(parent)
+        .ok()
+        .into_iter()
+        .flatten()
+        .flatten()
+        .any(|entry| {
+            fs::metadata(entry.path()).is_ok_and(|metadata| file_id(&metadata) == Some((dev, ino)))
+        })
+}
+
+#[cfg(not(unix))]
+fn backing_inode_still_live(_: &BackingIdentity) -> bool {
+    false
 }
 
 #[cfg(unix)]
