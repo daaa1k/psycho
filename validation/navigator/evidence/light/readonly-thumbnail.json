@@ -1,0 +1,10 @@
+{
+  "crop": [
+    21,
+    168,
+    155,
+    244
+  ],
+  "changedBounds": null,
+  "assertion": "Selecting a nested canvas element does not add editor borders to the thumbnail"
+}
