@@ -495,7 +495,6 @@ impl PsychoApp {
             }
             self.target = EditTarget::Title;
             self.canvas_editing = false;
-            self.column_add_menu = None;
             let title = self.edit_value(EditTarget::Title);
             self.editor.update(cx, |input, cx| {
                 input.set_multiline(false, cx);

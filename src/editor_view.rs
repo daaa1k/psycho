@@ -21,10 +21,10 @@ pub struct PaneResize {
     pub start_x: f32,
     pub start_width: f32,
 }
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Popup {
     Slide(gpui::Point<Pixels>),
-    Insert,
+    Insert(super::InsertMenuState),
     View,
 }
 
@@ -146,6 +146,12 @@ impl gpui::AssetSource for IconAssets {
             "icons/present.svg" => Some(include_bytes!("../assets/icons/present.svg")),
             "icons/undo.svg" => Some(include_bytes!("../assets/icons/undo.svg")),
             "icons/redo.svg" => Some(include_bytes!("../assets/icons/redo.svg")),
+            "icons/heading.svg" => Some(include_bytes!("../assets/icons/heading.svg")),
+            "icons/text.svg" => Some(include_bytes!("../assets/icons/text.svg")),
+            "icons/bullets.svg" => Some(include_bytes!("../assets/icons/bullets.svg")),
+            "icons/code.svg" => Some(include_bytes!("../assets/icons/code.svg")),
+            "icons/image.svg" => Some(include_bytes!("../assets/icons/image.svg")),
+            "icons/columns.svg" => Some(include_bytes!("../assets/icons/columns.svg")),
             _ => None,
         };
         Ok(icon.map(std::borrow::Cow::Borrowed))
