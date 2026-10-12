@@ -1,5 +1,19 @@
 use super::*;
 
+pub(super) fn record_navigator_range(range: std::ops::Range<usize>, scale: f32, selected: usize) {
+    let Some(path) = std::env::var_os("PSYCHO_NAVIGATOR_TRACE") else {
+        return;
+    };
+    use std::io::Write;
+    if let Ok(mut file) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(path)
+    {
+        let _ = writeln!(file, "{},{},{},{}", range.start, range.end, scale, selected);
+    }
+}
+
 #[allow(unused_variables)]
 pub(super) fn configure_appearance(window: &Window) {
     #[cfg(target_os = "macos")]
@@ -44,7 +58,7 @@ pub(super) fn record(app: &PsychoApp, window: &Window, cx: &Context<PsychoApp>) 
         .collect::<String>();
     let (navigator, inspector) = app.view.widths(f32::from(window.viewport_size().width));
     let snapshot = format!(
-        "{{\"revision\":\"{}\",\"sourceHex\":\"{}\",\"dirty\":{},\"undo\":{},\"redo\":{},\"draft\":{},\"navigator\":{},\"inspector\":{},\"navigatorWidth\":{},\"inspectorWidth\":{},\"canvasWidth\":{},\"canvasHeight\":{},\"scale\":{},\"actual\":{},\"presenting\":{},\"dark\":{}}}\n",
+        "{{\"revision\":\"{}\",\"sourceHex\":\"{}\",\"dirty\":{},\"undo\":{},\"redo\":{},\"draft\":{},\"navigator\":{},\"inspector\":{},\"navigatorWidth\":{},\"inspectorWidth\":{},\"canvasWidth\":{},\"canvasHeight\":{},\"scale\":{},\"actual\":{},\"presenting\":{},\"dark\":{},\"currentSlide\":{},\"navigatorFocused\":{},\"canvasFocused\":{}}}\n",
         option_env!("PSYCHO_BUILD_REVISION").unwrap_or("unrecorded"),
         source,
         app.document.is_dirty(),
@@ -64,6 +78,9 @@ pub(super) fn record(app: &PsychoApp, window: &Window, cx: &Context<PsychoApp>) 
             window.appearance(),
             gpui::WindowAppearance::Dark | gpui::WindowAppearance::VibrantDark
         ),
+        app.current_slide,
+        app.navigator.focused(window),
+        app.canvas_focus.is_focused(window),
     );
     let _ = std::fs::write(path, snapshot);
 }

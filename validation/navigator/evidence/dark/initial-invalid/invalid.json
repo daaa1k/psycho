@@ -1,0 +1,50 @@
+{
+  "snapshot": {
+    "id": "3D7CA5CE-6807-426D-8EA0-5019E1380ABD",
+    "truncation": {
+      "maxDepthReached": false,
+      "truncated": false,
+      "maxDepth": 64,
+      "maxNodes": 1200
+    },
+    "elementCount": 13,
+    "coordinateSpace": "window",
+    "treeText": "App=psycho (pid 72006)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button (disabled) スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) 発表\n\t7 list スライド一覧\n\t8 container スライドキャンバス\n\t9 close button\n\t10 full screen button, Secondary Actions: zoom the window\n\t11 minimize button\n\t12 text\n\nThe focused UI element is 0 standard window.",
+    "app": {
+      "bundleId": null,
+      "pid": 72006,
+      "name": "psycho"
+    },
+    "window": {
+      "y": 185,
+      "screenIndex": 0,
+      "height": 892,
+      "x": 320,
+      "width": 1280,
+      "isOffscreen": false,
+      "isMinimized": false,
+      "platform": {
+        "layer": 0
+      },
+      "id": 751,
+      "title": ""
+    },
+    "focusedElementId": 0
+  },
+  "screenshot": {
+    "height": 892,
+    "format": "png",
+    "width": 1280,
+    "scale": 1,
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/dc85d8d4-18b0-4691-b7c0-5d54a2f8543b-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-13T02:56:20.852Z"
+  },
+  "screenshotStatus": {
+    "metadata": {
+      "engine": "screenCaptureKit",
+      "windowId": 751
+    },
+    "state": "captured"
+  }
+}

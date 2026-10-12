@@ -1,0 +1,31 @@
+{
+  "nativeRestoration": {
+    "restoreScriptingAXResult": -25204,
+    "scriptingBeforeRestore": true,
+    "scriptingRestored": true,
+    "voiceOverEnabled": true
+  },
+  "nativeToggleSequence": [
+    {
+      "toggle": 1,
+      "enabled": "true",
+      "processes": "67130 /System/Library/CoreServices/VoiceOver.app/Contents/MacOS/VoiceOver launchd -s\n"
+    },
+    {
+      "toggle": 2,
+      "enabled": "false",
+      "processes": "67130 /System/Library/CoreServices/VoiceOver.app/Contents/MacOS/VoiceOver launchd -s\n"
+    }
+  ],
+  "finalWorkspaceGetter": "false",
+  "finalProcesses": "none",
+  "welcomeOriginal": 1,
+  "welcomeObserved": true,
+  "welcomeBeforeFinalRestore": false,
+  "finalNativeSettings": {
+    "scriptingEnabled": false,
+    "utilityPid": 81716,
+    "voiceOverEnabled": false,
+    "welcomeEnabled": true
+  }
+}
