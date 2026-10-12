@@ -60,6 +60,9 @@ impl PsychoApp {
         });
         let mut list = div()
             .id("navigator")
+            .flex_1()
+            .min_h_0()
+            .overflow_hidden()
             .track_focus(&self.navigator.focus)
             .key_context("SlideNavigator")
             .role(gpui::Role::ListBox)
@@ -77,7 +80,8 @@ impl PsychoApp {
             }))
             .flex()
             .flex_col()
-            .size_full()
+            .h_full()
+            .w_full()
             .min_h_0()
             .bg(self.palette.surface)
             .child(

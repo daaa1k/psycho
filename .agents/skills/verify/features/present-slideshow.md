@@ -4,14 +4,14 @@ Present slideshow lets a user enter fullscreen slide show from the current or fi
 
 ## Sub-features
 
-- `present-from-start` begins at the first slide (**発表 → 最初から発表**).
-- `present-from-current` begins at the selected slide (toolbar **発表** or `Cmd-Option-P`).
+- `present-from-start` begins at the first slide (**プレゼンテーション → 最初からプレゼンテーション**).
+- `present-from-current` begins at the selected slide (toolbar **プレゼンテーション** or `Cmd-Option-P`).
 - `present-keys` advances with Right/Down/Space/PageDown and goes back with Left/Up/PageUp.
 
 ## How to get to it (user POV)
 
-- Click **発表** in the toolbar (current slide).
-- Choose **発表 → 最初から発表** or **現在から発表** from the menu.
+- Click **プレゼンテーション** in the toolbar (current slide).
+- Choose **プレゼンテーション → 最初からプレゼンテーション** or **現在からプレゼンテーション** from the menu.
 - Press `Cmd-Option-P` for present from current.
 
 ## Driving it with psycho-verify
