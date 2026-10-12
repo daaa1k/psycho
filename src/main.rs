@@ -5,6 +5,7 @@ mod editor_validation;
 mod editor_view;
 mod ime;
 mod input;
+mod navigator;
 mod text;
 
 use std::collections::HashMap;
@@ -145,6 +146,8 @@ struct PsychoApp {
     document: PresentationDocument,
     editor: gpui::Entity<TextInputState>,
     root_focus: FocusHandle,
+    canvas_focus: FocusHandle,
+    navigator: navigator::NavigatorState,
     ime_geometry: ime::Geometry,
     current_slide: usize,
     outline_page: OutlinePage,
@@ -459,6 +462,8 @@ impl PsychoApp {
             document,
             editor,
             root_focus: cx.focus_handle(),
+            canvas_focus: cx.focus_handle().tab_stop(true),
+            navigator: navigator::NavigatorState::new(cx.focus_handle().tab_stop(true)),
             ime_geometry: ime_rect,
             current_slide: 0,
             outline_page: OutlinePage::default(),
@@ -2450,7 +2455,7 @@ impl PsychoApp {
     fn render_editor(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         self.editor
             .update(cx, |input, _| input.set_canvas_layout(None));
-        let model = self.preview_model(cx);
+        let model = self.preview_model(cx).map(Arc::new);
         self.palette = EditorPalette::for_appearance(window.appearance());
         let palette = self.palette;
         cx.set_global(palette);
@@ -2552,7 +2557,7 @@ impl PsychoApp {
             }
         }
 
-        let side = self.render_slide_list(model.as_ref(), cx);
+        let side = self.render_slide_list(model.clone(), window, cx);
         let canvas = if let Some(model) = model.as_ref() {
             self.render_canvas(model, self.current_slide, true, window, cx)
         } else {
@@ -2590,7 +2595,7 @@ impl PsychoApp {
                 .child(error.clone())
                 .into_any_element()
         } else {
-            self.render_inspector(model.as_ref(), cx)
+            self.render_inspector(model.as_deref(), cx)
         };
         let mut footer = div()
             .flex()
@@ -2688,6 +2693,10 @@ impl PsychoApp {
         let weak = cx.entity().downgrade();
         let viewport = div()
             .id("canvas-viewport")
+            .track_focus(&self.canvas_focus)
+            .role(gpui::Role::Group)
+            .aria_label("スライドキャンバス")
+            .focus(|style| style.border_2().border_color(palette.focus))
             .relative()
             .flex_1()
             .min_w_0()
@@ -2924,88 +2933,6 @@ impl PsychoApp {
             .child(workspace)
             .child(footer)
             .children(popup)
-    }
-
-    fn render_slide_list(
-        &mut self,
-        model: Option<&PresentationModel>,
-        cx: &mut Context<Self>,
-    ) -> gpui::AnyElement {
-        let mut list = div()
-            .id("navigator")
-            .role(gpui::Role::List)
-            .aria_label("Navigator")
-            .overflow_y_scroll()
-            .flex()
-            .flex_col()
-            .w_full()
-            .flex_shrink_0()
-            .h_full()
-            .gap_2()
-            .p_2()
-            .bg(self.palette.surface);
-        list = list.child(div().font_weight(gpui::FontWeight::BOLD).child("Navigator"));
-        if let Some(model) = model {
-            for (index, slide) in model.slides.iter().enumerate() {
-                let selected = index == self.current_slide;
-                let heading = slide
-                    .elements
-                    .iter()
-                    .find_map(|element| match element {
-                        Element::Heading(text) => Some(text.clone()),
-                        _ => None,
-                    })
-                    .unwrap_or_else(|| format!("Slide {}", index + 1));
-                let full_heading = heading.clone();
-                let heading = if heading.chars().count() > 7 {
-                    format!("{}…", heading.chars().take(6).collect::<String>())
-                } else {
-                    heading
-                };
-                let label = format!(
-                    "{}{}  {}",
-                    if selected { "› " } else { "" },
-                    index + 1,
-                    heading
-                );
-                list = list.child(
-                    div()
-                        .id(("slide-choice", index))
-                        .role(gpui::Role::ListItem)
-                        .aria_label(format!("スライド {} {}", index + 1, full_heading))
-                        .aria_selected(selected)
-                        .border_l(px(if selected { 4. } else { 1. }))
-                        .border_color(if selected {
-                            self.palette.focus
-                        } else {
-                            self.palette.border
-                        })
-                        .bg(if selected {
-                            self.palette.selection
-                        } else {
-                            self.palette.surface
-                        })
-                        .child(button(cx, label, true, move |this, _, window, cx| {
-                            if this.external_edit_blocked() {
-                                // Navigate the frozen preview without committing or
-                                // replacing the draft belonging to the previous target.
-                                this.current_slide = index;
-                                window.focus(&this.root_focus, cx);
-                                cx.notify();
-                                return;
-                            }
-                            if let Err(error) = this.commit_draft(window, cx) {
-                                this.status = error;
-                                cx.notify();
-                                return;
-                            }
-                            this.current_slide = index;
-                            this.select_title(window, cx);
-                        })),
-                );
-            }
-        }
-        list.into_any_element()
     }
 
     fn render_element_outline(
@@ -6244,6 +6171,9 @@ fn main() {
             KeyBinding::new("cmd-z", UndoEdit, Some("Editor")),
             KeyBinding::new("cmd-shift-z", RedoEdit, Some("Editor")),
             KeyBinding::new("delete", DeleteSelection, Some("Editor")),
+            KeyBinding::new("up", navigator::SelectPreviousSlide, Some("SlideNavigator")),
+            KeyBinding::new("down", navigator::SelectNextSlide, Some("SlideNavigator")),
+            KeyBinding::new("enter", navigator::FocusSlideCanvas, Some("SlideNavigator")),
             KeyBinding::new("right", NextSlide, Some("Presentation")),
             KeyBinding::new("down", NextSlide, Some("Presentation")),
             KeyBinding::new("space", NextSlide, Some("Presentation")),
