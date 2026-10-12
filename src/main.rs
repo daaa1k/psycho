@@ -5263,7 +5263,7 @@ fn validate_editor_value(target: EditTarget, value: &str) -> Result<(), Document
         | EditTarget::NestedElement {
             field: ElementField::ImagePath,
             ..
-        } if value.is_empty() || Path::new(value).is_absolute() => {
+        } if value.is_empty() || value.starts_with('/') || Path::new(value).is_absolute() => {
             Some("画像参照は空でない相対パスで指定してください")
         }
         _ => None,

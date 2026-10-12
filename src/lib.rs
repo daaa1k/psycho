@@ -2295,6 +2295,15 @@ fn push_asset_diagnostic(
     }
 }
 
+/// KDL image paths are portable relative paths; reject Unix-rooted strings on all OSes.
+fn image_path_is_absolute(path: &str) -> bool {
+    path.starts_with('/') || Path::new(path).is_absolute()
+}
+
+fn relative_path_for_kdl(path: &Path) -> String {
+    path.to_string_lossy().replace('\\', "/")
+}
+
 fn rebase_image_paths(
     source: &str,
     old_base: &Path,
@@ -2336,7 +2345,7 @@ fn rebase_image_paths(
                 "image asset cannot be referenced from the save destination".into(),
             )
         })?;
-        let encoded = encode_kdl_string(&relative.to_string_lossy());
+        let encoded = encode_kdl_string(&relative_path_for_kdl(&relative));
         edits.push((entry_string_range(source, entry)?, encoded));
     }
 
@@ -2781,7 +2790,7 @@ impl Validator<'_> {
                 "image" => {
                     self.check_node_header(node, &[], 1, "image");
                     let path = positional_string(node).unwrap_or_default();
-                    if path.is_empty() || Path::new(&path).is_absolute() {
+                    if path.is_empty() || image_path_is_absolute(&path) {
                         self.node_error(node, "image path must be a non-empty relative path");
                     }
                     let mut caption = None;
