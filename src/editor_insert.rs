@@ -31,13 +31,14 @@ pub(super) struct InsertRequest {
     kind: ElementKind,
     source: Arc<str>,
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug)]
 pub(super) struct InsertMenuState {
     slide: usize,
     parent: InsertParent,
     source: Arc<str>,
     parents: Vec<(InsertParent, String)>,
     focus: Vec<FocusHandle>,
+    scroll: gpui::ScrollHandle,
 }
 #[derive(Clone, Debug, PartialEq, gpui::Action)]
 #[action(no_json)]
@@ -163,6 +164,7 @@ impl PsychoApp {
             source: Arc::from(self.document.source()),
             parents,
             focus,
+            scroll: gpui::ScrollHandle::new(),
         }));
         cx.notify();
     }
@@ -274,15 +276,21 @@ impl PsychoApp {
                         .is_none()
                     })
             })
-            .map(|(_, focus)| focus)
             .collect::<Vec<_>>();
-        let current = handles.iter().position(|focus| focus.is_focused(window));
+        let current = handles
+            .iter()
+            .position(|(_, focus)| focus.is_focused(window));
         let next = match current {
             Some(index) if backwards => (index + handles.len() - 1) % handles.len(),
             Some(index) => (index + 1) % handles.len(),
             None => 0,
         };
-        window.focus(handles[next], cx);
+        let (index, focus) = handles[next];
+        state
+            .scroll
+            .scroll_to_item(index + if index < parents { 1 } else { 2 });
+        window.focus(focus, cx);
+        cx.notify();
         true
     }
 
@@ -329,7 +337,17 @@ impl PsychoApp {
                 )
                 .into_any_element();
         }
-        let mut panel = div().flex().flex_col().gap(px(4.)).child("追加先");
+        let mut panel = div()
+            .id("insert-options")
+            .flex()
+            .flex_col()
+            .gap(px(4.))
+            .max_h(px(
+                (f32::from(window.viewport_size().height) - 120.).max(80.)
+            ))
+            .overflow_y_scroll()
+            .track_scroll(&state.scroll)
+            .child("追加先");
         let parents = &state.parents;
         for (index, (parent, label)) in parents.iter().enumerate() {
             let parent = *parent;

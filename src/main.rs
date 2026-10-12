@@ -2798,8 +2798,9 @@ impl PsychoApp {
                 Popup::Insert(state) => {
                     panel = panel
                         .w(px(360.))
-                        .max_h(px(640.))
-                        .overflow_y_scroll()
+                        .max_h(px(
+                            (f32::from(window.viewport_size().height) - top - 16.).max(80.)
+                        ))
                         .child(self.render_insert_menu(state, window, cx));
                 }
                 Popup::Slide(_) => {
