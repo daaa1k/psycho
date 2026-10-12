@@ -3572,7 +3572,9 @@ impl PsychoApp {
                             cx,
                             "列内 Element ↑",
                             index > 0,
-                            |this, _, window, cx| this.move_nested_element_selection(-1, window, cx),
+                            |this, _, window, cx| {
+                                this.move_nested_element_selection(-1, window, cx)
+                            },
                             "列内 Element ↓",
                             index + 1 < count,
                             |this, _, window, cx| this.move_nested_element_selection(1, window, cx),
@@ -6178,39 +6180,32 @@ fn inspector_button_pair(
     right_label: impl Into<gpui::SharedString>,
     right_enabled: bool,
     right_handler: impl Fn(&mut PsychoApp, &MouseUpEvent, &mut Window, &mut Context<PsychoApp>)
-        + 'static,
+    + 'static,
 ) -> impl IntoElement {
     div()
         .flex()
         .w_full()
         .gap(px(4.))
-        .child(
-            div()
-                .flex_1()
-                .min_w_0()
-                .child(styled_button(
-                    cx,
-                    left_label,
-                    left_enabled,
-                    ButtonChrome::Inspector,
-                    left_handler,
-                )),
-        )
-        .child(
-            div()
-                .flex_1()
-                .min_w_0()
-                .child(styled_button(
-                    cx,
-                    right_label,
-                    right_enabled,
-                    ButtonChrome::Inspector,
-                    right_handler,
-                )),
-        )
+        .child(div().flex_1().min_w_0().child(styled_button(
+            cx,
+            left_label,
+            left_enabled,
+            ButtonChrome::Inspector,
+            left_handler,
+        )))
+        .child(div().flex_1().min_w_0().child(styled_button(
+            cx,
+            right_label,
+            right_enabled,
+            ButtonChrome::Inspector,
+            right_handler,
+        )))
 }
 
-fn inspector_section_label(text: impl Into<gpui::SharedString>, palette: EditorPalette) -> impl IntoElement {
+fn inspector_section_label(
+    text: impl Into<gpui::SharedString>,
+    palette: EditorPalette,
+) -> impl IntoElement {
     div()
         .pt(px(8.))
         .pb(px(4.))
@@ -6288,7 +6283,10 @@ fn styled_button(
     if border_width > 0 {
         control = control.border_1().border_color(border_color);
     }
-    if matches!(chrome, ButtonChrome::Inspector | ButtonChrome::InspectorPrimary | ButtonChrome::InspectorGhost) {
+    if matches!(
+        chrome,
+        ButtonChrome::Inspector | ButtonChrome::InspectorPrimary | ButtonChrome::InspectorGhost
+    ) {
         control = control.text_size(px(12.));
     }
     control
