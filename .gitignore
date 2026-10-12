@@ -23,3 +23,6 @@ target
 
 # APM dependencies
 apm_modules/
+
+# Local verification skill evidence (psycho-verify)
+.agents/skills/verify/evidence/
