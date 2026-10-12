@@ -362,6 +362,11 @@ impl PsychoApp {
                     .role(gpui::Role::RadioButton)
                     .aria_label(label.clone())
                     .aria_selected(selected)
+                    .aria_toggled(if selected {
+                        gpui::Toggled::True
+                    } else {
+                        gpui::Toggled::False
+                    })
                     .px(px(8.))
                     .min_h(px(32.))
                     .rounded_md()
