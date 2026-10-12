@@ -288,6 +288,7 @@ pub enum DocumentError {
     DestinationExists,
     OriginalDestination,
     UnsafeValue(String),
+    InvalidImagePath,
 }
 
 impl fmt::Display for DocumentError {
@@ -304,6 +305,7 @@ impl fmt::Display for DocumentError {
                 write!(f, "retreat destination refers to the original file")
             }
             Self::UnsafeValue(message) => write!(f, "value was rejected: {message}"),
+            Self::InvalidImagePath => write!(f, "image path is not valid UTF-8"),
         }
     }
 }
@@ -1805,6 +1807,11 @@ impl PresentationDocument {
                     kind: error.kind(),
                     message: error.to_string(),
                 };
+                if let Some(identity) = &mut self.backing_identity {
+                    if !backing_inode_still_live(identity) {
+                        identity.file_id = None;
+                    }
+                }
             }
         })
     }
@@ -2026,6 +2033,31 @@ impl BackingIdentity {
             file_id: file_id(&file.metadata()?),
         })
     }
+}
+
+#[cfg(unix)]
+fn backing_inode_still_live(identity: &BackingIdentity) -> bool {
+    let Some((dev, ino)) = identity.file_id else {
+        return false;
+    };
+    let parent = identity
+        .resolved_path
+        .parent()
+        .filter(|parent| !parent.as_os_str().is_empty())
+        .unwrap_or(Path::new("."));
+    fs::read_dir(parent)
+        .ok()
+        .into_iter()
+        .flatten()
+        .flatten()
+        .any(|entry| {
+            fs::metadata(entry.path()).is_ok_and(|metadata| file_id(&metadata) == Some((dev, ino)))
+        })
+}
+
+#[cfg(not(unix))]
+fn backing_inode_still_live(_: &BackingIdentity) -> bool {
+    false
 }
 
 #[cfg(unix)]
@@ -2265,6 +2297,16 @@ fn push_asset_diagnostic(
     }
 }
 
+/// KDL image paths are portable relative paths; reject Unix-rooted strings on all OSes.
+fn image_path_is_absolute(path: &str) -> bool {
+    path.starts_with('/') || Path::new(path).is_absolute()
+}
+
+fn relative_path_for_kdl(path: &Path) -> Result<String, DocumentError> {
+    let text = path.to_str().ok_or(DocumentError::InvalidImagePath)?;
+    Ok(text.replace('\\', "/"))
+}
+
 fn rebase_image_paths(
     source: &str,
     old_base: &Path,
@@ -2306,7 +2348,7 @@ fn rebase_image_paths(
                 "image asset cannot be referenced from the save destination".into(),
             )
         })?;
-        let encoded = encode_kdl_string(&relative.to_string_lossy());
+        let encoded = encode_kdl_string(&relative_path_for_kdl(&relative)?);
         edits.push((entry_string_range(source, entry)?, encoded));
     }
 
@@ -2751,7 +2793,7 @@ impl Validator<'_> {
                 "image" => {
                     self.check_node_header(node, &[], 1, "image");
                     let path = positional_string(node).unwrap_or_default();
-                    if path.is_empty() || Path::new(&path).is_absolute() {
+                    if path.is_empty() || image_path_is_absolute(&path) {
                         self.node_error(node, "image path must be a non-empty relative path");
                     }
                     let mut caption = None;

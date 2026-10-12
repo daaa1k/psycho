@@ -22,12 +22,12 @@ use gpui::{
 };
 use gpui_platform::application;
 use input::TextInputState;
-use objc::{msg_send, runtime::Object, sel, sel_impl};
 use psycho::{
     AssetDiagnostic, Diagnostic, DiagnosticKind, DocumentError, Element, ElementField, ElementKind,
     ExternalState, LayoutDiagnostic, PresentationDocument, PresentationModel, PresentationSession,
     PresentationStart, PresentationStartError, SlidePosition,
 };
+#[cfg(target_os = "macos")]
 use raw_window_handle::{HasWindowHandle, RawWindowHandle};
 
 const DEMO: &str = include_str!("../examples/build-time.kdl");
@@ -931,28 +931,39 @@ impl PsychoApp {
         cx.notify();
     }
 
-    #[allow(unexpected_cfgs)]
+    #[allow(unexpected_cfgs, unused_variables)]
     fn finish_composition(&mut self, window: &mut Window, cx: &mut Context<Self>) -> bool {
         if !self.editor.read(cx).is_marked() {
             return true;
         }
-        let Ok(handle) = window.window_handle() else {
-            return false;
-        };
-        let RawWindowHandle::AppKit(handle) = handle.as_raw() else {
-            return false;
-        };
-        let view = handle.ns_view.as_ptr().cast::<Object>();
-        let input_context: *mut Object = unsafe { msg_send![view, inputContext] };
-        if input_context.is_null() {
-            return false;
+        #[cfg(target_os = "macos")]
+        {
+            use objc::{msg_send, runtime::Object, sel, sel_impl};
+
+            let Ok(handle) = window.window_handle() else {
+                return false;
+            };
+            let RawWindowHandle::AppKit(handle) = handle.as_raw() else {
+                return false;
+            };
+            let view = handle.ns_view.as_ptr().cast::<Object>();
+            let input_context: *mut Object = unsafe { msg_send![view, inputContext] };
+            if input_context.is_null() {
+                return false;
+            }
+            self.editor
+                .update(cx, |input, cx| input.finish_composition(cx));
+            unsafe {
+                let _: () = msg_send![input_context, discardMarkedText];
+            }
+            return !self.editor.read(cx).is_marked();
         }
-        self.editor
-            .update(cx, |input, cx| input.finish_composition(cx));
-        unsafe {
-            let _: () = msg_send![input_context, discardMarkedText];
+        #[cfg(not(target_os = "macos"))]
+        {
+            self.editor
+                .update(cx, |input, cx| input.finish_composition(cx));
+            !self.editor.read(cx).is_marked()
         }
-        !self.editor.read(cx).is_marked()
     }
 
     fn save(&mut self, window: &mut Window, cx: &mut Context<Self>) {
@@ -2308,8 +2319,12 @@ impl PsychoApp {
         if self.presentation_cursor_hidden {
             return;
         }
-        unsafe {
-            let _: () = msg_send![objc::class!(NSCursor), hide];
+        #[cfg(target_os = "macos")]
+        {
+            use objc::{msg_send, sel, sel_impl};
+            unsafe {
+                let _: () = msg_send![objc::class!(NSCursor), hide];
+            }
         }
         self.presentation_cursor_hidden = true;
     }
@@ -2318,8 +2333,12 @@ impl PsychoApp {
         if !self.presentation_cursor_hidden {
             return;
         }
-        unsafe {
-            let _: () = msg_send![objc::class!(NSCursor), unhide];
+        #[cfg(target_os = "macos")]
+        {
+            use objc::{msg_send, sel, sel_impl};
+            unsafe {
+                let _: () = msg_send![objc::class!(NSCursor), unhide];
+            }
         }
         self.presentation_cursor_hidden = false;
         self.cursor_hide_generation = self.cursor_hide_generation.wrapping_add(1);
@@ -4894,16 +4913,20 @@ impl Render for PsychoApp {
                 action_menu(PresentFirst, available),
             ]),
         ]);
-        unsafe {
-            let app: *mut Object = msg_send![objc::class!(NSApplication), sharedApplication];
-            let main_menu: *mut Object = msg_send![app, mainMenu];
-            let count: usize = msg_send![main_menu, numberOfItems];
-            for index in 0..count {
-                let item: *mut Object = msg_send![main_menu, itemAtIndex: index];
-                let menu: *mut Object = msg_send![item, submenu];
-                if !menu.is_null() {
-                    // AppKit validation otherwise overwrites MenuItem::disabled.
-                    let _: () = msg_send![menu, setAutoenablesItems: objc::runtime::NO];
+        #[cfg(target_os = "macos")]
+        {
+            use objc::{msg_send, runtime::Object, sel, sel_impl};
+            unsafe {
+                let app: *mut Object = msg_send![objc::class!(NSApplication), sharedApplication];
+                let main_menu: *mut Object = msg_send![app, mainMenu];
+                let count: usize = msg_send![main_menu, numberOfItems];
+                for index in 0..count {
+                    let item: *mut Object = msg_send![main_menu, itemAtIndex: index];
+                    let menu: *mut Object = msg_send![item, submenu];
+                    if !menu.is_null() {
+                        // AppKit validation otherwise overwrites MenuItem::disabled.
+                        let _: () = msg_send![menu, setAutoenablesItems: objc::runtime::NO];
+                    }
                 }
             }
         }
@@ -5240,7 +5263,7 @@ fn validate_editor_value(target: EditTarget, value: &str) -> Result<(), Document
         | EditTarget::NestedElement {
             field: ElementField::ImagePath,
             ..
-        } if value.is_empty() || Path::new(value).is_absolute() => {
+        } if value.is_empty() || value.starts_with('/') || Path::new(value).is_absolute() => {
             Some("画像参照は空でない相対パスで指定してください")
         }
         _ => None,

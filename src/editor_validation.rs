@@ -14,7 +14,17 @@ pub(super) fn record_navigator_range(range: std::ops::Range<usize>, scale: f32, 
     }
 }
 
+#[allow(unused_variables)]
 pub(super) fn configure_appearance(window: &Window) {
+    #[cfg(target_os = "macos")]
+    configure_appearance_macos(window);
+}
+
+#[cfg(target_os = "macos")]
+fn configure_appearance_macos(window: &Window) {
+    use objc::{msg_send, runtime::Object, sel, sel_impl};
+    use raw_window_handle::{HasWindowHandle, RawWindowHandle};
+
     let name = match std::env::var("PSYCHO_ACCEPTANCE_APPEARANCE").as_deref() {
         Ok("light") => c"NSAppearanceNameAqua",
         Ok("dark") => c"NSAppearanceNameDarkAqua",
