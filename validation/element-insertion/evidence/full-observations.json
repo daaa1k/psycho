@@ -1,0 +1,108 @@
+[
+  {
+    "name": "root-heading",
+    "tree": "App=psycho (pid 287)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 見出し ✓\n\t11 button Presentation title\n\t12 button 全文をInspectorで編集\n\t13 button Element を削除\n\t14 button (disabled) 入力を取り消す\n\t15 button 要素を追加…\n\t16 close button\n\t17 full screen button, Secondary Actions: zoom the window\n\t18 minimize button\n\t19 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  heading \"\"\n }\n}\n"
+  },
+  {
+    "name": "root-heading-history",
+    "added": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  heading \"\"\n }\n}\n",
+    "undone": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {}\n}\n",
+    "redone": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  heading \"\"\n }\n}\n"
+  },
+  {
+    "name": "root-text",
+    "tree": "App=psycho (pid 287)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 本文 ✓\n\t11 button Presentation title\n\t12 button 全文をInspectorで編集\n\t13 button Element を削除\n\t14 button (disabled) 入力を取り消す\n\t15 button 要素を追加…\n\t16 close button\n\t17 full screen button, Secondary Actions: zoom the window\n\t18 minimize button\n\t19 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  text \"\"\n }\n}\n"
+  },
+  {
+    "name": "root-text-history",
+    "added": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  text \"\"\n }\n}\n",
+    "undone": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {}\n}\n",
+    "redone": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  text \"\"\n }\n}\n"
+  },
+  {
+    "name": "root-bullets",
+    "tree": "App=psycho (pid 287)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 箇条書き ✓\n\t11 button Presentation title\n\t12 button 項目 1\n\t13 button 項目を追加\n\t14 button 全文をInspectorで編集\n\t15 button Element を削除\n\t16 button (disabled) 入力を取り消す\n\t17 button 要素を追加…\n\t18 close button\n\t19 full screen button, Secondary Actions: zoom the window\n\t20 minimize button\n\t21 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  bullets { item \"\" }\n }\n}\n"
+  },
+  {
+    "name": "root-bullets-history",
+    "added": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  bullets { item \"\" }\n }\n}\n",
+    "undone": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {}\n}\n",
+    "redone": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  bullets { item \"\" }\n }\n}\n"
+  },
+  {
+    "name": "root-code",
+    "tree": "App=psycho (pid 287)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · コード ✓\n\t11 button Presentation title\n\t12 button コード言語\n\t13 button 全文をInspectorで編集\n\t14 button Element を削除\n\t15 button (disabled) 入力を取り消す\n\t16 button 要素を追加…\n\t17 close button\n\t18 full screen button, Secondary Actions: zoom the window\n\t19 minimize button\n\t20 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  code \"\"\n }\n}\n"
+  },
+  {
+    "name": "root-code-history",
+    "added": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  code \"\"\n }\n}\n",
+    "undone": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {}\n}\n",
+    "redone": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  code \"\"\n }\n}\n"
+  },
+  {
+    "name": "root-image",
+    "tree": "App=psycho (pid 287)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 画像 ✓\n\t11 button Presentation title\n\t12 button 画像パス\n\t13 button Caption\n\t14 button 画像を再読み込み\n\t15 text field (settable) 編集値, Value: assets/image.png\n\t16 button 適用\n\t17 button Element を削除\n\t18 button (disabled) 入力を取り消す\n\t19 button 要素を追加…\n\t20 close button\n\t21 full screen button, Secondary Actions: zoom the window\n\t22 minimize button\n\t23 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  image \"assets/image.png\"\n }\n}\n"
+  },
+  {
+    "name": "root-image-history",
+    "added": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  image \"assets/image.png\"\n }\n}\n",
+    "undone": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {}\n}\n",
+    "redone": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  image \"assets/image.png\"\n }\n}\n"
+  },
+  {
+    "name": "root-columns",
+    "tree": "App=psycho (pid 287)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 2列 ✓\n\t11 button Presentation title\n\t12 button Element を削除\n\t13 button 左列幅を数値入力\n\t14 button 右列幅を数値入力\n\t15 button 左列を +5%\n\t16 button 左列を -5%\n\t17 button 左列に追加…\n\t18 button 右列に追加…\n\t19 close button\n\t20 full screen button, Secondary Actions: zoom the window\n\t21 minimize button\n\t22 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  columns { column width=50; column width=50 }\n }\n}\n"
+  },
+  {
+    "name": "root-columns-history",
+    "added": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  columns { column width=50; column width=50 }\n }\n}\n",
+    "undone": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {}\n}\n",
+    "redone": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  columns { column width=50; column width=50 }\n }\n}\n"
+  },
+  {
+    "name": "all-content-kinds-image-delete-history",
+    "tree": "App=psycho (pid 287)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Title, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 見出し\n\t11 button Element 2 · 本文\n\t12 button Element 3 · 箇条書き\n\t13 button Element 4 · コード\n\t14 button (disabled) 前の項目\n\t15 button 次の項目\n\t16 button Presentation title\n\t17 button 画像パス\n\t18 button Caption\n\t19 button 画像を再読み込み\n\t20 text field (settable) 編集値, Value: assets/image.png\n\t21 button 適用\n\t22 button Element ↑\n\t23 button (disabled) Element ↓\n\t24 button Element を削除\n\t25 button (disabled) 入力を取り消す\n\t26 button 要素を追加…\n\t27 close button\n\t28 full screen button, Secondary Actions: zoom the window\n\t29 minimize button\n\t30 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  heading \"Title\"\n  text \"Body\"\n  bullets { item \"Item\" }\n  code \"x\"\n  image \"assets/image.png\"\n }\n}\n"
+  },
+  {
+    "name": "all-columns-visible",
+    "tree": "App=psycho (pid 287)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text スライド 1 Title, Secondary Actions: pick\n\t\t9 text (selected) スライド 2, Secondary Actions: pick\n\t10 container スライドキャンバス\n\t11 button Element 1 · 2列\n\t12 button Element 2 · 2列 ✓\n\t13 button Presentation title\n\t14 button Element を削除\n\t15 button 左列幅を数値入力\n\t16 button 右列幅を数値入力\n\t17 button 左列を +5%\n\t18 button 左列を -5%\n\t19 button 左列に追加…\n\t20 button 右列に追加…\n\t21 button Element ↑\n\t22 button (disabled) Element ↓\n\t23 container 挿入\n\t\t24 radio button (selected, settable) スライド直下, Value: 1, Secondary Actions: pick\n\t\t25 radio button (settable) 2列 1 の左列, Value: 0, Secondary Actions: pick\n\t\t26 radio button (settable) 2列 1 の右列, Value: 0, Secondary Actions: pick\n\t\t27 radio button (settable) 2列 2 の左列, Value: 0, Secondary Actions: pick\n\t\t28 radio button (settable) 2列 2 の右列, Value: 0, Secondary Actions: pick\n\t\t29 button 見出し\n\t\t30 button 本文\n\t\t31 button 箇条書き\n\t\t32 button コード\n\t\t33 button 画像\n\t\t34 button 2列\n\t35 close button\n\t36 full screen button, Secondary Actions: zoom the window\n\t37 minimize button\n\t38 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  heading \"Title\"\n  text \"Body\"\n  bullets { item \"Item\" }\n  code \"x\"\n  image \"assets/image.png\"\n }\n slide {\n  columns { column width=50; column width=50 }\n  columns { column width=50; column width=50 }\n }\n}\n"
+  },
+  {
+    "name": "both-columns-edited",
+    "tree": "App=psycho (pid 287)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text スライド 1 Title, Secondary Actions: pick\n\t\t9 text (selected) スライド 2, Secondary Actions: pick\n\t10 container スライドキャンバス\n\t11 button Element 1 · 2列\n\t12 button 左列 · 本文 1\n\t13 button 右列 · 本文 1\n\t14 button Element 2 · 2列\n\t15 button (disabled) 前の項目\n\t16 button 次の項目\n\t17 button Presentation title\n\t18 button 2列の内容へ戻る\n\t19 button Slide 直下へ移動\n\t20 button 全文をInspectorで編集\n\t21 button Element を削除\n\t22 button (disabled) 入力を取り消す\n\t23 button 要素を追加…\n\t24 close button\n\t25 full screen button, Secondary Actions: zoom the window\n\t26 minimize button\n\t27 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  heading \"Title\"\n  text \"Body\"\n  bullets { item \"Item\" }\n  code \"x\"\n  image \"assets/image.png\"\n }\n slide {\n  columns { column width=50 {\n   text \"1左列\"\n  }; column width=50  {\n   text \"1右列\"\n  }}\n  columns { column width=50 {\n   text \"2左列\"\n  }; column width=50  {\n   text \"2右列\"\n  }}\n }\n}\n"
+  },
+  {
+    "name": "nested-columns-disabled",
+    "tree": "App=psycho (pid 287)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text スライド 1 Title, Secondary Actions: pick\n\t\t9 text (selected) スライド 2, Secondary Actions: pick\n\t10 container スライドキャンバス\n\t11 button Element 1 · 2列\n\t12 button 左列 · 本文 1\n\t13 button 右列 · 本文 1\n\t14 button Element 2 · 2列\n\t15 button (disabled) 前の項目\n\t16 button 次の項目\n\t17 button Presentation title\n\t18 button 2列の内容へ戻る\n\t19 button Slide 直下へ移動\n\t20 button 全文をInspectorで編集\n\t21 button Element を削除\n\t22 button (disabled) 入力を取り消す\n\t23 button 要素を追加…\n\t24 container 挿入\n\t\t25 radio button (settable) スライド直下, Value: 0, Secondary Actions: pick\n\t\t26 radio button (selected, settable) 2列 1 の左列, Value: 1, Secondary Actions: pick\n\t\t27 radio button (settable) 2列 1 の右列, Value: 0, Secondary Actions: pick\n\t\t28 radio button (settable) 2列 2 の左列, Value: 0, Secondary Actions: pick\n\t\t29 radio button (settable) 2列 2 の右列, Value: 0, Secondary Actions: pick\n\t\t30 button 見出し\n\t\t31 button 本文\n\t\t32 button 箇条書き\n\t\t33 button コード\n\t\t34 button 画像\n\t\t35 button (disabled) 2列\n\t36 close button\n\t37 full screen button, Secondary Actions: zoom the window\n\t38 minimize button\n\t39 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  heading \"Title\"\n  text \"Body\"\n  bullets { item \"Item\" }\n  code \"x\"\n  image \"assets/image.png\"\n }\n slide {\n  columns { column width=50 {\n   text \"1左列\"\n  }; column width=50  {\n   text \"1右列\"\n  }}\n  columns { column width=50 {\n   text \"2左列\"\n  }; column width=50  {\n   text \"2右列\"\n  }}\n }\n}\n"
+  },
+  {
+    "name": "native-root-text",
+    "tree": "App=psycho (pid 287)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text スライド 1 Title, Secondary Actions: pick\n\t\t9 text (selected) スライド 2, Secondary Actions: pick\n\t10 container スライドキャンバス\n\t11 button Element 1 · 2列\n\t12 button 左列 · 本文 1\n\t13 button 右列 · 本文 1\n\t14 button Element 2 · 2列\n\t15 button (disabled) 前の項目\n\t16 button 次の項目\n\t17 button Presentation title\n\t18 button 2列 1 · 左列へ移動\n\t19 button 2列 1 · 右列へ移動\n\t20 button 2列 2 · 左列へ移動\n\t21 button 2列 2 · 右列へ移動\n\t22 button 全文をInspectorで編集\n\t23 button Element ↑\n\t24 button (disabled) Element ↓\n\t25 button Element を削除\n\t26 button (disabled) 入力を取り消す\n\t27 button 要素を追加…\n\t28 close button\n\t29 full screen button, Secondary Actions: zoom the window\n\t30 minimize button\n\t31 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  heading \"Title\"\n  text \"Body\"\n  bullets { item \"Item\" }\n  code \"x\"\n  image \"assets/image.png\"\n }\n slide {\n  columns { column width=50 {\n   text \"1左列\"\n  }; column width=50  {\n   text \"1右列\"\n  }}\n  columns { column width=50 {\n   text \"2左列\"\n  }; column width=50  {\n   text \"2右列\"\n  }}\n  text \"native本文\"\n }\n}\n"
+  },
+  {
+    "name": "saved-restart",
+    "tree": "App=psycho (pid 10570)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Title, Secondary Actions: pick\n\t\t9 text スライド 2, Secondary Actions: pick\n\t10 container スライドキャンバス\n\t11 button Element 1 · 見出し\n\t12 button Element 2 · 本文\n\t13 button Element 3 · 箇条書き\n\t14 button Element 4 · コード\n\t15 button (disabled) 前の項目\n\t16 button 次の項目\n\t17 button Presentation title\n\t18 text field (settable) 編集値, Value: Insertion\n\t19 button 適用\n\t20 button (disabled) 入力を取り消す\n\t21 button 要素を追加…\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  heading \"Title\"\n  text \"Body\"\n  bullets { item \"Item\" }\n  code \"x\"\n  image \"assets/image.png\"\n }\n slide {\n  columns { column width=50 {\n   text \"1左列\"\n  }; column width=50  {\n   text \"1右列\"\n  }}\n  columns { column width=50 {\n   text \"2左列\"\n  }; column width=50  {\n   text \"2右列\"\n  }}\n  text \"native本文\"\n }\n}\n"
+  },
+  {
+    "name": "presenting-content-kinds",
+    "tree": "App=psycho (pid 10570)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  heading \"Title\"\n  text \"Body\"\n  bullets { item \"Item\" }\n  code \"x\"\n  image \"assets/image.png\"\n }\n slide {\n  columns { column width=50 {\n   text \"1左列\"\n  }; column width=50  {\n   text \"1右列\"\n  }}\n  columns { column width=50 {\n   text \"2左列\"\n  }; column width=50  {\n   text \"2右列\"\n  }}\n  text \"native本文\"\n }\n}\n"
+  },
+  {
+    "name": "presenting-columns",
+    "tree": "App=psycho (pid 10570)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Insertion\" }\n slide id=\"blank\" {\n  heading \"Title\"\n  text \"Body\"\n  bullets { item \"Item\" }\n  code \"x\"\n  image \"assets/image.png\"\n }\n slide {\n  columns { column width=50 {\n   text \"1左列\"\n  }; column width=50  {\n   text \"1右列\"\n  }}\n  columns { column width=50 {\n   text \"2左列\"\n  }; column width=50  {\n   text \"2右列\"\n  }}\n  text \"native本文\"\n }\n}\n"
+  }
+]

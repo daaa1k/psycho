@@ -1,0 +1,27 @@
+[
+  {
+    "name": "conflict-shared-disabled",
+    "tree": "App=psycho (pid 39945)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button (disabled) スライド追加\n\t4 button (disabled) 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 button 外部変更を読み込む\n\t8 list スライド一覧\n\t\t9 text (selected) スライド 1, Secondary Actions: pick\n\t10 container スライドキャンバス\n\t11 close button\n\t12 full screen button, Secondary Actions: zoom the window\n\t13 minimize button\n\t14 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Edges\" }\n slide id=\"a\" {\n columns { column width=50; column width=50 }\n columns { column width=50; column width=50 }\n columns { column width=50; column width=50 }\n columns { column width=50; column width=50 }\n }\n}\n",
+    "input": {
+      "text": "55",
+      "selected": [
+        2,
+        2
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1032.1563,
+        365.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    }
+  }
+]

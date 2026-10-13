@@ -18,12 +18,6 @@ actions!(
         DeleteSlide,
         MoveSlideEarlier,
         MoveSlideLater,
-        InsertHeading,
-        InsertText,
-        InsertBullets,
-        InsertCode,
-        InsertImage,
-        InsertColumns,
         ShowInsertMenu,
         ShowViewMenu,
         ToggleNavigator,
@@ -50,7 +44,6 @@ pub(super) struct EditorAvailability {
     pub(super) undo: bool,
     pub(super) redo: bool,
     pub(super) edit: bool,
-    pub(super) insert: bool,
     pub(super) delete_slide: bool,
     pub(super) earlier: bool,
     pub(super) later: bool,
@@ -138,30 +131,12 @@ editor_action!(
         app.move_slide_selection(1, window, cx);
     }
 );
-editor_action!(InsertHeading, "見出し", insert, |app, window, cx| {
-    app.add_element(ElementKind::Heading, window, cx);
-});
-editor_action!(InsertText, "本文", insert, |app, window, cx| {
-    app.add_element(ElementKind::Text, window, cx);
-});
-editor_action!(InsertBullets, "箇条書き", insert, |app, window, cx| {
-    app.add_element(ElementKind::Bullets, window, cx);
-});
-editor_action!(InsertCode, "コード", insert, |app, window, cx| {
-    app.add_element(ElementKind::Code, window, cx);
-});
-editor_action!(InsertImage, "画像", insert, |app, window, cx| {
-    app.add_element(ElementKind::Image, window, cx);
-});
-editor_action!(InsertColumns, "2列", insert, |app, window, cx| {
-    app.add_element(ElementKind::Columns, window, cx);
-});
 editor_action!(
     ShowInsertMenu,
     "挿入",
-    view,
+    edit,
     |app, window, cx| {
-        app.show_popup(Popup::Insert, window, cx);
+        app.open_insert_menu(InsertParent::Slide, window, cx);
     },
     "icons/insert.svg"
 );

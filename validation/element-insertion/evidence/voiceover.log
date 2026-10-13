@@ -1,0 +1,34 @@
+true
+{"name": "navigation", "cursor": "元に戻す 淡色表示 button", "phrase": "VoiceOverオン psycho ウインドウ 元に戻す 淡色表示 button がキーボードの操作対象になっています"}
+{"name": "navigation", "cursor": "やり直す 淡色表示 button", "phrase": "やり直す 淡色表示 button"}
+{"name": "navigation", "cursor": "スライド追加 button", "phrase": "スライド追加 button"}
+{"name": "navigation", "cursor": "挿入 button", "phrase": "挿入 button"}
+{"name": "navigation", "cursor": "表示 button", "phrase": "表示 button"}
+{"name": "navigation", "cursor": "プレゼンテーション button", "phrase": "プレゼンテーション button"}
+{"name": "navigation", "cursor": "スライド一覧 list", "phrase": "スライド一覧 list 1項目が選択されています。 スライド 1 text （1 / 1）"}
+{"name": "navigation", "cursor": "スライドキャンバス group", "phrase": "スライドキャンバス group"}
+{"name": "navigation", "cursor": "Element 1 · 2列 button", "phrase": "Element 1 · 2列 button"}
+{"name": "navigation", "cursor": "Presentation title button", "phrase": "Presentation title button"}
+{"name": "navigation", "cursor": "VoiceOver 編集値 text field", "phrase": "VoiceOver 編集値 text field"}
+{"name": "navigation", "cursor": "適用 button", "phrase": "適用 button"}
+{"name": "navigation", "cursor": "入力を取り消す 淡色表示 button", "phrase": "入力を取り消す 淡色表示 button"}
+{"name": "navigation", "cursor": "要素を追加… button", "phrase": "要素を追加… button"}
+{"name": "navigation", "cursor": "挿入 group", "phrase": "挿入 group"}
+{"name": "navigation", "cursor": "スライド直下 選択中 radio button", "phrase": "操作開始 挿入 group 9項目 スライド直下 選択中 radio button"}
+{"name": "navigation", "cursor": "スライド直下 選択中 radio button", "phrase": "操作開始 挿入 group 9項目 スライド直下 選択中 radio button"}
+{"name": "navigation", "cursor": "2列 1 の左列 radio button", "phrase": "2列 1 の左列 radio button"}
+{"name": "navigation", "cursor": "2列 1 の左列 選択中 radio button", "phrase": "選択中"}
+{"name": "navigation", "cursor": "2列 1 の右列 radio button", "phrase": "2列 1 の右列 radio button"}
+{"name": "navigation", "cursor": "見出し button", "phrase": "見出し button"}
+{"name": "navigation", "cursor": "本文 button", "phrase": "本文 button"}
+{"name": "navigation", "cursor": "箇条書き button", "phrase": "箇条書き button"}
+{"name": "navigation", "cursor": "コード button", "phrase": "コード button"}
+{"name": "navigation", "cursor": "画像 button", "phrase": "画像 button"}
+{"name": "navigation", "cursor": "2列 淡色表示 button", "phrase": "2列 淡色表示 button"}
+{"name": "navigation", "cursor": "2列 淡色表示 button", "phrase": "2列 淡色表示 button"}
+{"name": "navigation", "cursor": "画像 button", "phrase": "画像 button"}
+{"name": "navigation", "cursor": "コード button", "phrase": "コード button"}
+{"name": "navigation", "cursor": "箇条書き button", "phrase": "箇条書き button"}
+{"name": "navigation", "cursor": "本文 button", "phrase": "本文 button"}
+PASS VoiceOver speech, selected parent, disabled kind and left-column insertion
+false

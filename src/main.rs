@@ -1,6 +1,7 @@
 #![allow(unexpected_cfgs)]
 
 mod editor_actions;
+mod editor_insert;
 mod editor_validation;
 mod editor_view;
 mod ime;
@@ -14,6 +15,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use editor_actions::*;
+use editor_insert::{ColumnSide, InsertElement, InsertMenuState, InsertParent};
 use editor_view::{EditorPalette, EditorViewState, Pane, PaneResize, Popup, ZoomMode};
 use gpui::{
     App, Bounds, Context, DragMoveEvent, FocusHandle, Focusable, InteractiveElement, KeyBinding,
@@ -153,7 +155,6 @@ struct PsychoApp {
     outline_page: OutlinePage,
     target: EditTarget,
     canvas_editing: bool,
-    column_add_menu: Option<usize>,
     presentation: Option<GuiPresentation>,
     presentation_cursor_hidden: bool,
     cursor_hide_generation: u64,
@@ -211,7 +212,6 @@ impl PsychoApp {
             save: edit,
             save_as: view && model.is_some(),
             edit,
-            insert: edit && self.current_slide < count,
             undo: edit
                 && if editor.has_focus(window) {
                     editor.can_undo()
@@ -472,7 +472,6 @@ impl PsychoApp {
             outline_page: OutlinePage::default(),
             target: EditTarget::Title,
             canvas_editing: false,
-            column_add_menu: None,
             presentation: None,
             presentation_cursor_hidden: false,
             cursor_hide_generation: 0,
@@ -648,7 +647,6 @@ impl PsychoApp {
         self.current_slide = slide;
         self.target = target;
         self.canvas_editing = edit;
-        self.column_add_menu = None;
         let value = self.edit_value(self.target);
         let multiline = self
             .document
@@ -727,7 +725,6 @@ impl PsychoApp {
         self.current_slide = slide;
         self.target = target;
         self.canvas_editing = edit;
-        self.column_add_menu = None;
         let value = self.edit_value(target);
         let multiline = self
             .document
@@ -776,7 +773,6 @@ impl PsychoApp {
         }
         self.current_slide = slide;
         self.target = target;
-        self.column_add_menu = None;
         self.editor.update(cx, |input, cx| {
             input.set_multiline(false, cx);
             input.set_value("", cx);
@@ -806,7 +802,6 @@ impl PsychoApp {
         }
         self.current_slide = slide;
         self.target = target;
-        self.column_add_menu = None;
         let value = self.edit_value(target);
         self.editor.update(cx, |input, cx| {
             input.set_multiline(false, cx);
@@ -1346,79 +1341,6 @@ impl PsychoApp {
                 window.focus(&self.root_focus, cx);
             }
             self.status = "Slide を削除しました。".into();
-        }
-        cx.notify();
-    }
-
-    fn add_element(&mut self, kind: ElementKind, window: &mut Window, cx: &mut Context<Self>) {
-        if self.external_edit_blocked() {
-            return;
-        }
-        if self.commit_draft(window, cx).is_err() {
-            return;
-        }
-        match self.document.add_element(self.current_slide, kind) {
-            Ok(index) => {
-                if kind == ElementKind::Columns {
-                    self.select_columns(self.current_slide, index, window, cx);
-                } else {
-                    self.select_element(
-                        self.current_slide,
-                        index,
-                        if kind == ElementKind::Image {
-                            ElementField::ImagePath
-                        } else {
-                            ElementField::Text
-                        },
-                        true,
-                        window,
-                        cx,
-                    );
-                }
-                self.status = "Element を追加しました。".into();
-            }
-            Err(error) => self.status = format!("Element を追加できませんでした: {error}"),
-        }
-        cx.notify();
-    }
-
-    fn add_column_element_selection(
-        &mut self,
-        column: usize,
-        kind: ElementKind,
-        window: &mut Window,
-        cx: &mut Context<Self>,
-    ) {
-        if self.external_edit_blocked() {
-            return;
-        }
-        let EditTarget::Columns {
-            slide,
-            index: columns,
-        } = self.target
-        else {
-            return;
-        };
-        if let Err(error) = self.commit_draft(window, cx) {
-            self.status = error;
-            cx.notify();
-            return;
-        }
-        match self
-            .document
-            .add_column_element(slide, columns, column, kind)
-        {
-            Ok(index) => {
-                self.column_add_menu = None;
-                let field = if kind == ElementKind::Image {
-                    ElementField::ImagePath
-                } else {
-                    ElementField::Text
-                };
-                self.select_nested_element(slide, columns, column, index, field, true, window, cx);
-                self.status = "列に Element を追加しました。".into();
-            }
-            Err(error) => self.status = format!("列に Element を追加できませんでした: {error}"),
         }
         cx.notify();
     }
@@ -2078,7 +2000,6 @@ impl PsychoApp {
             };
             window.focus(&self.root_focus, cx);
         }
-        self.column_add_menu = None;
         self.refresh_assets();
         self.refresh_editor_value(cx);
     }
@@ -2491,7 +2412,6 @@ impl PsychoApp {
             .unwrap_or(0);
         self.target = EditTarget::Title;
         self.canvas_editing = false;
-        self.column_add_menu = None;
         let title = self.edit_value(EditTarget::Title);
         self.editor.update(cx, |input, cx| {
             input.set_multiline(false, cx);
@@ -2847,7 +2767,7 @@ impl PsychoApp {
                         .child(inspector),
                 );
         }
-        let popup = self.view.popup.map(|popup| {
+        let popup = self.view.popup.clone().map(|popup| {
             let (left, top) = match popup {
                 Popup::Slide(position) => (
                     f32::from(position.x).min(f32::from(window.viewport_size().width) - 260.),
@@ -2859,7 +2779,7 @@ impl PsychoApp {
                 .id("toolbar-popup")
                 .role(gpui::Role::Group)
                 .aria_label(match popup {
-                    Popup::Insert => "挿入",
+                    Popup::Insert(_) => "挿入",
                     Popup::View => "表示",
                     Popup::Slide(_) => "スライド",
                 })
@@ -2875,14 +2795,13 @@ impl PsychoApp {
                 .border_1()
                 .border_color(palette.border);
             match popup {
-                Popup::Insert => {
+                Popup::Insert(state) => {
                     panel = panel
-                        .child(self.action_button(InsertHeading, false, window, cx))
-                        .child(self.action_button(InsertText, false, window, cx))
-                        .child(self.action_button(InsertBullets, false, window, cx))
-                        .child(self.action_button(InsertCode, false, window, cx))
-                        .child(self.action_button(InsertImage, false, window, cx))
-                        .child(self.action_button(InsertColumns, false, window, cx));
+                        .w(px(360.))
+                        .max_h(px(
+                            (f32::from(window.viewport_size().height) - top - 16.).max(80.)
+                        ))
+                        .child(self.render_insert_menu(state, window, cx));
                 }
                 Popup::Slide(_) => {
                     panel = panel
@@ -2956,23 +2875,8 @@ impl PsychoApp {
             .on_action(cx.listener(|this, action: &MoveSlideLater, window, cx| {
                 this.execute_action(action, window, cx)
             }))
-            .on_action(cx.listener(|this, action: &InsertHeading, window, cx| {
-                this.execute_action(action, window, cx)
-            }))
-            .on_action(cx.listener(|this, action: &InsertText, window, cx| {
-                this.execute_action(action, window, cx)
-            }))
-            .on_action(cx.listener(|this, action: &InsertBullets, window, cx| {
-                this.execute_action(action, window, cx)
-            }))
-            .on_action(cx.listener(|this, action: &InsertCode, window, cx| {
-                this.execute_action(action, window, cx)
-            }))
-            .on_action(cx.listener(|this, action: &InsertImage, window, cx| {
-                this.execute_action(action, window, cx)
-            }))
-            .on_action(cx.listener(|this, action: &InsertColumns, window, cx| {
-                this.execute_action(action, window, cx)
+            .on_action(cx.listener(|this, action: &InsertElement, window, cx| {
+                this.insert_element(action.request.clone(), window, cx)
             }))
             .on_action(cx.listener(|this, action: &ShowInsertMenu, window, cx| {
                 this.execute_action(action, window, cx)
@@ -3010,8 +2914,16 @@ impl PsychoApp {
             .on_action(cx.listener(|this, action: &PresentFirst, window, cx| {
                 this.execute_action(action, window, cx)
             }))
-            .on_action(cx.listener(|_, _: &FocusNext, window, cx| window.focus_next(cx)))
-            .on_action(cx.listener(|_, _: &FocusPrevious, window, cx| window.focus_prev(cx)))
+            .on_action(cx.listener(|this, _: &FocusNext, window, cx| {
+                if !this.cycle_insert_focus(false, window, cx) {
+                    window.focus_next(cx);
+                }
+            }))
+            .on_action(cx.listener(|this, _: &FocusPrevious, window, cx| {
+                if !this.cycle_insert_focus(true, window, cx) {
+                    window.focus_prev(cx);
+                }
+            }))
             .on_action(cx.listener(|this, _: &ClosePopup, window, cx| {
                 if this.view.popup.take().is_some() {
                     this.restore_popup_focus(window, cx);
@@ -3500,38 +3412,27 @@ impl PsychoApp {
                                     .font_weight(gpui::FontWeight::BOLD)
                                     .child(label),
                             );
-                            if self.column_add_menu == Some(column) {
-                                for (kind, kind_label) in [
-                                    (ElementKind::Heading, "見出し"),
-                                    (ElementKind::Text, "本文"),
-                                    (ElementKind::Bullets, "箇条書き"),
-                                    (ElementKind::Code, "コード"),
-                                    (ElementKind::Image, "画像"),
-                                ] {
-                                    inspector = inspector.child(inspector_button(
-                                        cx,
-                                        format!("{label}に{kind_label}を追加"),
-                                        true,
-                                        ButtonChrome::Inspector,
-                                        move |this, _, window, cx| {
-                                            this.add_column_element_selection(
-                                                column, kind, window, cx,
-                                            )
-                                        },
-                                    ));
-                                }
-                            } else {
-                                inspector = inspector.child(inspector_button(
-                                    cx,
-                                    format!("{label}に追加…"),
-                                    true,
-                                    ButtonChrome::Inspector,
-                                    move |this, _, _, cx| {
-                                        this.column_add_menu = Some(column);
-                                        cx.notify();
+                            let parent = match self.target {
+                                EditTarget::Columns { index, .. }
+                                | EditTarget::ColumnWidth { index, .. } => InsertParent::Column {
+                                    columns: index,
+                                    side: if column == 0 {
+                                        ColumnSide::Left
+                                    } else {
+                                        ColumnSide::Right
                                     },
-                                ));
-                            }
+                                },
+                                _ => unreachable!(),
+                            };
+                            inspector = inspector.child(inspector_button(
+                                cx,
+                                format!("{label}に追加…"),
+                                !self.external_edit_blocked(),
+                                ButtonChrome::Inspector,
+                                move |this, _, window, cx| {
+                                    this.open_insert_menu(parent, window, cx);
+                                },
+                            ));
                         }
                     }
                 }
@@ -3705,50 +3606,15 @@ impl PsychoApp {
                     ButtonChrome::Inspector,
                     |this, _, window, cx| this.cancel_input(window, cx),
                 ));
-                inspector = inspector
-                    .child(inspector_section_label("要素を追加", palette))
-                    .child(inspector_button(
-                        cx,
-                        "見出しを追加",
-                        true,
-                        ButtonChrome::InspectorGhost,
-                        |this, _, window, cx| this.execute_action(&InsertHeading, window, cx),
-                    ))
-                    .child(inspector_button(
-                        cx,
-                        "本文を追加",
-                        true,
-                        ButtonChrome::InspectorGhost,
-                        |this, _, window, cx| this.execute_action(&InsertText, window, cx),
-                    ))
-                    .child(inspector_button(
-                        cx,
-                        "箇条書きを追加",
-                        true,
-                        ButtonChrome::InspectorGhost,
-                        |this, _, window, cx| this.execute_action(&InsertBullets, window, cx),
-                    ))
-                    .child(inspector_button(
-                        cx,
-                        "コードを追加",
-                        true,
-                        ButtonChrome::InspectorGhost,
-                        |this, _, window, cx| this.execute_action(&InsertCode, window, cx),
-                    ))
-                    .child(inspector_button(
-                        cx,
-                        "画像参照を追加",
-                        true,
-                        ButtonChrome::InspectorGhost,
-                        |this, _, window, cx| this.execute_action(&InsertImage, window, cx),
-                    ))
-                    .child(inspector_button(
-                        cx,
-                        "2列を追加",
-                        true,
-                        ButtonChrome::InspectorGhost,
-                        |this, _, window, cx| this.execute_action(&InsertColumns, window, cx),
-                    ));
+                inspector = inspector.child(inspector_button(
+                    cx,
+                    "要素を追加…",
+                    !self.external_edit_blocked(),
+                    ButtonChrome::InspectorGhost,
+                    |this, _, window, cx| {
+                        this.open_insert_menu(InsertParent::Slide, window, cx);
+                    },
+                ));
             }
         }
         inspector.into_any_element()
@@ -4988,14 +4854,7 @@ impl Render for PsychoApp {
                 MenuItem::action("貼り付け", input::Paste).disabled(!input_focused),
                 MenuItem::action("すべてを選択", input::SelectAll).disabled(!input_focused),
             ]),
-            Menu::new("挿入").items([
-                action_menu(InsertHeading, available),
-                action_menu(InsertText, available),
-                action_menu(InsertBullets, available),
-                action_menu(InsertCode, available),
-                action_menu(InsertImage, available),
-                action_menu(InsertColumns, available),
-            ]),
+            self.native_insert_menu(window, cx),
             Menu::new("スライド").items([
                 action_menu(AddSlide, available),
                 action_menu(DeleteSlide, available),
@@ -5035,22 +4894,7 @@ impl Render for PsychoApp {
             ]),
         ]);
         #[cfg(target_os = "macos")]
-        {
-            use objc::{msg_send, runtime::Object, sel, sel_impl};
-            unsafe {
-                let app: *mut Object = msg_send![objc::class!(NSApplication), sharedApplication];
-                let main_menu: *mut Object = msg_send![app, mainMenu];
-                let count: usize = msg_send![main_menu, numberOfItems];
-                for index in 0..count {
-                    let item: *mut Object = msg_send![main_menu, itemAtIndex: index];
-                    let menu: *mut Object = msg_send![item, submenu];
-                    if !menu.is_null() {
-                        // AppKit validation otherwise overwrites MenuItem::disabled.
-                        let _: () = msg_send![menu, setAutoenablesItems: objc::runtime::NO];
-                    }
-                }
-            }
-        }
+        editor_insert::decorate_native_menus();
         if let Some(presentation) = self.presentation.as_ref() {
             let model = presentation.session.model().clone();
             let slide_index = presentation.session.current_index();

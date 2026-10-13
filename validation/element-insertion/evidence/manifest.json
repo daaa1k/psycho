@@ -1,0 +1,91 @@
+{
+  "sourceRevision": "fca3fd4",
+  "baseRevision": "fd8f29a",
+  "macOS": "26.5.2 (25F84)",
+  "screen": {
+    "width": 1920,
+    "height": 1200,
+    "backingScaleFactor": 1.0
+  },
+  "windows": [
+    [
+      1280,
+      892
+    ],
+    [
+      1024,
+      700
+    ],
+    [
+      1440,
+      960
+    ]
+  ],
+  "files": {
+    "all-kinds.png": "8b11a62bada370e6c6506b58f5c4c5cd10b8fc8ae5539aa29ebff50fa8bfc83c",
+    "assets/image.png": "f6224aa730ecf8350967a07d71fc8982dc29a7d5e0ac6b6b7ed2674227cb01f9",
+    "blank-slide.log": "f2bceba8e04ea5c54769ace8e728c9cec864a845eaf732731bd8ed6c9784a97f",
+    "build.log": "30a94083265690c1ac581a3defe3aeeb45c45471d0498f18205b44267f63a237",
+    "conflict-native.json": "d9c1983b3b24f6b8bf60814cfa9252d6c14587b19b92f524ccdcf39e4cecfc07",
+    "conflict-observations.json": "b737d3e02d09923f5d79d9cebeeb5f249e084eaa544e95c973154bfe22ee8d09",
+    "conflict.png": "4af73d3e858ecdc87547c9d2bda5d8d444be9c31e48c38b6dbcc993d659b69a5",
+    "core-tests.log": "d828f237bebc8fb95017c098bd1c2e2eb562f0d15f3ee5f4ae3a1a70ab7c426c",
+    "edge-observations.json": "33ae1c336d9041c1f083f51b969fe255e837b1ae9e82e18e9c9a03e7c7a87d8d",
+    "empty-observations.json": "92f7e92c9c703fe8b96059847a5c24e49be43557c44d43a716c345141d3b9fce",
+    "full-observations.json": "86db3e9f30d3f8aa6f569c023ca242fa7dc457083b4146b6cf281b9f6ab3fde3",
+    "full-run.log": "f63a2af17d770fe78661b90aba68f3b58684ecce5937b89ce7266ce954432f71",
+    "gui-tests.log": "d336d1fddbfefa1a9e9a65fbb6329e13060a9b7e9db416c1397dee9c7cdcd245",
+    "ime-committed.png": "6a579aa1dd012668cebf901ac6fa6c7a41956dfe0f5774104a37fb08463326ed",
+    "ime-marked.png": "fdd6169034921cc58bc128bffb84a71ba621d9798bfa2b737f8e395ebb5a29a2",
+    "ime-observations.json": "31cb9a25f677b8ff0d394fa3cbcf27283ccbb3a3cca245d571bbcad246f6c988",
+    "ime.log": "85ff3cba600c23a3044d5e02e0cb149a83a4f44df56d7aaa9e80afa18edbe624",
+    "input-scope.log": "0e54d7d91f858a9a41b5c2840bc5fa48adf269bed227bb8a15b677cedfe73f80",
+    "invalid-value.png": "48ec752d22a61ef7e207bfc9edbb790fa00ad43cb1d99dcca86da24a947dc4a7",
+    "light-1024x700.png": "36e768cd2029abb2792b36ae6095299954776ba79920704ffe361857f3496462",
+    "light-1280x892.png": "bcfb4530127d81064b1200b083d534a3a730200052092377d42fbbc869dfd7c8",
+    "light-1440x960.png": "2ed8e70651cff27b9918ce4e63797df4af32e82b73e9667957cb8d9f57c34d6d",
+    "light-observations.json": "6c5f4de6e9cc8ba34c9c2e522f6bd10cd6794a20d38708244fd34b0cbde9c1a2",
+    "light.log": "d297d62fed8a6742c5b79fd3471328d8ed878d11d056f9dabc40c15a4ddd70c6",
+    "menu.png": "ae613be497d7067774eced3742087ddff8981e7b27382efbac82f9df8153f63c",
+    "native-columns.png": "5a5ace69cdec06aaca253e331b6a06a6f273687b12b9e88d76809d0d1405cf37",
+    "native-menu.png": "a238bd2f55072666cb17db33e4e277d7509a12f160d4e0c9a70a454dde80dc8b",
+    "present-columns.png": "83228840ed254e80bf7a5fcb1794bf20d3c1915564182117328272826ac84bf0",
+    "present-content.png": "abf9cc263e6bf3adb1f2f6191b1c598f51d912846cf9ed109661f6dced69d81a",
+    "present-observations.json": "3cc3b68d1baa78aa6b7c971a208be0ce2cf14dc59def5f531d97ab2cfecb23cd",
+    "presentation.kdl": "c1fdbbae3a8aecdba24fe10ff614e247eb9ed38828a9288d3e067517be928d84",
+    "small-window.png": "3be155891f5866fdc124decb4237d625d6851b387c1c83a293e60dfacacff977",
+    "stale-observations.json": "3cedaa110f85c0574345bf2d9a2cea6f0c74cf99cc275f5d7f4f4befbc9c3ab3",
+    "stale-refused.png": "df3dffd36fbd3740f1e1d46c96ca821e61de8527c15763113471538e1c8ce959",
+    "stale.log": "ff28fbb59c3020a386f2ba1b5b804f5f83bc0ae787f8d6ae636a19f07a598d78",
+    "voiceover-observations.json": "2f1dc225a4bc636c94ef479c782d995f6bc8c71a9a5676ac3a6e829b52fc3cea",
+    "voiceover-restoration.json": "0baaa1e206a53c876ee84007c8c5c503942036cecda13cb468a2dc6fab61d6e1",
+    "voiceover.log": "91d7b526a6229058ff0fc0df6b5dab95f6250deee0ea85d48485725b78094ebd",
+    "voiceover.png": "479e108f512d3033a59ddfa7a0f15f1039f14508f1e9c8b2e07eb1dd3251386f",
+    "zero-slides.png": "7b935fa55ae7b91697c714e6ca24f2d2ba5a79bae1b24c99a8839e67bb225bb1"
+  },
+  "revisionNotes": {
+    "fca3fd4": [
+      "full-observations.json",
+      "full-run.log",
+      "all-kinds.png",
+      "presentation.kdl",
+      "voiceover-observations.json",
+      "voiceover-restoration.json",
+      "voiceover.png",
+      "voiceover.log",
+      "stale-observations.json",
+      "stale-refused.png",
+      "stale.log",
+      "gui-tests.log",
+      "build.log",
+      "light-1024x700.png",
+      "light-1280x892.png",
+      "light-1440x960.png",
+      "light-observations.json",
+      "light.log",
+      "blank-slide.log",
+      "input-scope.log"
+    ],
+    "cb9ad79": "Other early acceptance captures. The only product code difference is radio toggled accessibility state. Core document code is unchanged."
+  }
+}

@@ -1,0 +1,116 @@
+[
+  {
+    "name": "light-1024x700",
+    "window": {
+      "x": 320,
+      "isOffscreen": false,
+      "isMinimized": false,
+      "screenIndex": 0,
+      "y": 185,
+      "platform": {
+        "layer": 0
+      },
+      "height": 700,
+      "id": 3319,
+      "width": 1024,
+      "title": ""
+    },
+    "editor": {
+      "revision": "unrecorded",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022496e73657274696f6e20617070656172616e636522207d3b20736c696465207b20636f6c756d6e73207b20636f6c756d6e2077696474683d35303b20636f6c756d6e2077696474683d3530207d207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 552,
+      "canvasHeight": 521,
+      "scale": 0.43125,
+      "actual": false,
+      "presenting": false,
+      "dark": false,
+      "currentSlide": 0,
+      "navigatorFocused": false,
+      "canvasFocused": false
+    }
+  },
+  {
+    "name": "light-1280x892",
+    "window": {
+      "x": 320,
+      "isOffscreen": false,
+      "isMinimized": false,
+      "screenIndex": 0,
+      "y": 185,
+      "platform": {
+        "layer": 0
+      },
+      "height": 892,
+      "id": 3319,
+      "width": 1280,
+      "title": ""
+    },
+    "editor": {
+      "revision": "unrecorded",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022496e73657274696f6e20617070656172616e636522207d3b20736c696465207b20636f6c756d6e73207b20636f6c756d6e2077696474683d35303b20636f6c756d6e2077696474683d3530207d207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 808,
+      "canvasHeight": 713,
+      "scale": 0.63125,
+      "actual": false,
+      "presenting": false,
+      "dark": false,
+      "currentSlide": 0,
+      "navigatorFocused": false,
+      "canvasFocused": false
+    }
+  },
+  {
+    "name": "light-1440x960",
+    "window": {
+      "x": 320,
+      "isOffscreen": false,
+      "isMinimized": false,
+      "screenIndex": 0,
+      "y": 185,
+      "platform": {
+        "layer": 0
+      },
+      "height": 960,
+      "id": 3319,
+      "width": 1440,
+      "title": ""
+    },
+    "editor": {
+      "revision": "unrecorded",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022496e73657274696f6e20617070656172616e636522207d3b20736c696465207b20636f6c756d6e73207b20636f6c756d6e2077696474683d35303b20636f6c756d6e2077696474683d3530207d207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 968,
+      "canvasHeight": 781,
+      "scale": 0.75625,
+      "actual": false,
+      "presenting": false,
+      "dark": false,
+      "currentSlide": 0,
+      "navigatorFocused": false,
+      "canvasFocused": false
+    }
+  }
+]

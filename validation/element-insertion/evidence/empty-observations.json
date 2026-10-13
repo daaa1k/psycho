@@ -1,0 +1,17 @@
+[
+  {
+    "name": "empty-create-route",
+    "tree": "App=psycho (pid 51190)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 button スライド追加\n\t9 container スライドキャンバス\n\t10 button Presentation title\n\t11 text field (settable) 編集値, Value: Empty\n\t12 button 適用\n\t13 button (disabled) 入力を取り消す\n\t14 button 要素を追加…\n\t15 container 挿入\n\t\t16 button スライド追加\n\t17 close button\n\t18 full screen button, Secondary Actions: zoom the window\n\t19 minimize button\n\t20 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Empty\" }\n}\n"
+  },
+  {
+    "name": "empty-created-toolbar",
+    "tree": "App=psycho (pid 51190)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Presentation title\n\t11 text field (settable) 編集値, Value: Empty\n\t12 button 適用\n\t13 button (disabled) 入力を取り消す\n\t14 button 要素を追加…\n\t15 close button\n\t16 full screen button, Secondary Actions: zoom the window\n\t17 minimize button\n\t18 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Empty\" }\n slide {}\n}\n"
+  },
+  {
+    "name": "empty-created-native",
+    "tree": "App=psycho (pid 51722)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Presentation title\n\t11 text field (settable) 編集値, Value: Empty\n\t12 button 適用\n\t13 button (disabled) 入力を取り消す\n\t14 button 要素を追加…\n\t15 close button\n\t16 full screen button, Secondary Actions: zoom the window\n\t17 minimize button\n\t18 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"Empty\" }\n slide {}\n}\n"
+  }
+]

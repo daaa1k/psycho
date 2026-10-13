@@ -1,0 +1,80 @@
+[
+  {
+    "name": "ime-marked",
+    "tree": "App=psycho (pid 67228)\nWindow: \"\", App: psycho.\n\n0 dialog\n\t1 リスト リスト\n\t\t2 button ka\n\t\t3 button ｋａ\n\t\t4 button ｶ\n\t\t5 button カ\n\t\t6 button か\n\t\t7 button か\n\t\t8 button 火\n\t\t9 button 蚊\n\t\t10 button 🦟\n\t\t11 button 華\n\nNo UI element is currently focused.",
+    "source": "presentation {\n metadata { title \"IME\" }\n slide {\n  text \"\"\n }\n}\n",
+    "input": {
+      "text": "か",
+      "selected": [
+        1,
+        1
+      ],
+      "marked": [
+        0,
+        1
+      ],
+      "cursor": [
+        232.7204,
+        244.3,
+        26.5125
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "window": {
+      "y": 185,
+      "screenIndex": 0,
+      "height": 892,
+      "x": 320,
+      "width": 1280,
+      "isOffscreen": false,
+      "isMinimized": false,
+      "platform": {
+        "layer": 0
+      },
+      "id": 2818,
+      "title": ""
+    }
+  },
+  {
+    "name": "ime-insert-preserves-composition",
+    "tree": "App=psycho (pid 67228)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 button Element 1 · 本文\n\t11 button Element 2 · 見出し ✓\n\t12 button Presentation title\n\t13 button 全文をInspectorで編集\n\t14 button Element ↑\n\t15 button (disabled) Element ↓\n\t16 button Element を削除\n\t17 button (disabled) 入力を取り消す\n\t18 button 要素を追加…\n\t19 close button\n\t20 full screen button, Secondary Actions: zoom the window\n\t21 minimize button\n\t22 text\n\nThe focused UI element is 0 standard window.",
+    "source": "presentation {\n metadata { title \"IME\" }\n slide {\n  text \"か\"\n  heading \"\"\n }\n}\n",
+    "input": {
+      "text": "",
+      "selected": [
+        0,
+        0
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        216.4,
+        285.9625,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "window": {
+      "x": 320,
+      "isOffscreen": false,
+      "isMinimized": false,
+      "screenIndex": 0,
+      "y": 185,
+      "platform": {
+        "layer": 0
+      },
+      "height": 892,
+      "id": 2818,
+      "width": 1280,
+      "title": ""
+    }
+  }
+]

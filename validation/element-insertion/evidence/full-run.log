@@ -1,0 +1,15 @@
+PASS root-heading
+PASS root-text
+PASS root-bullets
+PASS root-code
+PASS root-image
+PASS root-columns
+PASS all-content-kinds-image-delete-history
+PASS all-columns-visible
+PASS both-columns-edited
+PASS nested-columns-disabled
+PASS native path 挿入 / スライド直下 / 本文  説明を文章で伝える
+PASS native-root-text
+PASS saved-restart
+PASS presenting-content-kinds
+PASS presenting-columns

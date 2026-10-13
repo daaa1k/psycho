@@ -3,3 +3,5 @@
 PSYCHOのために作成した24×24のSVGです。外部のアイコン資産は使用していません。著作権表示はCopyright (c) 2026 d4k1です。
 
 [MITライセンス](../../LICENSE)を適用します。著作権表示とライセンス表示を含めれば、複製・変更・配布・商用利用できます。
+
+挿入メニューの `heading.svg`、`text.svg`、`bullets.svg`、`code.svg`、`image.svg`、`columns.svg` も同じ24×24、線幅1.8の原作です。macOSメニューには同じSVGをラスタライズしたテンプレート画像を使用します。

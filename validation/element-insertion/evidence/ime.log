@@ -1,0 +1,4 @@
+PASS ime-marked
+PASS ime-insert-preserves-composition
+selected=com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese
+restored=dev.ensan.inputmethod.azooKeyMac.Japanese; enablement_restored=true
