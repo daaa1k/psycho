@@ -129,6 +129,12 @@ impl gpui::Render for DragGhost {
     }
 }
 
+struct InspectorControl {
+    focus: FocusHandle,
+    anchor: gpui::ScrollAnchor,
+    _subscription: gpui::Subscription,
+}
+
 struct OutlineRow {
     source: CanvasSource,
     label: String,
@@ -624,6 +630,13 @@ impl PsychoApp {
             index,
             field,
         };
+        let canvas_editing = edit
+            && self
+                .document
+                .model()
+                .and_then(|model| model.slides.get(slide))
+                .and_then(|slide| slide.elements.get(index))
+                .is_some_and(|element| supports_canvas_text_editor(element, target));
         if self.target == target {
             if self.canvas_editing && !edit {
                 if let Err(error) = self.commit_draft(window, cx) {
@@ -632,8 +645,8 @@ impl PsychoApp {
                     return;
                 }
             }
-            let surface_changed = self.canvas_editing != edit;
-            self.canvas_editing = edit;
+            let surface_changed = self.canvas_editing != canvas_editing;
+            self.canvas_editing = canvas_editing;
             if edit {
                 if surface_changed {
                     self.ime_geometry.refresh(window, true);
@@ -653,7 +666,7 @@ impl PsychoApp {
         }
         self.current_slide = slide;
         self.target = target;
-        self.canvas_editing = edit;
+        self.canvas_editing = canvas_editing;
         let value = self.edit_value(self.target);
         let multiline = self
             .document
@@ -702,6 +715,12 @@ impl PsychoApp {
             index,
             field,
         };
+        let canvas_editing = edit
+            && self
+                .document
+                .model()
+                .and_then(|model| nested_element(model, slide, columns, column, index))
+                .is_some_and(|element| supports_canvas_text_editor(element, target));
         if self.target == target {
             if self.canvas_editing && !edit {
                 if let Err(error) = self.commit_draft(window, cx) {
@@ -710,8 +729,8 @@ impl PsychoApp {
                     return;
                 }
             }
-            let surface_changed = self.canvas_editing != edit;
-            self.canvas_editing = edit;
+            let surface_changed = self.canvas_editing != canvas_editing;
+            self.canvas_editing = canvas_editing;
             if edit {
                 if surface_changed {
                     self.ime_geometry.refresh(window, true);
@@ -731,7 +750,7 @@ impl PsychoApp {
         }
         self.current_slide = slide;
         self.target = target;
-        self.canvas_editing = edit;
+        self.canvas_editing = canvas_editing;
         let value = self.edit_value(target);
         let multiline = self
             .document
@@ -780,6 +799,7 @@ impl PsychoApp {
         }
         self.current_slide = slide;
         self.target = target;
+        self.canvas_editing = false;
         self.editor.update(cx, |input, cx| {
             input.set_multiline(false, cx);
             input.set_value("", cx);
@@ -809,6 +829,7 @@ impl PsychoApp {
         }
         self.current_slide = slide;
         self.target = target;
+        self.canvas_editing = false;
         let value = self.edit_value(target);
         self.editor.update(cx, |input, cx| {
             input.set_multiline(false, cx);
@@ -2997,8 +3018,22 @@ impl PsychoApp {
             .overflow_y_scroll()
             .track_scroll(&self.outline_scroll)
             .gap_1();
+        let tab_index = rows
+            .iter()
+            .position(|row| Some(row.source) == selected)
+            .unwrap_or(0);
         for (index, row) in rows.into_iter().enumerate() {
-            outline = outline.child(self.render_outline_row(row.source, row.label, index, cx));
+            self.outline_focus[index].0 = self.outline_focus[index]
+                .0
+                .clone()
+                .tab_stop(index == tab_index);
+            outline = outline.child(self.render_outline_row(
+                row.source,
+                row.label,
+                index,
+                index == tab_index,
+                cx,
+            ));
         }
         outline.into_any_element()
     }
@@ -3008,6 +3043,7 @@ impl PsychoApp {
         source: CanvasSource,
         label: String,
         row_index: usize,
+        tab_stop: bool,
         cx: &mut Context<Self>,
     ) -> gpui::AnyElement {
         let selected = selected_source(self.target) == Some(source);
@@ -3018,8 +3054,15 @@ impl PsychoApp {
             ButtonChrome::Inspector,
             move |this, _, window, cx| this.select_canvas_source(source, window, cx),
         )
+        .id(format!("outline-{}-{row_index}", self.current_slide))
+        .accessibility_id(format!("outline-{}-{row_index}", self.current_slide))
         .flex_shrink_0()
+        .tab_stop(tab_stop)
         .role(gpui::Role::ListBoxOption)
+        .aria_label(match source {
+            CanvasSource::NestedElement { columns, .. } => format!("2列 {} · {label}", columns + 1),
+            CanvasSource::Element { .. } => label,
+        })
         .aria_selected(selected)
         .track_focus(&self.outline_focus[row_index].0)
         .when(
@@ -3092,6 +3135,8 @@ impl PsychoApp {
                 .track_scroll(&self.inspector_scroll)
                 .gap(px(4.));
             settings = settings.child(inspector_button(
+                window,
+                &self.inspector_scroll,
                 cx,
                 "Presentation title",
                 true,
@@ -3111,6 +3156,8 @@ impl PsychoApp {
                         inspector.child(div().text_color(self.palette.warning).child(reason));
                 }
                 settings = settings.child(inspector_button(
+                    window,
+                    &self.inspector_scroll,
                     cx,
                     "入力を取り消す",
                     self.has_uncommitted_draft(cx),
@@ -3128,6 +3175,8 @@ impl PsychoApp {
                                 .child("キャンバス上で編集中"),
                         )
                         .child(inspector_button(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "全文をInspectorで編集",
                             true,
@@ -3154,18 +3203,15 @@ impl PsychoApp {
                                 .text_color(palette.secondary)
                                 .child("1 行で編集します")
                         })
-                        .child(
-                            div()
-                                .w_full()
-                                .px_2()
-                                .py_1()
-                                .border_1()
-                                .border_color(palette.border)
-                                .bg(palette.input)
-                                .text_color(palette.text)
-                                .child(self.editor.clone()),
-                        )
+                        .child(inspector_input(
+                            window,
+                            &self.inspector_scroll,
+                            cx,
+                            self.editor.clone(),
+                        ))
                         .child(inspector_button(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "適用",
                             true,
@@ -3186,18 +3232,15 @@ impl PsychoApp {
                         } else {
                             "右列幅（1〜99）"
                         }))
-                        .child(
-                            div()
-                                .w_full()
-                                .px_2()
-                                .py_1()
-                                .border_1()
-                                .border_color(self.palette.border)
-                                .bg(self.palette.input)
-                                .text_color(self.palette.text)
-                                .child(self.editor.clone()),
-                        )
+                        .child(inspector_input(
+                            window,
+                            &self.inspector_scroll,
+                            cx,
+                            self.editor.clone(),
+                        ))
                         .child(inspector_button(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "幅を適用",
                             true,
@@ -3231,6 +3274,8 @@ impl PsychoApp {
                                 } if selected == item_index
                             );
                             settings = settings.child(inspector_button(
+                                window,
+                                &self.inspector_scroll,
                                 cx,
                                 format!(
                                     "項目 {}{}",
@@ -3250,6 +3295,8 @@ impl PsychoApp {
                             if selected && item_actions_available {
                                 settings = settings
                                     .child(inspector_button_pair(
+                                        window,
+                                        &self.inspector_scroll,
                                         cx,
                                         "項目を上へ",
                                         item_index > 0,
@@ -3263,6 +3310,8 @@ impl PsychoApp {
                                         },
                                     ))
                                     .child(inspector_button(
+                                        window,
+                                        &self.inspector_scroll,
                                         cx,
                                         "項目を削除",
                                         true,
@@ -3275,6 +3324,8 @@ impl PsychoApp {
                         }
                         if item_actions_available {
                             settings = settings.child(inspector_button(
+                                window,
+                                &self.inspector_scroll,
                                 cx,
                                 "項目を追加",
                                 true,
@@ -3285,6 +3336,8 @@ impl PsychoApp {
                     }
                     Element::Code { language, .. } => {
                         settings = settings.child(inspector_button(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "コード全文",
                             true,
@@ -3304,6 +3357,8 @@ impl PsychoApp {
                         );
                         for preset in ["rust", "json", "yaml", "toml", ""] {
                             settings = settings.child(inspector_button(
+                                window,
+                                &self.inspector_scroll,
                                 cx,
                                 format!(
                                     "言語を{}に変更",
@@ -3317,6 +3372,8 @@ impl PsychoApp {
                             ));
                         }
                         settings = settings.child(inspector_button(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "コード言語",
                             true,
@@ -3328,6 +3385,8 @@ impl PsychoApp {
                     }
                     Element::Image { .. } => {
                         settings = settings.child(inspector_button(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "画像パス",
                             true,
@@ -3337,6 +3396,8 @@ impl PsychoApp {
                             },
                         ));
                         settings = settings.child(inspector_button(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "Caption",
                             true,
@@ -3346,6 +3407,8 @@ impl PsychoApp {
                             },
                         ));
                         settings = settings.child(inspector_button(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "画像を再読み込み",
                             true,
@@ -3369,6 +3432,8 @@ impl PsychoApp {
                         inspector =
                             inspector.child(format!("左列 {left_width}% / 右列 {right_width}%"));
                         settings = settings.child(inspector_button(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "Element を削除",
                             true,
@@ -3376,6 +3441,8 @@ impl PsychoApp {
                             Self::delete_element,
                         ));
                         settings = settings.child(inspector_button(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "左列幅を数値入力",
                             true,
@@ -3392,6 +3459,8 @@ impl PsychoApp {
                             },
                         ));
                         settings = settings.child(inspector_button(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "右列幅を数値入力",
                             true,
@@ -3408,6 +3477,8 @@ impl PsychoApp {
                             },
                         ));
                         settings = settings.child(inspector_button_pair(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "左列を +5%",
                             *left_width <= 94,
@@ -3436,6 +3507,8 @@ impl PsychoApp {
                                 _ => unreachable!(),
                             };
                             settings = settings.child(inspector_button(
+                                window,
+                                &self.inspector_scroll,
                                 cx,
                                 format!("{label}に追加…"),
                                 !self.external_edit_blocked(),
@@ -3449,6 +3522,8 @@ impl PsychoApp {
                 }
                 if let EditTarget::NestedElement { slide, columns, .. } = self.target {
                     settings = settings.child(inspector_button(
+                        window,
+                        &self.inspector_scroll,
                         cx,
                         "2列の内容へ戻る",
                         true,
@@ -3456,6 +3531,8 @@ impl PsychoApp {
                         move |this, _, window, cx| this.select_columns(slide, columns, window, cx),
                     ));
                     settings = settings.child(inspector_button(
+                        window,
+                        &self.inspector_scroll,
                         cx,
                         "Slide 直下へ移動",
                         true,
@@ -3477,6 +3554,8 @@ impl PsychoApp {
                         for columns in destinations {
                             for (column, label) in [(0, "左列"), (1, "右列")] {
                                 settings = settings.child(inspector_button(
+                                    window,
+                                    &self.inspector_scroll,
                                     cx,
                                     format!("2列 {} · {label}へ移動", columns + 1),
                                     true,
@@ -3504,6 +3583,8 @@ impl PsychoApp {
                         .map_or(0, |slide| slide.elements.len());
                     if count > 1 {
                         settings = settings.child(inspector_button_pair(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "Element ↑",
                             index > 0,
@@ -3535,6 +3616,8 @@ impl PsychoApp {
                         .map_or(0, Vec::len);
                     if count > 1 {
                         settings = settings.child(inspector_button_pair(
+                            window,
+                            &self.inspector_scroll,
                             cx,
                             "列内 Element ↑",
                             index > 0,
@@ -3549,6 +3632,8 @@ impl PsychoApp {
                 }
                 if !matches!(element, Element::Columns { .. }) {
                     settings = settings.child(inspector_button(
+                        window,
+                        &self.inspector_scroll,
                         cx,
                         "Element を削除",
                         true,
@@ -3560,18 +3645,12 @@ impl PsychoApp {
                 settings = settings
                     .child(inspector_section_label(self.editor_label(), palette))
                     .child(
-                        div()
-                            .h(px(38.0))
-                            .w_full()
-                            .px_2()
-                            .py_1()
-                            .border_1()
-                            .border_color(palette.border)
-                            .bg(palette.input)
-                            .text_color(palette.text)
-                            .child(self.editor.clone()),
+                        inspector_input(window, &self.inspector_scroll, cx, self.editor.clone())
+                            .h(px(38.)),
                     )
                     .child(inspector_button(
+                        window,
+                        &self.inspector_scroll,
                         cx,
                         "適用",
                         true,
@@ -3588,6 +3667,8 @@ impl PsychoApp {
             }
             if !matches!(self.target, EditTarget::Columns { .. }) {
                 settings = settings.child(inspector_button(
+                    window,
+                    &self.inspector_scroll,
                     cx,
                     "要素を追加…",
                     !self.external_edit_blocked(),
@@ -3682,7 +3763,7 @@ impl PsychoApp {
     ) {
         match self.target {
             EditTarget::Element { slide, index, .. } => {
-                self.select_element(slide, index, field, true, window, cx)
+                self.select_element(slide, index, field, false, window, cx)
             }
             EditTarget::NestedElement {
                 slide,
@@ -3690,7 +3771,9 @@ impl PsychoApp {
                 column,
                 index,
                 ..
-            } => self.select_nested_element(slide, columns, column, index, field, true, window, cx),
+            } => {
+                self.select_nested_element(slide, columns, column, index, field, false, window, cx)
+            }
             EditTarget::Columns { .. } | EditTarget::ColumnWidth { .. } | EditTarget::Title => {}
         }
     }
@@ -6209,20 +6292,75 @@ fn button(
     styled_button(cx, label, enabled, ButtonChrome::Panel, handler)
 }
 
+fn inspector_focus(
+    window: &mut Window,
+    scroll: &gpui::ScrollHandle,
+    cx: &mut Context<PsychoApp>,
+    key: &str,
+    focus: Option<FocusHandle>,
+) -> (FocusHandle, gpui::ScrollAnchor) {
+    let anchor_scroll = scroll.clone();
+    let control = window.use_keyed_state(format!("inspector-control-{key}"), cx, |window, cx| {
+        let focus = focus.unwrap_or_else(|| cx.focus_handle());
+        let anchor = gpui::ScrollAnchor::for_handle(anchor_scroll);
+        let reveal = anchor.clone();
+        let subscription = cx.on_focus(&focus, window, move |_, window, cx| {
+            reveal.scroll_to(window, cx);
+            cx.notify();
+        });
+        InspectorControl {
+            focus,
+            anchor,
+            _subscription: subscription,
+        }
+    });
+    let control = control.read(cx);
+    (control.focus.clone(), control.anchor.clone())
+}
+
+fn inspector_input(
+    window: &mut Window,
+    scroll: &gpui::ScrollHandle,
+    cx: &mut Context<PsychoApp>,
+    editor: gpui::Entity<TextInputState>,
+) -> gpui::Stateful<gpui::Div> {
+    let focus = editor.read(cx).focus_handle();
+    let (_, anchor) = inspector_focus(window, scroll, cx, "text-input", Some(focus));
+    let palette = *cx.global::<EditorPalette>();
+    div()
+        .id("inspector-input")
+        .anchor_scroll(Some(anchor))
+        .w_full()
+        .px_2()
+        .py_1()
+        .border_1()
+        .border_color(palette.border)
+        .bg(palette.input)
+        .text_color(palette.text)
+        .child(editor)
+}
+
 fn inspector_button(
+    window: &mut Window,
+    scroll: &gpui::ScrollHandle,
     cx: &mut Context<PsychoApp>,
     label: impl Into<gpui::SharedString>,
     enabled: bool,
     chrome: ButtonChrome,
     handler: impl Fn(&mut PsychoApp, &MouseUpEvent, &mut Window, &mut Context<PsychoApp>) + 'static,
 ) -> impl IntoElement {
-    div()
-        .w_full()
-        .flex_shrink_0()
-        .child(styled_button(cx, label, enabled, chrome, handler))
+    let label = label.into();
+    let (focus, anchor) = inspector_focus(window, scroll, cx, &label, None);
+    div().w_full().flex_shrink_0().child(
+        styled_button(cx, label, enabled, chrome, handler)
+            .track_focus(&focus.tab_stop(enabled))
+            .anchor_scroll(Some(anchor)),
+    )
 }
 
 fn inspector_button_pair(
+    window: &mut Window,
+    scroll: &gpui::ScrollHandle,
     cx: &mut Context<PsychoApp>,
     left_label: impl Into<gpui::SharedString>,
     left_enabled: bool,
@@ -6236,14 +6374,18 @@ fn inspector_button_pair(
         .flex()
         .w_full()
         .gap(px(4.))
-        .child(div().flex_1().min_w_0().child(styled_button(
+        .child(div().flex_1().min_w_0().child(inspector_button(
+            window,
+            scroll,
             cx,
             left_label,
             left_enabled,
             ButtonChrome::Inspector,
             left_handler,
         )))
-        .child(div().flex_1().min_w_0().child(styled_button(
+        .child(div().flex_1().min_w_0().child(inspector_button(
+            window,
+            scroll,
             cx,
             right_label,
             right_enabled,

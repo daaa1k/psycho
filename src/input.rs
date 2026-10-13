@@ -392,10 +392,10 @@ impl TextInputState {
     }
 
     fn tab(&mut self, _: &Tab, window: &mut Window, cx: &mut Context<Self>) {
-        if self.multiline && self.marked_range.is_none() {
+        if self.multiline && self.canvas_layout.is_some() && self.marked_range.is_none() {
             self.pending_undo_group = Some(UndoGroup::Typing);
             self.replace_text_in_range(None, "\t", window, cx);
-        } else if !self.multiline && self.marked_range.is_none() {
+        } else if self.marked_range.is_none() {
             window.focus_next(cx);
         }
     }
