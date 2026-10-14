@@ -3004,8 +3004,9 @@ impl PsychoApp {
         while self.outline_focus.len() < rows.len() {
             let index = self.outline_focus.len();
             let focus = cx.focus_handle().tab_stop(true);
-            let subscription = cx.on_focus(&focus, window, move |this, _, cx| {
+            let subscription = cx.on_focus(&focus, window, move |this, window, cx| {
                 this.outline_scroll.scroll_to_item(index);
+                window.on_next_frame(|window, _| window.refresh());
                 cx.notify();
             });
             self.outline_focus.push((focus, subscription));
@@ -3058,7 +3059,12 @@ impl PsychoApp {
             format!("{label}{}", if selected { " ✓" } else { "" }),
             true,
             ButtonChrome::Inspector,
-            move |this, _, window, cx| this.select_canvas_source(source, window, cx),
+            move |this, _, window, cx| {
+                this.select_canvas_source(source, window, cx);
+                if selected_source(this.target) == Some(source) {
+                    window.focus(&this.outline_focus[row_index].0, cx);
+                }
+            },
         )
         .id(format!("outline-{}-{row_index}", self.current_slide))
         .accessibility_id(format!("outline-{}-{row_index}", self.current_slide))
@@ -3080,6 +3086,7 @@ impl PsychoApp {
                 let delta = match event.keystroke.key.as_str() {
                     "up" => -1,
                     "down" => 1,
+                    "enter" | "space" => 0,
                     _ => return,
                 };
                 let Some(model) = this.preview_model(cx) else {
@@ -6312,6 +6319,7 @@ fn inspector_focus(
         let reveal = anchor.clone();
         let subscription = cx.on_focus(&focus, window, move |_, window, cx| {
             reveal.scroll_to(window, cx);
+            window.on_next_frame(|window, _| window.refresh());
             cx.notify();
         });
         InspectorControl {
