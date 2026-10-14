@@ -346,8 +346,8 @@ impl PsychoApp {
     fn toggle_pane(&mut self, pane: Pane, window: &mut Window, cx: &mut Context<Self>) {
         if pane == Pane::Inspector
             && self.view.inspector.visible
-            && self.editor.read(cx).has_focus(window)
             && !self.canvas_editing
+            && !self.external_edit_blocked()
         {
             if let Err(error) = self.commit_draft(window, cx) {
                 self.status = error;
