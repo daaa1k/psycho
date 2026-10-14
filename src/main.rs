@@ -433,10 +433,8 @@ impl PsychoApp {
     ) -> Self {
         let ime_rect = ime::Geometry::default();
         let input_ime_rect = ime_rect.clone();
-        cx.observe_in(&editor, window, move |_, editor, window, cx| {
-            if editor.read(cx).has_focus(window) {
-                input_ime_rect.refresh(window, false);
-            }
+        cx.observe_in(&editor, window, move |_, _, window, cx| {
+            input_ime_rect.refresh(window, false);
             cx.notify();
         })
         .detach();
@@ -448,6 +446,7 @@ impl PsychoApp {
         .detach();
         let input_focus = editor.read(cx).focus_handle();
         cx.on_blur(&input_focus, window, |this, window, cx| {
+            this.ime_geometry.refresh(window, false);
             if !this.save_as_pending
                 && this.presentation.is_none()
                 && !this.external_edit_blocked()
