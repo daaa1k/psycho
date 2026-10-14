@@ -201,14 +201,18 @@ editor_action!(
     FitCanvas,
     "全体に合わせる",
     view,
-    |app, _window, cx| {
-        app.view.zoom = ZoomMode::Fit;
-        cx.notify();
+    |app, window, cx| {
+        if app.prepare_view_change(window, cx) {
+            app.view.zoom = ZoomMode::Fit;
+            cx.notify();
+        }
     }
 );
-editor_action!(ActualSize, "100%表示", view, |app, _window, cx| {
-    app.view.zoom = ZoomMode::Actual;
-    cx.notify();
+editor_action!(ActualSize, "100%表示", view, |app, window, cx| {
+    if app.prepare_view_change(window, cx) {
+        app.view.zoom = ZoomMode::Actual;
+        cx.notify();
+    }
 });
 editor_action!(
     PresentCurrent,

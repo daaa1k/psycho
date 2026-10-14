@@ -343,17 +343,23 @@ impl PsychoApp {
             window.focus(&focus, cx);
         }
     }
-    fn toggle_pane(&mut self, pane: Pane, window: &mut Window, cx: &mut Context<Self>) {
-        if pane == Pane::Inspector
-            && self.view.inspector.visible
-            && !self.canvas_editing
-            && !self.external_edit_blocked()
-        {
+    fn prepare_view_change(&mut self, window: &mut Window, cx: &mut Context<Self>) -> bool {
+        if !self.external_edit_blocked() {
             if let Err(error) = self.commit_draft(window, cx) {
                 self.status = error;
                 cx.notify();
-                return;
+                return false;
             }
+        }
+        true
+    }
+    fn toggle_pane(&mut self, pane: Pane, window: &mut Window, cx: &mut Context<Self>) {
+        let validate =
+            pane == Pane::Navigator || (self.view.inspector.visible && !self.canvas_editing);
+        if validate && !self.prepare_view_change(window, cx) {
+            return;
+        }
+        if pane == Pane::Inspector && self.view.inspector.visible && !self.canvas_editing {
             window.focus(&self.root_focus, cx);
         }
         let pane = self.view.pane(pane);
