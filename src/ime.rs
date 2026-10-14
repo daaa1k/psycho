@@ -132,6 +132,26 @@ mod macos {
                                     composition.panels.retain(|anchor| {
                                         panels.iter().any(|(panel, _)| *panel == *anchor.panel)
                                     });
+                                    // A replacement auxiliary panel inherits the group's current
+                                    // translation, including any screen-edge correction.
+                                    let registration_origin = panels
+                                        .iter()
+                                        .find_map(|(panel, frame)| {
+                                            composition
+                                                .panels
+                                                .iter()
+                                                .find(|anchor| *anchor.panel == *panel)
+                                                .map(|anchor| {
+                                                    (
+                                                        frame.x - anchor.left,
+                                                        frame.y + frame.height - anchor.top,
+                                                    )
+                                                })
+                                        })
+                                        .unwrap_or((
+                                            composition.native_anchor.x,
+                                            composition.native_anchor.y,
+                                        ));
                                     // Snapshot all panels before moving any: auxiliary panels can
                                     // follow their primary panel's setFrame call.
                                     for (panel, frame) in &mut panels {
@@ -144,9 +164,8 @@ mod macos {
                                         } else {
                                             composition.panels.push(PanelAnchor {
                                                 panel: objc::rc::StrongPtr::retain(*panel),
-                                                left: frame.x - composition.native_anchor.x,
-                                                top: frame.y + frame.height
-                                                    - composition.native_anchor.y,
+                                                left: frame.x - registration_origin.0,
+                                                top: frame.y + frame.height - registration_origin.1,
                                             });
                                             composition.panels.last().unwrap()
                                         };
