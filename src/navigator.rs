@@ -173,6 +173,10 @@ impl PsychoApp {
             None
         }
     }
+    pub(super) fn cancel_slide_drags(&mut self) {
+        self.navigator.drag = None;
+        self.overview.drag = None;
+    }
     pub(super) fn set_editor_mode(
         &mut self,
         mode: EditorMode,
@@ -194,8 +198,7 @@ impl PsychoApp {
                 return false;
             }
         }
-        self.navigator.drag = None;
-        self.overview.drag = None;
+        self.cancel_slide_drags();
         cx.stop_active_drag(window);
         self.view.popup = None;
         self.view.resize = None;
@@ -587,12 +590,17 @@ impl PsychoApp {
         }
         if host == CollectionHost::Overview {
             let weak = cx.entity().downgrade();
+            let previous_area = self.view.canvas_area;
             list = list.relative().child(
                 gpui::canvas(
-                    move |bounds, _, cx| {
+                    move |bounds, window, cx| {
+                        if bounds.size != previous_area {
+                            cx.stop_active_drag(window);
+                        }
                         cx.defer(move |cx| {
                             weak.update(cx, |this, cx| {
                                 if this.view.canvas_area != bounds.size {
+                                    this.cancel_slide_drags();
                                     this.view.canvas_area = bounds.size;
                                     cx.notify();
                                 }

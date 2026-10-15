@@ -2788,6 +2788,7 @@ impl PsychoApp {
         let (navigator_width, inspector_width) =
             self.view.widths(f32::from(window.viewport_size().width));
         let weak = cx.entity().downgrade();
+        let previous_area = self.view.canvas_area;
         let viewport = if self.view.mode == EditorMode::Overview {
             canvas
         } else {
@@ -2806,10 +2807,14 @@ impl PsychoApp {
                 .overflow_y_scroll()
                 .child(
                     gpui::canvas(
-                        move |bounds, _, cx| {
+                        move |bounds, window, cx| {
+                            if bounds.size != previous_area {
+                                cx.stop_active_drag(window);
+                            }
                             cx.defer(move |cx| {
                                 weak.update(cx, |this, cx| {
                                     if this.view.canvas_area != bounds.size {
+                                        this.cancel_slide_drags();
                                         this.view.canvas_area = bounds.size;
                                         cx.notify();
                                     }
