@@ -1,0 +1,10 @@
+PASS canvas-marked
+PASS inspector-marked
+PASS marked-tab-ime-priority
+PASS marked-shift-tab-ime-priority
+PASS canvas-return-marked
+PASS composition-saved
+PASS second-composition-inspector
+PASS second-composition-canvas
+selected=com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese
+restored=dev.ensan.inputmethod.azooKeyMac.Japanese; enablement_restored=true

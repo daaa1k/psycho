@@ -1,0 +1,15 @@
+{
+  "initial": {
+    "scripting": true,
+    "utilityPID": 55965,
+    "voiceOverEnabled": false,
+    "welcome": true
+  },
+  "restored": {
+    "scripting": true,
+    "utilityPID": 60753,
+    "voiceOverEnabled": false,
+    "welcome": true
+  },
+  "recovery": "Quickstart native VoiceOver off button after quit left splash active"
+}

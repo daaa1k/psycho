@@ -1,0 +1,167 @@
+{
+  "status": "PASS",
+  "records": [
+    {
+      "name": "continuous-moving",
+      "time": 9.281257458,
+      "left": [
+        216.4,
+        317.26117,
+        0.63125
+      ],
+      "right": [
+        601.816,
+        317.26117,
+        0.63125
+      ],
+      "source_on_disk": "presentation {\n metadata { title \"Column divider acceptance\" }\n slide {\n  heading \"Divider acceptance\"\n  columns { column width=50 { text \"LEFT\"; }; column width=50 { text \"RIGHT\"; }; }\n }\n}\n"
+    },
+    {
+      "name": "continuous-held",
+      "time": 11.175698083,
+      "left": [
+        216.4,
+        317.26117,
+        0.63125
+      ],
+      "right": [
+        694.3825,
+        317.26117,
+        0.63125
+      ],
+      "source_on_disk": "presentation {\n metadata { title \"Column divider acceptance\" }\n slide {\n  heading \"Divider acceptance\"\n  columns { column width=50 { text \"LEFT\"; }; column width=50 { text \"RIGHT\"; }; }\n }\n}\n"
+    },
+    {
+      "name": "continuous-held-after-save",
+      "time": 12.117601291,
+      "left": [
+        216.4,
+        317.26117,
+        0.63125
+      ],
+      "right": [
+        694.3825,
+        317.26117,
+        0.63125
+      ],
+      "source_on_disk": "presentation {\n metadata { title \"Column divider acceptance\" }\n slide {\n  heading \"Divider acceptance\"\n  columns { column width=50 { text \"LEFT\"; }; column width=50 { text \"RIGHT\"; }; }\n }\n}\n"
+    },
+    {
+      "name": "continuous",
+      "expected": 65,
+      "saved_source": "presentation {\n metadata { title \"Column divider acceptance\" }\n slide {\n  heading \"Divider acceptance\"\n  columns { column width=65 { text \"LEFT\"; }; column width=35 { text \"RIGHT\"; }; }\n }\n}\n",
+      "exact_undo": true,
+      "exact_redo": true,
+      "persisted_reload": true
+    },
+    {
+      "name": "lower-limit-moving",
+      "time": 46.016568875,
+      "left": [
+        216.4,
+        317.26117,
+        0.63125
+      ],
+      "right": [
+        416.68298,
+        317.26117,
+        0.63125
+      ],
+      "source_on_disk": "presentation {\n metadata { title \"Column divider acceptance\" }\n slide {\n  heading \"Divider acceptance\"\n  columns { column width=50 { text \"LEFT\"; }; column width=50 { text \"RIGHT\"; }; }\n }\n}\n"
+    },
+    {
+      "name": "lower-limit-held",
+      "time": 47.914036583,
+      "left": [
+        216.4,
+        317.26117,
+        0.63125
+      ],
+      "right": [
+        238.6705,
+        317.26117,
+        0.63125
+      ],
+      "source_on_disk": "presentation {\n metadata { title \"Column divider acceptance\" }\n slide {\n  heading \"Divider acceptance\"\n  columns { column width=50 { text \"LEFT\"; }; column width=50 { text \"RIGHT\"; }; }\n }\n}\n"
+    },
+    {
+      "name": "lower-limit-held-after-save",
+      "time": 48.850356791,
+      "left": [
+        216.4,
+        317.26117,
+        0.63125
+      ],
+      "right": [
+        238.6705,
+        317.26117,
+        0.63125
+      ],
+      "source_on_disk": "presentation {\n metadata { title \"Column divider acceptance\" }\n slide {\n  heading \"Divider acceptance\"\n  columns { column width=50 { text \"LEFT\"; }; column width=50 { text \"RIGHT\"; }; }\n }\n}\n"
+    },
+    {
+      "name": "lower-limit",
+      "expected": 1,
+      "saved_source": "presentation {\n metadata { title \"Column divider acceptance\" }\n slide {\n  heading \"Divider acceptance\"\n  columns { column width=1 { text \"LEFT\"; }; column width=99 { text \"RIGHT\"; }; }\n }\n}\n",
+      "exact_undo": true,
+      "exact_redo": true,
+      "persisted_reload": true
+    },
+    {
+      "name": "upper-limit-moving",
+      "time": 82.452121458,
+      "left": [
+        216.4,
+        317.26117,
+        0.63125
+      ],
+      "right": [
+        758.467,
+        317.26117,
+        0.63125
+      ],
+      "source_on_disk": "presentation {\n metadata { title \"Column divider acceptance\" }\n slide {\n  heading \"Divider acceptance\"\n  columns { column width=50 { text \"LEFT\"; }; column width=50 { text \"RIGHT\"; }; }\n }\n}\n"
+    },
+    {
+      "name": "upper-limit-held",
+      "time": 84.379398083,
+      "left": [
+        216.4,
+        317.26117,
+        0.63125
+      ],
+      "right": [
+        936.47943,
+        317.26117,
+        0.63125
+      ],
+      "source_on_disk": "presentation {\n metadata { title \"Column divider acceptance\" }\n slide {\n  heading \"Divider acceptance\"\n  columns { column width=50 { text \"LEFT\"; }; column width=50 { text \"RIGHT\"; }; }\n }\n}\n"
+    },
+    {
+      "name": "upper-limit-held-after-save",
+      "time": 85.324878,
+      "left": [
+        216.4,
+        317.26117,
+        0.63125
+      ],
+      "right": [
+        936.47943,
+        317.26117,
+        0.63125
+      ],
+      "source_on_disk": "presentation {\n metadata { title \"Column divider acceptance\" }\n slide {\n  heading \"Divider acceptance\"\n  columns { column width=50 { text \"LEFT\"; }; column width=50 { text \"RIGHT\"; }; }\n }\n}\n"
+    },
+    {
+      "name": "upper-limit",
+      "expected": 99,
+      "saved_source": "presentation {\n metadata { title \"Column divider acceptance\" }\n slide {\n  heading \"Divider acceptance\"\n  columns { column width=99 { text \"LEFT\"; }; column width=1 { text \"RIGHT\"; }; }\n }\n}\n",
+      "exact_undo": true,
+      "exact_redo": true,
+      "persisted_reload": true
+    }
+  ],
+  "head": "1e39042a8f8f34f8210f50bc720fd18abcb59610",
+  "owned_pid": 96309,
+  "coordinates": "Latest canvas glyph origins; gutter 24*scale from main.rs"
+}

@@ -1,0 +1,5 @@
+PASS canvas-outline-selection
+PASS direct-full-editor-5
+PASS saved-reload
+PASS background-clears-canvas-editor
+PASS external-conflict-stops-editing

@@ -1,0 +1,3 @@
+PASS last-row-selected
+PASS selected-last-row-scrolled-away
+PASS shift-tab-immediately-reveals-selected-row

@@ -1,0 +1,212 @@
+[
+  {
+    "name": "navigation",
+    "cursor": "元に戻す 淡色表示 button",
+    "phrase": "VoiceOverオン psycho ウインドウ 元に戻す 淡色表示 button がキーボードの操作対象になっています"
+  },
+  {
+    "name": "navigation",
+    "cursor": "やり直す 淡色表示 button",
+    "phrase": "やり直す 淡色表示 button"
+  },
+  {
+    "name": "navigation",
+    "cursor": "スライド追加 button",
+    "phrase": "スライド追加 button"
+  },
+  {
+    "name": "navigation",
+    "cursor": "挿入 button",
+    "phrase": "挿入 button"
+  },
+  {
+    "name": "navigation",
+    "cursor": "表示 button",
+    "phrase": "表示 button"
+  },
+  {
+    "name": "navigation",
+    "cursor": "プレゼンテーション 淡色表示 button",
+    "phrase": "スクリプトエディタ、 Codex, Task completed グループ 通知メニューを開くには、Control-Option-N を押します。"
+  },
+  {
+    "name": "navigation",
+    "cursor": "スライド一覧 list",
+    "phrase": "スライド一覧 list 1項目が選択されています。 スライド 1 text （1 / 1）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "スライド 1",
+    "phrase": "操作開始 スライド一覧 list 1項目が選択されています。 スライド 1 text （1 / 1） スライド 1 text （1 / 1）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "スライド 1",
+    "phrase": "スライド 1 text （1 / 1）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "スライドキャンバス group",
+    "phrase": "スライドキャンバス group"
+  },
+  {
+    "name": "navigation",
+    "cursor": "スライドキャンバス カラ group",
+    "phrase": "操作開始 スライドキャンバス group 内容がありません"
+  },
+  {
+    "name": "navigation",
+    "cursor": "スライドキャンバス カラ group",
+    "phrase": "操作開始 スライドキャンバス カラ group 内容がありません"
+  },
+  {
+    "name": "navigation",
+    "cursor": "スライドの構造一覧 list",
+    "phrase": "スライドの構造一覧 list"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 1 · 本文",
+    "phrase": "操作開始 スライドの構造一覧 list Element 1 · 本文 text （1 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 2 · 本文",
+    "phrase": "Element 2 · 本文 text （2 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 3 · 本文",
+    "phrase": "Element 3 · 本文 text （3 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 4 · 本文",
+    "phrase": "Element 4 · 本文 text （4 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 5 · 本文",
+    "phrase": "Element 5 · 本文 text （5 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 6 · 本文",
+    "phrase": "Element 6 · 本文 text （6 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 7 · 本文",
+    "phrase": "Element 7 · 本文 text （7 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 8 · 本文",
+    "phrase": "Element 8 · 本文 text （8 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 9 · 本文",
+    "phrase": "Element 9 · 本文 text （9 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 10 · 本文",
+    "phrase": "Element 10 · 本文 text （10 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 11 · 本文",
+    "phrase": "Element 11 · 本文 text （11 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 12 · 本文",
+    "phrase": "Element 12 · 本文 text （12 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 13 · 本文",
+    "phrase": "Element 13 · 本文 text （13 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 14 · 本文",
+    "phrase": "Element 14 · 本文 text （14 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 15 · 本文",
+    "phrase": "Element 15 · 本文 text （15 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 16 · 本文",
+    "phrase": "Element 16 · 本文 text （16 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 17 · 本文",
+    "phrase": "Element 17 · 本文 text （17 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 18 · 本文",
+    "phrase": "Element 18 · 本文 text （18 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 19 · 本文",
+    "phrase": "Element 19 · 本文 text （19 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 20 · 本文",
+    "phrase": "Element 20 · 本文 text （20 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Element 21 · 2列",
+    "phrase": "Element 21 · 2列 text （21 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "2列 21 · 左列 · 本文 1",
+    "phrase": "2列 21 · 左列 · 本文 1 text （22 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "2列 21 · 左列 · 本文 1",
+    "phrase": ""
+  },
+  {
+    "name": "navigation",
+    "cursor": "2列 21 · 右列 · 本文 1",
+    "phrase": "スクリプトエディタ、 Codex, Task completed グループ 通知メニューを開くには、Control-Option-N を押します。"
+  },
+  {
+    "name": "navigation",
+    "cursor": "2列 21 · 右列 · 本文 1",
+    "phrase": ""
+  },
+  {
+    "name": "navigation",
+    "cursor": "2列 21 · 右列 · 本文 1",
+    "phrase": "2列 21 · 右列 · 本文 1 text （23 / 23）"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Presentation title button",
+    "phrase": "Presentation title button"
+  },
+  {
+    "name": "navigation",
+    "cursor": "入力を取り消す 淡色表示 button",
+    "phrase": "入力を取り消す 淡色表示 button"
+  },
+  {
+    "name": "navigation",
+    "cursor": "Right 本文 text field",
+    "phrase": "Right 本文 text field"
+  }
+]

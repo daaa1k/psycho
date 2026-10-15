@@ -1,0 +1,430 @@
+[
+  {
+    "name": "canvas-marked",
+    "input": {
+      "text": "日本語の返還",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        384.26706,
+        244.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 49082)\nWindow: \"\", App: psycho.\n\n0 dialog\n\t1 リスト リスト\n\t\t2 button nihongono\n\t\t3 button ｎｉｈｏｎｇｏｎｏ\n\t\t4 button ﾆﾎﾝｺﾞﾉ\n\t\t5 button ニホンゴノ\n\t\t6 button にほんごの\n\t\t7 button 日本語の変換\n\t\t8 button 日本語の返還\n\t\t9 button 日本語のへんかん\n\t\t10 button 日本後の変換\n\nNo UI element is currently focused.",
+    "windows": [
+      {
+        "bounds": {
+          "Height": 146,
+          "Width": 416,
+          "X": 706,
+          "Y": 504
+        },
+        "id": 5449,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 140,
+          "Width": 178,
+          "X": 528,
+          "Y": 507
+        },
+        "id": 5445,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 888,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 5419,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "name": "inspector-marked",
+    "input": {
+      "text": "日本語の返還",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        1101.6427,
+        509.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 49082)\nWindow: \"\", App: psycho.\n\n0 dialog\n\t1 リスト リスト\n\t\t2 button nihongono\n\t\t3 button ｎｉｈｏｎｇｏｎｏ\n\t\t4 button ﾆﾎﾝｺﾞﾉ\n\t\t5 button ニホンゴノ\n\t\t6 button にほんごの\n\t\t7 button 日本語の変換\n\t\t8 button 日本語の返還\n\t\t9 button 日本語のへんかん\n\t\t10 button 日本後の変換\n\nNo UI element is currently focused.",
+    "windows": [
+      {
+        "bounds": {
+          "Height": 146,
+          "Width": 416,
+          "X": 1502,
+          "Y": 757
+        },
+        "id": 5449,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 140,
+          "Width": 178,
+          "X": 1324,
+          "Y": 760
+        },
+        "id": 5445,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 888,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 5419,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "name": "marked-tab-ime-priority",
+    "input": {
+      "text": "日本語のへんかん",
+      "selected": [
+        0,
+        8
+      ],
+      "marked": [
+        0,
+        8
+      ],
+      "cursor": [
+        1131.1902,
+        509.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 49082)\nWindow: \"\", App: psycho.\n\n0 dialog\n\t1 リスト リスト\n\t\t2 button nihongono\n\t\t3 button ｎｉｈｏｎｇｏｎｏ\n\t\t4 button ﾆﾎﾝｺﾞﾉ\n\t\t5 button ニホンゴノ\n\t\t6 button にほんごの\n\t\t7 button 日本語の変換\n\t\t8 button 日本語の返還\n\t\t9 button 日本語のへんかん\n\t\t10 button 日本後の変換\n\nNo UI element is currently focused.",
+    "windows": [
+      {
+        "bounds": {
+          "Height": 146,
+          "Width": 416,
+          "X": 1502,
+          "Y": 757
+        },
+        "id": 5452,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 140,
+          "Width": 178,
+          "X": 1324,
+          "Y": 760
+        },
+        "id": 5445,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 888,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 5419,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "name": "marked-shift-tab-ime-priority",
+    "input": {
+      "text": "日本語の返還",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        1101.6427,
+        509.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 49082)\nWindow: \"\", App: psycho.\n\n0 dialog\n\t1 リスト リスト\n\t\t2 button nihongono\n\t\t3 button ｎｉｈｏｎｇｏｎｏ\n\t\t4 button ﾆﾎﾝｺﾞﾉ\n\t\t5 button ニホンゴノ\n\t\t6 button にほんごの\n\t\t7 button 日本語の変換\n\t\t8 button 日本語の返還\n\t\t9 button 日本語のへんかん\n\t\t10 button 日本後の変換\n\nNo UI element is currently focused.",
+    "windows": [
+      {
+        "bounds": {
+          "Height": 146,
+          "Width": 416,
+          "X": 1502,
+          "Y": 757
+        },
+        "id": 5453,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 140,
+          "Width": 178,
+          "X": 1324,
+          "Y": 760
+        },
+        "id": 5445,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 888,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 5419,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "name": "canvas-return-marked",
+    "input": {
+      "text": "日本語の返還",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        384.26706,
+        244.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 49082)\nWindow: \"\", App: psycho.\n\n0 dialog\n\t1 リスト リスト\n\t\t2 button nihongono\n\t\t3 button ｎｉｈｏｎｇｏｎｏ\n\t\t4 button ﾆﾎﾝｺﾞﾉ\n\t\t5 button ニホンゴノ\n\t\t6 button にほんごの\n\t\t7 button 日本語の変換\n\t\t8 button 日本語の返還\n\t\t9 button 日本語のへんかん\n\t\t10 button 日本後の変換\n\nNo UI element is currently focused.",
+    "windows": [
+      {
+        "bounds": {
+          "Height": 146,
+          "Width": 416,
+          "X": 706,
+          "Y": 504
+        },
+        "id": 5453,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 140,
+          "Width": 178,
+          "X": 528,
+          "Y": 507
+        },
+        "id": 5445,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 888,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 5419,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "name": "composition-saved",
+    "input": {
+      "text": "日本語の返還",
+      "selected": [
+        6,
+        6
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        384.26706,
+        244.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 49082)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 日本語の返還, Secondary Actions: pick\n\t9 container スライドキャンバス\n\t10 list スライドの構造一覧\n\t\t11 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t\t12 text Element 2 · 本文, Secondary Actions: pick\n\t13 button Presentation title\n\t14 button (disabled) 入力を取り消す\n\t15 button 全文をInspectorで編集\n\t16 button (disabled) Element ↑\n\t17 button Element ↓\n\t18 button Element を削除\n\t19 button 要素を追加…\n\t20 close button\n\t21 full screen button, Secondary Actions: zoom the window\n\t22 minimize button\n\t23 text\n\nThe focused UI element is 0 standard window.",
+    "windows": [
+      {
+        "bounds": {
+          "Height": 888,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 5419,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "name": "second-composition-inspector",
+    "input": {
+      "text": "日本語の変換",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        1101.6427,
+        509.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 49082)\nWindow: \"\", App: psycho.\n\n0 dialog\n\t1 リスト リスト\n\t\t2 button nihongono\n\t\t3 button ｎｉｈｏｎｇｏｎｏ\n\t\t4 button ﾆﾎﾝｺﾞﾉ\n\t\t5 button ニホンゴノ\n\t\t6 button にほんごの\n\t\t7 button 日本語の返還\n\t\t8 button 日本語の変換\n\t\t9 button 日本語のへんかん\n\t\t10 button 日本後の変換\n\nNo UI element is currently focused.",
+    "windows": [
+      {
+        "bounds": {
+          "Height": 146,
+          "Width": 416,
+          "X": 1503,
+          "Y": 753
+        },
+        "id": 5473,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 140,
+          "Width": 178,
+          "X": 1325,
+          "Y": 756
+        },
+        "id": 5470,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 888,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 5419,
+        "layer": 0
+      }
+    ]
+  },
+  {
+    "name": "second-composition-canvas",
+    "input": {
+      "text": "日本語の変換",
+      "selected": [
+        0,
+        6
+      ],
+      "marked": [
+        0,
+        6
+      ],
+      "cursor": [
+        384.26706,
+        244.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": true,
+      "focused": true
+    },
+    "tree": "App=psycho (pid 49082)\nWindow: \"\", App: psycho.\n\n0 dialog\n\t1 リスト リスト\n\t\t2 button nihongono\n\t\t3 button ｎｉｈｏｎｇｏｎｏ\n\t\t4 button ﾆﾎﾝｺﾞﾉ\n\t\t5 button ニホンゴノ\n\t\t6 button にほんごの\n\t\t7 button 日本語の返還\n\t\t8 button 日本語の変換\n\t\t9 button 日本語のへんかん\n\t\t10 button 日本後の変換\n\nNo UI element is currently focused.",
+    "windows": [
+      {
+        "bounds": {
+          "Height": 146,
+          "Width": 416,
+          "X": 706,
+          "Y": 501
+        },
+        "id": 5473,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 140,
+          "Width": 178,
+          "X": 528,
+          "Y": 504
+        },
+        "id": 5470,
+        "layer": 20
+      },
+      {
+        "bounds": {
+          "Height": 888,
+          "Width": 1280,
+          "X": 320,
+          "Y": 185
+        },
+        "id": 5419,
+        "layer": 0
+      }
+    ]
+  }
+]

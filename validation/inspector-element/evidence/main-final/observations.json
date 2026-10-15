@@ -1,0 +1,1057 @@
+[
+  {
+    "name": "background-title",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 IME heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 1 · 見出し, Secondary Actions: pick\n\t\t16 text Element 2 · 本文, Secondary Actions: pick\n\t\t17 text Element 3 · 箇条書き, Secondary Actions: pick\n\t\t18 text Element 4 · コード, Secondary Actions: pick\n\t\t19 text Element 5 · 画像, Secondary Actions: pick\n\t\t20 text Element 6 · 2列, Secondary Actions: pick\n\t21 button Presentation title\n\t22 button (disabled) 入力を取り消す\n\t23 text field (settable) Presentation のタイトル, Value: Inspector acceptance\n\t24 button 適用\n\t25 button 要素を追加…\n\t26 button 画像 · Slide 1 · image.png · 画像ファイルがありません\n\t27 button 画像 · Slide 5 · image.png · 画像ファイルがありません\n\t28 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t29 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t30 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t31 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t32 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t33 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t34 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t41 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t42 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t43 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t44 close button\n\t45 full screen button, Secondary Actions: zoom the window\n\t46 minimize button\n\t47 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Inspector acceptance",
+      "selected": [
+        20,
+        20
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1170.2109,
+        487.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Body\"; bullets { item \"First\"; item \"Second\"; }; code \"println!();\" language=\"unlisted-language\"; image \"image.png\" { caption \"Caption\"; }; columns { column width=50 { text \"Left\"; }; column width=50 { text \"Right\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Hidden 20\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "last-outline-settings-visible",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 IME heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 15 · 本文, Secondary Actions: pick\n\t\t16 text Element 16 · 本文, Secondary Actions: pick\n\t\t17 text Element 17 · 本文, Secondary Actions: pick\n\t\t18 text Element 18 · 本文, Secondary Actions: pick\n\t\t19 text Element 19 · 本文, Secondary Actions: pick\n\t\t20 text (selected) Element 20 · 本文, Secondary Actions: pick\n\t21 button Presentation title\n\t22 button (disabled) 入力を取り消す\n\t23 text field (settable) 本文, Value: Hidden 20\n\t24 button 適用\n\t25 button 2列 6 · 左列へ移動\n\t26 button 2列 6 · 右列へ移動\n\t27 button Element ↑\n\t28 button (disabled) Element ↓\n\t29 button Element を削除\n\t30 button 要素を追加…\n\t31 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t32 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t33 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t34 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t41 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t42 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t43 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t44 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t45 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t46 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t47 close button\n\t48 full screen button, Secondary Actions: zoom the window\n\t49 minimize button\n\t50 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Hidden 20",
+      "selected": [
+        9,
+        9
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1088.3828,
+        509.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Body\"; bullets { item \"First\"; item \"Second\"; }; code \"println!();\" language=\"unlisted-language\"; image \"image.png\" { caption \"Caption\"; }; columns { column width=50 { text \"Left\"; }; column width=50 { text \"Right\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Hidden 20\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "offscreen-history",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 IME heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 15 · 本文, Secondary Actions: pick\n\t\t16 text Element 16 · 本文, Secondary Actions: pick\n\t\t17 text Element 17 · 本文, Secondary Actions: pick\n\t\t18 text Element 18 · 本文, Secondary Actions: pick\n\t\t19 text Element 19 · 本文, Secondary Actions: pick\n\t\t20 text (selected) Element 20 · 本文, Secondary Actions: pick\n\t21 button Presentation title\n\t22 button (disabled) 入力を取り消す\n\t23 text field (settable) 本文, Value: Last repaired\n\t24 button 適用\n\t25 button 2列 6 · 左列へ移動\n\t26 button 2列 6 · 右列へ移動\n\t27 button Element ↑\n\t28 button (disabled) Element ↓\n\t29 button Element を削除\n\t30 button 要素を追加…\n\t31 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t32 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t33 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t34 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t41 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t42 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t43 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t44 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t45 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t46 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t47 close button\n\t48 full screen button, Secondary Actions: zoom the window\n\t49 minimize button\n\t50 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Last repaired",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1107.8359,
+        452.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Body\"; bullets { item \"First\"; item \"Second\"; }; code \"println!();\" language=\"unlisted-language\"; image \"image.png\" { caption \"Caption\"; }; columns { column width=50 { text \"Left\"; }; column width=50 { text \"Right\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "nested-both-columns",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 IME heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text 2列 6 · 左列 · 本文 1, Secondary Actions: pick\n\t\t16 text (selected) 2列 6 · 右列 · 本文 1, Secondary Actions: pick\n\t\t17 text Element 7 · コード, Secondary Actions: pick\n\t\t18 text Element 8 · 本文, Secondary Actions: pick\n\t\t19 text Element 9 · 本文, Secondary Actions: pick\n\t\t20 text Element 10 · 本文, Secondary Actions: pick\n\t21 button Presentation title\n\t22 button (disabled) 入力を取り消す\n\t23 text field (settable) 本文, Value: Right repaired\n\t24 button 適用\n\t25 button 2列の内容へ戻る\n\t26 button Slide 直下へ移動\n\t27 button Element を削除\n\t28 button 要素を追加…\n\t29 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t30 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t31 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t32 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t33 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t34 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t41 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t42 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t43 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t44 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t45 close button\n\t46 full screen button, Secondary Actions: zoom the window\n\t47 minimize button\n\t48 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Right repaired",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1114.8828,
+        485.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Body\"; bullets { item \"First\"; item \"Second\"; }; code \"println!();\" language=\"unlisted-language\"; image \"image.png\" { caption \"Caption\"; }; columns { column width=50 { text \"Left repaired\"; }; column width=50 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "preset-and-arbitrary-language",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 IME heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 2 · 本文, Secondary Actions: pick\n\t\t16 text Element 3 · 箇条書き, Secondary Actions: pick\n\t\t17 text (selected) Element 4 · コード, Secondary Actions: pick\n\t\t18 text Element 5 · 画像, Secondary Actions: pick\n\t\t19 text Element 6 · 2列, Secondary Actions: pick\n\t\t20 text 2列 6 · 左列 · 本文 1, Secondary Actions: pick\n\t21 button Presentation title\n\t22 button (disabled) 入力を取り消す\n\t23 text field (settable) コード言語、任意の文字列, Value: custom-language\n\t24 button 適用\n\t25 button コード全文\n\t26 button 言語をrustに変更\n\t27 button 言語をjsonに変更\n\t28 button 言語をyamlに変更\n\t29 button 言語をtomlに変更\n\t30 button 言語をなしに変更\n\t31 button コード言語\n\t32 button 2列 6 · 左列へ移動\n\t33 button 2列 6 · 右列へ移動\n\t34 button Element ↑\n\t35 button Element ↓\n\t36 button Element を削除\n\t37 button 要素を追加…\n\t38 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t41 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t42 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t43 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t44 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t45 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t46 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t47 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t48 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t49 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t50 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t51 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t52 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t53 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t54 close button\n\t55 full screen button, Secondary Actions: zoom the window\n\t56 minimize button\n\t57 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "custom-language",
+      "selected": [
+        15,
+        15
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1140.5313,
+        351.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Body\"; bullets { item \"First\"; item \"Second\"; }; code \"println!();\" language=\"custom-language\"; image \"image.png\" { caption \"Caption\"; }; columns { column width=50 { text \"Left repaired\"; }; column width=50 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "invalid-width-reason",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 IME heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 2 · 本文, Secondary Actions: pick\n\t\t16 text Element 3 · 箇条書き, Secondary Actions: pick\n\t\t17 text Element 4 · コード, Secondary Actions: pick\n\t\t18 text Element 5 · 画像, Secondary Actions: pick\n\t\t19 text (selected) Element 6 · 2列, Secondary Actions: pick\n\t\t20 text 2列 6 · 左列 · 本文 1, Secondary Actions: pick\n\t21 button Presentation title\n\t22 button 入力を取り消す\n\t23 text field (settable) 左列幅、1〜99の整数, Value: 0\n\t24 button 幅を適用\n\t25 button Element を削除\n\t26 button 左列幅を数値入力\n\t27 button 右列幅を数値入力\n\t28 button 左列を +5%\n\t29 button 左列を -5%\n\t30 button 左列に追加…\n\t31 button 右列に追加…\n\t32 button Element ↑\n\t33 button Element ↓\n\t34 button 要素を追加…\n\t35 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t41 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t42 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t43 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t44 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t45 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t46 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t47 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t48 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t49 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t50 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t51 close button\n\t52 full screen button, Secondary Actions: zoom the window\n\t53 minimize button\n\t54 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "0",
+      "selected": [
+        1,
+        1
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1022.7656,
+        576.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Body\"; bullets { item \"First\"; item \"Second\"; }; code \"println!();\" language=\"custom-language\"; image \"image.png\" { caption \"Caption\"; }; columns { column width=50 { text \"Left repaired\"; }; column width=50 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "width-validation-cancel-apply",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 IME heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 2 · 本文, Secondary Actions: pick\n\t\t16 text Element 3 · 箇条書き, Secondary Actions: pick\n\t\t17 text Element 4 · コード, Secondary Actions: pick\n\t\t18 text Element 5 · 画像, Secondary Actions: pick\n\t\t19 text (selected) Element 6 · 2列, Secondary Actions: pick\n\t\t20 text 2列 6 · 左列 · 本文 1, Secondary Actions: pick\n\t21 button Presentation title\n\t22 button (disabled) 入力を取り消す\n\t23 text field (settable) 左列幅、1〜99の整数, Value: 60\n\t24 button 幅を適用\n\t25 button Element を削除\n\t26 button 左列幅を数値入力\n\t27 button 右列幅を数値入力\n\t28 button 左列を +5%\n\t29 button 左列を -5%\n\t30 button 左列に追加…\n\t31 button 右列に追加…\n\t32 button Element ↑\n\t33 button Element ↓\n\t34 button 要素を追加…\n\t35 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t41 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t42 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t43 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t44 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t45 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t46 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t47 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t48 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t49 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t50 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t51 close button\n\t52 full screen button, Secondary Actions: zoom the window\n\t53 minimize button\n\t54 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "60",
+      "selected": [
+        2,
+        2
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1032.6406,
+        381.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Body\"; bullets { item \"First\"; item \"Second\"; }; code \"println!();\" language=\"custom-language\"; image \"image.png\" { caption \"Caption\"; }; columns { column width=60 { text \"Left repaired\"; }; column width=40 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "image-reference-caption",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 IME heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 2 · 本文, Secondary Actions: pick\n\t\t16 text Element 3 · 箇条書き, Secondary Actions: pick\n\t\t17 text Element 4 · コード, Secondary Actions: pick\n\t\t18 text (selected) Element 5 · 画像, Secondary Actions: pick\n\t\t19 text Element 6 · 2列, Secondary Actions: pick\n\t\t20 text 2列 6 · 左列 · 本文 1, Secondary Actions: pick\n\t21 button Presentation title\n\t22 button (disabled) 入力を取り消す\n\t23 text field (settable) 画像のCaption, Value: New caption\n\t24 button 適用\n\t25 button 画像パス\n\t26 button Caption\n\t27 button 画像を再読み込み\n\t28 button 2列 6 · 左列へ移動\n\t29 button 2列 6 · 右列へ移動\n\t30 button Element ↑\n\t31 button Element ↓\n\t32 button Element を削除\n\t33 button 要素を追加…\n\t34 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t41 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t42 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t43 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t44 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t45 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t46 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t47 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t48 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t49 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t50 close button\n\t51 full screen button, Secondary Actions: zoom the window\n\t52 minimize button\n\t53 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "New caption",
+      "selected": [
+        11,
+        11
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1103.5703,
+        353.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Body\"; bullets { item \"First\"; item \"Second\"; }; code \"println!();\" language=\"custom-language\"; image \"second.png\" { caption \"New caption\"; }; columns { column width=60 { text \"Left repaired\"; }; column width=40 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "bullet-item-operations",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 IME heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 2 · 本文, Secondary Actions: pick\n\t\t16 text (selected) Element 3 · 箇条書き, Secondary Actions: pick\n\t\t17 text Element 4 · コード, Secondary Actions: pick\n\t\t18 text Element 5 · 画像, Secondary Actions: pick\n\t\t19 text Element 6 · 2列, Secondary Actions: pick\n\t\t20 text 2列 6 · 左列 · 本文 1, Secondary Actions: pick\n\t21 button Presentation title\n\t22 button (disabled) 入力を取り消す\n\t23 text field (settable) 箇条書きの項目, Value: Updated item\n\t24 button 適用\n\t25 button 項目 1\n\t26 button 項目 2 ✓\n\t27 button 項目を上へ\n\t28 button (disabled) 項目を下へ\n\t29 button 項目を削除\n\t30 button 項目を追加\n\t31 button 2列 6 · 左列へ移動\n\t32 button 2列 6 · 右列へ移動\n\t33 button Element ↑\n\t34 button Element ↓\n\t35 button Element を削除\n\t36 button 要素を追加…\n\t37 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t41 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t42 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t43 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t44 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t45 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t46 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t47 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t48 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t49 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t50 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t51 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t52 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t53 close button\n\t54 full screen button, Secondary Actions: zoom the window\n\t55 minimize button\n\t56 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Updated item",
+      "selected": [
+        12,
+        12
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1111.3438,
+        351.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Body\"; bullets {  item \"Second\"; \nitem \"Updated item\";\n}; code \"println!();\" language=\"custom-language\"; image \"second.png\" { caption \"New caption\"; }; columns { column width=60 { text \"Left repaired\"; }; column width=40 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "pane-selection-value-history",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 IME heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text (selected) Element 2 · 本文, Secondary Actions: pick\n\t\t16 text Element 3 · 箇条書き, Secondary Actions: pick\n\t\t17 text Element 4 · コード, Secondary Actions: pick\n\t\t18 text Element 5 · 画像, Secondary Actions: pick\n\t\t19 text Element 6 · 2列, Secondary Actions: pick\n\t\t20 text 2列 6 · 左列 · 本文 1, Secondary Actions: pick\n\t21 button Presentation title\n\t22 button (disabled) 入力を取り消す\n\t23 text field (settable) 本文, Value: Pane retained\n\t24 button 適用\n\t25 button 2列 6 · 左列へ移動\n\t26 button 2列 6 · 右列へ移動\n\t27 button Element ↑\n\t28 button Element ↓\n\t29 button Element を削除\n\t30 button 要素を追加…\n\t31 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t32 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t33 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t34 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t41 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t42 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t43 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t44 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t45 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t46 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t47 close button\n\t48 full screen button, Secondary Actions: zoom the window\n\t49 minimize button\n\t50 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Pane retained",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1112.4922,
+        452.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Pane retained\"; bullets {  item \"Second\"; \nitem \"Updated item\";\n}; code \"println!();\" language=\"custom-language\"; image \"second.png\" { caption \"New caption\"; }; columns { column width=60 { text \"Left repaired\"; }; column width=40 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "move-delete-history",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button 元に戻す\n\t2 button やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 IME heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 2 · 本文, Secondary Actions: pick\n\t\t16 text (selected) Element 3 · 箇条書き, Secondary Actions: pick\n\t\t17 text Element 4 · コード, Secondary Actions: pick\n\t\t18 text Element 5 · 画像, Secondary Actions: pick\n\t\t19 text Element 6 · 2列, Secondary Actions: pick\n\t\t20 text 2列 6 · 左列 · 本文 1, Secondary Actions: pick\n\t21 button Presentation title\n\t22 button (disabled) 入力を取り消す\n\t23 text field (settable) 箇条書き全文、1行に1項目, Value: Second Updated item\n\t24 button 適用\n\t25 button 項目 1\n\t26 button 項目 2\n\t27 button 項目を追加\n\t28 button 2列 6 · 左列へ移動\n\t29 button 2列 6 · 右列へ移動\n\t30 button Element ↑\n\t31 button Element ↓\n\t32 button Element を削除\n\t33 button 要素を追加…\n\t34 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t41 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t42 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t43 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t44 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t45 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t46 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t47 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t48 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t49 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t50 close button\n\t51 full screen button, Secondary Actions: zoom the window\n\t52 minimize button\n\t53 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Second\nUpdated item",
+      "selected": [
+        19,
+        19
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1111.3438,
+        535.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Pane retained\"; bullets {  item \"Second\"; \nitem \"Updated item\";\n}; code \"println!();\" language=\"custom-language\"; image \"second.png\" { caption \"New caption\"; }; columns { column width=60 { text \"Left repaired\"; }; column width=40 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "glyph-parity-IME body",
+    "before": [
+      [
+        "121",
+        64.00000000000001,
+        163.5820514851485
+      ],
+      [
+        "182",
+        70.67187326732672,
+        163.5820514851485
+      ],
+      [
+        "72",
+        94.32421386138614,
+        163.5820514851485
+      ],
+      [
+        "3",
+        110.16990099009901,
+        163.5820514851485
+      ],
+      [
+        "651",
+        116.29490693069306,
+        163.5820514851485
+      ],
+      [
+        "815",
+        132.18165544554452,
+        163.5820514851485
+      ],
+      [
+        "666",
+        147.42579009900987,
+        163.5820514851485
+      ],
+      [
+        "956",
+        163.31247524752476,
+        163.5820514851485
+      ]
+    ],
+    "after": [
+      [
+        "121",
+        64.00000000000001,
+        163.5820514851485
+      ],
+      [
+        "182",
+        70.67187326732672,
+        163.5820514851485
+      ],
+      [
+        "72",
+        94.32421386138614,
+        163.5820514851485
+      ],
+      [
+        "3",
+        110.16990099009901,
+        163.5820514851485
+      ],
+      [
+        "651",
+        116.29490693069306,
+        163.5820514851485
+      ],
+      [
+        "815",
+        132.18165544554452,
+        163.5820514851485
+      ],
+      [
+        "666",
+        147.42579009900987,
+        163.5820514851485
+      ],
+      [
+        "956",
+        163.31247524752476,
+        163.5820514851485
+      ]
+    ]
+  },
+  {
+    "name": "glyph-parity-IME heading",
+    "before": [
+      [
+        "121",
+        64.00000000000001,
+        96.14064158415843
+      ],
+      [
+        "182",
+        77.03125544554456,
+        96.14064158415843
+      ],
+      [
+        "72",
+        118.69140594059405,
+        96.14064158415843
+      ],
+      [
+        "3",
+        146.52343762376242,
+        96.14064158415843
+      ],
+      [
+        "722",
+        156.34376237623763,
+        96.14064158415843
+      ],
+      [
+        "676",
+        184.71486732673273,
+        96.14064158415843
+      ],
+      [
+        "588",
+        211.6796831683168,
+        96.14064158415843
+      ],
+      [
+        "666",
+        238.26954455445545,
+        96.14064158415843
+      ],
+      [
+        "739",
+        267.17967524752476,
+        96.14064158415843
+      ],
+      [
+        "802",
+        279.062495049505,
+        96.14064158415843
+      ],
+      [
+        "711",
+        307.0351683168317,
+        96.14064158415843
+      ]
+    ],
+    "after": [
+      [
+        "121",
+        64.00000000000001,
+        96.14064158415843
+      ],
+      [
+        "182",
+        77.03125544554456,
+        96.14064158415843
+      ],
+      [
+        "72",
+        118.69140594059405,
+        96.14064158415843
+      ],
+      [
+        "3",
+        146.52343762376242,
+        96.14064158415843
+      ],
+      [
+        "722",
+        156.34376237623763,
+        96.14064158415843
+      ],
+      [
+        "676",
+        184.71486732673273,
+        96.14064158415843
+      ],
+      [
+        "588",
+        211.6796831683168,
+        96.14064158415843
+      ],
+      [
+        "666",
+        238.26954455445545,
+        96.14064158415843
+      ],
+      [
+        "739",
+        267.17967524752476,
+        96.14064158415843
+      ],
+      [
+        "802",
+        279.062495049505,
+        96.14064158415843
+      ],
+      [
+        "711",
+        307.0351683168317,
+        96.14064158415843
+      ]
+    ]
+  },
+  {
+    "name": "canvas-outline-selection",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text スライド 1 Heading, Secondary Actions: pick\n\t\t9 text (selected) スライド 2 IME heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t\t14 text field (settable) 見出し, Value: IME heading\n\t15 list スライドの構造一覧\n\t\t16 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t\t17 text Element 2 · 本文, Secondary Actions: pick\n\t18 button Presentation title\n\t19 button (disabled) 入力を取り消す\n\t20 button 全文をInspectorで編集\n\t21 button (disabled) Element ↑\n\t22 button Element ↓\n\t23 button Element を削除\n\t24 button 要素を追加…\n\t25 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t26 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t27 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t28 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t29 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t30 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t31 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t32 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t33 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t34 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t41 close button\n\t42 full screen button, Secondary Actions: zoom the window\n\t43 minimize button\n\t44 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "IME heading",
+      "selected": [
+        11,
+        11
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        387.99152,
+        191.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Pane retained\"; bullets {  item \"Second\"; \nitem \"Updated item\";\n}; code \"println!();\" language=\"custom-language\"; image \"second.png\" { caption \"New caption\"; }; columns { column width=60 { text \"Left repaired\"; }; column width=40 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "glyph-parity-Direct bullet",
+    "before": [
+      [
+        "63",
+        91.99999999999999,
+        79.58203564356438
+      ],
+      [
+        "739",
+        111.38672475247526,
+        79.58203564356438
+      ],
+      [
+        "859",
+        117.53905742574257,
+        79.58203564356438
+      ],
+      [
+        "676",
+        125.86521980198019,
+        79.58203564356438
+      ],
+      [
+        "656",
+        140.58984554455446,
+        79.58203564356438
+      ],
+      [
+        "894",
+        155.0,
+        79.58203564356438
+      ],
+      [
+        "3",
+        163.81836039603965,
+        79.58203564356438
+      ],
+      [
+        "651",
+        169.94333465346534,
+        79.58203564356438
+      ],
+      [
+        "906",
+        185.8300831683169,
+        79.58203564356438
+      ],
+      [
+        "772",
+        200.9648633663366,
+        79.58203564356438
+      ],
+      [
+        "772",
+        207.06249504950492,
+        79.58203564356438
+      ],
+      [
+        "676",
+        213.16014257425746,
+        79.58203564356438
+      ],
+      [
+        "894",
+        227.8847683168317,
+        79.58203564356438
+      ]
+    ],
+    "after": [
+      [
+        "63",
+        91.99999999999999,
+        79.58203564356438
+      ],
+      [
+        "739",
+        111.38672475247526,
+        79.58203564356438
+      ],
+      [
+        "859",
+        117.53905742574257,
+        79.58203564356438
+      ],
+      [
+        "676",
+        125.86521980198019,
+        79.58203564356438
+      ],
+      [
+        "656",
+        140.58984554455446,
+        79.58203564356438
+      ],
+      [
+        "894",
+        155.0,
+        79.58203564356438
+      ],
+      [
+        "3",
+        163.81836039603965,
+        79.58203564356438
+      ],
+      [
+        "651",
+        169.94333465346534,
+        79.58203564356438
+      ],
+      [
+        "906",
+        185.8300831683169,
+        79.58203564356438
+      ],
+      [
+        "772",
+        200.9648633663366,
+        79.58203564356438
+      ],
+      [
+        "772",
+        207.06249504950492,
+        79.58203564356438
+      ],
+      [
+        "676",
+        213.16014257425746,
+        79.58203564356438
+      ],
+      [
+        "894",
+        227.8847683168317,
+        79.58203564356438
+      ]
+    ]
+  },
+  {
+    "name": "direct-full-editor-3",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 Edited heading, Secondary Actions: pick\n\t\t10 text (selected) スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text (selected) Element 1 · 箇条書き, Secondary Actions: pick\n\t16 button Presentation title\n\t17 button (disabled) 入力を取り消す\n\t18 text field (settable) 箇条書き全文、1行に1項目, Value: Direct bullet\n\t19 button 適用\n\t20 button 項目 1\n\t21 button 項目を追加\n\t22 button Element を削除\n\t23 button 要素を追加…\n\t24 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t25 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t26 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t27 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t28 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t29 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t30 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t31 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t32 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t33 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t34 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t40 close button\n\t41 full screen button, Secondary Actions: zoom the window\n\t42 minimize button\n\t43 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Direct bullet",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1101.1484,
+        509.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Pane retained\"; bullets {  item \"Second\"; \nitem \"Updated item\";\n}; code \"println!();\" language=\"custom-language\"; image \"second.png\" { caption \"New caption\"; }; columns { column width=60 { text \"Left repaired\"; }; column width=40 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "glyph-parity-Direct code",
+    "before": [
+      [
+        "39",
+        80.0,
+        87.01619009900989
+      ],
+      [
+        "76",
+        93.24511683168319,
+        87.01619009900989
+      ],
+      [
+        "85",
+        106.49021782178217,
+        87.01619009900989
+      ],
+      [
+        "72",
+        119.73536633663369,
+        87.01619009900989
+      ],
+      [
+        "70",
+        132.98043564356433,
+        87.01619009900989
+      ],
+      [
+        "87",
+        146.2255841584158,
+        87.01619009900989
+      ],
+      [
+        "3",
+        159.47073267326738,
+        87.01619009900989
+      ],
+      [
+        "70",
+        172.7158178217822,
+        87.01619009900989
+      ],
+      [
+        "82",
+        185.96095049504953,
+        87.01619009900989
+      ],
+      [
+        "71",
+        199.2060831683168,
+        87.01619009900989
+      ],
+      [
+        "72",
+        212.4511683168317,
+        87.01619009900989
+      ]
+    ],
+    "after": [
+      [
+        "39",
+        80.0,
+        87.01619009900989
+      ],
+      [
+        "76",
+        93.24511683168319,
+        87.01619009900989
+      ],
+      [
+        "85",
+        106.49021782178217,
+        87.01619009900989
+      ],
+      [
+        "72",
+        119.73536633663369,
+        87.01619009900989
+      ],
+      [
+        "70",
+        132.98043564356433,
+        87.01619009900989
+      ],
+      [
+        "87",
+        146.2255841584158,
+        87.01619009900989
+      ],
+      [
+        "3",
+        159.47073267326738,
+        87.01619009900989
+      ],
+      [
+        "70",
+        172.7158178217822,
+        87.01619009900989
+      ],
+      [
+        "82",
+        185.96095049504953,
+        87.01619009900989
+      ],
+      [
+        "71",
+        199.2060831683168,
+        87.01619009900989
+      ],
+      [
+        "72",
+        212.4511683168317,
+        87.01619009900989
+      ]
+    ]
+  },
+  {
+    "name": "direct-full-editor-4",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 Edited heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text (selected) スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text (selected) Element 1 · コード, Secondary Actions: pick\n\t16 button Presentation title\n\t17 button (disabled) 入力を取り消す\n\t18 text field (settable) コード全文, Value: Direct code\n\t19 button 適用\n\t20 button コード全文\n\t21 button 言語をrustに変更\n\t22 button 言語をjsonに変更\n\t23 button 言語をyamlに変更\n\t24 button 言語をtomlに変更\n\t25 button 言語をなしに変更\n\t26 button コード言語\n\t27 button Element を削除\n\t28 button 要素を追加…\n\t29 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t30 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t31 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t32 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t33 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t34 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t41 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t42 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t43 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t44 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t45 close button\n\t46 full screen button, Secondary Actions: zoom the window\n\t47 minimize button\n\t48 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Direct code",
+      "selected": [
+        11,
+        11
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1096.9375,
+        509.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Pane retained\"; bullets {  item \"Second\"; \nitem \"Updated item\";\n}; code \"println!();\" language=\"custom-language\"; image \"second.png\" { caption \"New caption\"; }; columns { column width=60 { text \"Left repaired\"; }; column width=40 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "glyph-parity-Direct caption",
+    "before": [
+      [
+        "63",
+        64.00000000000001,
+        401.5585900990099
+      ],
+      [
+        "739",
+        77.85584158415843,
+        401.5585900990099
+      ],
+      [
+        "859",
+        82.15417029702972,
+        401.5585900990099
+      ],
+      [
+        "676",
+        88.63914455445546,
+        401.5585900990099
+      ],
+      [
+        "656",
+        99.33644356435644,
+        401.5585900990099
+      ],
+      [
+        "894",
+        109.95085940594058,
+        401.5585900990099
+      ],
+      [
+        "3",
+        116.47413861386141,
+        401.5585900990099
+      ],
+      [
+        "656",
+        121.289900990099,
+        401.5585900990099
+      ],
+      [
+        "588",
+        131.7551524752475,
+        401.5585900990099
+      ],
+      [
+        "854",
+        142.105695049505,
+        401.5585900990099
+      ],
+      [
+        "894",
+        153.57497029702975,
+        401.5585900990099
+      ],
+      [
+        "739",
+        160.0983287128713,
+        401.5585900990099
+      ],
+      [
+        "815",
+        164.39667326732672,
+        401.5585900990099
+      ],
+      [
+        "802",
+        175.47996831683167,
+        401.5585900990099
+      ]
+    ],
+    "after": [
+      [
+        "63",
+        64.00000000000001,
+        401.5585900990099
+      ],
+      [
+        "739",
+        77.85584158415843,
+        401.5585900990099
+      ],
+      [
+        "859",
+        82.15417029702972,
+        401.5585900990099
+      ],
+      [
+        "676",
+        88.63914455445546,
+        401.5585900990099
+      ],
+      [
+        "656",
+        99.33644356435644,
+        401.5585900990099
+      ],
+      [
+        "894",
+        109.95085940594058,
+        401.5585900990099
+      ],
+      [
+        "3",
+        116.47413861386141,
+        401.5585900990099
+      ],
+      [
+        "656",
+        121.289900990099,
+        401.5585900990099
+      ],
+      [
+        "588",
+        131.7551524752475,
+        401.5585900990099
+      ],
+      [
+        "854",
+        142.105695049505,
+        401.5585900990099
+      ],
+      [
+        "894",
+        153.57497029702975,
+        401.5585900990099
+      ],
+      [
+        "739",
+        160.0983287128713,
+        401.5585900990099
+      ],
+      [
+        "815",
+        164.39667326732672,
+        401.5585900990099
+      ],
+      [
+        "802",
+        175.47996831683167,
+        401.5585900990099
+      ]
+    ]
+  },
+  {
+    "name": "direct-full-editor-5",
+    "tree": "App=psycho (pid 66872)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text スライド 1 Heading, Secondary Actions: pick\n\t\t9 text スライド 2 Edited heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text (selected) スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text (selected) Element 1 · 画像, Secondary Actions: pick\n\t16 button Presentation title\n\t17 button (disabled) 入力を取り消す\n\t18 text field (settable) 画像のCaption, Value: Direct caption\n\t19 button 適用\n\t20 button 画像パス\n\t21 button Caption\n\t22 button 画像を再読み込み\n\t23 button Element を削除\n\t24 button 要素を追加…\n\t25 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t26 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t27 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t28 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t29 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t30 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t31 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t32 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t33 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t34 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t41 close button\n\t42 full screen button, Secondary Actions: zoom the window\n\t43 minimize button\n\t44 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Direct caption",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1114.7266,
+        509.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Pane retained\"; bullets {  item \"Second\"; \nitem \"Updated item\";\n}; code \"println!();\" language=\"custom-language\"; image \"second.png\" { caption \"New caption\"; }; columns { column width=60 { text \"Left repaired\"; }; column width=40 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"IME heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "saved-reload",
+    "tree": "App=psycho (pid 78880)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text スライド 1 Heading, Secondary Actions: pick\n\t\t9 text (selected) スライド 2 Edited heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t\t16 text Element 2 · 本文, Secondary Actions: pick\n\t17 button Presentation title\n\t18 button (disabled) 入力を取り消す\n\t19 text field (settable) 見出し, Value: Edited heading\n\t20 button 適用\n\t21 button (disabled) Element ↑\n\t22 button Element ↓\n\t23 button Element を削除\n\t24 button 要素を追加…\n\t25 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t26 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t27 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t28 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t29 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t30 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t31 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t32 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t33 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t34 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t38 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t39 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t40 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t41 close button\n\t42 full screen button, Secondary Actions: zoom the window\n\t43 minimize button\n\t44 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Edited heading",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1121.3516,
+        509.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Pane retained\"; bullets {  item \"Second\"; \nitem \"Updated item\";\n}; code \"println!();\" language=\"custom-language\"; image \"second.png\" { caption \"New caption\"; }; columns { column width=60 { text \"Left repaired\"; }; column width=40 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"Edited heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "background-clears-canvas-editor",
+    "tree": "App=psycho (pid 78880)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text スライド 1 Heading, Secondary Actions: pick\n\t\t9 text (selected) スライド 2 Edited heading, Secondary Actions: pick\n\t\t10 text スライド 3, Secondary Actions: pick\n\t\t11 text スライド 4, Secondary Actions: pick\n\t\t12 text スライド 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 1 · 見出し, Secondary Actions: pick\n\t\t16 text Element 2 · 本文, Secondary Actions: pick\n\t17 button Presentation title\n\t18 button (disabled) 入力を取り消す\n\t19 text field (settable) Presentation のタイトル, Value: Inspector acceptance\n\t20 button 適用\n\t21 button 要素を追加…\n\t22 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t23 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t24 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t25 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t26 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t27 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t28 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t29 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t30 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t31 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t32 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t33 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t34 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t35 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t36 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t37 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t38 close button\n\t39 full screen button, Secondary Actions: zoom the window\n\t40 minimize button\n\t41 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Inspector acceptance",
+      "selected": [
+        20,
+        20
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1170.2109,
+        487.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"Inspector acceptance\" }; slide { heading \"Heading\"; text \"Pane retained\"; bullets {  item \"Second\"; \nitem \"Updated item\";\n}; code \"println!();\" language=\"custom-language\"; image \"second.png\" { caption \"New caption\"; }; columns { column width=60 { text \"Left repaired\"; }; column width=40 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"Edited heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  },
+  {
+    "name": "external-conflict-stops-editing",
+    "tree": "App=psycho (pid 78880)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button (disabled) スライド追加\n\t4 button (disabled) 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 button 外部変更を読み込む\n\t8 list スライド一覧\n\t\t9 text スライド 1 Heading, Secondary Actions: pick\n\t\t10 text (selected) スライド 2 Edited heading, Secondary Actions: pick\n\t\t11 text スライド 3, Secondary Actions: pick\n\t\t12 text スライド 4, Secondary Actions: pick\n\t\t13 text スライド 5, Secondary Actions: pick\n\t14 container スライドキャンバス\n\t15 button Layout · Slide 1 · Element 5 · 内容がスライド下端を越えます\n\t16 button Layout · Slide 1 · Element 6 · 内容がスライド下端を越えます\n\t17 button Layout · Slide 1 · Element 7 · 内容がスライド下端を越えます\n\t18 button Layout · Slide 1 · Element 8 · 内容がスライド下端を越えます\n\t19 button Layout · Slide 1 · Element 9 · 内容がスライド下端を越えます\n\t20 button Layout · Slide 1 · Element 10 · 内容がスライド下端を越えます\n\t21 button Layout · Slide 1 · Element 11 · 内容がスライド下端を越えます\n\t22 button Layout · Slide 1 · Element 12 · 内容がスライド下端を越えます\n\t23 button Layout · Slide 1 · Element 13 · 内容がスライド下端を越えます\n\t24 button Layout · Slide 1 · Element 14 · 内容がスライド下端を越えます\n\t25 button Layout · Slide 1 · Element 15 · 内容がスライド下端を越えます\n\t26 button Layout · Slide 1 · Element 16 · 内容がスライド下端を越えます\n\t27 button Layout · Slide 1 · Element 17 · 内容がスライド下端を越えます\n\t28 button Layout · Slide 1 · Element 18 · 内容がスライド下端を越えます\n\t29 button Layout · Slide 1 · Element 19 · 内容がスライド下端を越えます\n\t30 button Layout · Slide 1 · Element 20 · 内容がスライド下端を越えます\n\t31 close button\n\t32 full screen button, Secondary Actions: zoom the window\n\t33 minimize button\n\t34 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Pending conflict",
+      "selected": [
+        16,
+        16
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1130.2266,
+        509.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "kdl": "presentation { metadata { title \"External title\" }; slide { heading \"Heading\"; text \"Pane retained\"; bullets {  item \"Second\"; \nitem \"Updated item\";\n}; code \"println!();\" language=\"custom-language\"; image \"second.png\" { caption \"New caption\"; }; columns { column width=60 { text \"Left repaired\"; }; column width=40 { text \"Right repaired\"; }; }; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; text \"Hidden 8\"; text \"Hidden 9\"; text \"Hidden 10\"; text \"Hidden 11\"; text \"Hidden 12\"; text \"Hidden 13\"; text \"Hidden 14\"; text \"Hidden 15\"; text \"Hidden 16\"; text \"Hidden 17\"; text \"Hidden 18\"; text \"Hidden 19\"; text \"Last repaired\"; }; slide { heading \"Edited heading\"; text \"IME body\"; }; slide { bullets { item \"Direct bullet\"; }; }; slide { code \"Direct code\"; }; slide { image \"image.png\" { caption \"Direct caption\"; }; }; }\n"
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "name": "conflict-input-blocked-view-changes-retain-draft",
+    "before": {
+      "text": "Pending conflict",
+      "selected": [
+        16,
+        16
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1130.2266,
+        509.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "after": {
+      "text": "Pending conflict",
+      "selected": [
+        16,
+        16
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1130.2266,
+        509.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "tree": "App=psycho (pid 19211)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button (disabled) スライド追加\n\t4 button (disabled) 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 button 外部変更を読み込む\n\t8 list スライド一覧\n\t\t9 text (selected) スライド 1, Secondary Actions: pick\n\t10 container スライドキャンバス\n\t11 close button\n\t12 full screen button, Secondary Actions: zoom the window\n\t13 minimize button\n\t14 text\n\nThe focused UI element is 0 standard window.",
+    "kdl": "presentation { metadata { title \"External title\" }; slide { text \"Body\"; }; }\n"
+  }
+]
