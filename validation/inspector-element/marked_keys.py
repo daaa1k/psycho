@@ -70,7 +70,7 @@ try:
     gui.edit('Native IME', 48); unchanged(before)
     same_panels(record('canvas-return-marked'), canvas_panels)
     passed('canvas-return-marked')
-    
+
     for _ in range(5):
         if not gui.state()['composing']: break
         gui.key('Return')

@@ -19,6 +19,8 @@ helper = args.output.resolve() / 'vo-settings'
 subprocess.run(['xcrun', 'swiftc', str(Path(__file__).resolve().parents[1] / 'mvp-acceptance/voiceover_insertion_settings.swift'), '-o', str(helper)], check=True)
 toggle = args.output.resolve() / 'vo-toggle'
 subprocess.run(['xcrun', 'swiftc', str(Path(__file__).resolve().parents[1] / 'mvp-acceptance/insertion_voiceover_toggle.swift'), '-o', str(toggle)], check=True)
+stop_voiceover = args.output.resolve() / 'stop-voiceover'
+subprocess.run(['xcrun', 'swiftc', str(Path(__file__).with_name('stop_voiceover.swift')), '-o', str(stop_voiceover)], check=True)
 existing = json.loads(subprocess.check_output(['orca', 'computer', 'list-apps', '--json'], text=True))
 utility_present = any(app.get('bundleId') == 'com.apple.VoiceOverUtility' for app in existing['result']['apps'])
 enabled = subprocess.check_output(['xcrun', 'swift', '-e', 'import AppKit; print(NSWorkspace.shared.isVoiceOverEnabled ? \"true\" : \"false\")'], text=True).strip()
@@ -71,8 +73,16 @@ try:
     gui = Gui(args.output / 'gui', source)
     if not args.offscreen_only:
         gui.outline_select('Element 1 · 2列' if args.width_only else 'Element 3 · コード' if args.settings_only else '2列 1 · 左列 · 本文 1')
-    subprocess.run([str(toggle), str(gui.app.pid)], check=True)
-    time.sleep(1)
+    for _ in range(2):
+        gui.act('get-app-state', '--restore-window')
+        subprocess.run([str(toggle), str(gui.app.pid)], check=True)
+        for _ in range(10):
+            if json.loads(subprocess.check_output([str(helper)], text=True))['voiceOverEnabled']:
+                break
+            time.sleep(.5)
+        else:
+            continue
+        break
     assert json.loads(subprocess.check_output([str(helper)], text=True))['voiceOverEnabled'] is True
     gui.act('get-app-state', '--restore-window')
     if args.offscreen_only:
@@ -157,7 +167,7 @@ finally:
             cleanup_errors.append(repr(error))
 
     if initial is not None:
-        restore(lambda: subprocess.run(['osascript', '-e', 'tell application "VoiceOver" to quit'], check=True))
+        restore(lambda: subprocess.run([str(stop_voiceover)], check=True))
         time.sleep(1)
         restore(lambda: settings('scripting', initial['scripting']))
         restore(lambda: settings('welcome', initial['welcome']))

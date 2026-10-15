@@ -194,7 +194,7 @@ try:
         for key in ('text', 'selected', 'marked', 'undo', 'redo', 'composing', 'focused'):
             assert after[key] == before[key], (key, before, after)
         record('native-ime-canvas-return')
-        
+
         for _ in range(5):
             if not gui.state()['composing']: break
             gui.key('Return')
