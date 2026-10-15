@@ -51,8 +51,10 @@
       "note": "同じ本文を持つ別 Columns の選択、矢印移動、フッター。",
       "artifacts": [
         {
-          "path": "outline/observations.json",
-          "sha256": "9b99f8a7c206ff75cb81dd201d31f02cff08e6b602cd98e96e771bbbacebde20"
+          "path": "outline/observations.json.gz",
+          "sha256": "bde149c445977f128ca15bab2d7334d41e35289be162adddc5c78a738fa7f1cb",
+          "uncompressed_sha256": "9b99f8a7c206ff75cb81dd201d31f02cff08e6b602cd98e96e771bbbacebde20",
+          "compression": "gzip"
         },
         {
           "path": "outline/presentation.kdl",
@@ -74,8 +76,10 @@
       "note": "全文入力と設定への Tab、Shift-Tab 移動。",
       "artifacts": [
         {
-          "path": "long-code/observations.json",
-          "sha256": "8db907f6866a45a3c694225180d3155b0d1af54fe70a01123257c68aa4db5751"
+          "path": "long-code/observations.json.gz",
+          "sha256": "21333598352e4870facf9c87d132ef4824d5d60133f84092a1ef189d17a30c62",
+          "uncompressed_sha256": "8db907f6866a45a3c694225180d3155b0d1af54fe70a01123257c68aa4db5751",
+          "compression": "gzip"
         },
         {
           "path": "long-code/presentation.kdl",
@@ -99,8 +103,10 @@
       "note": "画面外の選択行を Shift-Tab 直後に再表示。",
       "artifacts": [
         {
-          "path": "row-exposure/observations.json",
-          "sha256": "214856e8a6094365a4050b0e11b527fb5458c489dc7f11d058431d233fa7c7b5"
+          "path": "row-exposure/observations.json.gz",
+          "sha256": "76e0fff1ebcfc1f90dc6c723227f066ea580a2aea7ae22143e9c62b792f76bd9",
+          "uncompressed_sha256": "214856e8a6094365a4050b0e11b527fb5458c489dc7f11d058431d233fa7c7b5",
+          "compression": "gzip"
         },
         {
           "path": "row-exposure/presentation.kdl",
@@ -124,8 +130,10 @@
       "note": "1024x700 で最後の診断と Element 設定に到達。",
       "artifacts": [
         {
-          "path": "footer/observations.json",
-          "sha256": "6eb68ef1325d1d0257afea4663da0fd72eb7d0dcfcc4badb431efb08ed6c6c3e"
+          "path": "footer/observations.json.gz",
+          "sha256": "21a494070a4c630ff230daf16577c7823ade653088b5de89b1d8fa087af54ffc",
+          "uncompressed_sha256": "6eb68ef1325d1d0257afea4663da0fd72eb7d0dcfcc4badb431efb08ed6c6c3e",
+          "compression": "gzip"
         },
         {
           "path": "footer/presentation.kdl",

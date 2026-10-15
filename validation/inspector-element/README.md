@@ -57,7 +57,7 @@ python3 validation/inspector-element/voiceover.py --offscreen-only --output targ
 
 各実行の標準出力と標準エラーをログに保存する。`observations.json`、保存した KDL、`saved.diff` がある場合はその差分、関連する PNG、入力状態、glyph trace も同じ実行単位で保管する。実行前に `git rev-parse HEAD` と `git diff` を保存し、未コミット変更を含めて実行したソースを特定する。
 
-現在の記録と公開用の証拠は [manifest.json](evidence/manifest.json) にある。各証拠のパスは evidence ディレクトリを基準とする。実行時の commit を保存していない履歴は revision=null とし、最終ソースでの成功と区別する。ログ、観測値、保存した KDL と代表画像を同梱する。大きな glyph CSV の全体は同梱せず、観測 JSON に比較した座標を残す。
+現在の記録と公開用の証拠は [manifest.json](evidence/manifest.json) にある。各証拠のパスは evidence ディレクトリを基準とする。実行時の commit を保存していない履歴は revision=null とし、最終ソースでの成功と区別する。ログ、観測値、保存した KDL と代表画像を同梱する。大きな AX 観測 JSON は `.json.gz` に可逆圧縮し、`gzip -dc <path>` で読める。大きな glyph CSV の全体は同梱せず、観測 JSON に比較した座標を残す。
 
 IME の座標検証は候補本体と補助ウィンドウを両方確認する。同じ変換中の Tab、Shift-Tab、Canvas 往復は 3px 以内、別の変換との比較は 8px 以内とする。別の変換で観測した 4px の差の原因は未特定。標準日本語 IME を macOS 26.5.2 で検証した結果であり、別の IME と複数ディスプレイの候補配置は未検証。
 
