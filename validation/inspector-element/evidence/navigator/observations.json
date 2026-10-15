@@ -1,0 +1,77 @@
+[
+  {
+    "slide": 1,
+    "editor": {
+      "revision": "unrecorded",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c6520224e6176696761746f722068656c70657222207d3b20736c696465207b2068656164696e672022536c6964652031223b207d3b20736c696465207b2068656164696e672022536c6964652032223b207d3b20736c696465207b2068656164696e672022536c6964652033223b207d3b20736c696465207b2068656164696e672022536c6964652034223b207d3b20736c696465207b2068656164696e672022536c6964652035223b207d3b20736c696465207b2068656164696e672022536c6964652036223b207d3b20736c696465207b2068656164696e672022536c6964652037223b207d3b20736c696465207b2068656164696e672022536c6964652038223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 552,
+      "canvasHeight": 525,
+      "scale": 0.43125,
+      "actual": false,
+      "presenting": false,
+      "dark": true,
+      "currentSlide": 0,
+      "navigatorFocused": true,
+      "canvasFocused": false
+    },
+    "tree": "App=psycho (pid 24206)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Slide 1, Secondary Actions: pick\n\t\t9 text スライド 2 Slide 2, Secondary Actions: pick\n\t\t10 text スライド 3 Slide 3, Secondary Actions: pick\n\t\t11 text スライド 4 Slide 4, Secondary Actions: pick\n\t\t12 text スライド 5 Slide 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 1 · 見出し, Secondary Actions: pick\n\t16 button Presentation title\n\t17 button (disabled) 入力を取り消す\n\t18 text field (settable) Presentation のタイトル, Value: Navigator helper\n\t19 button 適用\n\t20 button 要素を追加…\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+  },
+  {
+    "slide": 5,
+    "editor": {
+      "revision": "unrecorded",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c6520224e6176696761746f722068656c70657222207d3b20736c696465207b2068656164696e672022536c6964652031223b207d3b20736c696465207b2068656164696e672022536c6964652032223b207d3b20736c696465207b2068656164696e672022536c6964652033223b207d3b20736c696465207b2068656164696e672022536c6964652034223b207d3b20736c696465207b2068656164696e672022536c6964652035223b207d3b20736c696465207b2068656164696e672022536c6964652036223b207d3b20736c696465207b2068656164696e672022536c6964652037223b207d3b20736c696465207b2068656164696e672022536c6964652038223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 552,
+      "canvasHeight": 525,
+      "scale": 0.43125,
+      "actual": false,
+      "presenting": false,
+      "dark": true,
+      "currentSlide": 4,
+      "navigatorFocused": true,
+      "canvasFocused": false
+    },
+    "tree": "App=psycho (pid 24206)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text スライド 1 Slide 1, Secondary Actions: pick\n\t\t9 text スライド 2 Slide 2, Secondary Actions: pick\n\t\t10 text スライド 3 Slide 3, Secondary Actions: pick\n\t\t11 text スライド 4 Slide 4, Secondary Actions: pick\n\t\t12 text (selected) スライド 5 Slide 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 1 · 見出し, Secondary Actions: pick\n\t16 button Presentation title\n\t17 button (disabled) 入力を取り消す\n\t18 text field (settable) Presentation のタイトル, Value: Navigator helper\n\t19 button 適用\n\t20 button 要素を追加…\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+  },
+  {
+    "slide": 1,
+    "editor": {
+      "revision": "unrecorded",
+      "sourceHex": "70726573656e746174696f6e207b206d65746164617461207b207469746c6520224e6176696761746f722068656c70657222207d3b20736c696465207b2068656164696e672022536c6964652031223b207d3b20736c696465207b2068656164696e672022536c6964652032223b207d3b20736c696465207b2068656164696e672022536c6964652033223b207d3b20736c696465207b2068656164696e672022536c6964652034223b207d3b20736c696465207b2068656164696e672022536c6964652035223b207d3b20736c696465207b2068656164696e672022536c6964652036223b207d3b20736c696465207b2068656164696e672022536c6964652037223b207d3b20736c696465207b2068656164696e672022536c6964652038223b207d3b207d0a",
+      "dirty": false,
+      "undo": false,
+      "redo": false,
+      "draft": false,
+      "navigator": true,
+      "inspector": true,
+      "navigatorWidth": 160,
+      "inspectorWidth": 280,
+      "canvasWidth": 552,
+      "canvasHeight": 525,
+      "scale": 0.43125,
+      "actual": false,
+      "presenting": false,
+      "dark": true,
+      "currentSlide": 0,
+      "navigatorFocused": true,
+      "canvasFocused": false
+    },
+    "tree": "App=psycho (pid 24206)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 list スライド一覧\n\t\t8 text (selected) スライド 1 Slide 1, Secondary Actions: pick\n\t\t9 text スライド 2 Slide 2, Secondary Actions: pick\n\t\t10 text スライド 3 Slide 3, Secondary Actions: pick\n\t\t11 text スライド 4 Slide 4, Secondary Actions: pick\n\t\t12 text スライド 5 Slide 5, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 list スライドの構造一覧\n\t\t15 text Element 1 · 見出し, Secondary Actions: pick\n\t16 button Presentation title\n\t17 button (disabled) 入力を取り消す\n\t18 text field (settable) Presentation のタイトル, Value: Navigator helper\n\t19 button 適用\n\t20 button 要素を追加…\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window."
+  }
+]

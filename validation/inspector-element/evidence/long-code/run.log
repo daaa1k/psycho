@@ -1,0 +1,10 @@
+PASS long-code-tab-visible-apply
+PASS long-code-shift-tab-visible-input
+PASS long-code-tab-適用
+PASS long-code-tab-コード全文
+PASS long-code-tab-言語をrustに変更
+PASS long-code-tab-言語をjsonに変更
+PASS long-code-tab-言語をyamlに変更
+PASS long-code-tab-言語をtomlに変更
+PASS long-code-tab-言語をなしに変更
+PASS long-code-tab-コード言語

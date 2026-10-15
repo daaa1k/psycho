@@ -44,3 +44,5 @@ in this order: `Sub-features`, `How to get to it (user POV)`, `Driving it with <
 - [Save document](./save-document.md) — persist edits and preserve KDL formatting rules.
 - [Present slideshow](./present-slideshow.md) — start presentation from toolbar or menu.
 - [Diagnostic navigation](./diagnostic-navigation.md) — syntax/schema errors and jump-to-source.
+
+- [Inspector element editing](./inspector-element.md) covers element settings, structure scrolling, and input transfer.

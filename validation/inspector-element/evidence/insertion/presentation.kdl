@@ -1,0 +1,23 @@
+presentation {
+ metadata { title "Insertion" }
+ slide id="blank" {
+  heading "Title"
+  text "Body"
+  bullets { item "Item" }
+  code "x"
+  image "assets/image.png"
+ }
+ slide {
+  columns { column width=50 {
+   text "1左列"
+  }; column width=50  {
+   text "1右列"
+  }}
+  columns { column width=50 {
+   text "2左列"
+  }; column width=50  {
+   text "2右列"
+  }}
+  text "native本文"
+ }
+}

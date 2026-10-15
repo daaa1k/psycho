@@ -1,0 +1,536 @@
+{
+  "schema_version": 2,
+  "path_base": "this-directory",
+  "product_files": {
+    "src/main.rs": "bafde1cebf39696f99eb86130e3566359ab225ef0f3c10128040d831c1c28cb6",
+    "src/ime.rs": "ea707058d9a0087cdd8e7a4daf1749d21076b71f7bf064a449e7993505450c4d",
+    "src/input.rs": "976fb434f75f82981c5da973f4dc7487f304eed9619e077a91acfa2f79b6f2e5",
+    "src/editor_actions.rs": "7d2cdab9250e674e6caeb1640ee724461edde5889494e6619c61af5b840ae642"
+  },
+  "macos": "26.5.2",
+  "runs": [
+    {
+      "id": "caption-reload",
+      "status": "passed",
+      "revision": null,
+      "script": "validation/mvp-acceptance/inspector_element_acceptance.py",
+      "arguments": [
+        "--direct-and-reload",
+        "--direct-start",
+        "5"
+      ],
+      "note": "Caption 全文編集、Save/reload、背景選択、外部競合。",
+      "artifacts": [
+        {
+          "path": "caption-reload/observations.json",
+          "sha256": "d7413df925bece7abdcdb245b0c9e647fa1fb0a7b321fe015e97ce0784df476b"
+        },
+        {
+          "path": "caption-reload/saved.diff",
+          "sha256": "5de84d075a81ab702acef190bbeea4afc8229dd59d16b9168500366d569f26f9"
+        },
+        {
+          "path": "caption-reload/presentation.kdl",
+          "sha256": "e00af1b6d92d8ef87ffa3aaf9cbca05589d2aed614f42b4b43f9c20702badf13"
+        },
+        {
+          "path": "caption-reload/run.log",
+          "sha256": "9eb79942f829904105826c0a60b09da9923b860721c6509dacd2e4399d919af1"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-caption-reload-final"
+    },
+    {
+      "id": "outline",
+      "status": "passed",
+      "revision": null,
+      "script": "validation/inspector-element/controls.py",
+      "arguments": [
+        "--outline-only"
+      ],
+      "note": "同じ本文を持つ別 Columns の選択、矢印移動、フッター。",
+      "artifacts": [
+        {
+          "path": "outline/observations.json.gz",
+          "sha256": "bde149c445977f128ca15bab2d7334d41e35289be162adddc5c78a738fa7f1cb",
+          "uncompressed_sha256": "9b99f8a7c206ff75cb81dd201d31f02cff08e6b602cd98e96e771bbbacebde20",
+          "compression": "gzip"
+        },
+        {
+          "path": "outline/presentation.kdl",
+          "sha256": "ad74e16d86e99989d4f550899e74ea4766a35365cabd674f2bfb2c3179f60917"
+        },
+        {
+          "path": "outline/run.log",
+          "sha256": "d85abf624e532b56fef3654e0365bd533173eff99e4804d446e521380d20c549"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-outline-final"
+    },
+    {
+      "id": "long-code",
+      "status": "passed",
+      "revision": null,
+      "script": "validation/inspector-element/long_code.py",
+      "arguments": [],
+      "note": "全文入力と設定への Tab、Shift-Tab 移動。",
+      "artifacts": [
+        {
+          "path": "long-code/observations.json.gz",
+          "sha256": "21333598352e4870facf9c87d132ef4824d5d60133f84092a1ef189d17a30c62",
+          "uncompressed_sha256": "8db907f6866a45a3c694225180d3155b0d1af54fe70a01123257c68aa4db5751",
+          "compression": "gzip"
+        },
+        {
+          "path": "long-code/presentation.kdl",
+          "sha256": "07296a1ed3c0c384fc4cd4bc952b77acd17bf5dbd28d6d02396f756d632a0bda"
+        },
+        {
+          "path": "long-code/run.log",
+          "sha256": "19e476b8695418579bc4f2794efe2f2a63cb061285112de50ebc166e786f3db3"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-long-code-fixed"
+    },
+    {
+      "id": "row-exposure",
+      "status": "passed",
+      "revision": null,
+      "script": "validation/inspector-element/row_focus.py",
+      "arguments": [
+        "--exposure-only"
+      ],
+      "note": "画面外の選択行を Shift-Tab 直後に再表示。",
+      "artifacts": [
+        {
+          "path": "row-exposure/observations.json.gz",
+          "sha256": "76e0fff1ebcfc1f90dc6c723227f066ea580a2aea7ae22143e9c62b792f76bd9",
+          "uncompressed_sha256": "214856e8a6094365a4050b0e11b527fb5458c489dc7f11d058431d233fa7c7b5",
+          "compression": "gzip"
+        },
+        {
+          "path": "row-exposure/presentation.kdl",
+          "sha256": "2358fc9d383b6c84d08f1b074d57d93bec4220faee997f02761ba5c75567e198"
+        },
+        {
+          "path": "row-exposure/run.log",
+          "sha256": "8c721ff1592f6409d1b65455954f63b479c8719caf8c88c575d2a37318231c72"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-row-exposure-fixed"
+    },
+    {
+      "id": "footer",
+      "status": "passed",
+      "revision": null,
+      "script": "validation/inspector-element/controls.py",
+      "arguments": [
+        "--footer-only"
+      ],
+      "note": "1024x700 で最後の診断と Element 設定に到達。",
+      "artifacts": [
+        {
+          "path": "footer/observations.json.gz",
+          "sha256": "21a494070a4c630ff230daf16577c7823ade653088b5de89b1d8fa087af54ffc",
+          "uncompressed_sha256": "6eb68ef1325d1d0257afea4663da0fd72eb7d0dcfcc4badb431efb08ed6c6c3e",
+          "compression": "gzip"
+        },
+        {
+          "path": "footer/presentation.kdl",
+          "sha256": "ad74e16d86e99989d4f550899e74ea4766a35365cabd674f2bfb2c3179f60917"
+        },
+        {
+          "path": "footer/run.log",
+          "sha256": "09eb0984cb3b17057b495b9e8d3d5398af938cabe6bd7fcc8e065c53281c33d2"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-footer-final"
+    },
+    {
+      "id": "navigator",
+      "status": "passed",
+      "revision": null,
+      "script": "validation/inspector-element/navigator_helper.py",
+      "arguments": [],
+      "note": "ログの RESULT navigator-helper 0。",
+      "artifacts": [
+        {
+          "path": "navigator/observations.json",
+          "sha256": "494cb7430406ac72784ae6174b31ca66fd4ece95c4891b2a834b3e22e94dafed"
+        },
+        {
+          "path": "navigator/presentation.kdl",
+          "sha256": "5a2a921faa816a5ce9b62676d136e6a3aaa0952cce98518b4e97ccbbd8604ee6"
+        },
+        {
+          "path": "navigator/run.log",
+          "sha256": "1cf15b3be2093ec7b592a3b0ee5247d700e5da1d6fa696ca82d35752c085a54d"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-navigator-helper"
+    },
+    {
+      "id": "conflict",
+      "status": "passed",
+      "revision": null,
+      "script": "validation/inspector-element/conflict.py",
+      "arguments": [],
+      "note": "競合時の入力拒否と Inspector、Navigator、ズーム切替で下書きを保持。",
+      "artifacts": [
+        {
+          "path": "conflict/observations.json",
+          "sha256": "f335493ef8e6fc8355698c8d13700131027baf2bb49a412f398c7ef79a112e76"
+        },
+        {
+          "path": "conflict/presentation.kdl",
+          "sha256": "a75bb6e33d0b86ccb5e2a04c8fa0e3548cb5b06a3351dfa6c9295179a3ab063f"
+        },
+        {
+          "path": "conflict/run.log",
+          "sha256": "58ad0c0121a2b2dec4cda8c4cb0f9f8b716eea36b07c3406a888532ba504505d"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-conflict-final"
+    },
+    {
+      "id": "divider",
+      "status": "passed",
+      "revision": null,
+      "script": "validation/mvp-acceptance/column_width_drag_acceptance.py",
+      "arguments": [],
+      "note": "連続更新、上下限、Undo/Redo、Save/reload。",
+      "artifacts": [
+        {
+          "path": "divider/column-width-drag-observations.json",
+          "sha256": "ce9bc409c715825a4edaac20fa8838c0e1e0b0095939e80164b764ba5f65cead"
+        },
+        {
+          "path": "divider/run.log",
+          "sha256": "5678e143c6d3519be654cf8c9112854d198420150875869cb809898f064f3938"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-divider"
+    },
+    {
+      "id": "layout",
+      "status": "passed",
+      "revision": null,
+      "script": "validation/mvp-acceptance/layout_repair_acceptance.py",
+      "arguments": [],
+      "note": "画面外要素と Columns の修復、選択、Save/reload。",
+      "artifacts": [
+        {
+          "path": "layout/presentation.kdl",
+          "sha256": "948555e01c3b4fcc200446b66301866a982a4932605afbaad3b727ad61a11f50"
+        },
+        {
+          "path": "layout/paged-outline/presentation.kdl",
+          "sha256": "6d051a5ab868cb3b7464a1b310f7fd24ebc69a6f76cc0fc98f44c007ca533a38"
+        },
+        {
+          "path": "layout/outline/presentation.kdl",
+          "sha256": "80a03e069b5a4c75160d58e6d086d23227e647302901a84148f96ebc4729a3fa"
+        },
+        {
+          "path": "layout/nested/presentation.kdl",
+          "sha256": "1f0e023528a7310b8c6f4a403b385959899ab5cff4c9a6706e8c675133ce0ff1"
+        },
+        {
+          "path": "layout/run.log",
+          "sha256": "5e3d3d27afa377c2ca847e277ed7ab263b00b3343f4e938871c66e540de87e87"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-layout-regression-final"
+    },
+    {
+      "id": "insertion",
+      "status": "passed",
+      "revision": null,
+      "script": "validation/mvp-acceptance/insertion_reload_present_acceptance.py",
+      "arguments": [],
+      "note": "全 Element の再読込、表示、挿入メニュー。",
+      "artifacts": [
+        {
+          "path": "insertion/observations.json",
+          "sha256": "a1b56162cba2ef84781b32cf67952fb7d4c3025a747359ba94a756b457dbfd1f"
+        },
+        {
+          "path": "insertion/presentation.kdl",
+          "sha256": "c1fdbbae3a8aecdba24fe10ff614e247eb9ed38828a9288d3e067517be928d84"
+        },
+        {
+          "path": "insertion/run.log",
+          "sha256": "82d61ec75b8ab2c550f51e210ff463ac007f2cb82d7b2c96b724b86e40c83ef4"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-insertion-regression-2"
+    },
+    {
+      "id": "voiceover",
+      "status": "passed",
+      "revision": null,
+      "script": "validation/inspector-element/voiceover.py",
+      "arguments": [],
+      "note": "ネイティブ読み上げ、別 Columns 選択、言語変更。",
+      "artifacts": [
+        {
+          "path": "voiceover/observations.json",
+          "sha256": "974ed8c39fa67947691567123543aa44b827e50a998da87ff3713335de3b9d6a"
+        },
+        {
+          "path": "voiceover/restoration.json",
+          "sha256": "68a87f60db065a97d13c4c5f3d8ed6b52d7b0a267da73cfcde1d8038c082a520"
+        },
+        {
+          "path": "voiceover/run.log",
+          "sha256": "a33300e3dfcf117b71dabec44eade680c8a577d8c26a49d5cc23479aba62bbc9"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-voiceover-2"
+    },
+    {
+      "id": "voiceover-width",
+      "status": "passed",
+      "revision": null,
+      "script": "validation/inspector-element/voiceover.py",
+      "arguments": [
+        "--width-only"
+      ],
+      "note": "元の native Inspector でネイティブ幅読み上げ、60/40 の保存。実行時に一時 trace を追加し、その後削除。",
+      "artifacts": [
+        {
+          "path": "voiceover-width/observations.json",
+          "sha256": "76a9cc4679d3f101a8a87d16d2d9afea5764da30b078b1db628d6d20342e4f43"
+        },
+        {
+          "path": "voiceover-width/restoration.json",
+          "sha256": "bf28330f290445acbaba49735ecd08874040c7090d3fa36230f622efcc069f93"
+        },
+        {
+          "path": "voiceover-width/run.log",
+          "sha256": "3a9237269a980c8713722d3a7c1f0133c7e4815baee9bea1af6a6c7b3154f10d"
+        }
+      ],
+      "reported_source_revision": "1e39042 plus temporary trace, parent report; execution diff unavailable",
+      "local_output_directory": "target/psycho-verify/issue-53-vo-width-original"
+    },
+    {
+      "id": "ime-group-repeat",
+      "status": "passed",
+      "revision": "c3b2bdd",
+      "note": "Both native candidate panels, Tab/Shift-Tab, roundtrip and second composition; 3px within composition, 8px across native baselines.",
+      "artifacts": [
+        {
+          "path": "ime-group-repeat/observations.json",
+          "sha256": "e3e3643a0fed6a0266999056ee1449bfbfd206d3790064f337395d420d97f9a5"
+        },
+        {
+          "path": "ime-group-repeat/presentation.kdl",
+          "sha256": "ae83475289157671d1f75cc1b52ad5adc05224f5f8f76393b4e9b8619907f96b"
+        },
+        {
+          "path": "ime-group-repeat/run.log",
+          "sha256": "2e51d8b3fe6df33e4a81f7e6fe110ea7315daf38e5a9065952b694962ae369c7"
+        },
+        {
+          "path": "ime-group-repeat/inspector-marked.png",
+          "sha256": "339ffbf428b691e8bca16829558fa7a45b109e956b9b317167345da0ad030db0"
+        },
+        {
+          "path": "ime-group-repeat/canvas-return-marked.png",
+          "sha256": "64fc152dd2b6b28b9453829777f0d2d129e6abf37a9a31456f7f9a22c98b16b1"
+        },
+        {
+          "path": "ime-group-repeat/inspector-marked-candidate-0.png",
+          "sha256": "df415a615f15e80e6ee65d5d1e9812649ec6c99dfb47bc2221292e8cda7fc849"
+        },
+        {
+          "path": "ime-group-repeat/inspector-marked-candidate-1.png",
+          "sha256": "df415a615f15e80e6ee65d5d1e9812649ec6c99dfb47bc2221292e8cda7fc849"
+        },
+        {
+          "path": "ime-group-repeat/second-composition-canvas-candidate-0.png",
+          "sha256": "4cd5457e19f9e4ebf2a773b228969b84208eea2ab6398631591b4f95da35eca3"
+        },
+        {
+          "path": "ime-group-repeat/second-composition-canvas-candidate-1.png",
+          "sha256": "4cd5457e19f9e4ebf2a773b228969b84208eea2ab6398631591b4f95da35eca3"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-ime-group-repeat"
+    },
+    {
+      "id": "vo-offscreen-repeat",
+      "status": "passed",
+      "revision": "c3b2bdd",
+      "note": "Native VoiceOver selects both offscreen Columns children and saves edited text.",
+      "artifacts": [
+        {
+          "path": "vo-offscreen-repeat/observations.json",
+          "sha256": "030c46fe1331b8c46f31163780db1154ec6bcd16c3d026ae53fc538baec045c0"
+        },
+        {
+          "path": "vo-offscreen-repeat/restoration.json",
+          "sha256": "17b35ae750a2a472793cce286650e0b2fdc88231760ac96e6f754a53d89e2b3e"
+        },
+        {
+          "path": "vo-offscreen-repeat/run.log",
+          "sha256": "ce148b9881eb548f2f6c8e2cec040827121998d0727641bc133d42738a6c36c3"
+        },
+        {
+          "path": "vo-offscreen-repeat/voiceover-offscreen-edit-saved.png",
+          "sha256": "f14660ed4a2b6f6e3db57bbbb48a9e26fa4e200b286be686ee4c13492e9755a9"
+        }
+      ],
+      "local_output_directory": "target/psycho-verify/issue-53-vo-offscreen-repeat"
+    },
+    {
+      "id": "main-final",
+      "status": "passed",
+      "revision": "c3b2bdd",
+      "validation_revision": "95cbc28 plus whitespace-only changes",
+      "script": "validation/mvp-acceptance/inspector_element_acceptance.py",
+      "arguments": [],
+      "artifacts": [
+        {
+          "path": "main-final/observations.json",
+          "sha256": "fc6ba01e5bebdfa34dfbbc813203663425e6629f65c1ced062458f9ef6e95008"
+        },
+        {
+          "path": "main-final/presentation.kdl",
+          "sha256": "5e4c4fee54100c95f3d1eb2042c3f076fe43b8e945d8eeb39594d6894c3a1360"
+        },
+        {
+          "path": "main-final/saved.diff",
+          "sha256": "1c079cef5202fd9f528f2e6e5a2f5c442b92fc431aba0716f044a7f53105e69c"
+        },
+        {
+          "path": "main-final/direct-full-editor-4.png",
+          "sha256": "78a6c7523c4eed91f726fb33b6c5a4b827375ad0b635c6d9e5af9ec9025eca16"
+        },
+        {
+          "path": "main-final/saved-reload.png",
+          "sha256": "bef9856a894808bf1ff9cf8706c21ac6463f95da93360342868c1312a0d2b32e"
+        },
+        {
+          "path": "main-final/external-conflict-stops-editing.png",
+          "sha256": "b70e200aaf629bda76c6a998848d7fdfa52862f21669bc50c8a1872dfdeaf449"
+        },
+        {
+          "path": "main-final/run.log",
+          "sha256": "2bd267aa32d35629defae6d859647304cc3129bcd1f3f9bc8024bf1b99cc1fad"
+        }
+      ],
+      "note": "Exit 0; all Element kinds, offscreen/nested editing, validation/cancel, history, direct glyph parity, Save/reload and external conflict."
+    },
+    {
+      "id": "vo-stop-final",
+      "status": "passed",
+      "execution_product_revision": "c3b2bdd",
+      "validation_revision": "7787c81",
+      "artifacts": [
+        {
+          "path": "vo-stop-final/observations.json",
+          "sha256": "76a9cc4679d3f101a8a87d16d2d9afea5764da30b078b1db628d6d20342e4f43"
+        },
+        {
+          "path": "vo-stop-final/restoration.json",
+          "sha256": "44699846aee2067792952b1e755a949d534bf9dc38a0c557c2ba1c5e555a6396"
+        },
+        {
+          "path": "vo-stop-final/presentation.kdl",
+          "sha256": "3e1f7cb18bce0be348190e7279724e063b8da2cd160ffd52eaef31ebdf7cb169"
+        },
+        {
+          "path": "vo-stop-final/run.log",
+          "sha256": "a5861deb5c4386c7c2d3259577e6a2486f2fe7e437389c359234f4926ed82169"
+        }
+      ],
+      "note": "Native width 60/40 edit and Save; stop helper and all original preferences restored automatically."
+    },
+    {
+      "id": "vo-settings-operations",
+      "status": "partial",
+      "execution_product_revision": "c3b2bdd",
+      "validation_revision": "95cbc28 with cleanup changes",
+      "artifacts": [
+        {
+          "path": "vo-settings-operations/observations.json",
+          "sha256": "6deb956466717d7cf0d1a49cdac64a42fa4bca05a654432b30960350495b7cff"
+        },
+        {
+          "path": "vo-settings-operations/restoration.json",
+          "sha256": "ef5de36a93af4d7f93e924e26bb8a962a795b53e0ae80e8e91b1ab1dff44bd69"
+        },
+        {
+          "path": "vo-settings-operations/presentation.kdl",
+          "sha256": "1dc66af78602213d4335aa8dd5f02e0c0a541666e589aba011e7367775877ad9"
+        },
+        {
+          "path": "vo-settings-operations/run.log",
+          "sha256": "63b14e0662d9c428fe01cf24229a027b7ab189183c1499b83025e1cae7a4cbde"
+        }
+      ],
+      "note": "Native arbitrary language and multiline code edit/Save passed; old quit-based cleanup failed. Manual recovery is recorded. The corrected automatic stop helper passed vo-stop-final."
+    }
+  ],
+  "historical_incomplete": [
+    {
+      "id": "main",
+      "status": "partial",
+      "note": "基本編集まで成功。Direct code の glyph 取得で IndexError。",
+      "revision": null,
+      "output_directory": "target/psycho-verify/issue-53-complete-7"
+    },
+    {
+      "id": "direct",
+      "status": "partial",
+      "note": "箇条書きとコードの全文編集まで成功。Caption 選択前の StopIteration。",
+      "revision": null,
+      "output_directory": "target/psycho-verify/issue-53-direct-reload-final"
+    },
+    {
+      "id": "controls",
+      "status": "partial",
+      "note": "不正幅、空タイトル、Navigator、ズーム、コード Tab 移動は成功。AXIdentifier 比較で失敗。",
+      "revision": null,
+      "output_directory": "target/psycho-verify/issue-53-controls-6"
+    },
+    {
+      "id": "row-focus",
+      "status": "partial",
+      "note": "クリック、AX pick、Return の行フォーカスは成功。末尾行の再表示で失敗。",
+      "revision": null,
+      "output_directory": "target/psycho-verify/issue-53-row-focus"
+    },
+    {
+      "id": "voiceover-settings",
+      "status": "unconfirmed",
+      "note": "ログはコード全文への移動失敗。全文編集済み画像と同じ実行か未確認。",
+      "revision": null,
+      "output_directory": "target/psycho-verify/issue-53-voiceover-settings"
+    },
+    {
+      "id": "ime-main",
+      "status": "partial",
+      "note": "変換中状態を記録したが末尾で AssertionError。#68 は未完了。",
+      "revision": null,
+      "output_directory": "target/psycho-verify/issue-53-final-ime"
+    }
+  ],
+  "pending": [],
+  "execution_product_revision": "c3b2bdd",
+  "reviewed_product_revision": "035ead5e2cfc5ef97c4ab76d40b69373b7b1e47d",
+  "history_cleanup": "Removed the rejected AX bridge and its revert before publishing. Product file hashes are identical to the executed source.",
+  "verification_script_hashes": {
+    "validation/inspector-element/native_identity.swift": "ea88fae8529a39226a22b859814d980e211b6c48042717f3fedae4c2146711cf",
+    "validation/inspector-element/navigator_helper.py": "23cad21b48b751b11f64d31ebe19df6b998f694e513d4561533dfdd8dfc9ad9b",
+    "validation/inspector-element/controls.py": "7bc0e5576109ad8b229cd6b70f7b1fc5f4881b842e14cdc8b3e69572ca94721d",
+    "validation/inspector-element/voiceover.py": "5466ee89c1f6276f9397e8f9e202f17e5896a0b180f449f1556cf9f63dfc011b",
+    "validation/inspector-element/conflict.py": "9492a101c6d2cdc8865c40258c39dffb6565d75b856b6595dd1a0bbe7b6990ee",
+    "validation/inspector-element/stop_voiceover.swift": "8cc07d5769eeae133e25f36a1fd787eb355e99e14e7c401e2c149aab63fdaac8",
+    "validation/inspector-element/marked_keys.py": "5f16bcc0926f06940a1d99737fdcdae459fd3a18ba0a5efa5e5a6aefaade3860",
+    "validation/inspector-element/row_focus.py": "0fadf3e3654289067bc426ae359c75a9090ed7e22ab94edfd134c99214ab854f",
+    "validation/inspector-element/long_code.py": "008db9765443fae755ecda7c62fa1e2a39250cd01c557ca156b0cf3d1e338bb8"
+  }
+}

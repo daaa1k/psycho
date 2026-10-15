@@ -144,6 +144,7 @@ pub struct TextInputState {
     focus_handle: FocusHandle,
     content: SharedString,
     placeholder: SharedString,
+    accessible_label: &'static str,
     multiline: bool,
     selected_range: Range<usize>,
     selection_reversed: bool,
@@ -171,6 +172,7 @@ impl TextInputState {
             focus_handle: cx.focus_handle().tab_stop(true),
             content: initial_text.into(),
             placeholder: "タイトルを入力".into(),
+            accessible_label: "Presentation のタイトル",
             multiline: false,
             selected_range: initial_text.len()..initial_text.len(),
             selection_reversed: false,
@@ -190,6 +192,13 @@ impl TextInputState {
             last_scale: 1.,
             last_indent: px(0.),
             last_paragraph_gap: px(0.),
+        }
+    }
+
+    pub fn set_accessible_label(&mut self, label: &'static str, cx: &mut Context<Self>) {
+        if self.accessible_label != label {
+            self.accessible_label = label;
+            cx.notify();
         }
     }
 
@@ -383,10 +392,10 @@ impl TextInputState {
     }
 
     fn tab(&mut self, _: &Tab, window: &mut Window, cx: &mut Context<Self>) {
-        if self.multiline && self.marked_range.is_none() {
+        if self.multiline && self.canvas_layout.is_some() && self.marked_range.is_none() {
             self.pending_undo_group = Some(UndoGroup::Typing);
             self.replace_text_in_range(None, "\t", window, cx);
-        } else if !self.multiline && self.marked_range.is_none() {
+        } else if self.marked_range.is_none() {
             window.focus_next(cx);
         }
     }
@@ -888,7 +897,7 @@ impl Render for TextInputState {
             .id("text-input")
             .accessibility_id("text-input")
             .role(gpui::Role::TextInput)
-            .aria_label("編集値")
+            .aria_label(self.accessible_label)
             .aria_value(self.value())
             .tab_stop(true)
             .w_full()

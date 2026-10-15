@@ -1,0 +1,26 @@
+true
+{"name": "navigation", "cursor": "元に戻す 淡色表示 button", "phrase": "VoiceOverオン psycho ウインドウ 元に戻す 淡色表示 button がキーボードの操作対象になっています"}
+{"name": "navigation", "cursor": "やり直す 淡色表示 button", "phrase": "やり直す 淡色表示 button"}
+{"name": "navigation", "cursor": "スライド追加 button", "phrase": "スライド追加 button"}
+{"name": "navigation", "cursor": "挿入 button", "phrase": "挿入 button"}
+{"name": "navigation", "cursor": "表示 button", "phrase": "表示 button"}
+{"name": "navigation", "cursor": "プレゼンテーション button", "phrase": "プレゼンテーション button"}
+{"name": "navigation", "cursor": "スライド一覧 list", "phrase": "スライド一覧 list 1項目が選択されています。 スライド 1 text （1 / 1）"}
+{"name": "navigation", "cursor": "スライド 1", "phrase": "操作開始 スライド一覧 list 1項目が選択されています。 スライド 1 text （1 / 1） スライド 1 text （1 / 1）"}
+{"name": "navigation", "cursor": "スライド 1", "phrase": "スライド 1 text （1 / 1）"}
+{"name": "navigation", "cursor": "スライドキャンバス group", "phrase": "スライドキャンバス group"}
+{"name": "navigation", "cursor": "スライドキャンバス カラ group", "phrase": "操作開始 スライドキャンバス group 内容がありません"}
+{"name": "navigation", "cursor": "スライドキャンバス カラ group", "phrase": "操作開始 スライドキャンバス カラ group 内容がありません"}
+{"name": "navigation", "cursor": "スライドの構造一覧 list", "phrase": "スライドの構造一覧 list"}
+{"name": "navigation", "cursor": "Element 1 · 2列", "phrase": "操作開始 スライドの構造一覧 list Element 1 · 2列 text （1 / 1）"}
+{"name": "navigation", "cursor": "Element 1 · 2列", "phrase": ""}
+{"name": "navigation", "cursor": "Element 1 · 2列", "phrase": "Element 1 · 2列 text （1 / 1）"}
+{"name": "navigation", "cursor": "Presentation title button", "phrase": "Presentation title button"}
+{"name": "navigation", "cursor": "Element を削除 button", "phrase": "Element を削除 button"}
+{"name": "navigation", "cursor": "左列幅を数値入力 button", "phrase": "左列幅を数値入力 button"}
+{"name": "navigation", "cursor": "左列幅を数値入力 button", "phrase": ""}
+{"name": "navigation", "cursor": "Element を削除 button", "phrase": "Element を削除 button"}
+{"name": "navigation", "cursor": "幅を適用 button", "phrase": "幅を適用 button"}
+{"name": "navigation", "cursor": "50 左列幅、1〜99の整数 text field", "phrase": "50 左列幅、1〜99の整数 text field"}
+PASS native VoiceOver width constraint, numeric edit and saved complementary widths
+false

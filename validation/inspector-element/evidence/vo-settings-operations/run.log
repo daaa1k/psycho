@@ -1,0 +1,53 @@
+true
+{"name": "navigation", "cursor": "元に戻す 淡色表示 button", "phrase": "VoiceOverオン psycho ウインドウ 元に戻す 淡色表示 button がキーボードの操作対象になっています"}
+{"name": "navigation", "cursor": "やり直す 淡色表示 button", "phrase": "やり直す 淡色表示 button"}
+{"name": "navigation", "cursor": "スライド追加 button", "phrase": "スライド追加 button"}
+{"name": "navigation", "cursor": "挿入 button", "phrase": "挿入 button"}
+{"name": "navigation", "cursor": "表示 button", "phrase": "表示 button"}
+{"name": "navigation", "cursor": "プレゼンテーション button", "phrase": "プレゼンテーション button"}
+{"name": "navigation", "cursor": "スライド一覧 list", "phrase": "スライド一覧 list 1項目が選択されています。 スライド 1 text （1 / 1）"}
+{"name": "navigation", "cursor": "スライド 1", "phrase": "操作開始 スライド一覧 list 1項目が選択されています。 スライド 1 text （1 / 1） スライド 1 text （1 / 1）"}
+{"name": "navigation", "cursor": "スライド 1", "phrase": "スライド 1 text （1 / 1）"}
+{"name": "navigation", "cursor": "スライドキャンバス group", "phrase": "スライドキャンバス group"}
+{"name": "navigation", "cursor": "スライドキャンバス カラ group", "phrase": "操作開始 スライドキャンバス group 内容がありません"}
+{"name": "navigation", "cursor": "スライドキャンバス カラ group", "phrase": "操作開始 スライドキャンバス カラ group 内容がありません"}
+{"name": "navigation", "cursor": "スライドの構造一覧 list", "phrase": "スライドの構造一覧 list"}
+{"name": "navigation", "cursor": "Element 1 · 2列", "phrase": "操作開始 スライドの構造一覧 list Element 1 · 2列 text （1 / 7）"}
+{"name": "navigation", "cursor": "2列 1 · 左列 · 本文 1", "phrase": "2列 1 · 左列 · 本文 1 text （2 / 7）"}
+{"name": "navigation", "cursor": "2列 1 · 右列 · 本文 1", "phrase": "2列 1 · 右列 · 本文 1 text （3 / 7）"}
+{"name": "navigation", "cursor": "Element 2 · 2列", "phrase": "Element 2 · 2列 text （4 / 7）"}
+{"name": "navigation", "cursor": "2列 2 · 左列 · 本文 1", "phrase": "2列 2 · 左列 · 本文 1 text （5 / 7）"}
+{"name": "navigation", "cursor": "2列 2 · 右列 · 本文 1", "phrase": "2列 2 · 右列 · 本文 1 text （6 / 7）"}
+{"name": "navigation", "cursor": "Element 3 · コード", "phrase": "Element 3 · コード text （7 / 7）"}
+{"name": "navigation", "cursor": "Element 3 · コード", "phrase": "Element 3 · コード text （7 / 7）"}
+{"name": "navigation", "cursor": "Presentation title button", "phrase": "Presentation title button"}
+{"name": "navigation", "cursor": "入力を取り消す 淡色表示 button", "phrase": "入力を取り消す 淡色表示 button"}
+{"name": "navigation", "cursor": "print(); コード全文 text field", "phrase": "print(); コード全文 text field"}
+{"name": "navigation", "cursor": "適用 button", "phrase": "適用 button"}
+{"name": "navigation", "cursor": "コード全文 button", "phrase": "コード全文 button"}
+{"name": "navigation", "cursor": "言語をrustに変更 button", "phrase": "言語をrustに変更 button"}
+{"name": "navigation", "cursor": "言語をjsonに変更 button", "phrase": "言語をjsonに変更 button"}
+{"name": "navigation", "cursor": "言語をyamlに変更 button", "phrase": "言語をyamlに変更 button"}
+{"name": "navigation", "cursor": "言語をtomlに変更 button", "phrase": "言語をtomlに変更 button"}
+{"name": "navigation", "cursor": "言語をなしに変更 button", "phrase": "言語をなしに変更 button"}
+{"name": "navigation", "cursor": "コード言語 button", "phrase": "コード言語 button"}
+{"name": "navigation", "cursor": "コード言語 button", "phrase": ""}
+{"name": "navigation", "cursor": "言語をなしに変更 button", "phrase": "言語をなしに変更 button"}
+{"name": "navigation", "cursor": "言語をtomlに変更 button", "phrase": "言語をtomlに変更 button"}
+{"name": "navigation", "cursor": "言語をyamlに変更 button", "phrase": "言語をyamlに変更 button"}
+{"name": "navigation", "cursor": "言語をjsonに変更 button", "phrase": "スクリプトエディタ、 Codex, Task completed グループ 通知メニューを開くには、Control-Option-N を押します。"}
+{"name": "navigation", "cursor": "言語をrustに変更 button", "phrase": "言語をrustに変更 button"}
+{"name": "navigation", "cursor": "コード全文 button", "phrase": "コード全文 button"}
+{"name": "navigation", "cursor": "適用 button", "phrase": "適用 button"}
+{"name": "navigation", "cursor": "unknown コード言語、任意の文字列 text field", "phrase": "unknown コード言語、任意の文字列 text field"}
+{"name": "navigation", "cursor": "voiceover-custom コード言語、任意の文字列 text field", "phrase": "操作終了 text field"}
+{"name": "navigation", "cursor": "適用 button", "phrase": "適用 button"}
+{"name": "navigation", "cursor": "コード全文 button", "phrase": "コード全文 button"}
+{"name": "navigation", "cursor": "コード全文 button", "phrase": ""}
+{"name": "navigation", "cursor": "適用 button", "phrase": "適用 button"}
+{"name": "navigation", "cursor": "print(); コード全文 text field", "phrase": "print(); コード全文 text field"}
+PASS native VoiceOver arbitrary language constraint, full code edit and saved values
+Traceback (most recent call last):
+  File "/private/tmp/psycho-issue-53-implementation/validation/inspector-element/voiceover.py", line 178, in <module>
+    raise RuntimeError('Scratch cleanup failed: ' + '; '.join(cleanup_errors))
+RuntimeError: Scratch cleanup failed: AssertionError({'scripting': True, 'utilityPID': 55965, 'voiceOverEnabled': True, 'welcome': True})

@@ -1,0 +1,4 @@
+PASS noncurrent overflow blocks both starts, full Inspector repair, immediate diagnosis clearing, Save, exact Undo/Redo and presentation
+PASS offscreen nested Elements on both sides, repair, Save and reload
+PASS offscreen outline selection, draft commit on selection, editing, Save and reload
+PASS ten-Element outline scrolling, late selection, draft commit, Save and scroll reset across slides

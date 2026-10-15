@@ -35,8 +35,7 @@ try:
     asset = gui.out / 'assets/image.png'
     asset.parent.mkdir()
     shutil.copy(root / 'assets/build-time.png', asset)
-    gui.press('次の項目')
-    gui.press('Element 5 · 画像')
+    gui.outline_select('Element 5 · 画像')
     gui.press('画像を再読み込み', scroll=True)
     assert gui.save() == source.encode()
     gui.stop();gui.start()

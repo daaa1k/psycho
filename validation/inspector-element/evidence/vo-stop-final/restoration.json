@@ -1,0 +1,14 @@
+{
+  "initial": {
+    "scripting": true,
+    "utilityPID": 80663,
+    "voiceOverEnabled": false,
+    "welcome": true
+  },
+  "restored": {
+    "scripting": true,
+    "utilityPID": 80663,
+    "voiceOverEnabled": false,
+    "welcome": true
+  }
+}

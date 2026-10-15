@@ -3,51 +3,69 @@ from pathlib import Path
 from gui_session import Gui,root
 
 parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,default=root/'target/mvp-layout-repair')
+parser.add_argument('--start-section', choices=['all', 'nested'], default='all')
 large='overflow();\n'*30
 short='repaired();'
 source='presentation { metadata { title "Layout repair" }; slide id="good" { heading "Good slide"; }; slide id="bad" { heading "Offscreen code"; code '+json.dumps(large)+'; }; }\n'
-output=parser.parse_args().output
-gui=Gui(output,source)
-try:
-    assert gui.save()==gui.original,'Overflowing content remains saveable'
-    for label in ['最初から発表','現在から発表']:
-        gui.press(label)
-        state,rows=gui.snapshot('noncurrent-blocked-'+str(len(label)))
+args=parser.parse_args()
+output=args.output
+if args.start_section == 'all':
+    gui=Gui(output,source)
+    try:
+        assert gui.save()==gui.original,'Overflowing content remains saveable'
+        helper = gui.out / 'native-menu'
+        subprocess.run(['xcrun', 'swiftc', str(Path(__file__).with_name('edit_menu_state.swift')), '-o', str(helper)], check=True)
+        metadata = json.loads(subprocess.check_output([str(helper), str(gui.app.pid)], text=True))
+        def menu_nodes(node):
+            yield node
+            for child in node.get('children', []):
+                yield from menu_nodes(child)
+        for label in ['最初からプレゼンテーション', '現在からプレゼンテーション']:
+            node = next(node for node in menu_nodes(metadata['menuBar']) if node.get('title') == label)
+            assert node['enabled'] is False, node
+        gui.hotkey('CmdOrCtrl+Alt+P')
+        state,rows=gui.snapshot('noncurrent-both-starts-disabled')
         assert state['screenshot']['width']==1280
         assert any(166<row['x']<995 and row['text']=='Good slide' for row in rows)
-    _,rows=gui.snapshot()
-    row=next(row for row in rows if 'Layout' in row['text'] and 'Element' in row['text'])
-    gui.click(row['x'],row['y'])
-    assert gui.state()['text']==large,'Diagnostic must select the complete overflowing Element'
-    _,rows=gui.snapshot('offscreen-full-inspector')
-    row=next(row for row in rows if row['x']>1000 and 'overflow' in row['text'])
-    gui.click(row['x'],row['y']);gui.hotkey('CmdOrCtrl+A');gui.hotkey('CmdOrCtrl+C')
-    assert subprocess.check_output(['pbpaste']).decode()==large,'Inspector must retain the whole offscreen value'
-    gui.replace(short)
-    _,rows=gui.snapshot('overflow-repaired-preview')
-    assert not any('Layout' in row['text'] and 'Element' in row['text'] for row in rows)
-    assert gui.fixture.read_bytes()==gui.original,'Preview repair must not save automatically'
-    saved=gui.save();assert saved.decode()==source.replace(json.dumps(large),json.dumps(short))
-    gui.press('Undo');assert gui.save()==gui.original
-    gui.press('Redo');assert gui.save()==saved
-    gui.press('最初から発表');gui.key('Right')
-    state,rows=gui.snapshot('repaired-presentation')
-    assert state['screenshot']['width']>1280 and any('repaired' in row['text'] for row in rows)
-    assert gui.fixture.read_bytes()==saved
-    gui.key('Escape');time.sleep(1)
-    print('PASS noncurrent overflow blocks both starts, full Inspector repair, immediate diagnosis clearing, Save, exact Undo/Redo and presentation',flush=True)
-except Exception:
-    gui.snapshot('layout-repair-failure');raise
-finally:gui.stop()
+        _,rows=gui.snapshot()
+        row=next(row for row in rows if 'Layout' in row['text'] and 'Element' in row['text'])
+        gui.click(row['x'],row['y'])
+        assert gui.state()['text']==large,'Diagnostic must select the complete overflowing Element'
+        _,rows=gui.snapshot('offscreen-full-inspector')
+        row=next(row for row in rows if row['x']>1000 and 'overflow' in row['text'])
+        gui.click(row['x'],row['y']);gui.hotkey('CmdOrCtrl+A');gui.hotkey('CmdOrCtrl+C')
+        assert subprocess.check_output(['pbpaste']).decode()==large,'Inspector must retain the whole offscreen value'
+        gui.replace(short)
+        _,rows=gui.snapshot('overflow-repaired-preview')
+        assert not any('Layout' in row['text'] and 'Element' in row['text'] for row in rows)
+        assert gui.fixture.read_bytes()==gui.original,'Preview repair must not save automatically'
+        saved=gui.save();assert saved.decode()==source.replace(json.dumps(large),json.dumps(short))
+        gui.press('Undo');assert gui.save()==gui.original
+        gui.press('Redo');assert gui.save()==saved
+        gui.press('最初から発表')
+        for _ in range(10):
+            state,rows=gui.snapshot()
+            if state['screenshot']['width']>1280: break
+            time.sleep(.2)
+        else: raise AssertionError('Presentation did not become fullscreen')
+        gui.key('Right')
+        state,rows=gui.snapshot('repaired-presentation')
+        assert state['screenshot']['width']>1280 and any('repaired' in row['text'] for row in rows)
+        assert gui.fixture.read_bytes()==saved
+        gui.key('Escape');time.sleep(1)
+        print('PASS noncurrent overflow blocks both starts, full Inspector repair, immediate diagnosis clearing, Save, exact Undo/Redo and presentation',flush=True)
+    except Exception:
+        gui.snapshot('layout-repair-failure');raise
+    finally:gui.stop()
 
 nested_source='presentation { metadata { title "Nested outline" }; slide { code '+json.dumps(large)+'; columns { column width=50 { text "Left hidden"; }; column width=50 { text "Right hidden"; }; }; }; }\n'
 gui=Gui(output/'nested',nested_source)
 try:
     _,rows=gui.snapshot('offscreen-columns')
     assert not any(166<row['x']<995 and row['text'] in ('Left hidden','Right hidden') for row in rows)
-    gui.press('左列 · 本文 1')
+    gui.outline_select('2列 2 · 左列 · 本文 1')
     assert gui.state()['text']=='Left hidden'
-    gui.press('右列 · 本文 1')
+    gui.outline_select('2列 2 · 右列 · 本文 1')
     assert gui.state()['text']=='Right hidden'
     _,rows=gui.snapshot()
     row=next(row for row in rows if row['x']>1000 and 'Right hidden' in row['text'])
@@ -56,7 +74,7 @@ try:
     saved=gui.save()
     assert saved.decode()==nested_source.replace('Right hidden','Right repaired')
     gui.stop();gui.start()
-    gui.press('右列 · 本文 1')
+    gui.outline_select('2列 2 · 右列 · 本文 1')
     assert gui.state()['text']=='Right repaired'
     print('PASS offscreen nested Elements on both sides, repair, Save and reload',flush=True)
 except Exception:
@@ -96,22 +114,20 @@ gui=Gui(output/'paged-outline',page_source)
 try:
     _,rows=gui.snapshot('outline-first-page')
     assert not any(row['text']=='Element 10 · 本文' for row in rows)
-    gui.press('次の項目');gui.press('次の項目')
-    gui.press('Element 10 · 本文')
-    assert gui.state()['text']=='Hidden 10','Last Element must be selectable through page controls'
+    gui.outline_select('Element 10 · 本文')
+    assert gui.state()['text']=='Hidden 10','Last Element must be selectable through scrolling'
     _,rows=gui.snapshot('outline-last-page')
     row=next(row for row in rows if row['x']>1000 and row['text']=='Hidden 10')
     gui.click(row['x'],row['y']);gui.replace('Last repaired')
-    gui.press('前の項目');gui.press('前の項目')
-    gui.press('Element 2 · 本文')
-    assert gui.state()['text']=='Hidden 2','Paging must keep selection and commit the prior draft on selection'
+    gui.outline_select('Element 2 · 本文')
+    assert gui.state()['text']=='Hidden 2','Scrolling must keep selection and commit the prior draft on selection'
     saved=gui.save()
     assert saved.decode()==page_source.replace('Hidden 10','Last repaired')
-    gui.press('次の項目')
+    gui.inspector_scroll(265, 'down')
     gui.select_slide(2);gui.select_slide(1)
     gui.press('Element 2 · 本文')
-    assert gui.state()['text']=='Hidden 2','Changing slides must reset the outline to its first page'
-    print('PASS ten-Element outline pagination, late selection, draft commit, Save and page reset across slides',flush=True)
+    assert gui.state()['text']=='Hidden 2','Changing slides must reset the outline to its first rows'
+    print('PASS ten-Element outline scrolling, late selection, draft commit, Save and scroll reset across slides',flush=True)
 except Exception:
     gui.snapshot('paged-outline-failure');raise
 finally:gui.stop()
