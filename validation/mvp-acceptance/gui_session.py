@@ -143,7 +143,7 @@ class Gui:
             '開く': ('ファイル', '開く'), '保存': ('ファイル', '保存'), '別名保存': ('ファイル', '別名保存'),
                         '＋ Slide': ('スライド', 'スライド追加'), '− Slide': ('スライド', 'スライドを削除'),
             'Slide ↑': ('スライド', '前へ移動'), 'Slide ↓': ('スライド', '後ろへ移動'),
-            '現在から発表': ('発表', '現在から発表'), '最初から発表': ('発表', '最初から発表'),
+            '現在から発表': ('プレゼンテーション', '現在からプレゼンテーション'), '最初から発表': ('プレゼンテーション', '最初からプレゼンテーション'),
         }
         if label in actions:
             return self.menu(*actions[label])
@@ -158,12 +158,43 @@ class Gui:
             self.act('scroll','--x',str(state['snapshot']['window']['width']-130),'--y','710','--direction','down','--no-screenshot')
         raise AssertionError((label,rows))
 
+    def scroll_at(self, x, y, direction):
+        helper = self.out / 'scroll-at'
+        if not helper.exists():
+            subprocess.run(['xcrun', 'swiftc', str(Path(__file__).with_name('scroll_at.swift')),
+                            '-o', str(helper)], check=True)
+        subprocess.run([str(helper), str(self.app.pid), str(x), str(y),
+                        '-160' if direction == 'up' else '160'], check=True)
+
+    def inspector_scroll(self, y, direction):
+        window = self.act('get-app-state')['snapshot']['window']
+        self.scroll_at(window['width'] - 150, y, direction)
+
+    def outline_select(self, label):
+        for direction in ('down', 'up'):
+            for _ in range(24):
+                tree = self.act('get-app-state')['snapshot']['treeText']
+                match = re.search(r'^\s*(\d+) text (?:\([^)]*\) )?' + re.escape(label) +
+                                  r'(?:, .*)?$', tree, re.M)
+                if match:
+                    self.act('click', '--element-index', match[1], '--no-screenshot')
+                    return
+                self.inspector_scroll(265, direction)
+        raise AssertionError((label, tree))
+
     def key(self,key):return self.act('press-key','--key',key,'--no-screenshot')
     def select_slide(self,number):
-        _,rows=self.snapshot()
-        row=next(row for row in rows if row['x']<160 and re.match(
-            r'^[>›]?\s*'+str(number)+r'(?!\d)',unicodedata.normalize('NFKC',row['text'])))
-        self.click(row['x'],row['y'])
+        for _ in range(20):
+            tree = self.act('get-app-state')['snapshot']['treeText']
+            match = re.search(r'^\s*(\d+) text (?:\([^)]*\) )?スライド ' + str(number) +
+                              r'(?!\d)(?: .*|, .*)?$', tree, re.M)
+            if match:
+                return self.act('click', '--element-index', match[1], '--no-screenshot')
+            visible = [int(n) for n in re.findall(r'text (?:\([^)]*\) )?スライド (\d+)', tree)]
+            direction = 'up' if visible and number < min(visible) else 'down'
+            window = self.act('get-app-state')['snapshot']['window']
+            self.scroll_at(80, window['height'] * .4, direction)
+        raise AssertionError((number, tree))
     def hotkey(self,key):return self.act('hotkey','--key',key,'--no-screenshot')
     def click(self,x,y,count=1):return self.act('click','--x',str(x),'--y',str(y),'--click-count',str(count),'--no-screenshot')
 
