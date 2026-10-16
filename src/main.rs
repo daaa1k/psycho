@@ -892,7 +892,9 @@ impl PsychoApp {
     }
 
     fn commit_draft(&mut self, window: &mut Window, cx: &mut Context<Self>) -> Result<(), String> {
-        if self.external_edit_blocked() && !self.has_uncommitted_draft(cx) {
+        if (self.external_edit_blocked() || self.document.model().is_none())
+            && !self.has_uncommitted_draft(cx)
+        {
             return Ok(());
         }
         if self.editor.read(cx).is_marked() && !self.finish_composition(window, cx) {
