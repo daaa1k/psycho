@@ -103,6 +103,7 @@ struct SlideDrag {
     pointer: gpui::Point<gpui::Pixels>,
     bounds: gpui::Bounds<gpui::Pixels>,
     geometry: CollectionGeometry,
+    window_size: gpui::Size<gpui::Pixels>,
     insertion: Option<usize>,
 }
 
@@ -249,12 +250,10 @@ impl PsychoApp {
             width,
             visible,
         });
-        if self
-            .collection(host)
-            .drag
-            .as_ref()
-            .is_some_and(|drag| drag.item.source.as_ref() != self.document.source())
-        {
+        if self.collection(host).drag.as_ref().is_some_and(|drag| {
+            drag.item.source.as_ref() != self.document.source()
+                || drag.window_size != window.viewport_size()
+        }) {
             self.collection_mut(host).drag = None;
             cx.stop_active_drag(window);
         }
@@ -429,6 +428,7 @@ impl PsychoApp {
                                                     pointer: window.mouse_position(),
                                                     bounds,
                                                     geometry,
+                                                    window_size: window.viewport_size(),
                                                     insertion: None,
                                                 });
                                                 this.schedule_slide_drag(host, window, cx);
@@ -558,6 +558,10 @@ impl PsychoApp {
                     let Some(drag) = this.collection_mut(host).drag.take() else {
                         return;
                     };
+                    if drag.window_size != window.viewport_size() {
+                        cx.notify();
+                        return;
+                    }
                     if let Some(boundary) = drag.insertion {
                         let to = boundary.saturating_sub(usize::from(boundary > drag.item.from));
                         if to != drag.item.from {
@@ -590,17 +594,12 @@ impl PsychoApp {
         }
         if host == CollectionHost::Overview {
             let weak = cx.entity().downgrade();
-            let previous_area = self.view.canvas_area;
             list = list.relative().child(
                 gpui::canvas(
-                    move |bounds, window, cx| {
-                        if bounds.size != previous_area {
-                            cx.stop_active_drag(window);
-                        }
+                    move |bounds, _, cx| {
                         cx.defer(move |cx| {
                             weak.update(cx, |this, cx| {
                                 if this.view.canvas_area != bounds.size {
-                                    this.cancel_slide_drags();
                                     this.view.canvas_area = bounds.size;
                                     cx.notify();
                                 }
