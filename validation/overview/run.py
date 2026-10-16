@@ -1,4 +1,5 @@
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -30,7 +31,13 @@ if args.regressions:
     ]:
         steps.append((name, [sys.executable, str(root / 'validation' / script), *extra]))
 records = []
+binary = root / 'target/debug/psycho'
+binary_hash = hashlib.sha256(binary.read_bytes()).hexdigest()
+(out / 'binary.json').write_text(json.dumps(dict(sha256=binary_hash, revision=args.revision), indent=2))
 for name, command in steps:
+    if hashlib.sha256(binary.read_bytes()).hexdigest() != binary_hash:
+        raise RuntimeError('GUI binary changed during acceptance; build once before the suite')
+    subprocess.run([str(root / '.agents/skills/verify/helpers/psycho-verify'), 'doctor'], check=True, cwd=root, stdout=subprocess.DEVNULL)
     argv = command + ['--output', str(out / name), '--revision', args.revision]
     print('START ' + name, flush=True)
     with (out / (name + '.log')).open('w') as log:
