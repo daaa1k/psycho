@@ -192,7 +192,9 @@ impl PsychoApp {
             cx.notify();
             return false;
         }
-        if !self.external_edit_blocked() {
+        if !self.external_edit_blocked()
+            && (self.document.model().is_some() || self.has_uncommitted_draft(cx))
+        {
             if let Err(error) = self.commit_draft(window, cx) {
                 self.status = error;
                 cx.notify();
