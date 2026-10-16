@@ -76,7 +76,16 @@ try:
     enabled = subprocess.check_output(['xcrun', 'swift', '-e', 'import AppKit; print(NSWorkspace.shared.isVoiceOverEnabled ? "true" : "false")'], text=True).strip()
     assert enabled == 'false', 'This scratch recipe requires VoiceOver initially off'
     subprocess.run(['open', '-b', 'com.apple.VoiceOverUtility'], check=True)
-    time.sleep(1)
+    deadline = time.monotonic() + 15
+    while time.monotonic() < deadline:
+        response = subprocess.run(['orca', 'computer', 'get-app-state', '--app', 'com.apple.VoiceOverUtility', '--json'], capture_output=True, text=True)
+        snapshot = json.loads(response.stdout)
+        tree = snapshot.get('result', {}).get('snapshot', {}).get('treeText', '')
+        if 'AppleScriptによるVoiceOverの制御を許可' in tree and 'VoiceOverの起動時にようこそダイアログを表示' in tree:
+            break
+        time.sleep(.25)
+    else:
+        raise RuntimeError('VoiceOver Utility General settings did not become accessible')
     initial = json.loads(subprocess.check_output([str(helpers['settings'])], text=True))
     settings('welcome', False)
     settings('scripting', True)

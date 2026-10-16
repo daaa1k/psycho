@@ -52,6 +52,10 @@ Overview と既存 Navigator・Slide 操作をまとめて再実行する場合�
 target/overview-env/bin/python validation/overview/run.py --output target/overview-suite --revision <build-revision> --regressions
 ```
 
+失敗した工程だけを新しい出力先で再実行する場合は、`--only invalid representative` のように工程名を指定する。既存機能の工程名を指定する場合は `--regressions` も付ける。各実行の結果を残し、未実行の工程を合格に数えない。
+
+VoiceOver のレシピは、ユーティリティの「一般」設定がアクセシビリティへ公開されてから設定を読み取る。起動直後の固定待ち時間に依存しない。
+
 ## 証跡
 
 実行ごとの PNG、操作記録、原文と保存後の KDL は指定した `target/` の出力先に残る。採用する代表画像と検証結果だけを `evidence/` に保存する。検証したソースのリビジョンと、後続の文書・証跡だけのコミットを区別する。失敗した試行は合格へ数えない。

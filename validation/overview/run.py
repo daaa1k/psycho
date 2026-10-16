@@ -10,6 +10,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--output', type=Path, required=True)
 parser.add_argument('--revision', required=True)
 parser.add_argument('--regressions', action='store_true')
+parser.add_argument('--only', nargs='+')
 args = parser.parse_args()
 out = args.output.resolve()
 assert out.is_relative_to((root / 'target').resolve())
@@ -30,6 +31,11 @@ if args.regressions:
         ('slide-guards', 'slide-organization/guards.py', []),
     ]:
         steps.append((name, [sys.executable, str(root / 'validation' / script), *extra]))
+if args.only:
+    unknown = set(args.only) - {name for name, _ in steps}
+    if unknown:
+        parser.error('Unknown steps: ' + ', '.join(sorted(unknown)))
+    steps = [(name, command) for name, command in steps if name in args.only]
 records = []
 binary = root / 'target/debug/psycho'
 binary_hash = hashlib.sha256(binary.read_bytes()).hexdigest()

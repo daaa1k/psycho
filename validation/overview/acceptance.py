@@ -415,11 +415,18 @@ def invalid(gui):
     before = state()
     gui.menu('表示', 'Overview')
     record = observe(gui, 'initial-invalid-overview')
-    assert 'Overviewのスライド一覧' in record['tree'] and '構文' in record['tree']
+    assert state()['overview'] and 'Overviewのスライド一覧' in record['tree']
+    assert '構文' in gui.text('initial-invalid-diagnostic')
     assert not re.search(r'text (?:\(selected\) )?スライド \d', record['tree'])
     unchanged(before)
     gui.menu('表示', '編集')
     unchanged(before)
+    button(gui, '表示')
+    button(gui, 'Overview')
+    assert state()['overview']
+    assert '構文' in gui.text('initial-invalid-toolbar-diagnostic')
+    unchanged(before)
+    observe(gui, 'initial-invalid-toolbar-overview')
 
 
 def representative(gui):
@@ -459,12 +466,12 @@ fixtures = {
     'guards': 'presentation { metadata { title "Overview guards" }; slide { columns { column width=50 { text "Left"; }; column width=50 { text "Right"; }; }; }; slide { heading "Second"; }; }',
     'empty': 'presentation { metadata { title "Empty"; }; }',
     'invalid': 'presentation { metadata { title "Invalid" }; slide { heading "Never partial"; };',
-    'representative': (root / 'examples/build-time.kdl').read_text().replace('"../assets/', '"' + str(root / 'assets') + '/'),
+    'representative': (root / 'examples/build-time.kdl').read_text(),
 }
 fixture = fixtures.get(args.section, source())
 if args.section == 'representative':
     Image.new('RGB', (200, 100), (220, 40, 40)).save(out / 'image.png')
-    fixture = fixture.replace(str(root / 'assets/build-time.png'), str(out / 'image.png'))
+    fixture = fixture.replace('../assets/build-time.png', 'image.png')
     prefix, suffix = fixture.rsplit('}', 1)
     fixture = prefix + 'slide id="blank" {}\n}' + suffix
 gui = Gui(out, fixture)
