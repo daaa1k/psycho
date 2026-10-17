@@ -1,0 +1,16 @@
+{
+  "revision": "d96e55c6a747d28b3ff936e1a4cb5c3658811c34",
+  "command": [
+    "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+    "validation/mvp-acceptance/native_input_acceptance.py",
+    "--output",
+    "target/native-input-d96e55c-2",
+    "--revision",
+    "d96e55c6a747d28b3ff936e1a4cb5c3658811c34"
+  ],
+  "result": "PASS",
+  "integration_revision": "c8c3f8304efa9c7483b0261696ff3e420092041b",
+  "note": "Revision argument used full git rev-parse HEAD; recorded editor.json contains the full value. Comparison logs use the same c8 integration binary and no product changes.",
+  "binary_sha256": "256bf205a3341209dfbdaacb875a88adc809d4062480f8c6c3905e8d06788420",
+  "macOS": "26.5.2"
+}

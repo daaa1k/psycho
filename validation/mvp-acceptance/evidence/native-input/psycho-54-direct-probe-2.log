@@ -1,0 +1,5 @@
+before {'text': 'Heading 001', 'selected': [11, 11], 'marked': [-1, -1], 'cursor': [1080.3516, 509.0, 26.0], 'undo': 0, 'redo': 0, 'composing': False, 'focused': False}
+after-orca-doubleclick {'text': 'Heading 001', 'selected': [11, 11], 'marked': [-1, -1], 'cursor': [1080.3516, 509.0, 26.0], 'undo': 0, 'redo': 0, 'composing': False, 'focused': False}
+after-native-doubleclick {'text': 'Heading 001', 'selected': [11, 11], 'marked': [-1, -1], 'cursor': [388.5495, 250.4, 36.75], 'undo': 0, 'redo': 0, 'composing': False, 'focused': True}
+native-menu-select-all {'text': 'Heading 001', 'selected': [0, 11], 'marked': [-1, -1], 'cursor': [388.5495, 250.4, 36.75], 'undo': 0, 'redo': 0, 'composing': False, 'focused': True}
+orca-type-after-native-select {'text': 'Changed', 'selected': [7, 7], 'marked': [-1, -1], 'cursor': [338.9944, 250.4, 36.75], 'undo': 1, 'redo': 0, 'composing': False, 'focused': True}
