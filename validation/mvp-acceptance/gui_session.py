@@ -205,7 +205,7 @@ class Gui:
 
     def replace(self,text):
         assert self.state()['focused'],'No focused scratch text input'
-        self.hotkey('CmdOrCtrl+A')
+        self.menu('編集', 'すべてを選択')
         if text and ('\n' in text or '\t' in text):
             # Keep our known scratch payload on the native clipboard until the
             # asynchronous GPUI Cmd+V handler has consumed it.
@@ -226,7 +226,12 @@ class Gui:
         return float(row[6])+5,float(row[7])+32-5
 
     def edit(self,prefix,font=None):
-        self.snapshot();x,y=self.glyph_position(prefix,font);self.click(x,y,2)
+        self.snapshot();x,y=self.glyph_position(prefix,font)
+        helper = self.out / 'native-double-click'
+        if not helper.exists():
+            subprocess.run(['xcrun', 'swiftc', str(Path(__file__).with_name('native_double_click.swift')),
+                            '-o', str(helper)], check=True)
+        subprocess.run([str(helper), str(self.app.pid), str(x), str(y)], check=True)
 
     def save(self):self.press('保存');return self.fixture.read_bytes()
 
