@@ -300,7 +300,7 @@ try:
     assert before['draft'] and frozen_gui.state()['text'] == frozen_input
     snapshot = frozen_gui.act('get-app-state')
     tree = snapshot['snapshot']['treeText']
-    assert 'button 外部変更を読み込む' in tree and 'button (disabled) 発表' in tree, tree
+    assert 'button 外部変更を読み込む' in tree and 'button (disabled) プレゼンテーション' in tree, tree
     match = re.search(r'^\s*(\d+) text スライド 2 ', tree, re.MULTILINE)
     assert match, tree
     frozen_gui.act('perform-secondary-action', '--element-index', match.group(1), '--action', 'pick', '--no-screenshot')

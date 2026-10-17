@@ -27,7 +27,7 @@ Preconditions:
 - Run psycho-verify doctor before driving.
 
 Run the commands in [the Overview acceptance guide](../../../../validation/overview/README.md).
-The main, drag, guards, empty, invalid, representative, and light/dark layout sections use native events and compare the resulting source and state.
+The main, drag, resize, guards, empty, invalid, representative, diagnostics, and light/dark layout sections use native events and compare the resulting source and state.
 Run the separate VoiceOver and Japanese IME recipes for native assistive technology and composition proof.
 Keep representative screenshots, result JSON, saved KDL, and restoration records with the build revision.
 

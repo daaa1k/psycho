@@ -133,9 +133,14 @@ def guards(gui, state, observe, button):
     tree = conflict['tree']
     assert 'button (disabled) スライド追加' in tree
     assert gui.state()['text'] == 'unsaved draft'
-    gui.key('Backspace')
-    observe('input-delete-priority')
-    assert state()['sourceHex'] == before['editor']['sourceHex']
+    native_keys = gui.out / 'native-keys'
+    subprocess.run(['xcrun', 'swiftc', str(root / 'validation/overview/keys.swift'),
+                    '-o', str(native_keys)], check=True)
+    subprocess.run([str(native_keys), str(gui.app.pid), 'backspace', '1'], check=True)
+    after = observe('frozen-delete-preserves-document')
+    for field in ['sourceHex', 'dirty', 'undo', 'redo', 'draft', 'currentSlide']:
+        assert after['editor'][field] == conflict['editor'][field], field
+    assert gui.state()['text'] == 'unsaved draft'
 
 
 run('empty', 'presentation { metadata { title "Empty"; }; }', empty)

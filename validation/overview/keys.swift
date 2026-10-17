@@ -16,6 +16,7 @@ case "up": key = 126
 case "left": key = 123
 case "right": key = 124
 case "escape": key = 53
+case "backspace": key = 51
 default: fatalError("Unsupported key")
 }
 for _ in 0..<count {
