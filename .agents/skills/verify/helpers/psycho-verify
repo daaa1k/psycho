@@ -205,10 +205,7 @@ def cmd_drive_core(args: argparse.Namespace) -> None:
         cmd = [cargo, "test", "--locked", "--lib", "-q"]
         note = "gui_primary_feature_smoke"
     else:
-        # One cargo filter: all mapped tests share a prefix or stem pattern.
-        filter = tests[0].rsplit("_", 1)[0] + "_"
-        if not all(t.startswith(filter) for t in tests):
-            filter = tests[0]
+        filter = os.path.commonprefix(tests)
         cmd = [cargo, "test", "--locked", "--lib", filter, "--", "--nocapture"]
         note = "mapped_tests"
     log_path = evidence / f"{feature}-cargo-test.log"
@@ -216,6 +213,9 @@ def cmd_drive_core(args: argparse.Namespace) -> None:
     log_path.write_text(result.stdout + result.stderr, encoding="utf-8")
     if result.returncode != 0:
         _die(f"cargo test failed for {feature}; see {log_path}")
+    for test in tests:
+        if not re.search(rf"^test (?:\S+::)?{re.escape(test)} \.\.\. ok$", result.stdout, re.MULTILINE):
+            _die(f"mapped test did not pass: {test}; see {log_path}")
     _ok(
         {
             "command": "drive-core",
