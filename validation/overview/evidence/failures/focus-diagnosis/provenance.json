@@ -1,0 +1,6 @@
+{
+  "base": "35d976d8cc17867f3fdf6c4d51a9fa6c69299d81",
+  "instrumentation": true,
+  "acceptance": false,
+  "note": "Temporary GPUI debug tree and native responder probes. These captures diagnose the focus mismatch and do not count as final product acceptance."
+}
