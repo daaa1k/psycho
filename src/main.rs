@@ -6602,6 +6602,12 @@ impl Render for EditorTooltip {
 
 fn main() {
     application().with_assets(editor_view::IconAssets).run(|cx: &mut App| {
+        #[cfg(target_os = "macos")]
+        unsafe {
+            // GPUI focuses a child view; AccessKit attaches to its content view.
+            // GPUIWindow is registered before main, and the adapter is statically linked.
+            accesskit_macos::add_focus_forwarder_to_window_class("GPUIWindow");
+        }
         cx.on_action(|_: &HideApp, cx| cx.hide());
         cx.bind_keys([
             KeyBinding::new("cmd-h", HideApp, None),

@@ -49,25 +49,6 @@ def observe(name):
     return record
 
 
-def move_to(label, direction="right"):
-    previous = None
-    for _ in range(60):
-        record = observe('navigate')
-        if label in record['cursor']:
-            return record
-        if record['cursor'] == previous:
-            gui.hotkey('Ctrl+Alt+Shift+Up')
-            vo('tell vo cursor to move ' + direction)
-        elif label == 'Overviewのスライド一覧' and record['cursor'] == 'スライド一覧 list':
-            vo('tell vo cursor to move right')
-        elif record['cursor'].endswith(' group') or record['cursor'].endswith(' list'):
-            gui.hotkey('Ctrl+Alt+Shift+Down')
-        else:
-            vo('tell vo cursor to move ' + direction)
-        previous = record['cursor']
-    raise AssertionError((label, records[-5:]))
-
-
 def state():
     return json.loads((out / 'editor.json').read_text())
 
@@ -104,12 +85,16 @@ try:
             break
     assert json.loads(subprocess.check_output([str(helpers['settings'])], text=True))['voiceOverEnabled']
     gui.act('get-app-state', '--restore-window')
-    move_to('Overviewのスライド一覧')
-    gui.hotkey('Ctrl+Alt+Shift+Down')
-    row = move_to('スライド 2 Heading 002')
+    initial_focus = observe('initial-overview-focus')
+    assert 'スライド 1 Heading 001' in initial_focus['cursor'], initial_focus
+    vo('tell vo cursor to move right')
+    row = observe('navigate-to-second')
     assert '2' in row['phrase'] and 'Heading' in row['phrase'], row
     vo('tell vo cursor to perform action')
     assert state()['currentSlide'] == 1 and state()['overviewFocused']
+    activated = gui.act('get-app-state')
+    (out / 'activated-native.json').write_text(json.dumps(activated, ensure_ascii=False, indent=2))
+    assert 'スライド 2 Heading 002' in activated['snapshot']['treeText'].split('The focused UI element is ')[-1], activated
     gui.hotkey('Ctrl+Alt+Shift+Up')
     selected = observe('activated-selected-second')
     assert any(word in selected['phrase'].lower() for word in ['選択', 'selected']), selected
@@ -119,12 +104,35 @@ try:
     assert state()['currentSlide'] == 2 and state()['overviewFocused']
     moved = bytes.fromhex(state()['sourceHex']).decode()
     assert re.findall(r'id="([^"]+)"', moved)[:3] == ['s1', 's3', 's2']
+    for key, prefix, selected_index in [
+        ('CmdOrCtrl+Up', ['s1', 's2', 's3'], 1),
+        ('CmdOrCtrl+Down', ['s1', 's3', 's2'], 2),
+        ('CmdOrCtrl+Z', ['s1', 's2', 's3'], 1),
+        ('CmdOrCtrl+Shift+Z', ['s1', 's3', 's2'], 2),
+    ]:
+        gui.hotkey(key)
+        current = state()
+        assert re.findall(r'id="([^"]+)"', bytes.fromhex(current['sourceHex']).decode())[:3] == prefix
+        assert current['currentSlide'] == selected_index and current['overviewFocused']
+        observe('voiceover-' + key)
     observe('keyboard-reorder-with-voiceover')
     key_helper = out / 'keys'
     subprocess.run(['xcrun', 'swiftc', str(Path(__file__).with_name('keys.swift')), '-o', str(key_helper)], check=True)
-    subprocess.run([str(key_helper), str(gui.app.pid), 'right', '100'], check=True)
-    gui.act('get-app-state')
-    assert state()['currentSlide'] == 99
+    transitions = []
+    for expected in range(3, 100):
+        subprocess.run([str(key_helper), str(gui.app.pid), 'right', '1'], check=True)
+        deadline = time.monotonic() + 2
+        while state()['currentSlide'] != expected and time.monotonic() < deadline:
+            time.sleep(.05)
+        actual = state()['currentSlide']
+        transitions.append(dict(expected=expected, actual=actual))
+        (out / 'keyboard-transitions.json').write_text(json.dumps(transitions, indent=2))
+        assert actual == expected, transitions[-1]
+    native_tail, _ = gui.snapshot('voiceover-tail')
+    (out / 'tail-native.json').write_text(json.dumps(native_tail, ensure_ascii=False, indent=2))
+    assert 'スライド 100 Heading 100' in native_tail['snapshot']['treeText'].split('The focused UI element is ')[-1], native_tail
+    tail_focus = observe('virtualized-tail-keyboard-focus')
+    assert 'スライド 100 Heading 100' in tail_focus['cursor'], tail_focus
     gui.hotkey('Ctrl+Alt+Shift+Up')
     tail = observe('virtualized-tail-selection')
     assert '100' in tail['phrase'] and 'Heading' in tail['phrase'] and '選択' in tail['phrase'], tail
