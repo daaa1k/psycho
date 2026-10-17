@@ -34,7 +34,7 @@ def observe(name):
 try:
     assert editor()['revision'] == args.revision
     gui.edit('Original heading', 48)
-    gui.hotkey('CmdOrCtrl+A')
+    gui.menu('編集', 'すべてを選択')
     subprocess.run(['xcrun', 'swift', '-e', '''
 import Carbon
 let sources = TISCreateInputSourceList(nil, true).takeRetainedValue() as! [TISInputSource]
