@@ -104,11 +104,15 @@ def guards(gui, state, observe, button):
         for field in ['sourceHex', 'dirty', 'undo', 'redo', 'draft', 'currentSlide']:
             assert result['editor'][field] == invalid['editor'][field], (name, field)
         assert gui.state()['text'] == '0'
+    native_double_click = gui.out / 'native-double-click'
+    subprocess.run(['xcrun', 'swiftc', str(root / 'validation/mvp-acceptance/native_double_click.swift'),
+                    '-o', str(native_double_click)], check=True)
     snapshot, rows = gui.snapshot()
     matches = [row for row in rows if row['text'] == '0'
                and row['x'] > snapshot['snapshot']['window']['width'] - 300]
     assert len(matches) == 1, rows
-    gui.click(matches[0]['x'], matches[0]['y'])
+    subprocess.run([str(native_double_click), str(gui.app.pid),
+                    str(matches[0]['x']), str(matches[0]['y'])], check=True)
     gui.replace('50')
     gui.menu('スライド', 'スライド追加')
     observe('repaired-add')
@@ -117,7 +121,8 @@ def guards(gui, state, observe, button):
     matches = [row for row in rows if row['text'] == 'Guard test'
                and row['x'] > snapshot['snapshot']['window']['width'] - 300]
     assert len(matches) == 1, rows
-    gui.click(matches[0]['x'], matches[0]['y'])
+    subprocess.run([str(native_double_click), str(gui.app.pid),
+                    str(matches[0]['x']), str(matches[0]['y'])], check=True)
     gui.replace('unsaved draft')
     before = observe('pending-draft')
     gui.fixture.write_text(gui.fixture.read_text().replace('Guard test', 'External title'))

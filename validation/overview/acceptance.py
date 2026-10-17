@@ -18,7 +18,7 @@ from PIL import Image
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', required=True, type=Path)
 parser.add_argument('--revision', required=True)
-parser.add_argument('--section', choices=['main', 'layout', 'guards', 'empty', 'invalid', 'representative', 'drag', 'resize'], default='main')
+parser.add_argument('--section', choices=['main', 'layout', 'guards', 'empty', 'invalid', 'representative', 'drag', 'resize', 'diagnostics'], default='main')
 parser.add_argument('--appearance', choices=['light', 'dark'], default='light')
 args = parser.parse_args()
 out = args.output.resolve()
@@ -56,6 +56,7 @@ def compile_helper(name, path):
 keys = compile_helper('keys', Path(__file__).with_name('keys.swift'))
 pointer_bin = compile_helper('pointer', root / 'validation/slide-organization/pointer.swift')
 resize = compile_helper('resize', root / 'validation/mvp-acceptance/resize_window.swift')
+native_double_click = compile_helper('native-double-click', root / 'validation/mvp-acceptance/native_double_click.swift')
 
 
 def state():
@@ -326,7 +327,8 @@ def guards(gui):
     matches = [row for row in rows if row['text'] == 'Overview guards'
                and row['x'] > snapshot['snapshot']['window']['width'] - 300]
     assert len(matches) == 1, rows
-    gui.click(matches[0]['x'], matches[0]['y'])
+    subprocess.run([str(native_double_click), str(gui.app.pid),
+                    str(matches[0]['x']), str(matches[0]['y'])], check=True)
     gui.replace('')
     invalid_title = observe(gui, 'invalid-title')['editor']
     gui.menu('表示', 'Overview')
@@ -504,7 +506,26 @@ def representative(gui):
     observe(gui, 'external-invalid-readonly-roundtrip')
 
 
+def diagnostics(gui):
+    before = observe(gui, 'diagnostic-edit')['editor']
+    gui.menu('表示', 'Overview')
+    overview = observe(gui, 'diagnostic-overview')
+    assert overview['editor']['overview'] and overview['editor']['overviewFocused']
+    unchanged(before)
+    match = re.search(r'^\s*(\d+) button 画像 · Slide 2 · missing-overview.png · .+$',
+                      overview['tree'], re.M)
+    assert match, overview['tree']
+    gui.act('click', '--element-index', match[1], '--no-screenshot')
+    selected = observe(gui, 'diagnostic-selected-image')
+    assert not state()['overview'] and state()['currentSlide'] == 1
+    assert re.search(r'text \(selected\) Element 2 · 画像', selected['tree']), selected['tree']
+    assert 'container スライドキャンバス' in selected['tree']
+    unchanged(before, ('sourceHex', 'dirty', 'undo', 'redo', 'draft'))
+    assert gui.fixture.read_bytes() == gui.original
+
+
 fixtures = {
+    'diagnostics': 'presentation { metadata { title "Diagnostics"; }; slide { heading "First"; }; slide { heading "Image"; image "missing-overview.png"; }; }',
     'guards': 'presentation { metadata { title "Overview guards" }; slide { columns { column width=50 { text "Left"; }; column width=50 { text "Right"; }; }; }; slide { heading "Second"; }; }',
     'empty': 'presentation { metadata { title "Empty"; }; }',
     'invalid': 'presentation { metadata { title "Invalid" }; slide { heading "Never partial"; };',
@@ -518,7 +539,7 @@ if args.section == 'representative':
     fixture = prefix + 'slide id="blank" {}\n}' + suffix
 gui = Gui(out, fixture)
 try:
-    {'main': main, 'layout': layout, 'guards': guards, 'empty': empty, 'invalid': invalid, 'representative': representative, 'drag': drag_edges, 'resize': resize_drag}[args.section](gui)
+    {'main': main, 'layout': layout, 'guards': guards, 'empty': empty, 'invalid': invalid, 'representative': representative, 'drag': drag_edges, 'resize': resize_drag, 'diagnostics': diagnostics}[args.section](gui)
     (out / 'result.json').write_text(json.dumps(dict(result='PASS', section=args.section, appearance=args.appearance, revision=args.revision,
         macOS=subprocess.check_output(['sw_vers'], text=True)), indent=2))
     print('PASS Overview ' + args.section, flush=True)

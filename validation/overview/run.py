@@ -16,7 +16,7 @@ out = args.output.resolve()
 assert out.is_relative_to((root / 'target').resolve())
 out.mkdir(parents=True, exist_ok=False)
 steps = []
-for section in ['main', 'guards', 'empty', 'invalid', 'representative', 'drag', 'resize']:
+for section in ['main', 'guards', 'empty', 'invalid', 'representative', 'drag', 'resize', 'diagnostics']:
     steps.append((section, [sys.executable, str(Path(__file__).with_name('acceptance.py')), '--section', section]))
 for appearance in ['light', 'dark']:
     steps.append(('layout-' + appearance, [sys.executable, str(Path(__file__).with_name('acceptance.py')), '--section', 'layout', '--appearance', appearance]))
