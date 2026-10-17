@@ -68,7 +68,7 @@ def empty(gui, state, observe, button):
 
 
 def guards(gui, state, observe, button):
-    button('Element 1 · 2列')
+    gui.outline_select('Element 1 · 2列')
     button('左列幅を数値入力')
     gui.replace('0')
     invalid = observe('invalid-width')

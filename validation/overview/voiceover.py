@@ -14,6 +14,7 @@ from gui_session import Gui
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', type=Path, required=True)
 parser.add_argument('--revision', required=True)
+parser.add_argument('--burst', action='store_true')
 args = parser.parse_args()
 out = args.output.resolve()
 assert out.is_relative_to((root / 'target').resolve())
@@ -94,7 +95,8 @@ try:
     assert state()['currentSlide'] == 1 and state()['overviewFocused']
     activated = gui.act('get-app-state')
     (out / 'activated-native.json').write_text(json.dumps(activated, ensure_ascii=False, indent=2))
-    assert 'スライド 2 Heading 002' in activated['snapshot']['treeText'].split('The focused UI element is ')[-1], activated
+    _, focus_marker, focused = activated['snapshot']['treeText'].partition('The focused UI element is ')
+    assert focus_marker and 'スライド 2 Heading 002' in focused, activated
     gui.hotkey('Ctrl+Alt+Shift+Up')
     selected = observe('activated-selected-second')
     assert any(word in selected['phrase'].lower() for word in ['選択', 'selected']), selected
@@ -119,18 +121,26 @@ try:
     key_helper = out / 'keys'
     subprocess.run(['xcrun', 'swiftc', str(Path(__file__).with_name('keys.swift')), '-o', str(key_helper)], check=True)
     transitions = []
-    for expected in range(3, 100):
-        subprocess.run([str(key_helper), str(gui.app.pid), 'right', '1'], check=True)
-        deadline = time.monotonic() + 2
-        while state()['currentSlide'] != expected and time.monotonic() < deadline:
-            time.sleep(.05)
-        actual = state()['currentSlide']
-        transitions.append(dict(expected=expected, actual=actual))
-        (out / 'keyboard-transitions.json').write_text(json.dumps(transitions, indent=2))
-        assert actual == expected, transitions[-1]
+    if args.burst:
+        subprocess.run([str(key_helper), str(gui.app.pid), 'right', '100'], check=True)
+        time.sleep(2)
+        current = state()
+        (out / 'after-burst.json').write_text(json.dumps(current, indent=2))
+        assert current['currentSlide'] == 99, current
+    else:
+        for expected in range(3, 100):
+            subprocess.run([str(key_helper), str(gui.app.pid), 'right', '1'], check=True)
+            deadline = time.monotonic() + 2
+            while state()['currentSlide'] != expected and time.monotonic() < deadline:
+                time.sleep(.05)
+            actual = state()['currentSlide']
+            transitions.append(dict(expected=expected, actual=actual))
+            (out / 'keyboard-transitions.json').write_text(json.dumps(transitions, indent=2))
+            assert actual == expected, transitions[-1]
     native_tail, _ = gui.snapshot('voiceover-tail')
     (out / 'tail-native.json').write_text(json.dumps(native_tail, ensure_ascii=False, indent=2))
-    assert 'スライド 100 Heading 100' in native_tail['snapshot']['treeText'].split('The focused UI element is ')[-1], native_tail
+    _, focus_marker, focused = native_tail['snapshot']['treeText'].partition('The focused UI element is ')
+    assert focus_marker and 'スライド 100 Heading 100' in focused, native_tail
     tail_focus = observe('virtualized-tail-keyboard-focus')
     assert 'スライド 100 Heading 100' in tail_focus['cursor'], tail_focus
     gui.hotkey('Ctrl+Alt+Shift+Up')

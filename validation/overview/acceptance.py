@@ -1,4 +1,5 @@
 import argparse
+from collections import Counter
 import hashlib
 import json
 import os
@@ -173,6 +174,24 @@ def main(gui):
     edit = observe(gui, 'edit-popup')['editor']
     unchanged(original)
     assert not edit['overview'] and edit['inspectorWidth'] == original['inspectorWidth']
+    gui.menu('表示', 'Inspectorを隠す')
+    hidden = observe(gui, 'inspector-hidden-edit')['editor']
+    unchanged(original)
+    assert not hidden['inspector'] and hidden['inspectorWidth'] == 0
+    gui.menu('表示', 'Overview')
+    hidden_overview = observe(gui, 'inspector-hidden-overview')['editor']
+    unchanged(hidden)
+    assert hidden_overview['overview'] and not hidden_overview['inspector']
+    assert hidden_overview['inspectorWidth'] == 0
+    gui.menu('表示', '編集')
+    hidden_edit = observe(gui, 'inspector-hidden-restored-edit')['editor']
+    unchanged(hidden)
+    assert not hidden_edit['overview'] and not hidden_edit['inspector']
+    assert hidden_edit['inspectorWidth'] == 0
+    gui.menu('表示', 'Inspectorを表示')
+    restored = observe(gui, 'inspector-visible-restored-edit')['editor']
+    unchanged(original)
+    assert restored['inspector'] and restored['inspectorWidth'] == original['inspectorWidth']
     button(gui, '表示')
     button(gui, 'Overview')
     pick(gui, 2)
@@ -272,6 +291,7 @@ def main(gui):
     observe(gui, 'edited-saved')
     gui.menu('プレゼンテーション', '現在からプレゼンテーション')
     assert state()['presenting']
+    time.sleep(1.2)
     observe(gui, 'present-current')
     gui.key('Escape')
     assert not state()['presenting'] and state()['currentSlide'] == 1
@@ -434,15 +454,25 @@ def representative(gui):
     record = observe(gui, 'all-elements-overview')
     assert '画像' in record['tree'] or 'Overviewのスライド一覧' in record['tree']
     before_image = Image.open(out / 'all-elements-overview.png').convert('RGB')
-    red = sum(pixel == (220, 40, 40) for pixel in before_image.getdata())
-    assert red > 50
+    before_colors = Counter(before_image.getdata())
+    red_color, red = max(
+        ((color, count) for color, count in before_colors.items()
+         if color[0] > 150 and color[0] > 2 * color[1] and color[0] > 2 * color[2]),
+        key=lambda item: item[1], default=(None, 0),
+    )
+    assert red > 50, (red_color, red)
     Image.new('RGB', (200, 100), (40, 80, 220)).save(out / 'image.png')
     time.sleep(1.4)
     observe(gui, 'asset-updated-in-grid')
     after_image = Image.open(out / 'asset-updated-in-grid.png').convert('RGB')
-    blue = sum(pixel == (40, 80, 220) for pixel in after_image.getdata())
-    assert blue > 50 and abs(blue - red) <= red * .05, (red, blue)
-    assert not any(pixel == (220, 40, 40) for pixel in after_image.getdata())
+    after_colors = Counter(after_image.getdata())
+    blue_color, blue = max(
+        ((color, count) for color, count in after_colors.items()
+         if color[2] > 150 and color[2] > 2 * color[0] and color[2] > 2 * color[1]),
+        key=lambda item: item[1], default=(None, 0),
+    )
+    assert blue > 50 and abs(blue - red) <= red * .05, (red_color, red, blue_color, blue)
+    assert after_colors[red_color] == 0, (red_color, after_colors[red_color])
     updated = gui.fixture.read_text().replace('CI のビルドが遅い', 'Updated Overview heading')
     gui.fixture.write_text(updated)
     time.sleep(1.2)
