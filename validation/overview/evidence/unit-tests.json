@@ -1,0 +1,18 @@
+{
+  "revision": "c8c3f8304efa9c7483b0261696ff3e420092041b",
+  "gui": {
+    "passed": 123,
+    "failed": 0,
+    "command": "cargo test --locked --features gui",
+    "log": "cargo-test.log.gz"
+  },
+  "default": {
+    "passed": 113,
+    "failed": 0,
+    "command": "cargo test --locked",
+    "log": "cargo-default-test.log.gz"
+  },
+  "fmt": "cargo fmt --check passed",
+  "note": "Tests ran sequentially before the stamped GUI build.",
+  "sourceEquivalence": "product-source.json"
+}

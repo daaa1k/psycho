@@ -223,7 +223,7 @@ try:
     gui.trace.write_text('')
     image_before = observe('image-before')
     before_pixels = image_rectangles('image-before', (220, 40, 40))
-    button('Element 2 · 画像')
+    gui.outline_select('Element 2 · 画像')
     Image.new('RGB', (200, 100), (40, 80, 220)).save(image)
     button('画像を再読み込み')
     image_after = observe('image-after')
@@ -252,8 +252,8 @@ try:
         errors.append(max(max(point[axis] for point in values) - min(point[axis] for point in values) for axis in (0, 1)))
     assert errors and max(errors) < .003, max(errors)
     (out / 'glyph-comparison.json').write_text(json.dumps(dict(glyphs=len(positions), maxBasePositionError=max(errors), tolerance=.003), indent=2))
-    button('Element 2 · 2列')
-    button('左列 · 見出し 1')
+    gui.outline_select('Element 2 · 2列')
+    gui.outline_select('2列 2 · 左列 · 見出し 1')
     observe('nested-selected-no-thumbnail-border')
     select(3)
     select_by_keys(1)
@@ -300,7 +300,7 @@ try:
     assert before['draft'] and frozen_gui.state()['text'] == frozen_input
     snapshot = frozen_gui.act('get-app-state')
     tree = snapshot['snapshot']['treeText']
-    assert 'button 外部変更を読み込む' in tree and 'button (disabled) 発表' in tree, tree
+    assert 'button 外部変更を読み込む' in tree and 'button (disabled) プレゼンテーション' in tree, tree
     match = re.search(r'^\s*(\d+) text スライド 2 ', tree, re.MULTILINE)
     assert match, tree
     frozen_gui.act('perform-secondary-action', '--element-index', match.group(1), '--action', 'pick', '--no-screenshot')

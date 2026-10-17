@@ -1,0 +1,3 @@
+PASS 100-slide native navigation, live edit/history/reload/images, normalized glyphs and document invariants
+PASS conflict navigation preserves frozen draft and document history
+PASS initial invalid source has no partial thumbnails

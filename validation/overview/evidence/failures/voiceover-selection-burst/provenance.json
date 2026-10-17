@@ -1,0 +1,7 @@
+{
+  "base": "35d976d8cc17867f3fdf6c4d51a9fa6c69299d81",
+  "instrumentation": true,
+  "acceptance": false,
+  "issue": 73,
+  "note": "Temporary NAV_KEY instrumentation and focus-forwarder prototype. All100 Right callbacks arrived but delayed AXClick reselected previous items. Individual19 acknowledged keys subsequently reached100."
+}

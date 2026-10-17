@@ -1,5 +1,32 @@
 use super::*;
 
+pub(super) fn record_collection_range(
+    host: &str,
+    range: std::ops::Range<usize>,
+    columns: usize,
+    count: usize,
+    selected: usize,
+) {
+    let Some(path) = std::env::var_os("PSYCHO_COLLECTION_TRACE") else {
+        return;
+    };
+    use std::io::Write;
+    if let Ok(mut file) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(path)
+    {
+        let _ = writeln!(
+            file,
+            "{host},{columns},{},{},{},{},{selected}",
+            range.start,
+            range.end,
+            range.start * columns,
+            (range.end * columns).min(count)
+        );
+    }
+}
+
 pub(super) fn record_navigator_range(range: std::ops::Range<usize>, scale: f32, selected: usize) {
     let Some(path) = std::env::var_os("PSYCHO_NAVIGATOR_TRACE") else {
         return;
@@ -58,7 +85,7 @@ pub(super) fn record(app: &PsychoApp, window: &Window, cx: &Context<PsychoApp>) 
         .collect::<String>();
     let (navigator, inspector) = app.view.widths(f32::from(window.viewport_size().width));
     let snapshot = format!(
-        "{{\"revision\":\"{}\",\"sourceHex\":\"{}\",\"dirty\":{},\"undo\":{},\"redo\":{},\"draft\":{},\"navigator\":{},\"inspector\":{},\"navigatorWidth\":{},\"inspectorWidth\":{},\"canvasWidth\":{},\"canvasHeight\":{},\"scale\":{},\"actual\":{},\"presenting\":{},\"dark\":{},\"currentSlide\":{},\"navigatorFocused\":{},\"canvasFocused\":{}}}\n",
+        "{{\"revision\":\"{}\",\"sourceHex\":\"{}\",\"dirty\":{},\"undo\":{},\"redo\":{},\"draft\":{},\"navigator\":{},\"inspector\":{},\"navigatorWidth\":{},\"inspectorWidth\":{},\"canvasWidth\":{},\"canvasHeight\":{},\"scale\":{},\"actual\":{},\"presenting\":{},\"dark\":{},\"currentSlide\":{},\"navigatorFocused\":{},\"canvasFocused\":{},\"overview\":{},\"overviewFocused\":{},\"overviewColumns\":{}}}\n",
         option_env!("PSYCHO_BUILD_REVISION").unwrap_or("unrecorded"),
         source,
         app.document.is_dirty(),
@@ -81,6 +108,9 @@ pub(super) fn record(app: &PsychoApp, window: &Window, cx: &Context<PsychoApp>) 
         app.current_slide,
         app.navigator.focused(window),
         app.canvas_focus.is_focused(window),
+        app.view.mode == EditorMode::Overview,
+        app.overview.focused(window),
+        app.overview.columns(),
     );
     let _ = std::fs::write(path, snapshot);
 }
