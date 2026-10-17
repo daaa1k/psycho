@@ -253,7 +253,7 @@ try:
     assert errors and max(errors) < .003, max(errors)
     (out / 'glyph-comparison.json').write_text(json.dumps(dict(glyphs=len(positions), maxBasePositionError=max(errors), tolerance=.003), indent=2))
     gui.outline_select('Element 2 · 2列')
-    gui.outline_select('左列 · 見出し 1')
+    gui.outline_select('2列 2 · 左列 · 見出し 1')
     observe('nested-selected-no-thumbnail-border')
     select(3)
     select_by_keys(1)

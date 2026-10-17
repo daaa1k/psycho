@@ -295,7 +295,8 @@ def main(gui):
     assert state()['presenting']
     time.sleep(1.2)
     observe(gui, 'present-current')
-    gui.key('Escape')
+    subprocess.run([str(keys), str(gui.app.pid), 'escape', '1'], check=True)
+    time.sleep(1.2)
     assert not state()['presenting'] and state()['currentSlide'] == 1
     gui.menu('表示', 'Overview')
     assert 'スライド 2 Edited from Overview' in observe(gui, 'returned-same-slide')['tree']
@@ -321,9 +322,11 @@ def guards(gui):
     assert state()['overview'] and 'column width=60' in text()
     gui.menu('表示', '編集')
     button(gui, 'Presentation title')
-    tree = gui.act('get-app-state')['snapshot']['treeText']
-    field = re.search(r'^\s*(\d+) text field', tree, re.M)[1]
-    gui.act('click', '--element-index', field, '--no-screenshot')
+    snapshot, rows = gui.snapshot('title-input')
+    matches = [row for row in rows if row['text'] == 'Overview guards'
+               and row['x'] > snapshot['snapshot']['window']['width'] - 300]
+    assert len(matches) == 1, rows
+    gui.click(matches[0]['x'], matches[0]['y'])
     gui.replace('')
     invalid_title = observe(gui, 'invalid-title')['editor']
     gui.menu('表示', 'Overview')

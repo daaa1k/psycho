@@ -104,16 +104,20 @@ def guards(gui, state, observe, button):
         for field in ['sourceHex', 'dirty', 'undo', 'redo', 'draft', 'currentSlide']:
             assert result['editor'][field] == invalid['editor'][field], (name, field)
         assert gui.state()['text'] == '0'
-    tree = gui.act('get-app-state')['snapshot']['treeText']
-    field = re.search(r'^\s*(\d+) text field.*編集値', tree, re.M).group(1)
-    gui.act('click', '--element-index', field, '--no-screenshot')
+    snapshot, rows = gui.snapshot()
+    matches = [row for row in rows if row['text'] == '0'
+               and row['x'] > snapshot['snapshot']['window']['width'] - 300]
+    assert len(matches) == 1, rows
+    gui.click(matches[0]['x'], matches[0]['y'])
     gui.replace('50')
     gui.menu('スライド', 'スライド追加')
     observe('repaired-add')
     button('Presentation title')
-    tree = gui.act('get-app-state')['snapshot']['treeText']
-    field = re.search(r'^\s*(\d+) text field.*編集値', tree, re.M).group(1)
-    gui.act('click', '--element-index', field, '--no-screenshot')
+    snapshot, rows = gui.snapshot()
+    matches = [row for row in rows if row['text'] == 'Guard test'
+               and row['x'] > snapshot['snapshot']['window']['width'] - 300]
+    assert len(matches) == 1, rows
+    gui.click(matches[0]['x'], matches[0]['y'])
     gui.replace('unsaved draft')
     before = observe('pending-draft')
     gui.fixture.write_text(gui.fixture.read_text().replace('Guard test', 'External title'))
