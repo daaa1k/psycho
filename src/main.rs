@@ -2587,6 +2587,8 @@ impl PsychoApp {
             )
             .child(div().text_color(palette.secondary).child(if dirty {
                 "未保存"
+            } else if self.document.path().is_none() {
+                "保存先未設定"
             } else {
                 "保存済み"
             }));
@@ -2763,7 +2765,7 @@ impl PsychoApp {
             true,
             |this, _, window, cx| this.show_popup(Popup::Diagnostics, window, cx),
         ));
-        if self.external_edit_blocked() {
+        if !matches!(self.document.external_state(), ExternalState::Current) {
             footer = footer.child(
                 div()
                     .text_color(self.palette.warning)

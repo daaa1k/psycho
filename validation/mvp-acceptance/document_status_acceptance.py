@@ -1,4 +1,3 @@
-"""Exercise document status, native decisions, recovery and diagnostic entry."""
 import argparse
 import json
 import os

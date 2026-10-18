@@ -1,4 +1,3 @@
-"""External syntax diagnostics expose readonly source without retargeting the model."""
 import argparse
 import json
 import re

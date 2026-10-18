@@ -1,4 +1,3 @@
-"""Save an untitled draft, then continue the originally requested Open."""
 import argparse
 import json
 from pathlib import Path
@@ -10,6 +9,8 @@ gui = Gui(parser.parse_args().output,
           'presentation { metadata { title "Next document" }; slide { heading "Next slide"; }; }\n', untitled=True)
 records = []
 try:
+    state, rows = gui.snapshot('untitled-initial-status')
+    assert '保存先未設定' in ''.join(row['text'] for row in rows)
     gui.edit('CI のビルドが遅い', 48)
     gui.replace('Untitled draft retained')
     gui.press('開く')
@@ -17,7 +18,7 @@ try:
     gui.hotkey('CmdOrCtrl+A')
     gui.act('type-text', '--text', str(gui.fixture), '--no-screenshot')
     gui.key('Return')
-    gui.button('Open')
+    gui.button('KDL Presentation を開く')
     state, _ = gui.snapshot('open-unsaved-modal')
     records.append(dict(name='open-confirmation', tree=state['snapshot']['treeText'], input=gui.state()))
     gui.button('保存')
