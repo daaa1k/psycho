@@ -146,6 +146,25 @@ enum SlideInteraction {
     ReadOnly,
 }
 
+enum DocumentAction {
+    Open(PathBuf),
+    Close,
+    Reload,
+}
+#[derive(Clone, Copy)]
+enum SaveIntent {
+    Save,
+    SaveAs,
+}
+enum DocumentFlow {
+    Idle,
+    Active { return_focus: Option<FocusHandle> },
+}
+struct SaveFailure {
+    intent: SaveIntent,
+    message: String,
+}
+
 struct PsychoApp {
     view: EditorViewState,
     palette: EditorPalette,
@@ -167,10 +186,8 @@ struct PsychoApp {
     presentation_cursor_hidden: bool,
     cursor_hide_generation: u64,
     status: String,
-    pending_open: Option<PathBuf>,
-    pending_close: bool,
-    pending_external_reload: bool,
-    save_as_pending: bool,
+    document_flow: DocumentFlow,
+    save_failure: Option<SaveFailure>,
     source_selection: Option<Diagnostic>,
     layout_diagnostics: Vec<LayoutDiagnostic>,
     asset_diagnostics: Vec<AssetDiagnostic>,
@@ -199,7 +216,7 @@ impl PsychoApp {
     fn availability(&self, window: &Window, cx: &Context<Self>) -> EditorAvailability {
         let model = self.document.model();
         let editor = self.editor.read(cx);
-        let view = self.presentation.is_none();
+        let view = self.presentation.is_none() && matches!(self.document_flow, DocumentFlow::Idle);
         let edit = view && model.is_some() && !self.external_edit_blocked();
         let count = model.map_or(0, |model| model.slides.len());
         let present_reason = if !edit {
@@ -251,10 +268,8 @@ impl PsychoApp {
             return;
         }
         let popup = self.view.popup.take();
-        if matches!(popup, Some(Popup::Slide(_))) {
+        if popup.is_some() {
             self.restore_popup_focus(window, cx);
-        } else if popup.is_some() {
-            self.popup_return_focus = None;
         }
         action.execute(self, window, cx);
     }
@@ -329,10 +344,12 @@ impl PsychoApp {
 
     fn show_popup(&mut self, popup: Popup, window: &mut Window, cx: &mut Context<Self>) {
         self.popup_return_focus = window.focused(cx);
-        if let Err(error) = self.commit_draft(window, cx) {
-            self.status = error;
-            cx.notify();
-            return;
+        if !matches!(popup, Popup::Diagnostics | Popup::Present) {
+            if let Err(error) = self.commit_draft(window, cx) {
+                self.status = error;
+                cx.notify();
+                return;
+            }
         }
         self.view.popup = Some(popup);
         window.focus(&self.root_focus, cx);
@@ -447,7 +464,8 @@ impl PsychoApp {
         let input_focus = editor.read(cx).focus_handle();
         cx.on_blur(&input_focus, window, |this, window, cx| {
             this.ime_geometry.refresh(window, false);
-            if !this.save_as_pending
+            if matches!(this.document_flow, DocumentFlow::Idle)
+                && !matches!(this.view.popup, Some(Popup::Diagnostics | Popup::Present))
                 && this.presentation.is_none()
                 && !this.external_edit_blocked()
                 && (this.has_uncommitted_draft(cx)
@@ -492,10 +510,8 @@ impl PsychoApp {
             presentation_cursor_hidden: false,
             cursor_hide_generation: 0,
             status: "KDL ファイルを開いて編集できます。".into(),
-            pending_open: None,
-            pending_close: false,
-            pending_external_reload: false,
-            save_as_pending: false,
+            document_flow: DocumentFlow::Idle,
+            save_failure: None,
             source_selection: None,
             layout_diagnostics: Vec::new(),
             asset_diagnostics,
@@ -506,7 +522,7 @@ impl PsychoApp {
     }
 
     fn external_edit_blocked(&self) -> bool {
-        self.pending_external_reload
+        !matches!(self.document_flow, DocumentFlow::Idle)
             || !matches!(self.document.external_state(), ExternalState::Current)
     }
 
@@ -998,164 +1014,246 @@ impl PsychoApp {
     }
 
     fn save(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        if self.external_edit_blocked() {
-            self.status = "外部ファイルの問題を解決するか、別名保存してください。".into();
-            cx.notify();
-            return;
-        }
-        if self.document.path().is_none() {
-            self.prompt_save_as(window, cx);
-            return;
-        }
-        if let Err(error) = self.commit_draft(window, cx) {
-            self.status = format!("保存できませんでした: {error}");
-            cx.notify();
-            return;
-        }
-        window.focus(&self.root_focus, cx);
-        match self.document.save() {
-            Ok(()) => {
-                self.source_selection = None;
-                self.pending_external_reload = false;
-                self.status = "保存しました。".into();
-            }
-            Err(error) => {
-                self.show_external_problem(window, cx);
-                self.status = format!("保存できませんでした: {error}");
-            }
-        }
-        cx.notify();
+        self.request_save(SaveIntent::Save, window, cx);
     }
-
-    fn save_and_close(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        if self.external_edit_blocked() {
-            self.status = "外部ファイルの問題を解決するか、別名保存してから閉じてください。".into();
-            cx.notify();
-            return;
-        }
-        if self.document.path().is_none() {
-            self.prompt_save_as(window, cx);
-            return;
-        }
-        if let Err(error) = self.commit_draft(window, cx) {
-            self.status = format!("保存できませんでした: {error}");
-            cx.notify();
-            return;
-        }
-        window.focus(&self.root_focus, cx);
-        match self.document.save() {
-            Ok(()) => {
-                self.pending_close = false;
-                window.remove_window();
-            }
-            Err(error) => {
-                self.show_external_problem(window, cx);
-                self.status = format!("保存できませんでした: {error}");
-                cx.notify();
-            }
-        }
-    }
-
-    fn discard_and_close(&mut self, _: &MouseUpEvent, window: &mut Window, _: &mut Context<Self>) {
-        self.pending_close = false;
-        window.remove_window();
-    }
-
-    fn cancel_close(&mut self, _: &MouseUpEvent, _: &mut Window, cx: &mut Context<Self>) {
-        self.pending_close = false;
-        self.status = "閉じる操作を取り消しました。".into();
-        cx.notify();
-    }
-
     fn save_as_action(&mut self, _: &SaveAs, window: &mut Window, cx: &mut Context<Self>) {
         self.execute_action(&SaveAs, window, cx);
     }
-
     fn save_action(&mut self, _: &SaveFile, window: &mut Window, cx: &mut Context<Self>) {
         self.execute_action(&SaveFile, window, cx);
     }
-
     fn prompt_save_as(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        if self.save_as_pending {
+        self.request_save(SaveIntent::SaveAs, window, cx);
+    }
+    fn request_save(&mut self, intent: SaveIntent, window: &mut Window, cx: &mut Context<Self>) {
+        self.start_document_flow(None, Some(intent), window, cx);
+    }
+    fn request_document_action(
+        &mut self,
+        action: DocumentAction,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        self.start_document_flow(Some(action), None, window, cx);
+    }
+    fn finish_document_flow(
+        &mut self,
+        restore_focus: bool,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if let DocumentFlow::Active {
+            return_focus: Some(focus),
+        } = std::mem::replace(&mut self.document_flow, DocumentFlow::Idle)
+        {
+            if restore_focus {
+                window.focus(&focus, cx);
+            }
+        }
+        cx.notify();
+    }
+    fn start_document_flow(
+        &mut self,
+        action: Option<DocumentAction>,
+        mut save: Option<SaveIntent>,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        if !matches!(self.document_flow, DocumentFlow::Idle) {
             return;
         }
-        self.save_as_pending = true;
-        let notice = window.prompt(
-            gpui::PromptLevel::Warning,
-            "退避保存すると Undo / Redo 履歴が消去されます。",
-            Some("別フォルダーでは、編集していない画像参照も更新されます。"),
-            &["退避先を選ぶ", "キャンセル"],
-            cx,
-        );
+        self.document_flow = DocumentFlow::Active {
+            return_focus: window.focused(cx),
+        };
+        let reload = matches!(action, Some(DocumentAction::Reload));
+        let confirmation =
+            if action.is_some() && (self.document.is_dirty() || self.has_uncommitted_draft(cx)) {
+                Some(if reload {
+                    window.prompt(
+                        gpui::PromptLevel::Warning,
+                        "未保存の編集を破棄して再読み込みしますか。",
+                        Some("編集を残す場合はキャンセルし、別名保存してください。"),
+                        &[
+                            gpui::PromptButton::ok("破棄して再読み込み"),
+                            gpui::PromptButton::cancel("キャンセル"),
+                        ],
+                        cx,
+                    )
+                } else {
+                    window.prompt(
+                        gpui::PromptLevel::Warning,
+                        "未保存の編集があります。",
+                        Some("保存して続けるか、編集を破棄するか選んでください。"),
+                        &[
+                            gpui::PromptButton::ok("保存"),
+                            gpui::PromptButton::new("破棄"),
+                            gpui::PromptButton::cancel("キャンセル"),
+                        ],
+                        cx,
+                    )
+                })
+            } else {
+                None
+            };
         let view = cx.entity();
         window
             .spawn(cx, async move |cx| {
-                let proceed = matches!(notice.await, Ok(0));
-                let _ = cx.update(|window, cx| {
-                    view.update(cx, |this, cx| {
-                        if proceed {
-                            this.choose_save_as_path(window, cx);
-                        } else {
-                            this.save_as_pending = false;
-                            cx.notify();
+                if let Some(confirmation) = confirmation {
+                    match confirmation.await {
+                        Ok(0) if reload => {}
+                        Ok(0) => save = Some(SaveIntent::Save),
+                        Ok(1) if !reload => {}
+                        _ => {
+                            let _ = cx.update(|window, cx| {
+                                view.update(cx, |this, cx| {
+                                    this.finish_document_flow(true, window, cx)
+                                })
+                            });
+                            return;
                         }
-                    })
-                });
-            })
-            .detach();
-    }
-
-    fn choose_save_as_path(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        let directory = self
-            .document
-            .path()
-            .and_then(Path::parent)
-            .unwrap_or(Path::new("."));
-        let receiver = cx.prompt_for_new_path(directory, Some("presentation.kdl"));
-        let view = cx.entity();
-        window
-            .spawn(cx, async move |cx| {
-                let selected = receiver.await;
-                let _ = cx.update(|_, cx| {
-                    view.update(cx, |this, cx| {
-                        this.save_as_pending = false;
-                        cx.notify();
-                    })
-                });
-                let Ok(Ok(Some(path))) = selected else {
-                    return;
-                };
-                let _ = cx.update(|window, cx| {
-                    let close_after_save = view.update(cx, |this, cx| {
-                        let result = this.save_as_with_draft(&path, window, cx);
-                        if result.is_ok() {
-                            this.refresh_assets();
-                            // Save As can rebase the selected image path. Keep
-                            // the field in sync so the next Save cannot restore
-                            // the previous document's relative path.
-                            let value = this.edit_value(this.target);
-                            this.editor
-                                .update(cx, |input, cx| input.set_value(&value, cx));
-                            this.source_selection = None;
-                            this.pending_external_reload = false;
-                        }
-                        let close_after_save = this.pending_close && result.is_ok();
-                        this.status = result.map_or_else(
-                            |error| format!("退避保存できませんでした: {error}"),
-                            |_| "別ファイルへ保存しました。".into(),
-                        );
-                        if close_after_save {
-                            this.pending_close = false;
-                        }
-                        cx.notify();
-                        close_after_save
-                    });
-                    if close_after_save {
-                        window.remove_window();
                     }
+                }
+                while let Some(mut intent) = save {
+                    let needs_as = cx
+                        .update(|_, cx| {
+                            view.read(cx).document.path().is_none()
+                                || !matches!(
+                                    view.read(cx).document.external_state(),
+                                    ExternalState::Current
+                                )
+                        })
+                        .unwrap_or(true);
+                    if needs_as {
+                        intent = SaveIntent::SaveAs;
+                    }
+                    let result = if matches!(intent, SaveIntent::SaveAs) {
+                        let notice = cx.update(|window, cx| {
+                            window.prompt(
+                                gpui::PromptLevel::Warning,
+                                "退避保存すると Undo / Redo 履歴が消去されます。",
+                                Some("別フォルダーでは、編集していない画像参照も更新されます。"),
+                                &[
+                                    gpui::PromptButton::ok("退避先を選ぶ"),
+                                    gpui::PromptButton::cancel("キャンセル"),
+                                ],
+                                cx,
+                            )
+                        });
+                        let Ok(notice) = notice else {
+                            return;
+                        };
+                        if !matches!(notice.await, Ok(0)) {
+                            break;
+                        }
+                        let receiver = cx.update(|_, cx| {
+                            let directory = view
+                                .read(cx)
+                                .document
+                                .path()
+                                .and_then(Path::parent)
+                                .unwrap_or(Path::new("."))
+                                .to_path_buf();
+                            cx.prompt_for_new_path(&directory, Some("presentation.kdl"))
+                        });
+                        let Ok(receiver) = receiver else {
+                            return;
+                        };
+                        let Ok(Ok(Some(path))) = receiver.await else {
+                            break;
+                        };
+                        cx.update(|window, cx| {
+                            view.update(cx, |this, cx| {
+                                let result = this.save_as_with_draft(&path, window, cx);
+                                if result.is_ok() {
+                                    this.refresh_assets();
+                                    let value = this.edit_value(this.target);
+                                    this.editor
+                                        .update(cx, |input, cx| input.set_value(&value, cx));
+                                }
+                                result
+                            })
+                        })
+                    } else {
+                        cx.update(|window, cx| {
+                            view.update(cx, |this, cx| {
+                                this.commit_draft(window, cx).and_then(|()| {
+                                    this.document.save().map_err(|error| error.to_string())
+                                })
+                            })
+                        })
+                    };
+                    let Ok(result) = result else {
+                        return;
+                    };
+                    match result {
+                        Ok(()) => {
+                            let _ = cx.update(|_, cx| {
+                                view.update(cx, |this, cx| {
+                                    this.save_failure = None;
+                                    this.source_selection = None;
+                                    this.status = "保存しました。".into();
+                                    cx.notify();
+                                })
+                            });
+                            save = None;
+                        }
+                        Err(message) => {
+                            let retry = cx.update(|window, cx| {
+                                view.update(cx, |this, cx| {
+                                    this.save_failure = Some(SaveFailure {
+                                        intent,
+                                        message: message.clone(),
+                                    });
+                                    cx.notify();
+                                });
+                                window.prompt(
+                                    gpui::PromptLevel::Critical,
+                                    "保存できませんでした。",
+                                    Some(&message),
+                                    &[
+                                        gpui::PromptButton::ok("再試行"),
+                                        gpui::PromptButton::cancel("キャンセル"),
+                                    ],
+                                    cx,
+                                )
+                            });
+                            let Ok(retry) = retry else {
+                                return;
+                            };
+                            if !matches!(retry.await, Ok(0)) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                let _ = cx.update(|window, cx| {
+                    view.update(cx, |this, cx| {
+                        let restore_focus = save.is_some() || action.is_none();
+                        if save.is_none() {
+                            match action {
+                                Some(DocumentAction::Open(path)) => {
+                                    this.open_document(path, window, cx)
+                                }
+                                Some(DocumentAction::Close) => {
+                                    window.remove_window();
+                                    return;
+                                }
+                                Some(DocumentAction::Reload) => {
+                                    let position = this.reload_slide_position();
+                                    match this.document.reload_from_disk() {
+                                        Ok(()) => this.did_reload(position, window, cx),
+                                        Err(_) => this.show_external_problem(window, cx),
+                                    }
+                                }
+                                None => {}
+                            }
+                        }
+                        this.finish_document_flow(restore_focus, window, cx);
+                    })
                 });
             })
             .detach();
+        cx.notify();
     }
 
     fn save_as_with_draft(
@@ -1182,6 +1280,12 @@ impl PsychoApp {
     }
 
     fn open_picker(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
+        if !matches!(self.document_flow, DocumentFlow::Idle) {
+            return;
+        }
+        self.document_flow = DocumentFlow::Active {
+            return_focus: window.focused(cx),
+        };
         let receiver = cx.prompt_for_paths(gpui::PathPromptOptions {
             files: true,
             directories: false,
@@ -1191,33 +1295,32 @@ impl PsychoApp {
         let view = cx.entity();
         window
             .spawn(cx, async move |cx| {
-                let Ok(Ok(Some(paths))) = receiver.await else {
-                    return;
-                };
-                let Some(path) = paths.into_iter().next() else {
-                    return;
-                };
+                let selected = receiver.await;
                 let _ = cx.update(|window, cx| {
-                    view.update(cx, |this, cx| this.request_open(path, window, cx));
+                    view.update(cx, |this, cx| {
+                        let focus =
+                            match std::mem::replace(&mut this.document_flow, DocumentFlow::Idle) {
+                                DocumentFlow::Active { return_focus } => return_focus,
+                                DocumentFlow::Idle => None,
+                            };
+                        if let Some(focus) = focus.as_ref() {
+                            window.focus(focus, cx);
+                        }
+                        if let Ok(Ok(Some(paths))) = selected {
+                            if let Some(path) = paths.into_iter().next() {
+                                this.request_open(path, window, cx);
+                            }
+                        }
+                        cx.notify();
+                    })
                 });
             })
             .detach();
+        cx.notify();
     }
 
     fn request_open(&mut self, path: PathBuf, window: &mut Window, cx: &mut Context<Self>) {
-        if let Err(error) = self.commit_draft(window, cx) {
-            self.status = format!("編集内容を確定できないため開けません: {error}");
-            cx.notify();
-            return;
-        }
-        if self.document.is_dirty() {
-            self.pending_open = Some(path);
-            self.status =
-                "未保存の編集があります。保存して開くか、破棄して開くか選んでください。".into();
-            cx.notify();
-        } else {
-            self.open_document(path, window, cx);
-        }
+        self.request_document_action(DocumentAction::Open(path), window, cx);
     }
 
     fn open_document(&mut self, path: PathBuf, window: &mut Window, cx: &mut Context<Self>) {
@@ -1232,7 +1335,6 @@ impl PsychoApp {
             }
             Err(error) => self.status = format!("ファイルを開けませんでした: {error}"),
         }
-        self.pending_open = None;
         cx.notify();
     }
 
@@ -1241,7 +1343,7 @@ impl PsychoApp {
         self.current_slide = 0;
         self.target = EditTarget::Title;
         self.source_selection = None;
-        self.pending_external_reload = false;
+        self.save_failure = None;
         self.column_resize_drag = None;
         self.drop_destination = None;
         let title = self.edit_value(EditTarget::Title);
@@ -1270,47 +1372,7 @@ impl PsychoApp {
     }
 
     fn reload_external_change(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        if !self.pending_external_reload
-            && (self.document.is_dirty() || self.has_uncommitted_draft(cx))
-        {
-            self.pending_external_reload = true;
-            self.status =
-                "再読み込みすると未保存の編集内容を破棄します。続行するか、別名保存してください。"
-                    .into();
-            cx.notify();
-            return;
-        }
-        let previous_slide = self.reload_slide_position();
-        match self.document.reload_from_disk() {
-            Ok(()) => self.did_reload(previous_slide, window, cx),
-            Err(_) => {
-                self.pending_external_reload = false;
-                self.show_external_problem(window, cx);
-            }
-        }
-        cx.notify();
-    }
-
-    fn resolve_pending_open(
-        &mut self,
-        save_first: bool,
-        window: &mut Window,
-        cx: &mut Context<Self>,
-    ) {
-        let Some(path) = self.pending_open.clone() else {
-            return;
-        };
-        if save_first {
-            if let Err(error) = self
-                .commit_draft(window, cx)
-                .and_then(|()| self.document.save().map_err(|error| error.to_string()))
-            {
-                self.status = format!("保存できませんでした: {error}");
-                cx.notify();
-                return;
-            }
-        }
-        self.open_document(path, window, cx);
+        self.request_document_action(DocumentAction::Reload, window, cx);
     }
 
     fn add_slide(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
@@ -2171,6 +2233,9 @@ impl PsychoApp {
     ) {
         self.source_selection = Some(diagnostic.clone());
         cx.notify();
+        if matches!(self.document.external_state(), ExternalState::Invalid(_)) {
+            return;
+        }
         let Some(model) = self.document.model() else {
             return;
         };
@@ -2235,6 +2300,10 @@ impl PsychoApp {
                 return;
             }
         }
+        if let Err(error) = self.commit_draft(window, cx) {
+            self.status = error;
+            return;
+        }
         self.current_slide = slide_index;
         self.reset_editor_to_title(cx);
         window.focus(&self.root_focus, cx);
@@ -2247,6 +2316,7 @@ impl PsychoApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        self.view.popup = None;
         let target_exists = self.document.model().is_some_and(|model| {
             if let (Some(column), Some(nested)) = (issue.column_index, issue.nested_element_index) {
                 nested_element(
@@ -2464,7 +2534,7 @@ impl PsychoApp {
 
     fn preview_model(&self, cx: &App) -> Option<PresentationModel> {
         let value = self.editor.read(cx).value();
-        if self.external_edit_blocked() || value == self.edit_value(self.target) {
+        if value == self.edit_value(self.target) {
             return self.document.model().cloned();
         }
         // Preview the draft without adding history entries or changing saved bytes.
@@ -2492,7 +2562,7 @@ impl PsychoApp {
             .map_or("新しい Presentation", |model| model.title.as_str())
             .to_owned();
         let dirty = self.document.is_dirty() || self.has_uncommitted_draft(cx);
-        let header = div()
+        let mut header = div()
             .flex()
             .items_center()
             .gap(px(12.))
@@ -2502,16 +2572,39 @@ impl PsychoApp {
             .text_size(px(13.))
             .child(
                 div()
-                    .flex_1()
+                    .flex_shrink(1.)
+                    .max_w(px(420.))
+                    .text_ellipsis()
                     .min_w_0()
                     .font_weight(gpui::FontWeight::BOLD)
-                    .child(title.clone()),
+                    .child(
+                        self.document
+                            .path()
+                            .and_then(Path::file_name)
+                            .map(|name| name.to_string_lossy().into_owned())
+                            .unwrap_or_else(|| title.clone()),
+                    ),
             )
             .child(div().text_color(palette.secondary).child(if dirty {
                 "未保存"
             } else {
                 "保存済み"
             }));
+        if let Some(failure) = &self.save_failure {
+            let label = match failure.intent {
+                SaveIntent::Save => "保存できませんでした",
+                SaveIntent::SaveAs => "別名保存できませんでした",
+            };
+            header = header.child(div().text_color(palette.warning).child(label));
+        }
+        if !matches!(self.document.external_state(), ExternalState::Current) {
+            header = header.child(
+                div()
+                    .text_color(palette.warning)
+                    .child("外部ファイルに問題があります"),
+            );
+        }
+        let header = header.child(div().flex_1());
         let toolbar = div()
             .flex()
             .flex_row()
@@ -2526,63 +2619,63 @@ impl PsychoApp {
             .child(self.action_button(ShowInsertMenu, false, window, cx))
             .child(self.action_button(ShowViewMenu, false, window, cx))
             .child(div().flex_1())
-            .child(self.action_button(PresentCurrent, false, window, cx));
+            .child(self.action_button(PresentCurrent, false, window, cx))
+            .child(
+                button(
+                    cx,
+                    "発表メニュー",
+                    self.availability(window, cx).view,
+                    |this, _, window, cx| this.show_popup(Popup::Present, window, cx),
+                )
+                .w_auto()
+                .flex_shrink_0(),
+            );
         let mut notices = div()
+            .w_full()
+            .min_w_0()
+            .whitespace_normal()
             .flex()
             .flex_wrap()
             .gap(px(8.))
             .px(px(12.))
             .bg(palette.surface);
-        if self.pending_open.is_some() {
-            notices = notices
-                .child(button(
-                    cx,
-                    "保存して開く",
-                    true,
-                    |this, _, window, cx| this.resolve_pending_open(true, window, cx),
-                ))
-                .child(button(
-                    cx,
-                    "破棄して開く",
-                    true,
-                    |this, _, window, cx| this.resolve_pending_open(false, window, cx),
-                ))
-                .child(button(cx, "キャンセル", true, |this, _, _, cx| {
-                    this.pending_open = None;
-                    this.status = "ファイルを開く操作を取り消しました。".into();
-                    cx.notify();
-                }));
+        if let Some(failure) = &self.save_failure {
+            notices = notices.child(
+                div()
+                    .min_w_0()
+                    .w_full()
+                    .text_color(palette.warning)
+                    .child(failure.message.clone()),
+            );
         }
-        if self.pending_close {
+        if !matches!(self.document.external_state(), ExternalState::Current) {
+            let reason = match self.document.external_state() {
+                ExternalState::Conflict => "外部変更と未保存の編集が競合しています。",
+                ExternalState::Invalid(_) => {
+                    "外部ファイルが無効です。最後の正常な内容を表示しています。"
+                }
+                ExternalState::Unavailable {
+                    kind: std::io::ErrorKind::NotFound,
+                    ..
+                } => "外部ファイルが削除されています。別名保存で編集を退避できます。",
+                ExternalState::Unavailable { .. } => {
+                    "外部ファイルを読み込めません。アクセス権などを確認してください。"
+                }
+                ExternalState::Current => unreachable!(),
+            };
             notices = notices
-                .child(button(
-                    cx,
-                    "保存して閉じる",
-                    true,
-                    |this, _, window, cx| this.save_and_close(window, cx),
-                ))
-                .child(button(cx, "破棄して閉じる", true, Self::discard_and_close))
-                .child(button(cx, "閉じるのをやめる", true, Self::cancel_close));
-        }
-        if self.external_edit_blocked() {
-            if self.pending_external_reload {
-                notices = notices
-                    .child(button(cx, "編集を破棄して再読み込み", true, |this, _, window, cx| {
-                        this.reload_external_change(window, cx)
-                    }))
-                    .child(button(cx, "読み込みをやめる", true, |this, _, _, cx| {
-                        this.pending_external_reload = false;
-                        this.status = "外部変更の読み込みを取り消しました。別名保存で編集を退避できます。".into();
-                        cx.notify();
-                    }));
-            } else {
-                notices = notices.child(button(
-                    cx,
-                    "外部変更を読み込む",
-                    true,
-                    |this, _, window, cx| this.reload_external_change(window, cx),
-                ));
-            }
+                .child(div().text_color(palette.warning).child(reason))
+                .child(
+                    button(
+                        cx,
+                        "再読み込み",
+                        self.document.path().is_some(),
+                        |this, _, window, cx| this.reload_external_change(window, cx),
+                    )
+                    .w_auto()
+                    .flex_shrink_0(),
+                )
+                .child(self.action_button(SaveAs, false, window, cx));
         }
 
         let side = self.render_slide_list(model.clone(), window, cx);
@@ -2622,6 +2715,11 @@ impl PsychoApp {
                 .child("外部ファイルを読み込めません")
                 .child(error.clone())
                 .into_any_element()
+        } else if model.is_none() {
+            div()
+                .p_3()
+                .child("文書の診断を確認してください。編集はできません。読み取り専用です。")
+                .into_any_element()
         } else {
             self.render_inspector(model.as_deref(), window, cx)
         };
@@ -2652,60 +2750,19 @@ impl PsychoApp {
         if let Some(reason) = self.availability(window, cx).present_reason {
             footer = footer.child(div().text_color(palette.warning).child(reason));
         }
-        for issue in &self.asset_diagnostics {
-            let issue = issue.clone();
-            footer = footer.child(button(
-                cx,
-                format!(
-                    "画像 · Slide {} · {} · {}",
-                    issue.slide_index + 1,
-                    issue.path,
-                    issue.problem
-                ),
-                true,
-                move |this, _, window, cx| this.navigate_to_asset(issue.clone(), window, cx),
-            ));
-        }
-        for issue in self.layout_diagnostics.clone() {
-            let label = format!(
-                "Layout · Slide {} · Element {} · {}",
-                issue.slide_index + 1,
-                issue.element_index + 1,
-                issue.message
-            );
-            footer = footer.child(button(cx, label, true, move |this, _, window, cx| {
-                if this.external_edit_blocked() {
-                    return;
-                }
-                let Some(kind) = this
-                    .document
-                    .model()
-                    .and_then(|model| model.slides.get(issue.slide_index))
-                    .and_then(|slide| slide.elements.get(issue.element_index))
-                    .map(element_kind)
-                else {
-                    return;
-                };
-                this.current_slide = issue.slide_index;
-                if kind == ElementKind::Columns {
-                    this.select_columns(issue.slide_index, issue.element_index, window, cx);
-                } else {
-                    let field = if kind == ElementKind::Image {
-                        ElementField::ImagePath
-                    } else {
-                        ElementField::Text
-                    };
-                    this.select_element(
-                        issue.slide_index,
-                        issue.element_index,
-                        field,
-                        false,
-                        window,
-                        cx,
-                    );
-                }
-            }));
-        }
+        let diagnostics = self.document.diagnostics().len()
+            + self.asset_diagnostics.len()
+            + self.layout_diagnostics.len()
+            + match self.document.external_state() {
+                ExternalState::Invalid(items) => items.len(),
+                _ => 0,
+            };
+        footer = footer.child(button(
+            cx,
+            format!("診断 {diagnostics}件"),
+            true,
+            |this, _, window, cx| this.show_popup(Popup::Diagnostics, window, cx),
+        ));
         if self.external_edit_blocked() {
             footer = footer.child(
                 div()
@@ -2818,6 +2875,8 @@ impl PsychoApp {
                 .aria_label(match popup {
                     Popup::Insert(_) => "挿入",
                     Popup::View => "表示",
+                    Popup::Diagnostics => "診断",
+                    Popup::Present => "発表",
                     Popup::Slide(_) => "スライド",
                 })
                 .absolute()
@@ -2846,6 +2905,93 @@ impl PsychoApp {
                         .child(self.action_button(DeleteSlide, false, window, cx))
                         .child(self.action_button(MoveSlideEarlier, false, window, cx))
                         .child(self.action_button(MoveSlideLater, false, window, cx));
+                }
+                Popup::Present => {
+                    panel = panel
+                        .child(self.action_button(PresentCurrent, false, window, cx))
+                        .child(self.action_button(PresentFirst, false, window, cx));
+                }
+                Popup::Diagnostics => {
+                    panel = panel
+                        .w(px(540.))
+                        .max_h(px(
+                            (f32::from(window.viewport_size().height) - top - 16.).max(80.)
+                        ))
+                        .overflow_y_scroll();
+                    panel = panel.child(diagnostics_view(
+                        self.document.diagnostics(),
+                        self.source_selection.as_ref(),
+                        cx,
+                    ));
+                    if let ExternalState::Invalid(items) = self.document.external_state() {
+                        panel = panel.child(diagnostics_view(
+                            items,
+                            self.source_selection.as_ref(),
+                            cx,
+                        ));
+                    }
+                    for issue in &self.asset_diagnostics {
+                        let issue = issue.clone();
+                        panel = panel.child(button(
+                            cx,
+                            format!(
+                                "画像 · Slide {} · {} · {}",
+                                issue.slide_index + 1,
+                                issue.path,
+                                issue.problem
+                            ),
+                            true,
+                            move |this, _, window, cx| {
+                                this.navigate_to_asset(issue.clone(), window, cx)
+                            },
+                        ));
+                    }
+                    for issue in self.layout_diagnostics.clone() {
+                        let label = format!(
+                            "Layout · Slide {} · Element {} · {}",
+                            issue.slide_index + 1,
+                            issue.element_index + 1,
+                            issue.message
+                        );
+                        panel = panel.child(button(cx, label, true, move |this, _, window, cx| {
+                            if this.external_edit_blocked() {
+                                return;
+                            }
+                            let Some(kind) = this
+                                .document
+                                .model()
+                                .and_then(|model| model.slides.get(issue.slide_index))
+                                .and_then(|slide| slide.elements.get(issue.element_index))
+                                .map(element_kind)
+                            else {
+                                return;
+                            };
+                            this.view.popup = None;
+                            this.current_slide = issue.slide_index;
+                            if kind == ElementKind::Columns {
+                                this.select_columns(
+                                    issue.slide_index,
+                                    issue.element_index,
+                                    window,
+                                    cx,
+                                );
+                            } else {
+                                let field = if kind == ElementKind::Image {
+                                    ElementField::ImagePath
+                                } else {
+                                    ElementField::Text
+                                };
+                                this.select_element(
+                                    issue.slide_index,
+                                    issue.element_index,
+                                    field,
+                                    false,
+                                    window,
+                                    cx,
+                                );
+                            }
+                        }));
+                    }
                 }
                 Popup::View => {
                     panel = panel
@@ -2946,6 +3092,12 @@ impl PsychoApp {
                 this.execute_action(action, window, cx)
             }))
             .on_action(cx.listener(|this, action: &PresentCurrent, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &CloseFile, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &ShowDiagnostics, window, cx| {
                 this.execute_action(action, window, cx)
             }))
             .on_action(cx.listener(|this, action: &PresentFirst, window, cx| {
@@ -5005,6 +5157,7 @@ impl Render for PsychoApp {
             Menu::new("psycho").items([MenuItem::action("psycho を隠す", HideApp)]),
             Menu::new("ファイル").items([
                 action_menu(OpenFile, available),
+                action_menu(CloseFile, available),
                 action_menu(SaveFile, available),
                 action_menu(SaveAs, available),
             ]),
@@ -5048,6 +5201,7 @@ impl Render for PsychoApp {
                 action_menu(WidenInspector, available),
                 action_menu(FitCanvas, available),
                 action_menu(ActualSize, available),
+                action_menu(ShowDiagnostics, available),
             ]),
             Menu::new("プレゼンテーション").items([
                 MenuItem::action("現在からプレゼンテーション", PresentCurrent)
@@ -6197,7 +6351,7 @@ fn diagnostics_view(
         .bg(palette.surface)
         .text_color(palette.text);
     if diagnostics.is_empty() {
-        list = list.child("Presentation を読み込めませんでした。");
+        list = list.child("構文・スキーマの診断はありません。");
     }
     for diagnostic in diagnostics {
         let kind = match diagnostic.kind {
@@ -6214,7 +6368,7 @@ fn diagnostics_view(
                     .slide_index
                     .map(|index| format!("Slide {}", index + 1))
             });
-        let mut row = div()
+        let row = div()
             .flex()
             .flex_col()
             .gap_1()
@@ -6241,12 +6395,30 @@ fn diagnostics_view(
                     .child(diagnostic.source_line.clone()),
             );
         let target = diagnostic.clone();
-        row = row.cursor_pointer().on_mouse_up(
-            MouseButton::Left,
-            cx.listener(move |this, _, window, cx| {
-                this.navigate_to_diagnostic(target.clone(), window, cx)
-            }),
+        let accessible_target = diagnostic.clone();
+        let weak = cx.entity().downgrade();
+        let label = format!(
+            "{kind} · {file_name} · {}行 {}列 · {}",
+            diagnostic.line, diagnostic.column, diagnostic.message
         );
+        let row = div()
+            .id(label.clone())
+            .focusable()
+            .tab_stop(true)
+            .role(gpui::Role::Button)
+            .aria_label(label)
+            .focus(|style| style.border_2().border_color(palette.focus))
+            .cursor_pointer()
+            .child(row)
+            .on_click(cx.listener(move |this, _, window, cx| {
+                this.navigate_to_diagnostic(target.clone(), window, cx)
+            }))
+            .on_a11y_action(gpui::AccessibleAction::Click, move |_, window, cx| {
+                weak.update(cx, |this, cx| {
+                    this.navigate_to_diagnostic(accessible_target.clone(), window, cx)
+                })
+                .ok();
+            });
         list = list.child(row);
     }
     if let Some(diagnostic) = selected_source {
@@ -6300,7 +6472,7 @@ fn button(
     label: impl Into<gpui::SharedString>,
     enabled: bool,
     handler: impl Fn(&mut PsychoApp, &MouseUpEvent, &mut Window, &mut Context<PsychoApp>) + 'static,
-) -> impl IntoElement {
+) -> gpui::Stateful<gpui::Div> {
     styled_button(cx, label, enabled, ButtonChrome::Panel, handler)
 }
 
@@ -6519,138 +6691,135 @@ impl Render for EditorTooltip {
 }
 
 fn main() {
-    application().with_assets(editor_view::IconAssets).run(|cx: &mut App| {
-        cx.on_action(|_: &HideApp, cx| cx.hide());
-        cx.bind_keys([
-            KeyBinding::new("cmd-h", HideApp, None),
-            KeyBinding::new("cmd-o", OpenFile, Some("Editor")),
-            KeyBinding::new("tab", FocusNext, Some("Editor")),
-            KeyBinding::new("shift-tab", FocusPrevious, Some("Editor")),
-            KeyBinding::new("escape", ClosePopup, Some("Editor")),
-            KeyBinding::new("cmd-alt-1", ToggleNavigator, Some("Editor")),
-            KeyBinding::new("cmd-alt-2", ToggleInspector, Some("Editor")),
-            KeyBinding::new("cmd-0", FitCanvas, Some("Editor")),
-            KeyBinding::new("cmd-1", ActualSize, Some("Editor")),
-            KeyBinding::new("cmd-alt-p", PresentCurrent, Some("Editor")),
-            KeyBinding::new("cmd-s", SaveFile, Some("Editor")),
-            KeyBinding::new("cmd-shift-s", SaveAs, Some("Editor")),
-            KeyBinding::new("cmd-z", UndoEdit, Some("Editor")),
-            KeyBinding::new("cmd-shift-z", RedoEdit, Some("Editor")),
-            KeyBinding::new("delete", DeleteSelection, Some("Editor")),
-            KeyBinding::new("backspace", DeleteSlide, Some("SlideNavigator")),
-            KeyBinding::new("delete", DeleteSlide, Some("SlideNavigator")),
-            KeyBinding::new("cmd-up", MoveSlideEarlier, Some("SlideNavigator")),
-            KeyBinding::new("cmd-down", MoveSlideLater, Some("SlideNavigator")),
-            KeyBinding::new("cmd-shift-n", AddSlide, Some("SlideNavigator")),
-            KeyBinding::new("up", navigator::SelectPreviousSlide, Some("SlideNavigator")),
-            KeyBinding::new("down", navigator::SelectNextSlide, Some("SlideNavigator")),
-            KeyBinding::new("enter", navigator::FocusSlideCanvas, Some("SlideNavigator")),
-            KeyBinding::new("right", NextSlide, Some("Presentation")),
-            KeyBinding::new("down", NextSlide, Some("Presentation")),
-            KeyBinding::new("space", NextSlide, Some("Presentation")),
-            KeyBinding::new("pagedown", NextSlide, Some("Presentation")),
-            KeyBinding::new("left", PreviousSlide, Some("Presentation")),
-            KeyBinding::new("up", PreviousSlide, Some("Presentation")),
-            KeyBinding::new("pageup", PreviousSlide, Some("Presentation")),
-            KeyBinding::new("escape", ExitPresentation, Some("Presentation")),
-            KeyBinding::new("backspace", input::Backspace, Some("TextInput")),
-            KeyBinding::new("delete", input::Delete, Some("TextInput")),
-            KeyBinding::new("left", input::Left, Some("TextInput")),
-            KeyBinding::new("right", input::Right, Some("TextInput")),
-            KeyBinding::new("up", input::Up, Some("TextInput")),
-            KeyBinding::new("down", input::Down, Some("TextInput")),
-            KeyBinding::new("cmd-a", input::SelectAll, Some("TextInput")),
-            KeyBinding::new("cmd-c", input::Copy, Some("TextInput")),
-            KeyBinding::new("cmd-x", input::Cut, Some("TextInput")),
-            KeyBinding::new("cmd-v", input::Paste, Some("TextInput")),
-            KeyBinding::new("tab", input::Tab, Some("TextInput")),
-            KeyBinding::new("cmd-z", input::Undo, Some("TextInput")),
-            KeyBinding::new("cmd-shift-z", input::Redo, Some("TextInput")),
-            KeyBinding::new("enter", input::Enter, Some("TextInput")),
-            KeyBinding::new("escape", input::Escape, Some("TextInput")),
-        ]);
-        let document = match std::env::args_os().nth(1) {
-            Some(path) => PresentationDocument::open(path).expect("open requested presentation"),
-            None => {
-                PresentationDocument::from_source_with_asset_base(
+    application()
+        .with_assets(editor_view::IconAssets)
+        .run(|cx: &mut App| {
+            cx.on_action(|_: &HideApp, cx| cx.hide());
+            cx.bind_keys([
+                KeyBinding::new("cmd-h", HideApp, None),
+                KeyBinding::new("cmd-o", OpenFile, Some("Editor")),
+                KeyBinding::new("cmd-w", CloseFile, Some("Editor")),
+                KeyBinding::new("tab", FocusNext, Some("Editor")),
+                KeyBinding::new("shift-tab", FocusPrevious, Some("Editor")),
+                KeyBinding::new("escape", ClosePopup, Some("Editor")),
+                KeyBinding::new("cmd-alt-1", ToggleNavigator, Some("Editor")),
+                KeyBinding::new("cmd-alt-2", ToggleInspector, Some("Editor")),
+                KeyBinding::new("cmd-0", FitCanvas, Some("Editor")),
+                KeyBinding::new("cmd-1", ActualSize, Some("Editor")),
+                KeyBinding::new("cmd-alt-p", PresentCurrent, Some("Editor")),
+                KeyBinding::new("cmd-s", SaveFile, Some("Editor")),
+                KeyBinding::new("cmd-shift-s", SaveAs, Some("Editor")),
+                KeyBinding::new("cmd-z", UndoEdit, Some("Editor")),
+                KeyBinding::new("cmd-shift-z", RedoEdit, Some("Editor")),
+                KeyBinding::new("delete", DeleteSelection, Some("Editor")),
+                KeyBinding::new("backspace", DeleteSlide, Some("SlideNavigator")),
+                KeyBinding::new("delete", DeleteSlide, Some("SlideNavigator")),
+                KeyBinding::new("cmd-up", MoveSlideEarlier, Some("SlideNavigator")),
+                KeyBinding::new("cmd-down", MoveSlideLater, Some("SlideNavigator")),
+                KeyBinding::new("cmd-shift-n", AddSlide, Some("SlideNavigator")),
+                KeyBinding::new("up", navigator::SelectPreviousSlide, Some("SlideNavigator")),
+                KeyBinding::new("down", navigator::SelectNextSlide, Some("SlideNavigator")),
+                KeyBinding::new("enter", navigator::FocusSlideCanvas, Some("SlideNavigator")),
+                KeyBinding::new("right", NextSlide, Some("Presentation")),
+                KeyBinding::new("down", NextSlide, Some("Presentation")),
+                KeyBinding::new("space", NextSlide, Some("Presentation")),
+                KeyBinding::new("pagedown", NextSlide, Some("Presentation")),
+                KeyBinding::new("left", PreviousSlide, Some("Presentation")),
+                KeyBinding::new("up", PreviousSlide, Some("Presentation")),
+                KeyBinding::new("pageup", PreviousSlide, Some("Presentation")),
+                KeyBinding::new("escape", ExitPresentation, Some("Presentation")),
+                KeyBinding::new("backspace", input::Backspace, Some("TextInput")),
+                KeyBinding::new("delete", input::Delete, Some("TextInput")),
+                KeyBinding::new("left", input::Left, Some("TextInput")),
+                KeyBinding::new("right", input::Right, Some("TextInput")),
+                KeyBinding::new("up", input::Up, Some("TextInput")),
+                KeyBinding::new("down", input::Down, Some("TextInput")),
+                KeyBinding::new("cmd-a", input::SelectAll, Some("TextInput")),
+                KeyBinding::new("cmd-c", input::Copy, Some("TextInput")),
+                KeyBinding::new("cmd-x", input::Cut, Some("TextInput")),
+                KeyBinding::new("cmd-v", input::Paste, Some("TextInput")),
+                KeyBinding::new("tab", input::Tab, Some("TextInput")),
+                KeyBinding::new("cmd-z", input::Undo, Some("TextInput")),
+                KeyBinding::new("cmd-shift-z", input::Redo, Some("TextInput")),
+                KeyBinding::new("enter", input::Enter, Some("TextInput")),
+                KeyBinding::new("escape", input::Escape, Some("TextInput")),
+            ]);
+            let document = match std::env::args_os().nth(1) {
+                Some(path) => {
+                    PresentationDocument::open(path).expect("open requested presentation")
+                }
+                None => PresentationDocument::from_source_with_asset_base(
                     DEMO,
                     Path::new(env!("CARGO_MANIFEST_DIR")).join("examples"),
                 )
-                    .expect("load built-in example")
-            }
-        };
-        let title = document
-            .model()
-            .map_or_else(String::new, |model| model.title.clone());
-        let bounds = Bounds::centered(None, WINDOW_SIZE, cx);
-        let window = cx
-            .open_window(
-                WindowOptions {
-                    window_bounds: Some(WindowBounds::Windowed(bounds)),
-                    ..Default::default()
-                },
-                |window, cx| {
-                    editor_validation::configure_appearance(window);
-                    let editor = cx.new(|cx| TextInputState::new(cx, &title));
-                    let view = cx.new(|cx| PsychoApp::new(cx, document, editor, window));
-                    let weak_view = view.downgrade();
-                    let weak_watch = view.downgrade();
-                    window.on_window_should_close(cx, move |window, cx| {
-                        weak_view
-                            .update(cx, |this, cx| {
-                                if let Err(error) = this.commit_draft(window, cx) {
-                                    this.pending_close = true;
-                                    this.status = format!(
-                                        "編集内容を確定できないため、保存・破棄・キャンセルを選んでください: {error}"
-                                    );
-                                    window.focus(&this.root_focus, cx);
-                                    cx.notify();
-                                    return false;
-                                }
-                                if this.document.is_dirty() {
-                                    this.pending_close = true;
-                                    this.status = "未保存の編集があります。保存・破棄・キャンセルを選んでください。"
-                                        .into();
-                                    window.focus(&this.root_focus, cx);
-                                    cx.notify();
-                                    false
-                                } else {
-                                    true
+                .expect("load built-in example"),
+            };
+            let title = document
+                .model()
+                .map_or_else(String::new, |model| model.title.clone());
+            let bounds = Bounds::centered(None, WINDOW_SIZE, cx);
+            let window = cx
+                .open_window(
+                    WindowOptions {
+                        window_bounds: Some(WindowBounds::Windowed(bounds)),
+                        ..Default::default()
+                    },
+                    |window, cx| {
+                        editor_validation::configure_appearance(window);
+                        let editor = cx.new(|cx| TextInputState::new(cx, &title));
+                        let view = cx.new(|cx| PsychoApp::new(cx, document, editor, window));
+                        let weak_view = view.downgrade();
+                        let weak_watch = view.downgrade();
+                        window.on_window_should_close(cx, move |window, cx| {
+                            weak_view
+                                .update(cx, |this, cx| {
+                                    if !matches!(this.document_flow, DocumentFlow::Idle) {
+                                        return false;
+                                    }
+                                    if this.document.is_dirty() || this.has_uncommitted_draft(cx) {
+                                        this.request_document_action(
+                                            DocumentAction::Close,
+                                            window,
+                                            cx,
+                                        );
+                                        false
+                                    } else {
+                                        true
+                                    }
+                                })
+                                .unwrap_or(true)
+                        });
+                        window
+                            .spawn(cx, async move |cx| {
+                                loop {
+                                    cx.background_executor()
+                                        .timer(Duration::from_millis(750))
+                                        .await;
+                                    let alive = cx
+                                        .update(|window, cx| {
+                                            weak_watch
+                                                .update(cx, |this, cx| {
+                                                    this.poll_external_change(window, cx);
+                                                    true
+                                                })
+                                                .unwrap_or(false)
+                                        })
+                                        .unwrap_or(false);
+                                    if !alive {
+                                        break;
+                                    }
                                 }
                             })
-                            .unwrap_or(true)
-                    });
-                    window
-                        .spawn(cx, async move |cx| {
-                            loop {
-                                cx.background_executor()
-                                    .timer(Duration::from_millis(750))
-                                    .await;
-                                let alive = cx
-                                    .update(|window, cx| {
-                                        weak_watch
-                                            .update(cx, |this, cx| {
-                                                this.poll_external_change(window, cx);
-                                                true
-                                            })
-                                            .unwrap_or(false)
-                                    })
-                                    .unwrap_or(false);
-                                if !alive {
-                                    break;
-                                }
-                            }
-                        })
-                        .detach();
-                    view
-                },
-            )
-            .expect("open PSYCHO window");
-        window
-            .update(cx, |view, window, cx| {
-                window.focus(&view.root_focus, cx);
-                cx.activate(true);
-            })
-            .expect("activate PSYCHO window");
-    });
+                            .detach();
+                        view
+                    },
+                )
+                .expect("open PSYCHO window");
+            window
+                .update(cx, |view, window, cx| {
+                    window.focus(&view.root_focus, cx);
+                    cx.activate(true);
+                })
+                .expect("activate PSYCHO window");
+        });
 }

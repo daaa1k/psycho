@@ -26,6 +26,8 @@ pub enum Popup {
     Slide(gpui::Point<Pixels>),
     Insert(super::InsertMenuState),
     View,
+    Diagnostics,
+    Present,
 }
 
 pub struct EditorViewState {

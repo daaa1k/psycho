@@ -20,11 +20,12 @@ try:
     gui.edit('Original',48);gui.replace('Retained after failure')
     choose_destination();os.chmod(archive,0o500)
     native_button('Save')
+    native_button('キャンセル')
     state,rows=gui.snapshot('save-as-failed')
     text=''.join(row['text'] for row in rows)
     records.append(dict(name='failure',text=text,tree=state['snapshot']['treeText']))
     assert gui.fixture.read_bytes()==gui.original and not dest.exists()
-    assert '退避保存できません' in text,records[-1]
+    assert '別名保存できません' in text,records[-1]
     assert gui.state()['text']=='Retained after failure'
     gui.hotkey('CmdOrCtrl+Z');assert gui.state()['text']=='Original'
     gui.hotkey('CmdOrCtrl+Shift+Z');assert gui.state()['text']=='Retained after failure'

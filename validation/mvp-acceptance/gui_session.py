@@ -5,9 +5,10 @@ from pathlib import Path
 root = Path(__file__).resolve().parents[2]
 
 class Gui:
-    def __init__(self, out, source, name='presentation'):
+    def __init__(self, out, source, name='presentation', untitled=False):
         self.out=Path(out).resolve();self.out.mkdir(parents=True,exist_ok=True)
         assert self.out.is_relative_to((root/'target').resolve()), 'Scratch files must be under target/'
+        self.untitled=untitled
         self.fixture=self.out/f'{name}.kdl'
         assert not self.fixture.exists(), 'Use a fresh directory; existing files are never replaced'
         self.fixture.write_text(source)
@@ -22,7 +23,7 @@ class Gui:
         self.launch_number=getattr(self,'launch_number',0)+1
         self.product_log=self.out/f'product-{self.launch_number}.log'
         with self.product_log.open('w') as log:
-            self.app=subprocess.Popen([str(root/'target/debug/psycho'),str(self.fixture)],
+            self.app=subprocess.Popen([str(root/'target/debug/psycho')] + ([] if self.untitled else [str(self.fixture)]),
                 env=dict(os.environ,PSYCHO_INPUT_STATE=str(self.input),PSYCHO_GLYPH_TRACE=str(self.trace),RUST_BACKTRACE='1'),
                 stdout=subprocess.DEVNULL,stderr=log)
         deadline=time.monotonic()+15
@@ -110,6 +111,18 @@ class Gui:
             for key in ('x','y','width','height'):
                 row[key]/=scale
         return state,rows
+
+    def button(self, label):
+        state = self.act('get-app-state')
+        match = re.search(r'^\s*(\d+) button ' + re.escape(label) + r'$', state['snapshot']['treeText'], re.M)
+        assert match, (label, state['snapshot']['treeText'])
+        return self.act('click', '--element-index', match[1], '--no-screenshot')
+
+    def diagnostics(self):
+        state = self.act('get-app-state')
+        label = re.search(r'button (診断 \d+件)', state['snapshot']['treeText'])
+        assert label, state['snapshot']['treeText']
+        return self.button(label[1])
 
     def menu(self, category, title):
         helper = self.out / 'native-menu'

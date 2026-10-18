@@ -284,7 +284,7 @@ def check_external():
                 exit_presentation(gui)
             else:
                 gui.fixture.write_bytes(gui.original)
-                gui.press('外部変更を読み込む')
+                gui.button('再読み込み')
                 observe(gui, case + '-recovered', 'First slide')
         finally:
             gui.stop()
