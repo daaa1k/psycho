@@ -2611,7 +2611,24 @@ impl PsychoApp {
             .map_or("新しい Presentation", |model| model.title.as_str())
             .to_owned();
         let dirty = self.document.is_dirty() || self.has_uncommitted_draft(cx);
+        let document_name = self
+            .document
+            .path()
+            .and_then(Path::file_name)
+            .map(|name| name.to_string_lossy().into_owned())
+            .unwrap_or_else(|| title.clone());
+        let save_state = if dirty {
+            "未保存"
+        } else if self.document.path().is_none() {
+            "保存先未設定"
+        } else {
+            "保存済み"
+        };
+
         let mut header = div()
+            .id("document-header")
+            .role(gpui::Role::Group)
+            .aria_label(format!("{document_name} · {save_state}"))
             .flex()
             .items_center()
             .gap(px(12.))
@@ -2626,27 +2643,22 @@ impl PsychoApp {
                     .text_ellipsis()
                     .min_w_0()
                     .font_weight(gpui::FontWeight::BOLD)
-                    .child(
-                        self.document
-                            .path()
-                            .and_then(Path::file_name)
-                            .map(|name| name.to_string_lossy().into_owned())
-                            .unwrap_or_else(|| title.clone()),
-                    ),
+                    .child(document_name),
             )
-            .child(div().text_color(palette.secondary).child(if dirty {
-                "未保存"
-            } else if self.document.path().is_none() {
-                "保存先未設定"
-            } else {
-                "保存済み"
-            }));
+            .child(div().text_color(palette.secondary).child(save_state));
         if let Some(failure) = &self.save_failure {
             let label = match failure.intent {
                 SaveIntent::Save => "保存できませんでした",
                 SaveIntent::SaveAs => "別名保存できませんでした",
             };
-            header = header.child(div().text_color(palette.warning).child(label));
+            header = header.child(
+                div()
+                    .id("save-failure-status")
+                    .role(gpui::Role::Label)
+                    .aria_label(label)
+                    .text_color(palette.warning)
+                    .child(label),
+            );
         }
         if !matches!(self.document.external_state(), ExternalState::Current) {
             header = header.child(
@@ -2696,6 +2708,9 @@ impl PsychoApp {
                     .min_w_0()
                     .w_full()
                     .text_color(palette.warning)
+                    .id("save-failure-reason")
+                    .role(gpui::Role::Label)
+                    .aria_label(failure.message.clone())
                     .child(failure.message.clone()),
             );
         }
@@ -2715,7 +2730,14 @@ impl PsychoApp {
                 ExternalState::Current => unreachable!(),
             };
             notices = notices
-                .child(div().text_color(palette.warning).child(reason))
+                .child(
+                    div()
+                        .id("external-problem-reason")
+                        .role(gpui::Role::Label)
+                        .aria_label(reason)
+                        .text_color(palette.warning)
+                        .child(reason),
+                )
                 .child(
                     button(
                         cx,
@@ -2801,7 +2823,14 @@ impl PsychoApp {
             ))
             .child(self.status.clone());
         if let Some(reason) = self.availability(window, cx).present_reason {
-            footer = footer.child(div().text_color(palette.warning).child(reason));
+            footer = footer.child(
+                div()
+                    .id("presentation-unavailable-reason")
+                    .role(gpui::Role::Label)
+                    .aria_label(reason)
+                    .text_color(palette.warning)
+                    .child(reason),
+            );
         }
         let diagnostics = self.diagnostic_count();
         footer = footer.child(button(
