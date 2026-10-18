@@ -382,6 +382,16 @@ impl PsychoApp {
         let Some(Popup::Diagnostics(handles)) = &self.view.popup else {
             return false;
         };
+        let count = if self.external_edit_blocked() {
+            self.document.diagnostics().len()
+                + match self.document.external_state() {
+                    ExternalState::Invalid(items) => items.len(),
+                    _ => 0,
+                }
+        } else {
+            handles.len()
+        };
+        let handles = &handles[..count.min(handles.len())];
         if handles.is_empty() {
             return true;
         }
@@ -2361,6 +2371,14 @@ impl PsychoApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        if self.external_edit_blocked() {
+            return;
+        }
+        if let Err(error) = self.commit_draft(window, cx) {
+            self.status = error;
+            cx.notify();
+            return;
+        }
         self.view.popup = None;
         let target_exists = self.document.model().is_some_and(|model| {
             if let (Some(column), Some(nested)) = (issue.column_index, issue.nested_element_index) {
@@ -2994,12 +3012,14 @@ impl PsychoApp {
                             (f32::from(window.viewport_size().height) - top - 16.).max(80.)
                         ))
                         .overflow_y_scroll();
-                    panel = panel.child(diagnostics_view(
-                        self.document.diagnostics(),
-                        self.source_selection.as_ref(),
-                        &focus,
-                        cx,
-                    ));
+                    if !self.document.diagnostics().is_empty() || self.diagnostic_count() == 0 {
+                        panel = panel.child(diagnostics_view(
+                            self.document.diagnostics(),
+                            self.source_selection.as_ref(),
+                            &focus,
+                            cx,
+                        ));
+                    }
                     let mut focus_offset = self.document.diagnostics().len();
                     if let ExternalState::Invalid(items) = self.document.external_state() {
                         panel = panel.child(diagnostics_view(
@@ -3021,7 +3041,7 @@ impl PsychoApp {
                                     issue.path,
                                     issue.problem
                                 ),
-                                true,
+                                !self.external_edit_blocked(),
                                 move |this, _, window, cx| {
                                     this.navigate_to_asset(issue.clone(), window, cx)
                                 },
@@ -3038,44 +3058,53 @@ impl PsychoApp {
                             issue.message
                         );
                         panel = panel.child(
-                            button(cx, label, true, move |this, _, window, cx| {
-                                if this.external_edit_blocked() {
-                                    return;
-                                }
-                                let Some(kind) = this
-                                    .document
-                                    .model()
-                                    .and_then(|model| model.slides.get(issue.slide_index))
-                                    .and_then(|slide| slide.elements.get(issue.element_index))
-                                    .map(element_kind)
-                                else {
-                                    return;
-                                };
-                                this.view.popup = None;
-                                this.current_slide = issue.slide_index;
-                                if kind == ElementKind::Columns {
-                                    this.select_columns(
-                                        issue.slide_index,
-                                        issue.element_index,
-                                        window,
-                                        cx,
-                                    );
-                                } else {
-                                    let field = if kind == ElementKind::Image {
-                                        ElementField::ImagePath
-                                    } else {
-                                        ElementField::Text
+                            button(
+                                cx,
+                                label,
+                                !self.external_edit_blocked(),
+                                move |this, _, window, cx| {
+                                    if this.external_edit_blocked() {
+                                        return;
+                                    }
+                                    let Some(kind) = this
+                                        .document
+                                        .model()
+                                        .and_then(|model| model.slides.get(issue.slide_index))
+                                        .and_then(|slide| slide.elements.get(issue.element_index))
+                                        .map(element_kind)
+                                    else {
+                                        return;
                                     };
-                                    this.select_element(
-                                        issue.slide_index,
-                                        issue.element_index,
-                                        field,
-                                        false,
-                                        window,
-                                        cx,
-                                    );
-                                }
-                            })
+                                    if let Err(error) = this.commit_draft(window, cx) {
+                                        this.status = error;
+                                        cx.notify();
+                                        return;
+                                    }
+                                    this.view.popup = None;
+                                    if kind == ElementKind::Columns {
+                                        this.select_columns(
+                                            issue.slide_index,
+                                            issue.element_index,
+                                            window,
+                                            cx,
+                                        );
+                                    } else {
+                                        let field = if kind == ElementKind::Image {
+                                            ElementField::ImagePath
+                                        } else {
+                                            ElementField::Text
+                                        };
+                                        this.select_element(
+                                            issue.slide_index,
+                                            issue.element_index,
+                                            field,
+                                            false,
+                                            window,
+                                            cx,
+                                        );
+                                    }
+                                },
+                            )
                             .track_focus(&focus[focus_offset]),
                         );
                         focus_offset += 1;
@@ -6444,7 +6473,7 @@ fn diagnostics_view(
         .bg(palette.surface)
         .text_color(palette.text);
     if diagnostics.is_empty() {
-        list = list.child("構文・スキーマの診断はありません。");
+        list = list.child("診断はありません。");
     }
     for (index, diagnostic) in diagnostics.iter().enumerate() {
         let kind = match diagnostic.kind {

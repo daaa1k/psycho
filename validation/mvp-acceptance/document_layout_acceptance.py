@@ -26,18 +26,19 @@ try:
                 subprocess.run([str(helper), str(gui.app.pid), str(width), str(height)], check=True)
                 time.sleep(.4)
                 state, rows = gui.snapshot(f'banner-{width}')
-                assert state['snapshot']['window']['width'] == width
+                actual = state['snapshot']['window']
+                matched = actual['width'] == width and actual['height'] == height
                 tree = state['snapshot']['treeText']
                 assert all(label in tree for label in ('button 再読み込み', 'button 別名保存', 'button 発表メニュー', '外部ファイルが無効'))
                 gui.diagnostics()
                 state, rows = gui.snapshot(f'diagnostics-{width}')
                 assert 'container 診断' in state['snapshot']['treeText']
                 assert 'button Schema' in state['snapshot']['treeText']
-                records.append(dict(theme=theme, window=state['snapshot']['window'], scale=state['screenshot'].get('scale')))
+                records.append(dict(theme=theme, requested=dict(width=width, height=height), matched=matched, window=state['snapshot']['window'], scale=state['screenshot'].get('scale')))
                 gui.key('Escape')
         finally:
             gui.stop()
-    print('PASS document banner and diagnostics in light/dark at 1024x700, 1280x860 and 1440x960 editor sizes')
+    print('PASS document banner and diagnostics in both themes; actual and requested sizes recorded separately')
 finally:
     if previous is None:
         os.environ.pop('PSYCHO_ACCEPTANCE_APPEARANCE', None)
