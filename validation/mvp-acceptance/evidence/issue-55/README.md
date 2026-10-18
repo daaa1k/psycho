@@ -16,8 +16,6 @@
 
 `issue-55-implementation-test-final.log` は core 113 件の成功を示す。最終 GUI build、`psycho-verify doctor` と map-lint、変更した Python の構文確認も成功した。Apple Clang を `CARGO_TARGET_AARCH64_APPLE_DARWIN_LINKER`、`CC`、`CXX` に指定した。
 
-1024 幅の dark バナー画像では、中央 canvas の見出し左端が一部クリップしている。保存・復旧・診断・発表の操作は到達できる。縮小や scroll offset との関係と変更前からの有無は、この実行では調べていない。統合担当へ観測を引き継いだ。
-
 日本語 IME の未確定変換を含む最終検証と、独立した無効入力・履歴・非現在画像の再検証は統合担当が実行する。Save As の書き込み失敗専用 script は新しい retry modal に合わせて更新したが、この実装実行では再実行していない。新しい保存失敗の実証は通常保存の実権限エラーによるもの。既存 Issue #31・#46 を解決済みとは扱わない。
 
 再実行は `validation/mvp-acceptance/document_*_acceptance.py`、`external_diagnostic_acceptance.py`、`diagnostic_draft_retention_acceptance.py` に、新規の `target/` 配下の `--output` を指定する。`results.json` は各実行名と代表成果物の SHA-256 を持つ。

@@ -48,7 +48,7 @@
   "artifacts": [
     {
       "path": "README.md",
-      "sha256": "c878330ed74a8bcce82b6ab600146422d173a1b699727180057f15ec449e6f28"
+      "sha256": "e00db42d03c80a3ab8ae4c65d1936ef388c4a9acca53640ab2163a612f63e35d"
     },
     {
       "path": "draft-guard/invalid-draft-retained-at-layout-diagnostic.png",
