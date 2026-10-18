@@ -58,6 +58,8 @@ try:
     subprocess.run([str(toggle), str(gui.app.pid)], check=True)
     time.sleep(1)
     assert json.loads(subprocess.check_output([str(helper)], text=True))['voiceOverEnabled'] is True
+    gui.edit('VoiceOver retained draft', 48)
+    assert gui.state()['focused'], gui.state()
     gui.hotkey('CmdOrCtrl+W')
     gui.snapshot('voiceover-native-modal')
     modal = observe('native-modal')
@@ -78,7 +80,37 @@ try:
     assert gui.state()['text'] == 'missing.png', gui.state()
     assert gui.fixture.read_bytes() == gui.original
     gui.snapshot('voiceover-diagnostic-target')
-    print('PASS VoiceOver native modal cancel/focus and image diagnostic navigation', flush=True)
+    external = 'presentation { metadata { title "Recovered document" }; slide { heading "Recovered slide"; }; }\n'
+    gui.fixture.write_text(external)
+    time.sleep(1.2)
+    vo('tell vo cursor to move to first item')
+    recovery = move_to('再読み込み', button=True)
+    assert any(word in recovery['phrase'] for word in ('ボタン', 'button')), recovery
+    vo('tell vo cursor to perform action')
+    observe('recovery-cancel-modal')
+    gui.key('Escape')
+    assert gui.state()['text'] == 'missing.png', gui.state()
+    assert gui.fixture.read_text() == external
+    vo('tell vo cursor to move to first item')
+    move_to('再読み込み', button=True)
+    vo('tell vo cursor to perform action')
+    gui.key('Return')
+    assert gui.state()['text'] == 'Recovered document', gui.state()
+    gui.snapshot('voiceover-reloaded')
+    vo('tell vo cursor to move to first item')
+    present = move_to('プレゼンテーション', button=True)
+    assert any(word in present['phrase'] for word in ('ボタン', 'button')), present
+    vo('tell vo cursor to perform action')
+    time.sleep(1)
+    state, rows = gui.snapshot('voiceover-presenting')
+    assert state['snapshot']['window']['width'] > 1280, state['snapshot']['window']
+    assert 'Recovered slide' in ''.join(row['text'] for row in rows)
+    gui.key('Escape')
+    time.sleep(.8)
+    state, _ = gui.snapshot('voiceover-presentation-return')
+    assert state['snapshot']['window']['width'] == 1280
+    assert gui.fixture.read_text() == external
+    print('PASS VoiceOver modal/diagnostic/recovery/presentation speech and actions, keyboard cancel/reload and retained bytes', flush=True)
 
 finally:
     try:

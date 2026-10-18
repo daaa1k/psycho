@@ -1,6 +1,5 @@
 import argparse
 import json
-import re
 import time
 from pathlib import Path
 from gui_session import Gui
