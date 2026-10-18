@@ -80,7 +80,7 @@ editor_action!(CloseFile, "閉じる", view, |app, window, cx| {
     app.request_document_action(DocumentAction::Close, window, cx);
 });
 editor_action!(ShowDiagnostics, "診断一覧", view, |app, window, cx| {
-    app.show_popup(Popup::Diagnostics, window, cx);
+    app.show_popup(Popup::Diagnostics(Vec::new()), window, cx);
 });
 editor_action!(SaveFile, "保存", save, |app, window, cx| {
     app.save(window, cx);

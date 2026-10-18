@@ -344,16 +344,56 @@ impl PsychoApp {
 
     fn show_popup(&mut self, popup: Popup, window: &mut Window, cx: &mut Context<Self>) {
         self.popup_return_focus = window.focused(cx);
-        if !matches!(popup, Popup::Diagnostics | Popup::Present) {
+        if !matches!(popup, Popup::Diagnostics(_) | Popup::Present) {
             if let Err(error) = self.commit_draft(window, cx) {
                 self.status = error;
                 cx.notify();
                 return;
             }
         }
+        let popup = if matches!(popup, Popup::Diagnostics(_)) {
+            Popup::Diagnostics(
+                (0..self.diagnostic_count())
+                    .map(|_| cx.focus_handle().tab_stop(true))
+                    .collect(),
+            )
+        } else {
+            popup
+        };
         self.view.popup = Some(popup);
         window.focus(&self.root_focus, cx);
         cx.notify();
+    }
+    fn diagnostic_count(&self) -> usize {
+        self.document.diagnostics().len()
+            + self.asset_diagnostics.len()
+            + self.layout_diagnostics.len()
+            + match self.document.external_state() {
+                ExternalState::Invalid(items) => items.len(),
+                _ => 0,
+            }
+    }
+    fn cycle_diagnostic_focus(
+        &self,
+        backwards: bool,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> bool {
+        let Some(Popup::Diagnostics(handles)) = &self.view.popup else {
+            return false;
+        };
+        if handles.is_empty() {
+            return true;
+        }
+        let current = handles.iter().position(|focus| focus.is_focused(window));
+        let next = match current {
+            Some(current) if backwards => (current + handles.len() - 1) % handles.len(),
+            Some(current) => (current + 1) % handles.len(),
+            None if backwards => handles.len() - 1,
+            None => 0,
+        };
+        window.focus(&handles[next], cx);
+        true
     }
     fn restore_popup_focus(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         if let Some(focus) = self.popup_return_focus.take() {
@@ -465,7 +505,10 @@ impl PsychoApp {
         cx.on_blur(&input_focus, window, |this, window, cx| {
             this.ime_geometry.refresh(window, false);
             if matches!(this.document_flow, DocumentFlow::Idle)
-                && !matches!(this.view.popup, Some(Popup::Diagnostics | Popup::Present))
+                && !matches!(
+                    this.view.popup,
+                    Some(Popup::Diagnostics(_) | Popup::Present)
+                )
                 && this.presentation.is_none()
                 && !this.external_edit_blocked()
                 && (this.has_uncommitted_draft(cx)
@@ -2553,6 +2596,10 @@ impl PsychoApp {
     }
 
     fn render_editor(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let diagnostic_count = self.diagnostic_count();
+        if let Some(Popup::Diagnostics(handles)) = &mut self.view.popup {
+            handles.resize_with(diagnostic_count, || cx.focus_handle().tab_stop(true));
+        }
         self.editor
             .update(cx, |input, _| input.set_canvas_layout(None));
         let model = self.preview_model(cx).map(Arc::new);
@@ -2689,6 +2736,7 @@ impl PsychoApp {
             diagnostics_view(
                 self.document.diagnostics(),
                 self.source_selection.as_ref(),
+                &[],
                 cx,
             )
             .into_any_element()
@@ -2704,6 +2752,7 @@ impl PsychoApp {
                 .child(diagnostics_view(
                     diagnostics,
                     self.source_selection.as_ref(),
+                    &[],
                     cx,
                 ))
                 .into_any_element()
@@ -2754,18 +2803,12 @@ impl PsychoApp {
         if let Some(reason) = self.availability(window, cx).present_reason {
             footer = footer.child(div().text_color(palette.warning).child(reason));
         }
-        let diagnostics = self.document.diagnostics().len()
-            + self.asset_diagnostics.len()
-            + self.layout_diagnostics.len()
-            + match self.document.external_state() {
-                ExternalState::Invalid(items) => items.len(),
-                _ => 0,
-            };
+        let diagnostics = self.diagnostic_count();
         footer = footer.child(button(
             cx,
             format!("診断 {diagnostics}件"),
             true,
-            |this, _, window, cx| this.show_popup(Popup::Diagnostics, window, cx),
+            |this, _, window, cx| this.show_popup(Popup::Diagnostics(Vec::new()), window, cx),
         ));
         if !matches!(self.document.external_state(), ExternalState::Current) {
             footer = footer.child(
@@ -2879,7 +2922,7 @@ impl PsychoApp {
                 .aria_label(match popup {
                     Popup::Insert(_) => "挿入",
                     Popup::View => "表示",
-                    Popup::Diagnostics => "診断",
+                    Popup::Diagnostics(_) => "診断",
                     Popup::Present => "発表",
                     Popup::Slide(_) => "スライド",
                 })
@@ -2915,7 +2958,7 @@ impl PsychoApp {
                         .child(self.action_button(PresentCurrent, false, window, cx))
                         .child(self.action_button(PresentFirst, false, window, cx));
                 }
-                Popup::Diagnostics => {
+                Popup::Diagnostics(focus) => {
                     panel = panel
                         .w(px(540.))
                         .max_h(px(
@@ -2925,30 +2968,38 @@ impl PsychoApp {
                     panel = panel.child(diagnostics_view(
                         self.document.diagnostics(),
                         self.source_selection.as_ref(),
+                        &focus,
                         cx,
                     ));
+                    let mut focus_offset = self.document.diagnostics().len();
                     if let ExternalState::Invalid(items) = self.document.external_state() {
                         panel = panel.child(diagnostics_view(
                             items,
                             self.source_selection.as_ref(),
+                            &focus[focus_offset..],
                             cx,
                         ));
+                        focus_offset += items.len();
                     }
                     for issue in &self.asset_diagnostics {
                         let issue = issue.clone();
-                        panel = panel.child(button(
-                            cx,
-                            format!(
-                                "画像 · Slide {} · {} · {}",
-                                issue.slide_index + 1,
-                                issue.path,
-                                issue.problem
-                            ),
-                            true,
-                            move |this, _, window, cx| {
-                                this.navigate_to_asset(issue.clone(), window, cx)
-                            },
-                        ));
+                        panel = panel.child(
+                            button(
+                                cx,
+                                format!(
+                                    "画像 · Slide {} · {} · {}",
+                                    issue.slide_index + 1,
+                                    issue.path,
+                                    issue.problem
+                                ),
+                                true,
+                                move |this, _, window, cx| {
+                                    this.navigate_to_asset(issue.clone(), window, cx)
+                                },
+                            )
+                            .track_focus(&focus[focus_offset]),
+                        );
+                        focus_offset += 1;
                     }
                     for issue in self.layout_diagnostics.clone() {
                         let label = format!(
@@ -2957,44 +3008,48 @@ impl PsychoApp {
                             issue.element_index + 1,
                             issue.message
                         );
-                        panel = panel.child(button(cx, label, true, move |this, _, window, cx| {
-                            if this.external_edit_blocked() {
-                                return;
-                            }
-                            let Some(kind) = this
-                                .document
-                                .model()
-                                .and_then(|model| model.slides.get(issue.slide_index))
-                                .and_then(|slide| slide.elements.get(issue.element_index))
-                                .map(element_kind)
-                            else {
-                                return;
-                            };
-                            this.view.popup = None;
-                            this.current_slide = issue.slide_index;
-                            if kind == ElementKind::Columns {
-                                this.select_columns(
-                                    issue.slide_index,
-                                    issue.element_index,
-                                    window,
-                                    cx,
-                                );
-                            } else {
-                                let field = if kind == ElementKind::Image {
-                                    ElementField::ImagePath
-                                } else {
-                                    ElementField::Text
+                        panel = panel.child(
+                            button(cx, label, true, move |this, _, window, cx| {
+                                if this.external_edit_blocked() {
+                                    return;
+                                }
+                                let Some(kind) = this
+                                    .document
+                                    .model()
+                                    .and_then(|model| model.slides.get(issue.slide_index))
+                                    .and_then(|slide| slide.elements.get(issue.element_index))
+                                    .map(element_kind)
+                                else {
+                                    return;
                                 };
-                                this.select_element(
-                                    issue.slide_index,
-                                    issue.element_index,
-                                    field,
-                                    false,
-                                    window,
-                                    cx,
-                                );
-                            }
-                        }));
+                                this.view.popup = None;
+                                this.current_slide = issue.slide_index;
+                                if kind == ElementKind::Columns {
+                                    this.select_columns(
+                                        issue.slide_index,
+                                        issue.element_index,
+                                        window,
+                                        cx,
+                                    );
+                                } else {
+                                    let field = if kind == ElementKind::Image {
+                                        ElementField::ImagePath
+                                    } else {
+                                        ElementField::Text
+                                    };
+                                    this.select_element(
+                                        issue.slide_index,
+                                        issue.element_index,
+                                        field,
+                                        false,
+                                        window,
+                                        cx,
+                                    );
+                                }
+                            })
+                            .track_focus(&focus[focus_offset]),
+                        );
+                        focus_offset += 1;
                     }
                 }
                 Popup::View => {
@@ -3108,12 +3163,16 @@ impl PsychoApp {
                 this.execute_action(action, window, cx)
             }))
             .on_action(cx.listener(|this, _: &FocusNext, window, cx| {
-                if !this.cycle_insert_focus(false, window, cx) {
+                if !this.cycle_diagnostic_focus(false, window, cx)
+                    && !this.cycle_insert_focus(false, window, cx)
+                {
                     window.focus_next(cx);
                 }
             }))
             .on_action(cx.listener(|this, _: &FocusPrevious, window, cx| {
-                if !this.cycle_insert_focus(true, window, cx) {
+                if !this.cycle_diagnostic_focus(true, window, cx)
+                    && !this.cycle_insert_focus(true, window, cx)
+                {
                     window.focus_prev(cx);
                 }
             }))
@@ -6340,6 +6399,7 @@ fn measure_text(
 fn diagnostics_view(
     diagnostics: &[Diagnostic],
     selected_source: Option<&Diagnostic>,
+    focus: &[FocusHandle],
     cx: &mut Context<PsychoApp>,
 ) -> gpui::Div {
     let palette = *cx.global::<EditorPalette>();
@@ -6357,7 +6417,7 @@ fn diagnostics_view(
     if diagnostics.is_empty() {
         list = list.child("構文・スキーマの診断はありません。");
     }
-    for diagnostic in diagnostics {
+    for (index, diagnostic) in diagnostics.iter().enumerate() {
         let kind = match diagnostic.kind {
             DiagnosticKind::Syntax => "KDL 構文",
             DiagnosticKind::Schema => "Schema",
@@ -6409,6 +6469,7 @@ fn diagnostics_view(
             .id(label.clone())
             .focusable()
             .tab_stop(true)
+            .when_some(focus.get(index), |row, focus| row.track_focus(focus))
             .role(gpui::Role::Button)
             .aria_label(label)
             .focus(|style| style.border_2().border_color(palette.focus))

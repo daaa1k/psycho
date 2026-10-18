@@ -17,13 +17,7 @@ try:
     gui.fixture.write_text(invalid)
     time.sleep(1.2)
     gui.diagnostics()
-    for _ in range(25):
-        tree = gui.act('get-app-state')['snapshot']['treeText']
-        if re.search(r'The focused UI element is \d+ button KDL 構文', tree):
-            break
-        gui.key('Tab')
-    else:
-        raise AssertionError(tree)
+    gui.key('Tab')
     gui.key('Return')
     state, rows = gui.snapshot('keyboard-readonly-source')
     text = ''.join(row['text'] for row in rows)
