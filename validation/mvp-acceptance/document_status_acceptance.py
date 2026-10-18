@@ -57,6 +57,8 @@ try:
     record('save-failure-modal')
     gui.key('Escape')
     assert '保存できませんでした' in record('persistent-save-failure')['text']
+    assert gui.state()['focused'], gui.state()
+    assert gui.state()['text'] == 'Draft preserved', gui.state()
     click('表示')
     gui.key('Escape')
     assert '保存できませんでした' in record('failure-after-view')['text']

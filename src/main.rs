@@ -1283,7 +1283,7 @@ impl PsychoApp {
                 }
                 let _ = cx.update(|window, cx| {
                     view.update(cx, |this, cx| {
-                        let restore_focus = save.is_some() || action.is_none();
+                        let restore_focus = save.is_some();
                         if save.is_none() {
                             match action {
                                 Some(DocumentAction::Open(path)) => {
@@ -1300,7 +1300,7 @@ impl PsychoApp {
                                         Err(_) => this.show_external_problem(window, cx),
                                     }
                                 }
-                                None => {}
+                                None => window.focus(&this.root_focus, cx),
                             }
                         }
                         this.finish_document_flow(restore_focus, window, cx);
