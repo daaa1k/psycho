@@ -1,0 +1,8 @@
+{
+  "pid": 13215,
+  "revision": "59eee9ba196fea963c245d406f9f311d549e7f6f",
+  "macos": "26.5.2",
+  "binary_sha256": "7554f6d6e5a47b7706c65a5c31ec957e3f175544a1a9782ea1b4faac4b80f348",
+  "fixture": "/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-layout-3/light/presentation.kdl",
+  "untitled": false
+}

@@ -1,0 +1,246 @@
+{
+  "product_revision": "59eee9b",
+  "macos": "26.5.2",
+  "macos_build": "25F84",
+  "display": "Color LCD, one display, native 1920x1200",
+  "cases": [
+    {
+      "case": "status",
+      "run": "issue-55-document-status-6",
+      "result": "PASS"
+    },
+    {
+      "case": "open",
+      "run": "issue-55-open-continuation-2",
+      "result": "PASS"
+    },
+    {
+      "case": "source",
+      "run": "issue-55-external-diagnostic-2",
+      "result": "PASS"
+    },
+    {
+      "case": "voiceover",
+      "run": "issue-55-voiceover-3",
+      "result": "PASS"
+    },
+    {
+      "case": "presentation",
+      "run": "issue-55-present-1",
+      "result": "PASS"
+    },
+    {
+      "case": "draft-guard",
+      "run": "issue-55-diagnostic-draft-1",
+      "result": "PASS"
+    },
+    {
+      "case": "layout",
+      "run": "issue-55-layout-3",
+      "result": "PASS"
+    }
+  ],
+  "notes": [
+    "Earlier status/open/source runs were captured before launch metadata was added. Their source snapshots were committed in the implementation series beginning at 16382ab.",
+    "VoiceOver launch metadata records c659ed8. Later product changes expose static status labels and preserve invalid drafts before diagnostic navigation.",
+    "Native CGWindow bounds are authoritative for requested layout sizes. Provider snapshot bounds and screenshot scale are retained separately."
+  ],
+  "artifacts": [
+    {
+      "path": "README.md",
+      "sha256": "c878330ed74a8bcce82b6ab600146422d173a1b699727180057f15ec449e6f28"
+    },
+    {
+      "path": "draft-guard/invalid-draft-retained-at-layout-diagnostic.png",
+      "sha256": "05b8c0377765b13caab98ae4d906012b545a50ccda4a4bd159048f5bdb3047ee"
+    },
+    {
+      "path": "draft-guard/launch-1.json",
+      "sha256": "08c556ed8c216bc5250fe87d69d9f2f9da791dac1424aea7e2061327080ed2b4"
+    },
+    {
+      "path": "draft-guard/observations.json",
+      "sha256": "984d2358f28661ad771e87cd1dfd9cbc8eae268a4c2630f0131eafa4912812fb"
+    },
+    {
+      "path": "draft-guard/result.log",
+      "sha256": "9e54e2f1cf70de8159018e04662a06787a70a1f4aa5663cb85b7a6568669d08a"
+    },
+    {
+      "path": "issue-55-doctor-final.log",
+      "sha256": "193bd90b8fd06609ebf47cb130f0dd76c90601dc5b3dab856ccfccb216255946"
+    },
+    {
+      "path": "issue-55-implementation-build.log",
+      "sha256": "98c740c5f868fa28f44bee7ebdce16ce625610c55d3de2c8b5fd6615e5960f04"
+    },
+    {
+      "path": "issue-55-implementation-test-final.log",
+      "sha256": "b9f080354ac07af00be01bb5a41c100f2619c7527e06e3376eaefe894f988ff9"
+    },
+    {
+      "path": "layout/dark/banner-1024.json",
+      "sha256": "9a617c1290ea4fe261581eb941e59aa743fe7ce8236f370ef22d316f5afdbb74"
+    },
+    {
+      "path": "layout/dark/banner-1024.png",
+      "sha256": "1a3b8f90e30c27c635170fc2bd9835dbbc3305eb4cd814fce54b24ceb7ee64ea"
+    },
+    {
+      "path": "layout/dark/diagnostics-1440.json",
+      "sha256": "144731e24477f2791d2ac83b377e9c54bbf352ac8bab642a7edb44feb2e8a672"
+    },
+    {
+      "path": "layout/dark/diagnostics-1440.png",
+      "sha256": "cf06cf8d6422e6fb83d39ac5f15400f96eb4bceb7e994ea60a69a6de7256b8de"
+    },
+    {
+      "path": "layout/dark/launch-1.json",
+      "sha256": "05481a62e014de0a5f1f22167ff8c8c2296d86ce0344b5193421052276e26de1"
+    },
+    {
+      "path": "layout/dark/native-1440.json",
+      "sha256": "b12aefa202d8851c2036515e83b46bb618e21b3e79e07a85323a244f268f58e5"
+    },
+    {
+      "path": "layout/light/banner-1024.json",
+      "sha256": "08347b1394a5ddfe09e3a43908c6486851390b9e10045efa551f260d6ba6347b"
+    },
+    {
+      "path": "layout/light/banner-1024.png",
+      "sha256": "f5470d40dce1dcedbfa2bf839239ff723518f20add1583120a3266941cb58101"
+    },
+    {
+      "path": "layout/light/diagnostics-1440.json",
+      "sha256": "23766601cefa95ef10ee280d03fe4ff67b610e55c5fa8f97aa42772611a5c18d"
+    },
+    {
+      "path": "layout/light/diagnostics-1440.png",
+      "sha256": "0f4992ed3fd5a4b4e673951b39ca6f95ee58aa5bb0a5c721c83c6facd61e2465"
+    },
+    {
+      "path": "layout/light/launch-1.json",
+      "sha256": "3d0795090405e4a6f0222bfaedfeb099361b45f2c608da4195f5b3efdc49d22c"
+    },
+    {
+      "path": "layout/light/native-1440.json",
+      "sha256": "106636a7b440ec2e9e2f11a9e6db5a106c4914cc8747c9d9ba56341efa4ba987"
+    },
+    {
+      "path": "layout/observations.json",
+      "sha256": "b60a3769c35be9c42741134f721df527c7bf7d753f61dc90fd4d27c15adfeaed"
+    },
+    {
+      "path": "layout/result.log",
+      "sha256": "5711593771fbdbdc58fa97a6bb785c4480e8d008839cd229be27e7b380ce1d30"
+    },
+    {
+      "path": "open/observations.json",
+      "sha256": "2501deb0f1b5006dc82e5180d72cca44e8e6e73028c1cad567d61e29dd74006e"
+    },
+    {
+      "path": "open/result.log",
+      "sha256": "8f8b2ac4fcf397fe6fe65315164feaf5c2f001a256c5dec5cb4249cc63288fe2"
+    },
+    {
+      "path": "open/save-as-then-open.png",
+      "sha256": "f4bffa327c2c833c9e6e2d97aff5aef8bcbfcdf3f617909e1277d86ab20e15cc"
+    },
+    {
+      "path": "open/untitled-initial-status.png",
+      "sha256": "1f215f2cef6181576b2e212b5284d28c3f98ad7c3a386d098f620b749f075a9e"
+    },
+    {
+      "path": "presentation/launch-1.json",
+      "sha256": "2f6259963b193edcaa0d1b95581b73308f07bfca69b74b02b2a1de548fd07b3f"
+    },
+    {
+      "path": "presentation/observations.json",
+      "sha256": "807d6788c56fb935606297679248364c2f3a481320610fb67ddb6b41d24c3466"
+    },
+    {
+      "path": "presentation/present-current-unsaved.png",
+      "sha256": "b153860f32506c4d2ae63db4c75b061a3f57cf63e48d711c2ca2c5f0dd16640d"
+    },
+    {
+      "path": "presentation/present-first.png",
+      "sha256": "89e4d44cb8012100a240469b55c339b4559cd03570b5e9ae2abfafc9cfd8ad4c"
+    },
+    {
+      "path": "presentation/result.log",
+      "sha256": "ac365fd39cc38d8320c9c503dca5299e62e21be6c0a74b8d716c9d348a9d9e7f"
+    },
+    {
+      "path": "presentation/return-final-selection.png",
+      "sha256": "2c332aa9c12f4568af08a27b2561103dd68ba81070e4a65dd5031d8c9825c96a"
+    },
+    {
+      "path": "source/keyboard-readonly-source.png",
+      "sha256": "a1f654a1bd972dea6999b34b6bc1c9cdd104f774099dbfd60fd5d1ca2f4c6d97"
+    },
+    {
+      "path": "source/observations.json",
+      "sha256": "27a68b0885476198483f10ec08b9c2cd85207b71dbb6c849d10bbf7393ab929d"
+    },
+    {
+      "path": "source/result.log",
+      "sha256": "d6dd0ae44eb348d552491f32ced82357df018fd15bd99e6203e7225be6aeaee7"
+    },
+    {
+      "path": "source/retained-model-after-source.png",
+      "sha256": "01e36d5f5383d15e816f9a6085a6b5fd7573b6a514bd97733ec95a89bbfb25bb"
+    },
+    {
+      "path": "status/external-invalid.png",
+      "sha256": "995292aca1deb8350af7af5f1b881dc7e69e298ac43932f983e567024f246ab1"
+    },
+    {
+      "path": "status/native-close-confirmation.png",
+      "sha256": "737c6e624fd8a300f897fef3b207d7b8c54ed304f7a3131955f2fc2e5dcddcd9"
+    },
+    {
+      "path": "status/observations.json",
+      "sha256": "ae793ccef16083c49a682b0011f0d947434ba22cc870266988547798d93a5b7c"
+    },
+    {
+      "path": "status/persistent-save-failure.png",
+      "sha256": "d6d7f81d1e534b689674a02f9a2561e6a7ecaf2d3505b6466f67c247fe51e1d0"
+    },
+    {
+      "path": "status/result.log",
+      "sha256": "de7d9ace016212c4fac9217cc20db739d28b962bd3869e6642fb362af2ac795a"
+    },
+    {
+      "path": "status/retreat-preserves-draft-clears-history.png",
+      "sha256": "c0ae5fe3635d8b512ccd60f74a75170f3088a369d6d132f0d9a139f16bc7d0c5"
+    },
+    {
+      "path": "voiceover/gui/launch-1.json",
+      "sha256": "a1d47c26ed79435a6e98e394bbfc7cd855fdf5fb89795ea6e99bb278584e362b"
+    },
+    {
+      "path": "voiceover/gui/voiceover-native-modal.png",
+      "sha256": "594dfa40c47af26cadf9234bb348cc2e5d78555b4025b283605736d88f061be4"
+    },
+    {
+      "path": "voiceover/gui/voiceover-presenting.png",
+      "sha256": "eea76b7ffb56417739f64735587182da298c8c13279fd37f00f12fc9a4d6d93d"
+    },
+    {
+      "path": "voiceover/gui/voiceover-reloaded.png",
+      "sha256": "909444dee030492fb6efc8e63720d253bda0d92c149d6db891f94209098b8e27"
+    },
+    {
+      "path": "voiceover/observations.json",
+      "sha256": "c1006b697c16b548c6a4ed4839c1572de600d1b6d095c9e522ff483f85d1734a"
+    },
+    {
+      "path": "voiceover/restoration.json",
+      "sha256": "acada0903755594876c633683c8b313303c045e35d7dfe3bf206fa67a56734a5"
+    },
+    {
+      "path": "voiceover/result.log",
+      "sha256": "87bb768bd241d2fd317677f0e923cbc713543631363d5ff29539a9417ee35913"
+    }
+  ]
+}

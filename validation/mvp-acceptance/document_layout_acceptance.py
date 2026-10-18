@@ -12,6 +12,10 @@ out = parser.parse_args().output
 out.mkdir(parents=True, exist_ok=True)
 helper = out.resolve() / 'resize-window'
 subprocess.run(['xcrun', 'swiftc', str(Path(__file__).with_name('resize_window.swift')), '-o', str(helper)], check=True)
+move = out.resolve() / 'move-window'
+native = out.resolve() / 'native-windows'
+for source, destination in [('move_window.swift', move), ('native_windows.swift', native)]:
+    subprocess.run(['xcrun', 'swiftc', str(Path(__file__).with_name(source)), '-o', str(destination)], check=True)
 previous = os.environ.get('PSYCHO_ACCEPTANCE_APPEARANCE')
 records = []
 try:
@@ -23,11 +27,14 @@ try:
             gui.fixture.write_text('presentation { slide { heading } }\n')
             time.sleep(1.2)
             for width, height in ((1024, 732), (1280, 892), (1440, 992)):
+                subprocess.run([str(move), str(gui.app.pid), '20', '50'], check=True)
                 subprocess.run([str(helper), str(gui.app.pid), str(width), str(height)], check=True)
                 time.sleep(.4)
                 state, rows = gui.snapshot(f'banner-{width}')
-                actual = state['snapshot']['window']
-                matched = actual['width'] == width and actual['height'] == height
+                windows = json.loads(subprocess.check_output([str(native), str(gui.app.pid)], text=True))
+                (gui.out / f'native-{width}.json').write_text(json.dumps(windows, indent=2))
+                matched = any(window['kCGWindowBounds']['Width'] == width and window['kCGWindowBounds']['Height'] == height for window in windows)
+                assert matched, windows
                 tree = state['snapshot']['treeText']
                 assert all(label in tree for label in ('button 再読み込み', 'button 別名保存', 'button 発表メニュー', '外部ファイルが無効'))
                 gui.diagnostics()

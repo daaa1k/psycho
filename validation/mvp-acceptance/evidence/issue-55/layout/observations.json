@@ -1,0 +1,140 @@
+[
+  {
+    "theme": "light",
+    "requested": {
+      "width": 1024,
+      "height": 732
+    },
+    "matched": true,
+    "window": {
+      "width": 1024,
+      "title": "",
+      "isMinimized": false,
+      "y": 50,
+      "isOffscreen": false,
+      "x": 20,
+      "screenIndex": 0,
+      "platform": {
+        "layer": 0
+      },
+      "id": 9532,
+      "height": 732
+    },
+    "scale": 1
+  },
+  {
+    "theme": "light",
+    "requested": {
+      "width": 1280,
+      "height": 892
+    },
+    "matched": true,
+    "window": {
+      "width": 1280,
+      "title": "",
+      "isMinimized": false,
+      "y": 50,
+      "isOffscreen": false,
+      "x": 20,
+      "screenIndex": 0,
+      "platform": {
+        "layer": 0
+      },
+      "id": 9532,
+      "height": 892
+    },
+    "scale": 1
+  },
+  {
+    "theme": "light",
+    "requested": {
+      "width": 1440,
+      "height": 992
+    },
+    "matched": true,
+    "window": {
+      "width": 1440,
+      "title": "",
+      "isMinimized": false,
+      "y": 50,
+      "isOffscreen": false,
+      "x": 20,
+      "screenIndex": 0,
+      "platform": {
+        "layer": 0
+      },
+      "id": 9532,
+      "height": 992
+    },
+    "scale": 1
+  },
+  {
+    "theme": "dark",
+    "requested": {
+      "width": 1024,
+      "height": 732
+    },
+    "matched": true,
+    "window": {
+      "screenIndex": 0,
+      "title": "",
+      "width": 1024,
+      "id": 9548,
+      "platform": {
+        "layer": 0
+      },
+      "height": 732,
+      "x": 20,
+      "isOffscreen": false,
+      "y": 50,
+      "isMinimized": false
+    },
+    "scale": 1
+  },
+  {
+    "theme": "dark",
+    "requested": {
+      "width": 1280,
+      "height": 892
+    },
+    "matched": true,
+    "window": {
+      "screenIndex": 0,
+      "title": "",
+      "width": 1280,
+      "id": 9548,
+      "platform": {
+        "layer": 0
+      },
+      "height": 892,
+      "x": 20,
+      "isOffscreen": false,
+      "y": 50,
+      "isMinimized": false
+    },
+    "scale": 1
+  },
+  {
+    "theme": "dark",
+    "requested": {
+      "width": 1440,
+      "height": 992
+    },
+    "matched": true,
+    "window": {
+      "screenIndex": 0,
+      "title": "",
+      "width": 1440,
+      "id": 9548,
+      "platform": {
+        "layer": 0
+      },
+      "height": 992,
+      "x": 20,
+      "isOffscreen": false,
+      "y": 50,
+      "isMinimized": false
+    },
+    "scale": 1
+  }
+]

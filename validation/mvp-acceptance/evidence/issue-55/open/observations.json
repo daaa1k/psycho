@@ -1,0 +1,51 @@
+[
+  {
+    "name": "open-confirmation",
+    "tree": "App=psycho (pid 82088)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button (disabled) スライド追加\n\t4 button (disabled) 挿入\n\t5 button (disabled) 表示\n\t6 button (disabled) プレゼンテーション\n\t7 button (disabled) 発表メニュー\n\t8 list スライド一覧\n\t\t9 text (selected) スライド 1 Untitled draft retained, Secondary Actions: pick\n\t\t10 text スライド 2 キャッシュの境界を見直す, Secondary Actions: pick\n\t\t11 text スライド 3 依存と成果物を分ける, Secondary Actions: pick\n\t\t12 text スライド 4 計測方法, Secondary Actions: pick\n\t\t13 text スライド 5 ビルド時間を38%短縮, Secondary Actions: pick\n\t\t14 text スライド 6 待ち時間を減らし、変更を速く届ける, Secondary Actions: pick\n\t15 container スライドキャンバス\n\t16 button 診断 0件\n\t17 close button (disabled)\n\t18 zoom button\n\t19 minimize button\n\t20 text\n\t21 sheet alert\n\t\t22 text 未保存の編集があります。\n\t\t23 text 保存して続けるか、編集を破棄するか選んでください。\n\t\t24 button 保存\n\t\t25 button 破棄\n\t\t26 button キャンセル\n\nThe focused UI element is 21 sheet alert.",
+    "input": {
+      "text": "Untitled draft retained",
+      "selected": [
+        23,
+        23
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        523.97906,
+        228.3,
+        37.875
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    }
+  },
+  {
+    "name": "continued-open",
+    "tree": "App=psycho (pid 82088)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button スライド追加\n\t4 button 挿入\n\t5 button 表示\n\t6 button プレゼンテーション\n\t7 button 発表メニュー\n\t8 list スライド一覧\n\t\t9 text (selected) スライド 1 Next slide, Secondary Actions: pick\n\t10 container スライドキャンバス\n\t11 list スライドの構造一覧\n\t\t12 text Element 1 · 見出し, Secondary Actions: pick\n\t13 button Presentation title\n\t14 button (disabled) 入力を取り消す\n\t15 text field (settable) Presentation のタイトル, Value: Next document\n\t16 button 適用\n\t17 button 要素を追加…\n\t18 button 診断 0件\n\t19 close button\n\t20 full screen button, Secondary Actions: zoom the window\n\t21 minimize button\n\t22 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "Next document",
+      "selected": [
+        13,
+        13
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1124.125,
+        487.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "saved": "presentation {\n    metadata {\n        title \"ビルド時間を38%短縮した話\"\n    }\n    slide id=\"problem\" {\n        heading \"Untitled draft retained\"\n        text \"変更のたびに待ち時間が発生し、レビューの流れを止めていた。\"\n        bullets {\n            item \"平均 8 分 12 秒\"\n            item \"キャッシュが依存関係の変化で無効になる\"\n        }\n    }\n    slide id=\"approach\" {\n        heading \"キャッシュの境界を見直す\"\n        text \"依存クレートとワークスペースの成果物を分けて保存する。\"\n        code language=\"rust\" \"let key = hash(lockfile, toolchain, target);\"\n    }\n    slide id=\"changes\" {\n        heading \"依存と成果物を分ける\"\n        columns {\n            column width=45 {\n                heading \"依存関係\"\n                bullets {\n                    item \"Cargo.lock をキーにする\"\n                    item \"更新時だけ再構築する\"\n                }\n            }\n            column width=55 {\n                heading \"成果物\"\n                code language=\"yaml\" \"cache:\\n  key: ${{ hashFiles('Cargo.lock') }}\"\n            }\n        }\n    }\n    slide id=\"verify\" {\n        heading \"計測方法\"\n        bullets {\n            item \"main の直近20回を比較\"\n            item \"同じ runner と toolchain を使用\"\n            item \"中央値と p95 を記録\"\n        }\n        image \"../../../../../../../../../private/tmp/psycho-issue-55-implementation/assets/build-time.png\" {\n            caption \"キャッシュ導入前後の CI 実行時間\"\n        }\n    }\n    slide id=\"result\" {\n        heading \"ビルド時間を38%短縮\"\n        text \"中央値は 8:12 から 5:06 になり、p95 も安定した。\"\n        bullets {\n            item \"キャッシュ hit 率 92%\"\n            item \"失敗時は従来どおりクリーンビルド\"\n        }\n    }\n    slide id=\"summary\" {\n        heading \"待ち時間を減らし、変更を速く届ける\"\n        text \"キーを明示し、計測を続けながら段階的に適用する。\"\n        code language=\"rust\" \"assert!(cached_build < clean_build);\"\n    }\n}\n"
+  }
+]

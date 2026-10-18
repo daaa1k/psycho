@@ -1,0 +1,27 @@
+[
+  {
+    "tree": "App=psycho (pid 91395)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 button (disabled) 元に戻す\n\t2 button (disabled) やり直す\n\t3 button (disabled) スライド追加\n\t4 button (disabled) 挿入\n\t5 button 表示\n\t6 button (disabled) プレゼンテーション\n\t7 button 発表メニュー\n\t8 button 再読み込み\n\t9 button 別名保存\n\t10 list スライド一覧\n\t\t11 text (selected) スライド 1 Preserved preview, Secondary Actions: pick\n\t12 container スライドキャンバス\n\t13 button KDL 構文 · presentation.kdl · 3行 18列 · Expected quoted string\n\t14 button 診断 1件\n\t15 container 診断\n\t\t16 button KDL 構文 · presentation.kdl · 3行 18列 · Expected quoted string\n\t17 close button\n\t18 full screen button, Secondary Actions: zoom the window\n\t19 minimize button\n\t20 text\n\nThe focused UI element is 0 standard window.",
+    "text": "presentation.kdl未保存 外部ファイルに問題があります→四 スライド追加田 挿入山 表示外部ファイルが無効です。最後の工学込内とまニトスライド構文・スキーマの診断はありません。読み取り専用のソース行・presentation.kdl:3:18slide f heading\"badlq\"i ｝PI> 1 Preserved previewKDL 構文・presentation.kdl:3:18 ・ Slide 1Expected quoted stringslide f heading \"badlg\"： ｝読み取り専用のソース行・presentation.kdl:3:18slide f heading\"badlq\"： ｝スライド 1/1・63%・全体に合わせる外部ファイルが無効です。表示中の内容を保持し、編集・保存・発表を停止しました。外部で修正して読み込みしてください。文善や外部ファイルの問題を解決してください。診断 1件表示中の内容は現在の外部ファイルと一致していません。1 プレゼンテーション発表メニューKDL 構文・presentation.kdl:3:18・ Slide 1Expected quoted stringsLide f heading \"badlg\"i ｝読み取り専用のソース行・presentation.kdl:3:18slide f heading \"badlg\"i ｝",
+    "input": {
+      "text": "Preserved preview",
+      "selected": [
+        17,
+        17
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        474.8673,
+        228.3,
+        37.875
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation {\n metadata { title \"External invalid\" }\n slide { heading \"bad\\q\"; }\n}\n"
+  }
+]

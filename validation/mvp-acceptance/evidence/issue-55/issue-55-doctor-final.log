@@ -1,0 +1,2 @@
+{"ok": true, "command": "map-lint", "features": ["diagnostic-navigation", "edit-slide-content", "inspector-element", "open-presentation", "present-slideshow", "save-document"]}
+{"ok": true, "command": "doctor", "cargo": "cargo", "platform": "darwin"}

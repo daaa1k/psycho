@@ -1,0 +1,8 @@
+{
+  "pid": 97414,
+  "revision": "c659ed8de6cd5a91ae26d0cba1960b325d002fb5",
+  "macos": "26.5.2",
+  "binary_sha256": "dfd87cacdaa3e6c78a02fb3dd07a4b38fb193afbf4b75ed84954903b681ee880",
+  "fixture": "/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-voiceover-3/gui/presentation.kdl",
+  "untitled": false
+}

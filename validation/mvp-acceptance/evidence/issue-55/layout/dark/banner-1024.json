@@ -1,0 +1,50 @@
+{
+  "snapshot": {
+    "treeText": "App=psycho (pid 14353)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 保存済み\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button (disabled) スライド追加\n\t5 button (disabled) 挿入\n\t6 button 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button 発表メニュー\n\t9 text 外部ファイルが無効です。最後の正常な内容を表示しています。\n\t10 button 再読み込み\n\t11 button 別名保存\n\t12 list スライド一覧\n\t\t13 text (selected) スライド 1 Retained heading, Secondary Actions: pick\n\t14 container スライドキャンバス\n\t15 button Schema · presentation.kdl · 1行 1列 · metadata must be the first presentation child\n\t16 button Schema · presentation.kdl · 1行 1列 · presentation must contain exactly one metadata node\n\t17 text 文書や外部ファイルの問題を解決してください。\n\t18 button 診断 3件\n\t19 close button\n\t20 full screen button, Secondary Actions: zoom the window\n\t21 minimize button\n\t22 text\n\nThe focused UI element is 0 standard window.",
+    "elementCount": 23,
+    "coordinateSpace": "window",
+    "window": {
+      "width": 1024,
+      "title": "",
+      "isMinimized": false,
+      "y": 50,
+      "isOffscreen": false,
+      "x": 20,
+      "screenIndex": 0,
+      "platform": {
+        "layer": 0
+      },
+      "id": 9548,
+      "height": 732
+    },
+    "app": {
+      "name": "psycho",
+      "bundleId": null,
+      "pid": 14353
+    },
+    "truncation": {
+      "truncated": false,
+      "maxDepth": 64,
+      "maxDepthReached": false,
+      "maxNodes": 1200
+    },
+    "id": "A7FA816C-E258-4435-BF84-A6E438611F58",
+    "focusedElementId": 0
+  },
+  "screenshot": {
+    "height": 732,
+    "scale": 1,
+    "width": 1024,
+    "format": "png",
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/d556d13f-e754-4299-aac3-4fb4da882e8f-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-19T05:43:33.181Z"
+  },
+  "screenshotStatus": {
+    "metadata": {
+      "engine": "screenCaptureKit",
+      "windowId": 9548
+    },
+    "state": "captured"
+  }
+}
