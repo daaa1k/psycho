@@ -1,0 +1,6 @@
+{
+  "result": "FAIL",
+  "assertion": "Save/edit completion must preserve Redo for undone input units",
+  "command": "python3 validation/mvp-acceptance/input_redo_transfer_acceptance.py --output target/issue-55-repair-redo-red",
+  "note": "Assertion transcribed from the tool output; raw input, saved bytes, and screenshot retained alongside."
+}

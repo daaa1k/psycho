@@ -1,0 +1,50 @@
+{
+  "snapshot": {
+    "treeText": "App=psycho (pid 13308)\nWindow: \"\", App: psycho.\n\n0 dialog\n\t1 リスト リスト\n\t\t2 button nihongono\n\t\t3 button ｎｉｈｏｎｇｏｎｏ\n\t\t4 button ﾆﾎﾝｺﾞﾉ\n\t\t5 button ニホンゴノ\n\t\t6 button にほんごの\n\t\t7 button 日本語の返還\n\t\t8 button 日本語の変換\n\t\t9 button 日本語のへんかん\n\t\t10 button 日本後の変換\n\nNo UI element is currently focused.",
+    "elementCount": 11,
+    "coordinateSpace": "window",
+    "window": {
+      "width": 1280,
+      "title": "",
+      "isMinimized": false,
+      "y": 185,
+      "isOffscreen": false,
+      "x": 320,
+      "screenIndex": 0,
+      "platform": {
+        "layer": 0
+      },
+      "id": 10328,
+      "height": 892
+    },
+    "app": {
+      "name": "psycho",
+      "pid": 13308,
+      "bundleId": null
+    },
+    "truncation": {
+      "maxNodes": 1200,
+      "truncated": false,
+      "maxDepthReached": false,
+      "maxDepth": 64
+    },
+    "id": "32CB6DF1-CDE9-4495-A137-4F118035F7F0",
+    "focusedElementId": null
+  },
+  "screenshot": {
+    "scale": 1,
+    "format": "png",
+    "width": 1280,
+    "height": 892,
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/1c77d5fa-facb-49e2-a21a-7c16fd21b522-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-19T11:55:48.544Z"
+  },
+  "screenshotStatus": {
+    "metadata": {
+      "engine": "screenCaptureKit",
+      "windowId": 10328
+    },
+    "state": "captured"
+  }
+}

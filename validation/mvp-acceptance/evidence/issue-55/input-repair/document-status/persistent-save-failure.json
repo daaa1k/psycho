@@ -1,0 +1,50 @@
+{
+  "snapshot": {
+    "id": "405D1BF9-3C37-4D67-BB90-6AE2F1B5BE0A",
+    "elementCount": 27,
+    "app": {
+      "pid": 19090,
+      "bundleId": null,
+      "name": "psycho"
+    },
+    "treeText": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t\t2 text 保存できませんでした\n\t3 button (disabled) 元に戻す\n\t4 button (disabled) やり直す\n\t5 button スライド追加\n\t6 button 挿入\n\t7 button 表示\n\t8 button プレゼンテーション\n\t9 button 発表メニュー\n\t10 text I/O error: Permission denied (os error 13) at path \"/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-repair-document-status/source/.tmpjMl633\"\n\t11 list スライド一覧\n\t\t12 text (selected) スライド 1 Draft preserved, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t\t14 text field (settable) 見出し, Value: Draft preserved\n\t15 list スライドの構造一覧\n\t\t16 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t17 button Presentation title\n\t18 button (disabled) 入力を取り消す\n\t19 button 全文をInspectorで編集\n\t20 button Element を削除\n\t21 button 要素を追加…\n\t22 button 診断 0件\n\t23 close button\n\t24 full screen button, Secondary Actions: zoom the window\n\t25 minimize button\n\t26 text\n\nThe focused UI element is 0 standard window.",
+    "focusedElementId": 0,
+    "window": {
+      "screenIndex": 0,
+      "title": "",
+      "width": 1280,
+      "id": 10445,
+      "platform": {
+        "layer": 0
+      },
+      "height": 892,
+      "x": 320,
+      "isOffscreen": false,
+      "y": 185,
+      "isMinimized": false
+    },
+    "coordinateSpace": "window",
+    "truncation": {
+      "maxNodes": 1200,
+      "truncated": false,
+      "maxDepthReached": false,
+      "maxDepth": 64
+    }
+  },
+  "screenshot": {
+    "scale": 1,
+    "format": "png",
+    "width": 1280,
+    "height": 892,
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/393f3ebd-bb96-4d77-9988-2d47bc36e6b0-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-19T11:57:47.421Z"
+  },
+  "screenshotStatus": {
+    "state": "captured",
+    "metadata": {
+      "windowId": 10445,
+      "engine": "screenCaptureKit"
+    }
+  }
+}

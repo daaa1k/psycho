@@ -1,0 +1,50 @@
+{
+  "screenshotStatus": {
+    "state": "captured",
+    "metadata": {
+      "windowId": 10231,
+      "engine": "screenCaptureKit"
+    }
+  },
+  "screenshot": {
+    "scale": 1,
+    "format": "png",
+    "width": 1280,
+    "height": 892,
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/05e1070b-d867-422f-b482-4278ffa451d2-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-19T11:53:46.545Z"
+  },
+  "snapshot": {
+    "id": "30E266C0-B644-4B54-97C9-8809598C6981",
+    "elementCount": 11,
+    "app": {
+      "name": "psycho",
+      "bundleId": null,
+      "pid": 7376
+    },
+    "treeText": "App=psycho (pid 7376)\nWindow: \"\", App: psycho.\n\n0 dialog\n\t1 リスト リスト\n\t\t2 button nihongono\n\t\t3 button ｎｉｈｏｎｇｏｎｏ\n\t\t4 button ﾆﾎﾝｺﾞﾉ\n\t\t5 button ニホンゴノ\n\t\t6 button にほんごの\n\t\t7 button 日本語の変換\n\t\t8 button 日本語の返還\n\t\t9 button 日本語のへんかん\n\t\t10 button 日本後の変換\n\nNo UI element is currently focused.",
+    "focusedElementId": null,
+    "window": {
+      "screenIndex": 0,
+      "title": "",
+      "width": 1280,
+      "id": 10231,
+      "platform": {
+        "layer": 0
+      },
+      "height": 892,
+      "x": 320,
+      "isOffscreen": false,
+      "y": 185,
+      "isMinimized": false
+    },
+    "coordinateSpace": "window",
+    "truncation": {
+      "maxDepth": 64,
+      "truncated": false,
+      "maxNodes": 1200,
+      "maxDepthReached": false
+    }
+  }
+}

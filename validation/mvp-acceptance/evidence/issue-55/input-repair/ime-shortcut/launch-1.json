@@ -1,0 +1,8 @@
+{
+  "pid": 16663,
+  "revision": "4e800c04fbb13b4c35b8478280d096906aad3ce0",
+  "macos": "26.5.2",
+  "binary_sha256": "9c807dc7043dc8581593fa1b14c18ad0518e2893e0b884ff03e26f2e1d598ea8",
+  "fixture": "/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-repair-ime-shortcut/presentation.kdl",
+  "untitled": false
+}

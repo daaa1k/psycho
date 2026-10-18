@@ -19,3 +19,23 @@
 日本語 IME の未確定変換を含む最終検証と、独立した無効入力・履歴・非現在画像の再検証は統合担当が実行する。Save As の書き込み失敗専用 script は新しい retry modal に合わせて更新したが、この実装実行では再実行していない。新しい保存失敗の実証は通常保存の実権限エラーによるもの。既存 Issue #31・#46 を解決済みとは扱わない。
 
 再実行は `validation/mvp-acceptance/document_*_acceptance.py`、`external_diagnostic_acceptance.py`、`diagnostic_draft_retention_acceptance.py` に、新規の `target/` 配下の `--output` を指定する。`results.json` は各実行名と代表成果物の SHA-256 を持つ。
+
+## 保存後の履歴と日本語 IME の追加検証
+
+`4e800c0` は、保存成功後に入力欄へフォーカスを戻していた回帰を修正する。入力欄の履歴を文書へ移した後、入力欄の空の Redo が Cmd+Shift+Z を受け取っていた。成功時は文書へフォーカスを移す。失敗と取消では元のフォーカスを戻す。
+
+`input-repair/redo-red` は修正前の失敗を保持する。既存 `input_redo_transfer_acceptance.py` の `Save/edit completion must preserve Redo for undone input units` が失敗した。`input-repair/redo-green` は同じテストの成功を保持する。Redo と Undo の往復、および元の raw quote を含む全バイト列の復元を確認した。
+
+`ime_save_acceptance.py` は macOS 日本語入力を実際に使う。`--entry menu` では、未確定変換から「閉じる」を選び、Escape で取り消した後の入力とフォーカスを確認する。その後「保存」を選び、変換解除と保存バイト列の一致を確認する。`--entry confirmed-shortcut` では Enter で変換を確定してから Cmd+S で保存する。いずれも成功した。元の入力ソースと有効化状態も復元した。
+
+変換中の Cmd+S は未解決であり、[Issue #77](https://github.com/daaa1k/psycho/issues/77) で追跡する。`--entry shortcut` はこの不具合を失敗として検出する。旧版 `246ad139a81263200212b956748138b33636ecd2` の同等手順でも変換範囲が残り、ディスク内容は更新されなかった。#55 の新規回帰ではない。固定している GPUI の `gpui_macos/src/window.rs` の `handle_key_event` は、変換中のイベントを `inputContext.handleEvent` へ先に渡し、処理済みならアプリへ渡さない。この分岐は Cmd キーを除外していない。メニューからの保存は成功している。依存ライブラリと native hook は変更していない。
+
+次のコマンドの出力先は毎回新しいパスにする。
+
+```sh
+xcrun swift validation/mvp-acceptance/with_japanese_ime.swift /usr/bin/python3 validation/mvp-acceptance/ime_save_acceptance.py --entry menu --output target/ime-save-new-run
+```
+
+`input-repair` に入力状態、KDL、AX 状態、代表画像とログを保持した。旧版の `launch-1.json` の revision は helper 側の checkout を示すため、実行バイナリーの revision と SHA-256 は `ime-baseline/build-provenance.json` で訂正している。修正版を commit 前にビルドした実行についても `input-repair/build-provenance.json` に記録した。`all-feature-tests.log` は `cargo test --locked --all-features` の成功を示す。
+
+`input-repair/document-status` は実権限による保存失敗と取消を含む文書フローの再検証である。取消後に入力文字列とフォーカスが残ることを追加で照合した。
