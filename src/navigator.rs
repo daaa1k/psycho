@@ -586,6 +586,7 @@ impl PsychoApp {
                 list = list.child(diagnostics_view(
                     self.document.diagnostics(),
                     self.source_selection.as_ref(),
+                    &[],
                     cx,
                 ));
             } else {
