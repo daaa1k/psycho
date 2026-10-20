@@ -12,10 +12,10 @@ def select_slide(number):
     gui.select_slide(number)
 def history_check(before,name):
     saved=gui.save();assert saved!=before,(name,saved)
-    gui.snapshot(name)
+    state,_=gui.snapshot(name)
     gui.press('Undo');assert gui.save()==before,(name,'Undo')
     gui.press('Redo');assert gui.save()==saved,(name,'Redo')
-    records.append(dict(name=name,source=saved.decode()))
+    records.append(dict(step=name,window=state['snapshot']['window'],editor=gui.state(),kdl=saved.decode()))
     print('PASS',name,'Save / exact Undo / exact Redo',flush=True)
     return saved
 def field(prefix,font,new):
@@ -30,23 +30,36 @@ try:
     saved=history_check(saved,'sample-heading')
     field('変更のたびに',28,'変更のたびの待ち時間を減らし、レビューを進める。')
     saved=history_check(saved,'sample-body')
+    field('平均 8 分 12 秒',28,'平均 5 分 06 秒')
+    saved=history_check(saved,'sample-bullet-item')
     select_slide(2)
     field('let key',22,'let\tkey = hash(lockfile, toolchain, target);\nassert!(cache_hit);')
     saved=history_check(saved,'sample-code')
     select_slide(3)
-    x,y=gui.glyph_position('依存関係',48);gui.click(x,y)
-    gui.press('2列の内容へ戻る');gui.press('左列幅を数値入力');gui.replace('50')
+    gui.outline_select('Element 2 · 2列')
+    gui.press('左列幅を数値入力',scroll=True);gui.replace('50')
     gui.press('幅を適用',scroll=True,aliases=('福を適用',))
     saved=history_check(saved,'sample-column-width')
     assert b'column width=50' in saved and b'column width=45' not in saved and b'column width=55' not in saved
     select_slide(4)
-    gui.edit('キャッシュ導入前後',20);gui.press('画像パス');gui.replace('assets/updated.png');gui.press('適用')
+    gui.edit('キャッシュ導入前後',20);gui.press('画像パス');gui.replace('assets/updated.png');gui.press('適用',scroll=True)
     saved=history_check(saved,'sample-image-path')
-    gui.press('Caption');gui.replace('キャッシュ導入前後の CI 実行時間を比較');gui.key('Escape')
+    gui.press('Caption');gui.replace('キャッシュ導入前後の CI 実行時間を比較');gui.press('適用',scroll=True)
     saved=history_check(saved,'sample-caption')
     select_slide(1)
     gui.edit('変更のたびの',28);gui.key('Escape');gui.press('Element ↑')
     saved=history_check(saved,'sample-structure')
+    gui.press('Slide ↓')
+    saved=history_check(saved,'sample-slide-move-later')
+    assert saved.index(b'id="approach"') < saved.index(b'id="problem"')
+    gui.menu('表示','Overview')
+    state,_=gui.snapshot('sample-overview')
+    assert 'Overview' in state['snapshot']['treeText']
+    assert gui.save()==saved
+    gui.menu('表示','編集')
+    assert gui.save()==saved
+    gui.press('Slide ↑')
+    saved=history_check(saved,'sample-slide-move-earlier')
     expected=['CI のビルドを改善','キャッシュの境界を見直す','依存と成果物を分ける',
         '計測方法','ビルド時間を38%短縮','待ち時間を減らし、変更を速く届ける']
     gui.stop();gui.start()
@@ -57,6 +70,13 @@ try:
     gui.hotkey('CmdOrCtrl+Z');gui.press('保存')
     assert gui.fixture.read_bytes()==saved,'Reload must clear history and retain the saved edits'
     gui.snapshot('sample-reloaded-before-presentation')
+    select_slide(3)
+    gui.press('現在から発表')
+    state,rows=gui.snapshot('sample-presentation-current')
+    assert state['snapshot']['window']['width']!=1280
+    assert compact(expected[2]) in compact(''.join(row['text'] for row in rows))
+    assert gui.fixture.read_bytes()==saved
+    gui.key('Escape')
     gui.press('最初から発表')
     for i,heading in enumerate(expected):
         if i:gui.key('Right')
