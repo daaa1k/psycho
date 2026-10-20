@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/private/tmp/psycho-issue-55-input-repair/validation/mvp-acceptance/ime_save_acceptance.py", line 49, in <module>
+    assert gui.fixture.read_bytes() == expected, records[-1]
+AssertionError: {'name': 'save', 'entry': 'shortcut', 'input': {'text': '日本語の変換', 'selected': [0, 6], 'marked': [0, 6], 'cursor': [384.26706, 228.3, 37.875], 'undo': 0, 'redo': 0, 'composing': True, 'focused': True}, 'disk_hex': '70726573656e746174696f6e207b206d65746164617461207b207469746c652022494d452073617665223b207d3b20736c696465207b2068656164696e6720224f726967696e616c223b207d3b207d0a', 'expected_hex': '70726573656e746174696f6e207b206d65746164617461207b207469746c652022494d452073617665223b207d3b20736c696465207b2068656164696e672022e697a5e69cace8aa9ee381aee5a489e68f9b223b207d3b207d0a'}
+selected=com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese
+restored=com.apple.keylayout.ABC; enablement_restored=true

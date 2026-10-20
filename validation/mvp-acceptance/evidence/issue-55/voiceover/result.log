@@ -1,0 +1,49 @@
+true
+{"name": "native-modal", "cursor": "破棄 button", "phrase": "未保存の編集があります。 保存して続けるか、編集を破棄するか選んでください。"}
+{"name": "navigation", "cursor": "破棄 button", "phrase": "未保存の編集があります。 保存して続けるか、編集を破棄するか選んでください。"}
+{"name": "navigation", "cursor": "キャンセル button", "phrase": "キャンセル button"}
+{"name": "navigation", "cursor": "元に戻す button", "phrase": "メニューを閉じます 元に戻す 淡色表示 button"}
+{"name": "navigation", "cursor": "やり直す 淡色表示 button", "phrase": "やり直す 淡色表示 button"}
+{"name": "navigation", "cursor": "スライド追加 button", "phrase": "スライド追加 button"}
+{"name": "navigation", "cursor": "挿入 button", "phrase": "挿入 button"}
+{"name": "navigation", "cursor": "表示 button", "phrase": "表示 button"}
+{"name": "navigation", "cursor": "プレゼンテーション 淡色表示 button", "phrase": "プレゼンテーション 淡色表示 button"}
+{"name": "navigation", "cursor": "発表メニュー button", "phrase": "発表メニュー button"}
+{"name": "navigation", "cursor": "スライド一覧 list", "phrase": "スライド一覧 list 1項目が選択されています。 スライド 1 VoiceOver retained draft text （1 / 1）"}
+{"name": "navigation", "cursor": "スライドキャンバス group", "phrase": "スライドキャンバス group"}
+{"name": "navigation", "cursor": "スライドの構造一覧 list", "phrase": "スライドの構造一覧 list 1項目が選択されています。 Element 1 · 見出し text （1 / 2）"}
+{"name": "navigation", "cursor": "Presentation title button", "phrase": "Presentation title button"}
+{"name": "navigation", "cursor": "入力を取り消す 淡色表示 button", "phrase": "入力を取り消す 淡色表示 button"}
+{"name": "navigation", "cursor": "全文をInspectorで編集 button", "phrase": "全文をInspectorで編集 button"}
+{"name": "navigation", "cursor": "Element ↑ 淡色表示 button", "phrase": "Element ↑ 淡色表示 button"}
+{"name": "navigation", "cursor": "Element ↓ button", "phrase": "Element ↓ button"}
+{"name": "navigation", "cursor": "Element を削除 button", "phrase": "Element を削除 button"}
+{"name": "navigation", "cursor": "要素を追加… button", "phrase": "要素を追加… button"}
+{"name": "navigation", "cursor": "診断 1件 button", "phrase": "診断 1件 button"}
+{"name": "navigation", "cursor": "診断 group", "phrase": "診断 group"}
+{"name": "navigation", "cursor": "画像 · Slide 1 · missing.png · 画像ファイルがありません button", "phrase": "操作開始 診断 group 画像 · Slide 1 · missing.png · 画像ファイルがありません button"}
+{"name": "navigation", "cursor": "元に戻す 淡色表示 button", "phrase": "元に戻す 淡色表示 button"}
+{"name": "navigation", "cursor": "やり直す 淡色表示 button", "phrase": "やり直す 淡色表示 button"}
+{"name": "navigation", "cursor": "スライド追加 淡色表示 button", "phrase": "スライド追加 淡色表示 button"}
+{"name": "navigation", "cursor": "挿入 淡色表示 button", "phrase": "挿入 淡色表示 button"}
+{"name": "navigation", "cursor": "表示 button", "phrase": "表示 button"}
+{"name": "navigation", "cursor": "プレゼンテーション 淡色表示 button", "phrase": "プレゼンテーション 淡色表示 button"}
+{"name": "navigation", "cursor": "発表メニュー button", "phrase": "発表メニュー button"}
+{"name": "navigation", "cursor": "再読み込み button", "phrase": "再読み込み button"}
+{"name": "recovery-cancel-modal", "cursor": "キャンセル button", "phrase": ""}
+{"name": "navigation", "cursor": "元に戻す 淡色表示 button", "phrase": "元に戻す 淡色表示 button"}
+{"name": "navigation", "cursor": "やり直す 淡色表示 button", "phrase": "やり直す 淡色表示 button"}
+{"name": "navigation", "cursor": "スライド追加 淡色表示 button", "phrase": "スライド追加 淡色表示 button"}
+{"name": "navigation", "cursor": "挿入 淡色表示 button", "phrase": "挿入 淡色表示 button"}
+{"name": "navigation", "cursor": "表示 button", "phrase": "表示 button"}
+{"name": "navigation", "cursor": "プレゼンテーション 淡色表示 button", "phrase": "プレゼンテーション 淡色表示 button"}
+{"name": "navigation", "cursor": "発表メニュー button", "phrase": "発表メニュー button"}
+{"name": "navigation", "cursor": "再読み込み button", "phrase": "再読み込み button"}
+{"name": "navigation", "cursor": "元に戻す 淡色表示 button", "phrase": "元に戻す 淡色表示 button"}
+{"name": "navigation", "cursor": "やり直す 淡色表示 button", "phrase": "やり直す 淡色表示 button"}
+{"name": "navigation", "cursor": "スライド追加 button", "phrase": "スライド追加 button"}
+{"name": "navigation", "cursor": "挿入 button", "phrase": "挿入 button"}
+{"name": "navigation", "cursor": "表示 button", "phrase": "表示 button"}
+{"name": "navigation", "cursor": "プレゼンテーション button", "phrase": "プレゼンテーション button"}
+PASS VoiceOver modal/diagnostic/recovery/presentation speech and actions, keyboard cancel/reload and retained bytes
+false

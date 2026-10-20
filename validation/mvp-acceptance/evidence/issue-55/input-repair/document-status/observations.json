@@ -1,0 +1,366 @@
+[
+  {
+    "name": "dirty-draft",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 Draft preserved, Secondary Actions: pick\n\t11 container スライドキャンバス\n\t\t12 text field (settable) 見出し, Value: Draft preserved\n\t13 list スライドの構造一覧\n\t\t14 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t15 button Presentation title\n\t16 button 入力を取り消す\n\t17 button 全文をInspectorで編集\n\t18 button Element を削除\n\t19 button 要素を追加…\n\t20 button 診断 0件\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window.",
+    "text": "presentation.kdl 未保存←田スライド追加田 挿入II 表示日プレゼンテーション発表メニュースライドDoft postareedInspectorスライドの構造Element 1・見出しく> 1 Draft preservedDraft preservedPresentation title見出し入力を取り消すキャンバス上で集中全文をInspectorで編集Element を削除要素を追加....スライド 1/1・63%・全体に合わせる編集内容をKDLに反映しました。診断 0件",
+    "input": {
+      "text": "Draft preserved",
+      "selected": [
+        15,
+        15
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        435.0246,
+        228.3,
+        37.875
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "source": "presentation { metadata { title \"Document workflow\" }; slide { heading \"Original\"; }; }\n"
+  },
+  {
+    "name": "native-close-confirmation",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button (disabled) スライド追加\n\t5 button (disabled) 挿入\n\t6 button (disabled) 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button (disabled) 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 Draft preserved, Secondary Actions: pick\n\t11 container スライドキャンバス\n\t12 text 文書や外部ファイルの問題を解決してください。\n\t13 button 診断 0件\n\t14 close button (disabled)\n\t15 zoom button\n\t16 minimize button\n\t17 text\n\t18 sheet alert\n\t\t19 text 未保存の編集があります。\n\t\t20 text 保存して続けるか、編集を破棄するか選んでください。\n\t\t21 button 保存\n\t\t22 button 破棄\n\t\t23 button キャンセル\n\nThe focused UI element is 18 sheet alert.",
+    "text": "presentation.kdl 未保存田 スライド追加田 挿入日 表示スライド> 1 Draft preservedDraft preservedスライド 1/1・63%・全体に合わせる編集内容を KDLに反映しました。文書や外部ファイルの問題を解決してください。未保存の編集があります。保存して続けるか、編集を破棄するか選んでください。保存キャンセル診断 0件コプレゼンテーション発表メニューInspector外部ファイルの問題を解決するまで編集できません。保持中の入力Draft preserved",
+    "input": {
+      "text": "Draft preserved",
+      "selected": [
+        15,
+        15
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        435.0246,
+        228.3,
+        37.875
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "source": "presentation { metadata { title \"Document workflow\" }; slide { heading \"Original\"; }; }\n"
+  },
+  {
+    "name": "close-cancel-focus",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 Draft preserved, Secondary Actions: pick\n\t11 container スライドキャンバス\n\t\t12 text field (settable) 見出し, Value: Draft preserved\n\t13 list スライドの構造一覧\n\t\t14 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t15 button Presentation title\n\t16 button 入力を取り消す\n\t17 button 全文をInspectorで編集\n\t18 button Element を削除\n\t19 button 要素を追加…\n\t20 button 診断 0件\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window.",
+    "text": "presentation.kdl 未保存←田スライド追加田 挿入II 表示日プレゼンテーション発表メニュースライドDoft postareedInspectorスライドの構造Element 1・見出しく> 1 Draft preservedDraft preservedPresentation title見出し入力を取り消すキャンバス上で集中全文をInspectorで編集Element を削除要素を追加....スライド 1/1・63%・全体に合わせる編集内容をKDLに反映しました。診断 0件",
+    "input": {
+      "text": "Draft preserved",
+      "selected": [
+        15,
+        15
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        435.0246,
+        228.3,
+        37.875
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "source": "presentation { metadata { title \"Document workflow\" }; slide { heading \"Original\"; }; }\n"
+  },
+  {
+    "name": "save-failure-modal",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t\t2 text 保存できませんでした\n\t3 button (disabled) 元に戻す\n\t4 button (disabled) やり直す\n\t5 button (disabled) スライド追加\n\t6 button (disabled) 挿入\n\t7 button (disabled) 表示\n\t8 button (disabled) プレゼンテーション\n\t9 button (disabled) 発表メニュー\n\t10 text I/O error: Permission denied (os error 13) at path \"/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-repair-document-status/source/.tmpjMl633\"\n\t11 list スライド一覧\n\t\t12 text (selected) スライド 1 Draft preserved, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 text 文書や外部ファイルの問題を解決してください。\n\t15 button 診断 0件\n\t16 close button (disabled)\n\t17 zoom button\n\t18 minimize button\n\t19 text\n\t20 sheet alert\n\t\t21 image psycho critical alert\n\t\t22 text 保存できませんでした。\n\t\t23 text I/O error: Permission denied (os error 13) at path \"/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-repair-document-status/source/.tmpjMl633\"\n\t\t24 button キャンセル\n\t\t25 button 再試行\n\nThe focused UI element is 20 sheet alert.",
+    "text": "presentation.kdl 未保存 保存できませんでした介→田 スライド追加田 挿入日 表示1プレゼンテーション発表メニューI/O error: Permission denied （os error 13） at path \"/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-repair-document-status/source/.tmpjM|633\"スライド> 1 Draft preservedDraft preservedInspector外部ファイルの問題を解決するまで編集できません。保持中の入力Draft preserved保存できませんでした。I/O error: Permission denied（os error 13） at path \"/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-repair-document-status/sourceltmpjMI633\"キャンセル再試行スライド 1/1・63%・全体に合わせる編集内容をKDLに反映しました。文書や外部ファイルの問題を解決してください。診断 0件",
+    "input": {
+      "text": "Draft preserved",
+      "selected": [
+        15,
+        15
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        435.0246,
+        228.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "source": "presentation { metadata { title \"Document workflow\" }; slide { heading \"Original\"; }; }\n"
+  },
+  {
+    "name": "persistent-save-failure",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t\t2 text 保存できませんでした\n\t3 button (disabled) 元に戻す\n\t4 button (disabled) やり直す\n\t5 button スライド追加\n\t6 button 挿入\n\t7 button 表示\n\t8 button プレゼンテーション\n\t9 button 発表メニュー\n\t10 text I/O error: Permission denied (os error 13) at path \"/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-repair-document-status/source/.tmpjMl633\"\n\t11 list スライド一覧\n\t\t12 text (selected) スライド 1 Draft preserved, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t\t14 text field (settable) 見出し, Value: Draft preserved\n\t15 list スライドの構造一覧\n\t\t16 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t17 button Presentation title\n\t18 button (disabled) 入力を取り消す\n\t19 button 全文をInspectorで編集\n\t20 button Element を削除\n\t21 button 要素を追加…\n\t22 button 診断 0件\n\t23 close button\n\t24 full screen button, Secondary Actions: zoom the window\n\t25 minimize button\n\t26 text\n\nThe focused UI element is 0 standard window.",
+    "text": "●presentation.kdl 未保存 保存できませんでした← →田スライド追加田 挿入山 表示1プレゼンテーション発表メニューI/O error: Permission denied （os error 13） at path \"/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-repair-document-status/sourcel.tmpjM|633\"スライドInspectorDoft postareedスライドの構造Element 1・見出しく> 1 Draft preservedDraft preservedPresentation title見出し入力を取り消すキャンバス上で編集中全文をInspectorで編集Element を削除要素を追加....スライド 1/1・63%・全体に合わせる網集内容をKDLに反映しました。診断 0件",
+    "input": {
+      "text": "Draft preserved",
+      "selected": [
+        15,
+        15
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        435.0246,
+        241.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "source": "presentation { metadata { title \"Document workflow\" }; slide { heading \"Original\"; }; }\n"
+  },
+  {
+    "name": "failure-after-view",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t\t2 text 保存できませんでした\n\t3 button (disabled) 元に戻す\n\t4 button (disabled) やり直す\n\t5 button スライド追加\n\t6 button 挿入\n\t7 button 表示\n\t8 button プレゼンテーション\n\t9 button 発表メニュー\n\t10 text I/O error: Permission denied (os error 13) at path \"/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-repair-document-status/source/.tmpjMl633\"\n\t11 list スライド一覧\n\t\t12 text (selected) スライド 1 Draft preserved, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t\t14 text field (settable) 見出し, Value: Draft preserved\n\t15 list スライドの構造一覧\n\t\t16 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t17 button Presentation title\n\t18 button (disabled) 入力を取り消す\n\t19 button 全文をInspectorで編集\n\t20 button Element を削除\n\t21 button 要素を追加…\n\t22 button 診断 0件\n\t23 close button\n\t24 full screen button, Secondary Actions: zoom the window\n\t25 minimize button\n\t26 text\n\nThe focused UI element is 0 standard window.",
+    "text": "●presentation.kdl 未保存 保存できませんでした← →田スライド追加田 挿入山 表示1プレゼンテーション発表メニューI/O error: Permission denied （os error 13） at path \"/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-repair-document-status/sourcel.tmpjM|633\"スライドInspectorDoft postareedスライドの構造Element 1・見出しく> 1 Draft preservedDraft preservedPresentation title見出し入力を取り消すキャンバス上で編集中全文をInspectorで編集Element を削除要素を追加....スライド 1/1・63%・全体に合わせる網集内容をKDLに反映しました。診断 0件",
+    "input": {
+      "text": "Draft preserved",
+      "selected": [
+        15,
+        15
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        435.0246,
+        241.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "source": "presentation { metadata { title \"Document workflow\" }; slide { heading \"Original\"; }; }\n"
+  },
+  {
+    "name": "save-retry-success",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 保存済み\n\t2 button 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 Draft preserved, Secondary Actions: pick\n\t11 container スライドキャンバス\n\t12 list スライドの構造一覧\n\t\t13 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t14 button Presentation title\n\t15 button (disabled) 入力を取り消す\n\t16 button 全文をInspectorで編集\n\t17 button Element を削除\n\t18 button 要素を追加…\n\t19 button 診断 0件\n\t20 close button\n\t21 full screen button, Secondary Actions: zoom the window\n\t22 minimize button\n\t23 text\n\nThe focused UI element is 0 standard window.",
+    "text": "presentation.kdl←保存済み四 スライド追加田 挿入II 表示日プレゼンテーション発表メニュースライドDoft postareedInspectorスライドの構造Element 1・見出しく> 1 Draft preservedDraft preservedPresentation title見出し入力を取り消すキャンバス上で編集中全文をInspector で編集Element を削除要素を追加…スライド 1/1・63%・全体に合わせる保存しました。診断 0件",
+    "input": {
+      "text": "Draft preserved",
+      "selected": [
+        15,
+        15
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        435.0246,
+        241.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"Document workflow\" }; slide { heading \"Draft preserved\"; }; }\n"
+  },
+  {
+    "name": "external-conflict",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button (disabled) スライド追加\n\t5 button (disabled) 挿入\n\t6 button 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button 発表メニュー\n\t9 text 外部変更と未保存の編集が競合しています。\n\t10 button 再読み込み\n\t11 button 別名保存\n\t12 list スライド一覧\n\t\t13 text (selected) スライド 1 Conflict retained, Secondary Actions: pick\n\t14 container スライドキャンバス\n\t15 text 文書や外部ファイルの問題を解決してください。\n\t16 button 診断 0件\n\t17 close button\n\t18 full screen button, Secondary Actions: zoom the window\n\t19 minimize button\n\t20 text\n\nThe focused UI element is 0 standard window.",
+    "text": "●presentation.kdl 未保存 外部ファイルに問題があります←→田 スライド追加田 挿入外部変更と未保存の編集が競合しています。II 表示再読み込みスライド1プレゼンテーション発表メニュー別名保存> 1 Conflict retainedConflict retainedInspector外部ファイルの問題を解決するまで編集できません。保持中の入力Conflict retainedスライド 1/1・63%・全体に合わせる外部変更と未保存の編集が競合しています。編集を破棄して再読み込みするか、別名保存してください。文善や外部ファイルの問題を解決してください。診断0件表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "Conflict retained",
+      "selected": [
+        17,
+        17
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        449.08716,
+        228.3,
+        37.875
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"External\" }; slide { heading \"External\"; }; }\n"
+  },
+  {
+    "name": "reload-cancel",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button (disabled) スライド追加\n\t5 button (disabled) 挿入\n\t6 button 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button 発表メニュー\n\t9 text 外部変更と未保存の編集が競合しています。\n\t10 button 再読み込み\n\t11 button 別名保存\n\t12 list スライド一覧\n\t\t13 text (selected) スライド 1 Conflict retained, Secondary Actions: pick\n\t14 container スライドキャンバス\n\t15 text 文書や外部ファイルの問題を解決してください。\n\t16 button 診断 0件\n\t17 close button\n\t18 full screen button, Secondary Actions: zoom the window\n\t19 minimize button\n\t20 text\n\nThe focused UI element is 0 standard window.",
+    "text": "●presentation.kdl 未保存 外部ファイルに問題があります←→田 スライド追加田 挿入外部変更と未保存の編集が競合しています。II 表示再読み込みスライド1プレゼンテーション発表メニュー別名保存> 1 Conflict retainedConflict retainedInspector外部ファイルの問題を解決するまで編集できません。保持中の入力Conflict retainedスライド 1/1・63%・全体に合わせる外部変更と未保存の編集が競合しています。編集を破棄して再読み込みするか、別名保存してください。文善や外部ファイルの問題を解決してください。診断0件表示中の内容は現在の外部ファイルと一致していません。",
+    "input": {
+      "text": "Conflict retained",
+      "selected": [
+        17,
+        17
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        449.08716,
+        228.3,
+        37.875
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"External\" }; slide { heading \"External\"; }; }\n"
+  },
+  {
+    "name": "reload-success",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 保存済み\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 External, Secondary Actions: pick\n\t11 container スライドキャンバス\n\t12 list スライドの構造一覧\n\t\t13 text Element 1 · 見出し, Secondary Actions: pick\n\t14 button Presentation title\n\t15 button (disabled) 入力を取り消す\n\t16 text field (settable) Presentation のタイトル, Value: External\n\t17 button 適用\n\t18 button 要素を追加…\n\t19 button 診断 0件\n\t20 close button\n\t21 full screen button, Secondary Actions: zoom the window\n\t22 minimize button\n\t23 text\n\nThe focused UI element is 0 standard window.",
+    "text": "presentation.kdl保存済み田スライド追加田 挿入II 表示日プレゼンテーション発表メニュースライドCrxmalInspectorスライドの構造Element 1・見出し> 1 ExternalExternalPresentation titlePresentation のタイトル入力を取り消すPresentation のタイトルExternal適用要素を追加...スライド 1/1・63%・全体に合わせる外部ファイルを再読み込みしました。診断 0件",
+    "input": {
+      "text": "External",
+      "selected": [
+        8,
+        8
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1071.7188,
+        487.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"External\" }; slide { heading \"External\"; }; }\n"
+  },
+  {
+    "name": "external-invalid",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button (disabled) スライド追加\n\t5 button (disabled) 挿入\n\t6 button 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button 発表メニュー\n\t9 text 外部ファイルが無効です。最後の正常な内容を表示しています。\n\t10 button 再読み込み\n\t11 button 別名保存\n\t12 list スライド一覧\n\t\t13 text (selected) スライド 1 Retained valid canvas, Secondary Actions: pick\n\t14 container スライドキャンバス\n\t15 button Schema · presentation.kdl · 1行 1列 · metadata must be the first presentation child\n\t16 button Schema · presentation.kdl · 1行 1列 · presentation must contain exactly one metadata node\n\t17 text 文書や外部ファイルの問題を解決してください。\n\t18 button 診断 2件\n\t19 close button\n\t20 full screen button, Secondary Actions: zoom the window\n\t21 minimize button\n\t22 text\n\nThe focused UI element is 0 standard window.",
+    "text": "presentation.kdl 未保存 外部ファイルに問題があります←→国スライド追加田 挿入国 表示外部ファイルが無効です。最後の正常な内容を表示しています。スライド再読み込み別名保存> 1 Retained valid canvasRetained valid canvasスライド 1/1・63%・全体に合わせる外部ファイルが無効です。表示中の内容を保持し、編集・保存・発表を停止しました。外部で修正して読み込みしてください。文害や外部ファイルの問題を解決してください。診断 2件表示中の内容は現在の外部ファイルと一致していません。1プレゼンテーション発表メニューSchema・presentation.kdl:1:1metadata must be the firstpresentation childpresentation f slide fheading J sSchema・presentation.kdl:1:1oresentation must containexactly one metadata nodepresentation f slide fheading J s",
+    "input": {
+      "text": "Retained valid canvas",
+      "selected": [
+        21,
+        21
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        518.73425,
+        228.3,
+        37.875
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { slide { heading } }\n"
+  },
+  {
+    "name": "diagnostics-list",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button (disabled) スライド追加\n\t5 button (disabled) 挿入\n\t6 button 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button 発表メニュー\n\t9 text 外部ファイルが無効です。最後の正常な内容を表示しています。\n\t10 button 再読み込み\n\t11 button 別名保存\n\t12 list スライド一覧\n\t\t13 text (selected) スライド 1 Retained valid canvas, Secondary Actions: pick\n\t14 container スライドキャンバス\n\t15 button Schema · presentation.kdl · 1行 1列 · metadata must be the first presentation child\n\t16 button Schema · presentation.kdl · 1行 1列 · presentation must contain exactly one metadata node\n\t17 text 文書や外部ファイルの問題を解決してください。\n\t18 button 診断 2件\n\t19 container 診断\n\t\t20 button Schema · presentation.kdl · 1行 1列 · metadata must be the first presentation child\n\t\t21 button Schema · presentation.kdl · 1行 1列 · presentation must contain exactly one metadata node\n\t22 close button\n\t23 full screen button, Secondary Actions: zoom the window\n\t24 minimize button\n\t25 text\n\nThe focused UI element is 0 standard window.",
+    "text": "presentation.kdl 未保存 外部ファイルに問題があります←→田 スライド追加田 挿入I 表示外部ファイルが無効です。最後の工学込由肉とキニトスライドRe> 1 Retained valid canvasSchema・presentation.kdl:1:1metadata must be the first presentation childpresentation f slide f heading ｝ ｝Schema・presentation.kdl:1:1presentation must contain exactly one metadata nodepresentation t slide f heading 1 ｝スライド 1/1・63%・全体に合わせる外部ファイルが無効です。表示中の内容を保持し、編集・保存・発表を停止しました。外部で修正して読み込みしてください。文書や外部ファイルの問題を解決してください。診断 2件表示中の内容は現在の外部ファイルと一致していません。1プレゼンテーション発表メニューSchema・presentation.kdl:1:1metadata must be the firstpresentation childpresentation f slide fheading J sSchema・presentation.kdl:1:1oresentation must containexactly one metadata nodepresentation f slide fheading J s",
+    "input": {
+      "text": "Retained valid canvas",
+      "selected": [
+        21,
+        21
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        518.73425,
+        228.3,
+        37.875
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { slide { heading } }\n"
+  },
+  {
+    "name": "external-deleted",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button (disabled) スライド追加\n\t5 button (disabled) 挿入\n\t6 button 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button 発表メニュー\n\t9 text 外部ファイルが削除されています。別名保存で編集を退避できます。\n\t10 button 再読み込み\n\t11 button 別名保存\n\t12 list スライド一覧\n\t\t13 text (selected) スライド 1 Retained valid canvas, Secondary Actions: pick\n\t14 container スライドキャンバス\n\t15 text 文書や外部ファイルの問題を解決してください。\n\t16 button 診断 0件\n\t17 close button\n\t18 full screen button, Secondary Actions: zoom the window\n\t19 minimize button\n\t20 text\n\nThe focused UI element is 0 standard window.",
+    "text": "●presentation.kdl 未保存 外部ファイルに問題があります←→田 スライド追加田 挿入II 表示外部ファイルが削除されています。別名保存で編集を退避できます。再読み込み別名保存スライド日プレゼンテーション発表メニュー外部ファイルを読み込めませんNo such file or directory （os error2）Retained valid canvas> 1 Retained valid canvasスライド 1/1・63%・全体に合わせる外部ファイルが削除されています。編集中の内容を保持しています。ファイルを復元して再読み込みしてください。文書や外部ファイルの問題を解決してください。診断 0件表示中の内容は現在の外部ファイルと一致していません。外部ファイルを読み込めません：No such file or directory （os error 2）",
+    "input": {
+      "text": "Retained valid canvas",
+      "selected": [
+        21,
+        21
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        518.73425,
+        228.3,
+        37.875
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": null
+  },
+  {
+    "name": "retreat-preserves-draft-clears-history",
+    "tree": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 保存済み\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 Retained valid canvas, Secondary Actions: pick\n\t11 container スライドキャンバス\n\t12 list スライドの構造一覧\n\t\t13 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t14 button Presentation title\n\t15 button (disabled) 入力を取り消す\n\t16 button 全文をInspectorで編集\n\t17 button Element を削除\n\t18 button 要素を追加…\n\t19 button 診断 0件\n\t20 close button\n\t21 full screen button, Secondary Actions: zoom the window\n\t22 minimize button\n\t23 text\n\nThe focused UI element is 0 standard window.",
+    "text": "presentation.kdl←→スライド保存済み田スライド追加田 挿入II 表示日プレゼンテーション発表メニューInspectorスライドの構造Element 1・見出しく> 1 Retained valid canvasRetained valid canvasPresentation title見出し入力を取り消すキャンバス上で編集中全文をInspectorで編集Element を削除要素を追加…スライド 1/1・63%・全体に合わせる保存しました。診断 0件",
+    "input": {
+      "text": "Retained valid canvas",
+      "selected": [
+        21,
+        21
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        518.73425,
+        228.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": null
+  }
+]

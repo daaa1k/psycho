@@ -1,0 +1,50 @@
+{
+  "snapshot": {
+    "treeText": "App=psycho (pid 92705)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 保存済み\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 First, Secondary Actions: pick\n\t\t11 text スライド 2, Secondary Actions: pick\n\t12 container スライドキャンバス\n\t13 list スライドの構造一覧\n\t\t14 text Element 1 · 見出し, Secondary Actions: pick\n\t15 button Presentation title\n\t16 button (disabled) 入力を取り消す\n\t17 text field (settable) Presentation のタイトル, Value: Noncurrent image\n\t18 button 適用\n\t19 button 要素を追加…\n\t20 text 画像の問題を修正してください。\n\t21 button 診断 1件\n\t22 container 診断\n\t\t23 button 画像 · Slide 2 · missing-image.png · 画像ファイルがありません\n\t24 close button\n\t25 full screen button, Secondary Actions: zoom the window\n\t26 minimize button\n\t27 text\n\nThe focused UI element is 0 standard window.",
+    "elementCount": 28,
+    "coordinateSpace": "window",
+    "window": {
+      "width": 1280,
+      "title": "",
+      "isMinimized": false,
+      "y": 185,
+      "isOffscreen": false,
+      "x": 320,
+      "screenIndex": 0,
+      "platform": {
+        "layer": 0
+      },
+      "id": 10074,
+      "height": 892
+    },
+    "app": {
+      "name": "psycho",
+      "bundleId": null,
+      "pid": 92705
+    },
+    "truncation": {
+      "maxNodes": 1200,
+      "truncated": false,
+      "maxDepthReached": false,
+      "maxDepth": 64
+    },
+    "id": "77954924-EEB6-405E-A1DB-0E009657A1F3",
+    "focusedElementId": 0
+  },
+  "screenshot": {
+    "scale": 1,
+    "width": 1280,
+    "height": 892,
+    "format": "png",
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/3b4a83f0-cb18-493e-8fbd-8c6d579e24f9-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-19T11:48:16.559Z"
+  },
+  "screenshotStatus": {
+    "metadata": {
+      "engine": "screenCaptureKit",
+      "windowId": 10074
+    },
+    "state": "captured"
+  }
+}

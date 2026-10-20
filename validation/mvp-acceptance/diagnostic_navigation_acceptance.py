@@ -158,6 +158,8 @@ def check_asset():
         rows = observe(gui, 'asset-before-navigation')
         assert any(normalized(row['text']) == 'Firstslide' and row['x'] > 160 for row in rows), rows
         assert not selected_image(rows), rows
+        gui.diagnostics()
+        rows = observe(gui, 'asset-diagnostics-list')
         headers = [row for row in rows if normalized(row['text']).startswith(
             '画像·Slide2·diagnostic-missing-image.png·')]
         assert len(headers) == 1, rows
@@ -180,7 +182,7 @@ def check_asset():
         records.append(dict(fixture=gui.fixture.name, observed_asset_selection=dict(
             slide=2, element='image', path=after['text'], before_undo=input_state, after_undo=after,
             source_bytes_unchanged=True)))
-        print('PASS asset: footer diagnostic selects slide 2 image without history', flush=True)
+        print('PASS asset: diagnostic list selects slide 2 image without history', flush=True)
     finally:
         try:
             if gui is not None:

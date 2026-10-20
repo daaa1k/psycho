@@ -33,7 +33,7 @@ def close_request(gui):
     assert gui.document_window_ids,native_before
     (gui.out/'native-windows-before.json').write_text(json.dumps(native_before,ensure_ascii=False,indent=2))
     gui.click(20,13)
-    assert '保存して閉じる' in gui.text('unsaved-close-dialog')
+    assert '未保存の編集があります' in gui.text('unsaved-close-dialog')
 for branch in ([] if args.cursor_only else ['cancel','save','discard']):
     gui=Gui(out/branch,source)
     assets=gui.out/'assets';assets.mkdir();shutil.copy(root/'assets/build-time.png',assets/'build-time.png')
@@ -42,13 +42,13 @@ for branch in ([] if args.cursor_only else ['cancel','save','discard']):
         new='CLOSE ACCEPTANCE '+branch;gui.replace(new)
         close_request(gui)
         if branch=='cancel':
-            gui.press('閉じるのをやめる');assert gui.app.poll() is None
+            gui.button('キャンセル');assert gui.app.poll() is None
             assert gui.state()['text']==new,gui.state()
             assert new.replace(' ','') in gui.text('cancel-retains-input')
             assert gui.fixture.read_bytes()==gui.original
             records.append(dict(branch=branch,input=gui.state(),alive=True,original_bytes=True))
         else:
-            try:gui.press('保存して閉じる' if branch=='save' else '破棄して閉じる',aliases=('破楽して閉じる','楽して閉じる') if branch=='discard' else ())
+            try:gui.button('保存' if branch=='save' else '破棄')
             except AssertionError as error:
                 (gui.out/'close-action-observation.txt').write_text(str(error))
             time.sleep(2);result=gui.app.poll();actual=gui.fixture.read_bytes()

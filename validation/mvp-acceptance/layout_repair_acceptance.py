@@ -27,6 +27,7 @@ if args.start_section == 'all':
         state,rows=gui.snapshot('noncurrent-both-starts-disabled')
         assert state['screenshot']['width']==1280
         assert any(166<row['x']<995 and row['text']=='Good slide' for row in rows)
+        gui.diagnostics()
         _,rows=gui.snapshot()
         row=next(row for row in rows if 'Layout' in row['text'] and 'Element' in row['text'])
         gui.click(row['x'],row['y'])

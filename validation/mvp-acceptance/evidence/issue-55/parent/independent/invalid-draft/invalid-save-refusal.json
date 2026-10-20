@@ -1,0 +1,50 @@
+{
+  "screenshotStatus": {
+    "metadata": {
+      "engine": "screenCaptureKit",
+      "windowId": 10046
+    },
+    "state": "captured"
+  },
+  "snapshot": {
+    "id": "0500E907-9666-4183-9468-61ADC8799BF1",
+    "elementCount": 26,
+    "app": {
+      "bundleId": null,
+      "pid": 90852,
+      "name": "psycho"
+    },
+    "treeText": "App=psycho (pid 90852)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t\t2 text 保存できませんでした\n\t3 button (disabled) 元に戻す\n\t4 button (disabled) やり直す\n\t5 button (disabled) スライド追加\n\t6 button (disabled) 挿入\n\t7 button (disabled) 表示\n\t8 button (disabled) プレゼンテーション\n\t9 button (disabled) 発表メニュー\n\t10 text value was rejected: タイトルを入力してください\n\t11 list スライド一覧\n\t\t12 text (selected) スライド 1 Keep source, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 text 文書や外部ファイルの問題を解決してください。\n\t15 button 診断 0件\n\t16 close button (disabled)\n\t17 zoom button\n\t18 minimize button\n\t19 text\n\t20 sheet alert\n\t\t21 image psycho critical alert\n\t\t22 text 保存できませんでした。\n\t\t23 text value was rejected: タイトルを入力してください\n\t\t24 button キャンセル\n\t\t25 button 再試行\n\nThe focused UI element is 20 sheet alert.",
+    "focusedElementId": 20,
+    "window": {
+      "screenIndex": 0,
+      "title": "",
+      "width": 1280,
+      "id": 10046,
+      "platform": {
+        "layer": 0
+      },
+      "height": 892,
+      "x": 320,
+      "isOffscreen": false,
+      "y": 185,
+      "isMinimized": false
+    },
+    "coordinateSpace": "window",
+    "truncation": {
+      "maxNodes": 1200,
+      "truncated": false,
+      "maxDepthReached": false,
+      "maxDepth": 64
+    }
+  },
+  "screenshot": {
+    "height": 892,
+    "width": 1280,
+    "format": "png",
+    "scale": 1,
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/fa6f8c31-ee10-4c70-9f5d-5eded6efd589-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-19T11:48:02.814Z"
+  }
+}

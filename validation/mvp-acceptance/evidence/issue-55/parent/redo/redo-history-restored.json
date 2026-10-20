@@ -1,0 +1,50 @@
+{
+  "screenshotStatus": {
+    "state": "captured",
+    "metadata": {
+      "windowId": 10509,
+      "engine": "screenCaptureKit"
+    }
+  },
+  "screenshot": {
+    "format": "png",
+    "width": 1280,
+    "height": 892,
+    "scale": 1,
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/772a1952-f0e9-406b-be6d-3844f579d11d-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-19T12:01:31.160Z"
+  },
+  "snapshot": {
+    "treeText": "App=psycho (pid 28610)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 保存済み\n\t2 button 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 second, Secondary Actions: pick\n\t\t11 text スライド 2 Other slide, Secondary Actions: pick\n\t12 container スライドキャンバス\n\t13 list スライドの構造一覧\n\t\t14 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t15 button Presentation title\n\t16 button (disabled) 入力を取り消す\n\t17 button 全文をInspectorで編集\n\t18 button Element を削除\n\t19 button 要素を追加…\n\t20 button 診断 0件\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window.",
+    "elementCount": 25,
+    "coordinateSpace": "window",
+    "window": {
+      "width": 1280,
+      "title": "",
+      "isMinimized": false,
+      "y": 185,
+      "isOffscreen": false,
+      "x": 320,
+      "screenIndex": 0,
+      "platform": {
+        "layer": 0
+      },
+      "id": 10509,
+      "height": 892
+    },
+    "app": {
+      "bundleId": null,
+      "pid": 28610,
+      "name": "psycho"
+    },
+    "truncation": {
+      "maxNodes": 1200,
+      "truncated": false,
+      "maxDepthReached": false,
+      "maxDepth": 64
+    },
+    "id": "FBC2F48C-B966-4205-8014-C4AE35403C7C",
+    "focusedElementId": 0
+  }
+}

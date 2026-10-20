@@ -1,0 +1,197 @@
+[
+  {
+    "name": "present-current-unsaved",
+    "tree": "App=psycho (pid 2490)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 text\n\nThe focused UI element is 0 standard window.",
+    "window": {
+      "screenIndex": 0,
+      "title": "",
+      "width": 1920,
+      "id": 9345,
+      "platform": {
+        "layer": 0
+      },
+      "height": 1200,
+      "x": 0,
+      "isOffscreen": false,
+      "y": 0,
+      "isMinimized": false
+    },
+    "scale": 1,
+    "input": {
+      "text": "Unsaved second",
+      "selected": [
+        14,
+        14
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        448.34003,
+        228.3,
+        37.875
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    }
+  },
+  {
+    "name": "return-current-selection",
+    "tree": "App=psycho (pid 2490)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text スライド 1 First slide, Secondary Actions: pick\n\t\t11 text (selected) スライド 2 Unsaved second, Secondary Actions: pick\n\t12 container スライドキャンバス\n\t13 list スライドの構造一覧\n\t\t14 text Element 1 · 見出し, Secondary Actions: pick\n\t15 button Presentation title\n\t16 button (disabled) 入力を取り消す\n\t17 text field (settable) Presentation のタイトル, Value: Present workflow\n\t18 button 適用\n\t19 button 要素を追加…\n\t20 button 診断 0件\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window.",
+    "window": {
+      "width": 1280,
+      "title": "",
+      "isMinimized": false,
+      "y": 185,
+      "isOffscreen": false,
+      "x": 320,
+      "screenIndex": 0,
+      "platform": {
+        "layer": 0
+      },
+      "id": 9345,
+      "height": 892
+    },
+    "scale": 1,
+    "input": {
+      "text": "Present workflow",
+      "selected": [
+        16,
+        16
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1138.0078,
+        487.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    }
+  },
+  {
+    "name": "present-first",
+    "tree": "App=psycho (pid 2490)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 text\n\nThe focused UI element is 0 standard window.",
+    "window": {
+      "width": 1920,
+      "title": "",
+      "isMinimized": false,
+      "y": 0,
+      "isOffscreen": false,
+      "x": 0,
+      "screenIndex": 0,
+      "platform": {
+        "layer": 0
+      },
+      "id": 9345,
+      "height": 1200
+    },
+    "scale": 1,
+    "input": {
+      "text": "Present workflow",
+      "selected": [
+        16,
+        16
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1138.0078,
+        487.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    }
+  },
+  {
+    "name": "present-next-unsaved",
+    "tree": "App=psycho (pid 2490)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 text\n\nThe focused UI element is 0 standard window.",
+    "window": {
+      "width": 1920,
+      "title": "",
+      "isMinimized": false,
+      "y": 0,
+      "isOffscreen": false,
+      "x": 0,
+      "screenIndex": 0,
+      "platform": {
+        "layer": 0
+      },
+      "id": 9345,
+      "height": 1200
+    },
+    "scale": 1,
+    "input": {
+      "text": "Present workflow",
+      "selected": [
+        16,
+        16
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1138.0078,
+        487.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    }
+  },
+  {
+    "name": "return-final-selection",
+    "tree": "App=psycho (pid 2490)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text スライド 1 First slide, Secondary Actions: pick\n\t\t11 text (selected) スライド 2 Unsaved second, Secondary Actions: pick\n\t12 container スライドキャンバス\n\t13 list スライドの構造一覧\n\t\t14 text Element 1 · 見出し, Secondary Actions: pick\n\t15 button Presentation title\n\t16 button (disabled) 入力を取り消す\n\t17 text field (settable) Presentation のタイトル, Value: Present workflow\n\t18 button 適用\n\t19 button 要素を追加…\n\t20 button 診断 0件\n\t21 close button\n\t22 full screen button, Secondary Actions: zoom the window\n\t23 minimize button\n\t24 text\n\nThe focused UI element is 0 standard window.",
+    "window": {
+      "screenIndex": 0,
+      "title": "",
+      "width": 1280,
+      "id": 9345,
+      "platform": {
+        "layer": 0
+      },
+      "height": 892,
+      "x": 320,
+      "isOffscreen": false,
+      "y": 185,
+      "isMinimized": false
+    },
+    "scale": 1,
+    "input": {
+      "text": "Present workflow",
+      "selected": [
+        16,
+        16
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1138.0078,
+        487.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    }
+  }
+]

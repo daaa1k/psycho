@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/private/tmp/psycho-issue-55-input-repair/target/issue-55-ime-main-probe.py", line 27, in <module>
+    assert gui.fixture.read_bytes() == expected, (gui.state(), state['snapshot']['treeText'])
+AssertionError: ({'text': '日本語の返還', 'selected': [0, 6], 'marked': [0, 6], 'cursor': [384.26706, 244.3, 37.875], 'undo': 0, 'redo': 0, 'composing': True, 'focused': True}, 'App=psycho (pid 7376)\nWindow: "", App: psycho.\n\n0 dialog\n\t1 リスト リスト\n\t\t2 button nihongono\n\t\t3 button ｎｉｈｏｎｇｏｎｏ\n\t\t4 button ﾆﾎﾝｺﾞﾉ\n\t\t5 button ニホンゴノ\n\t\t6 button にほんごの\n\t\t7 button 日本語の変換\n\t\t8 button 日本語の返還\n\t\t9 button 日本語のへんかん\n\t\t10 button 日本後の変換\n\nNo UI element is currently focused.')
+selected=com.apple.inputmethod.Kotoeri.RomajiTyping.Japanese
+restored=com.apple.keylayout.ABC; enablement_restored=true

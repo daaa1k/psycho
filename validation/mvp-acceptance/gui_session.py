@@ -1,13 +1,14 @@
 """Helpers for acceptance scripts operating only a fresh scratch PSYCHO process."""
-import csv, json, os, re, shutil, subprocess, time, unicodedata
+import csv, hashlib, json, os, platform, re, shutil, subprocess, time, unicodedata
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[2]
 
 class Gui:
-    def __init__(self, out, source, name='presentation'):
+    def __init__(self, out, source, name='presentation', untitled=False):
         self.out=Path(out).resolve();self.out.mkdir(parents=True,exist_ok=True)
         assert self.out.is_relative_to((root/'target').resolve()), 'Scratch files must be under target/'
+        self.untitled=untitled
         self.fixture=self.out/f'{name}.kdl'
         assert not self.fixture.exists(), 'Use a fresh directory; existing files are never replaced'
         self.fixture.write_text(source)
@@ -22,9 +23,14 @@ class Gui:
         self.launch_number=getattr(self,'launch_number',0)+1
         self.product_log=self.out/f'product-{self.launch_number}.log'
         with self.product_log.open('w') as log:
-            self.app=subprocess.Popen([str(root/'target/debug/psycho'),str(self.fixture)],
+            self.app=subprocess.Popen([str(root/'target/debug/psycho')] + ([] if self.untitled else [str(self.fixture)]),
                 env=dict(os.environ,PSYCHO_INPUT_STATE=str(self.input),PSYCHO_GLYPH_TRACE=str(self.trace),RUST_BACKTRACE='1'),
                 stdout=subprocess.DEVNULL,stderr=log)
+        metadata = dict(pid=self.app.pid, revision=subprocess.check_output(
+            ['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip(), macos=platform.mac_ver()[0],
+            binary_sha256=hashlib.sha256((root/'target/debug/psycho').read_bytes()).hexdigest(),
+            fixture=str(self.fixture), untitled=self.untitled)
+        (self.out/f'launch-{self.launch_number}.json').write_text(json.dumps(metadata, indent=2))
         deadline=time.monotonic()+15
         while time.monotonic()<deadline:
             assert self.app.poll() is None,'Scratch app exited during startup'
@@ -103,13 +109,27 @@ class Gui:
 
     def snapshot(self,name=None):
         time.sleep(.35);state=self.act('get-app-state')
-        if name:shutil.copy(state['screenshot']['path'],self.out/f'{name}.png')
+        if name:
+            shutil.copy(state['screenshot']['path'],self.out/f'{name}.png')
+            (self.out/f'{name}.json').write_text(json.dumps(state, ensure_ascii=False, indent=2))
         rows=json.loads(subprocess.check_output([str(self.ocr),state['screenshot']['path']],text=True))
         scale=state['screenshot'].get('scale',1)
         for row in rows:
             for key in ('x','y','width','height'):
                 row[key]/=scale
         return state,rows
+
+    def button(self, label):
+        state = self.act('get-app-state')
+        match = re.search(r'^\s*(\d+) button ' + re.escape(label) + r'$', state['snapshot']['treeText'], re.M)
+        assert match, (label, state['snapshot']['treeText'])
+        return self.act('click', '--element-index', match[1], '--no-screenshot')
+
+    def diagnostics(self):
+        state = self.act('get-app-state')
+        label = re.search(r'button (診断 \d+件)', state['snapshot']['treeText'])
+        assert label, state['snapshot']['treeText']
+        return self.button(label[1])
 
     def menu(self, category, title):
         helper = self.out / 'native-menu'

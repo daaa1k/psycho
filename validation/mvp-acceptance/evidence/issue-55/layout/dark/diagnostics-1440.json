@@ -1,0 +1,50 @@
+{
+  "screenshotStatus": {
+    "metadata": {
+      "windowId": 9548,
+      "engine": "screenCaptureKit"
+    },
+    "state": "captured"
+  },
+  "screenshot": {
+    "height": 992,
+    "scale": 1,
+    "width": 1440,
+    "format": "png",
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/56bef493-1d55-45d7-b3b7-9a0b77c90099-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-19T05:43:48.803Z"
+  },
+  "snapshot": {
+    "id": "801A8B72-EE5B-41D7-AEDC-FBA52EC8DBF4",
+    "elementCount": 27,
+    "app": {
+      "name": "psycho",
+      "bundleId": null,
+      "pid": 14353
+    },
+    "treeText": "App=psycho (pid 14353)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 保存済み\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button (disabled) スライド追加\n\t5 button (disabled) 挿入\n\t6 button 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button 発表メニュー\n\t9 text 外部ファイルが無効です。最後の正常な内容を表示しています。\n\t10 button 再読み込み\n\t11 button 別名保存\n\t12 list スライド一覧\n\t\t13 text (selected) スライド 1 Retained heading, Secondary Actions: pick\n\t14 container スライドキャンバス\n\t15 button Schema · presentation.kdl · 1行 1列 · metadata must be the first presentation child\n\t16 button Schema · presentation.kdl · 1行 1列 · presentation must contain exactly one metadata node\n\t17 text 文書や外部ファイルの問題を解決してください。\n\t18 button 診断 3件\n\t19 container 診断\n\t\t20 button Schema · presentation.kdl · 1行 1列 · metadata must be the first presentation child\n\t\t21 button Schema · presentation.kdl · 1行 1列 · presentation must contain exactly one metadata node\n\t\t22 button (disabled) 画像 · Slide 1 · missing.png · 画像ファイルがありません\n\t23 close button\n\t24 full screen button, Secondary Actions: zoom the window\n\t25 minimize button\n\t26 text\n\nThe focused UI element is 0 standard window.",
+    "focusedElementId": 0,
+    "window": {
+      "screenIndex": 0,
+      "title": "",
+      "width": 1440,
+      "id": 9548,
+      "platform": {
+        "layer": 0
+      },
+      "height": 992,
+      "x": 20,
+      "isOffscreen": false,
+      "y": 50,
+      "isMinimized": false
+    },
+    "coordinateSpace": "window",
+    "truncation": {
+      "maxDepth": 64,
+      "truncated": false,
+      "maxNodes": 1200,
+      "maxDepthReached": false
+    }
+  }
+}

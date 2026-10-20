@@ -1,0 +1,105 @@
+[
+  {
+    "kCGWindowAlpha": 1,
+    "kCGWindowBounds": {
+      "Height": 500,
+      "Width": 500,
+      "X": 0,
+      "Y": 700
+    },
+    "kCGWindowLayer": 0,
+    "kCGWindowMemoryUsage": 2368,
+    "kCGWindowName": "",
+    "kCGWindowNumber": 9553,
+    "kCGWindowOwnerName": "psycho",
+    "kCGWindowOwnerPID": 14353,
+    "kCGWindowSharingState": 1,
+    "kCGWindowStoreType": 1
+  },
+  {
+    "kCGWindowAlpha": 1,
+    "kCGWindowBounds": {
+      "Height": 30,
+      "Width": 1920,
+      "X": 0,
+      "Y": 0
+    },
+    "kCGWindowLayer": 0,
+    "kCGWindowMemoryUsage": 2368,
+    "kCGWindowName": "",
+    "kCGWindowNumber": 9552,
+    "kCGWindowOwnerName": "psycho",
+    "kCGWindowOwnerPID": 14353,
+    "kCGWindowSharingState": 1,
+    "kCGWindowStoreType": 1
+  },
+  {
+    "kCGWindowAlpha": 1,
+    "kCGWindowBounds": {
+      "Height": 30,
+      "Width": 1920,
+      "X": 0,
+      "Y": 0
+    },
+    "kCGWindowLayer": 0,
+    "kCGWindowMemoryUsage": 2368,
+    "kCGWindowName": "",
+    "kCGWindowNumber": 9551,
+    "kCGWindowOwnerName": "psycho",
+    "kCGWindowOwnerPID": 14353,
+    "kCGWindowSharingState": 1,
+    "kCGWindowStoreType": 1
+  },
+  {
+    "kCGWindowAlpha": 1,
+    "kCGWindowBounds": {
+      "Height": 30,
+      "Width": 1920,
+      "X": 0,
+      "Y": 0
+    },
+    "kCGWindowLayer": 0,
+    "kCGWindowMemoryUsage": 2368,
+    "kCGWindowName": "",
+    "kCGWindowNumber": 9550,
+    "kCGWindowOwnerName": "psycho",
+    "kCGWindowOwnerPID": 14353,
+    "kCGWindowSharingState": 1,
+    "kCGWindowStoreType": 1
+  },
+  {
+    "kCGWindowAlpha": 1,
+    "kCGWindowBounds": {
+      "Height": 30,
+      "Width": 1920,
+      "X": 0,
+      "Y": 0
+    },
+    "kCGWindowLayer": 0,
+    "kCGWindowMemoryUsage": 2368,
+    "kCGWindowName": "",
+    "kCGWindowNumber": 9549,
+    "kCGWindowOwnerName": "psycho",
+    "kCGWindowOwnerPID": 14353,
+    "kCGWindowSharingState": 1,
+    "kCGWindowStoreType": 1
+  },
+  {
+    "kCGWindowAlpha": 1,
+    "kCGWindowBounds": {
+      "Height": 992,
+      "Width": 1440,
+      "X": 20,
+      "Y": 50
+    },
+    "kCGWindowIsOnscreen": true,
+    "kCGWindowLayer": 0,
+    "kCGWindowMemoryUsage": 2368,
+    "kCGWindowName": "",
+    "kCGWindowNumber": 9548,
+    "kCGWindowOwnerName": "psycho",
+    "kCGWindowOwnerPID": 14353,
+    "kCGWindowSharingState": 1,
+    "kCGWindowStoreType": 1
+  }
+]

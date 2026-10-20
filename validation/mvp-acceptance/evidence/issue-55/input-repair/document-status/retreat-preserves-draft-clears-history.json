@@ -1,0 +1,50 @@
+{
+  "snapshot": {
+    "treeText": "App=psycho (pid 19090)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 保存済み\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 Retained valid canvas, Secondary Actions: pick\n\t11 container スライドキャンバス\n\t12 list スライドの構造一覧\n\t\t13 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t14 button Presentation title\n\t15 button (disabled) 入力を取り消す\n\t16 button 全文をInspectorで編集\n\t17 button Element を削除\n\t18 button 要素を追加…\n\t19 button 診断 0件\n\t20 close button\n\t21 full screen button, Secondary Actions: zoom the window\n\t22 minimize button\n\t23 text\n\nThe focused UI element is 0 standard window.",
+    "elementCount": 24,
+    "coordinateSpace": "window",
+    "window": {
+      "width": 1280,
+      "title": "",
+      "isMinimized": false,
+      "y": 185,
+      "isOffscreen": false,
+      "x": 320,
+      "screenIndex": 0,
+      "platform": {
+        "layer": 0
+      },
+      "id": 10445,
+      "height": 892
+    },
+    "app": {
+      "bundleId": null,
+      "pid": 19090,
+      "name": "psycho"
+    },
+    "truncation": {
+      "maxNodes": 1200,
+      "truncated": false,
+      "maxDepthReached": false,
+      "maxDepth": 64
+    },
+    "id": "9B284956-D344-4EA4-BEE3-FAF47C7C2330",
+    "focusedElementId": 0
+  },
+  "screenshot": {
+    "scale": 1,
+    "format": "png",
+    "width": 1280,
+    "height": 892,
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/7687afb3-3039-4425-8a3f-e179599bb6bd-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-19T11:59:12.407Z"
+  },
+  "screenshotStatus": {
+    "metadata": {
+      "windowId": 10445,
+      "engine": "screenCaptureKit"
+    },
+    "state": "captured"
+  }
+}

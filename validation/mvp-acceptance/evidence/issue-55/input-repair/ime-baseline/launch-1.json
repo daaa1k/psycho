@@ -1,0 +1,8 @@
+{
+  "pid": 7376,
+  "revision": "91822ca8164ce29d60f676ff8036c41a8fd8db60",
+  "macos": "26.5.2",
+  "binary_sha256": "5eb4842e4b6cdc18632a23f6ca3d0ee6cede34397a566bd5c00b56120611df52",
+  "fixture": "/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-repair-ime-baseline/presentation.kdl",
+  "untitled": false
+}

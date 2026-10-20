@@ -1,0 +1,50 @@
+{
+  "screenshotStatus": {
+    "metadata": {
+      "windowId": 10669,
+      "engine": "screenCaptureKit"
+    },
+    "state": "captured"
+  },
+  "snapshot": {
+    "id": "5D6875CD-88E2-47FB-9DCC-BFC63DE4D19B",
+    "elementCount": 2,
+    "app": {
+      "pid": 41705,
+      "bundleId": null,
+      "name": "psycho"
+    },
+    "treeText": "App=psycho (pid 41705)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 text\n\nThe focused UI element is 0 standard window.",
+    "focusedElementId": 0,
+    "window": {
+      "screenIndex": 0,
+      "title": "",
+      "width": 1920,
+      "id": 10669,
+      "platform": {
+        "layer": 0
+      },
+      "height": 1200,
+      "x": 0,
+      "isOffscreen": false,
+      "y": 0,
+      "isMinimized": false
+    },
+    "coordinateSpace": "window",
+    "truncation": {
+      "truncated": false,
+      "maxDepth": 64,
+      "maxDepthReached": false,
+      "maxNodes": 1200
+    }
+  },
+  "screenshot": {
+    "height": 1200,
+    "scale": 1,
+    "width": 1920,
+    "format": "png",
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/3fa718fd-4de5-4e2e-a62d-d0d3323b40bb-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-19T12:07:43.386Z"
+  }
+}

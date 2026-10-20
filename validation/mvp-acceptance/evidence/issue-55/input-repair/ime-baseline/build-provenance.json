@@ -1,0 +1,7 @@
+{
+  "build_revision": "246ad139a81263200212b956748138b33636ecd2",
+  "build_worktree": "/tmp/psycho-issue-55-ime-baseline",
+  "build_log": "../issue-55-ime-baseline-build.log",
+  "binary_sha256": "5eb4842e4b6cdc18632a23f6ca3d0ee6cede34397a566bd5c00b56120611df52",
+  "note": "launch-1.json revision is the acceptance helper checkout revision, not the baseline binary revision."
+}

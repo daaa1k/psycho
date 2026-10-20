@@ -1,0 +1,50 @@
+{
+  "screenshotStatus": {
+    "metadata": {
+      "windowId": 10074,
+      "engine": "screenCaptureKit"
+    },
+    "state": "captured"
+  },
+  "snapshot": {
+    "id": "059ED866-9021-437D-953F-39A7D69243C0",
+    "elementCount": 30,
+    "app": {
+      "name": "psycho",
+      "bundleId": null,
+      "pid": 92705
+    },
+    "treeText": "App=psycho (pid 92705)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 保存済み\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text スライド 1 First, Secondary Actions: pick\n\t\t11 text (selected) スライド 2, Secondary Actions: pick\n\t12 container スライドキャンバス\n\t13 list スライドの構造一覧\n\t\t14 text (selected) Element 1 · 画像, Secondary Actions: pick\n\t15 button Presentation title\n\t16 button (disabled) 入力を取り消す\n\t17 text field (settable) 画像パス、文書からの相対パス, Value: missing-image.png\n\t18 button 適用\n\t19 button 画像パス\n\t20 button Caption\n\t21 button 画像を再読み込み\n\t22 button Element を削除\n\t23 button 要素を追加…\n\t24 text 画像の問題を修正してください。\n\t25 button 診断 1件\n\t26 close button\n\t27 full screen button, Secondary Actions: zoom the window\n\t28 minimize button\n\t29 text\n\nThe focused UI element is 0 standard window.",
+    "focusedElementId": 0,
+    "window": {
+      "screenIndex": 0,
+      "title": "",
+      "width": 1280,
+      "id": 10074,
+      "platform": {
+        "layer": 0
+      },
+      "height": 892,
+      "x": 320,
+      "isOffscreen": false,
+      "y": 185,
+      "isMinimized": false
+    },
+    "coordinateSpace": "window",
+    "truncation": {
+      "maxNodes": 1200,
+      "truncated": false,
+      "maxDepthReached": false,
+      "maxDepth": 64
+    }
+  },
+  "screenshot": {
+    "scale": 1,
+    "format": "png",
+    "width": 1280,
+    "height": 892,
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/2fa4e204-0773-479d-964a-cbdc5535456a-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-19T11:48:19.207Z"
+  }
+}

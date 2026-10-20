@@ -1,0 +1,26 @@
+[
+  {
+    "tree": "App=psycho (pid 9990)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 First slide, Secondary Actions: pick\n\t\t11 text スライド 2 Layout problem, Secondary Actions: pick\n\t12 container スライドキャンバス\n\t13 list スライドの構造一覧\n\t\t14 text Element 1 · 見出し, Secondary Actions: pick\n\t15 button Presentation title\n\t16 button 入力を取り消す\n\t17 text field (settable) Presentation のタイトル\n\t18 button 適用\n\t19 button 要素を追加…\n\t20 button 診断 1件\n\t21 container 診断\n\t\t22 button Layout · Slide 2 · Element 2 · 内容がスライド下端を越えます\n\t23 close button\n\t24 full screen button, Secondary Actions: zoom the window\n\t25 minimize button\n\t26 text\n\nThe focused UI element is 0 standard window.",
+    "input": {
+      "text": "",
+      "selected": [
+        0,
+        0
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1013.0,
+        517.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "source": "presentation { metadata { title \"Draft guard\" }; slide { heading \"First slide\"; }; slide { heading \"Layout problem\"; code \"overflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\noverflow();\\n\"; }; }\n"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "product_commit": "4e800c0",
+  "built_on": "91822ca with the src/main.rs diff committed in 4e800c0",
+  "binary_sha256": "9c807dc7043dc8581593fa1b14c18ad0518e2893e0b884ff03e26f2e1d598ea8",
+  "note": "Runs before the fix commit record 91822ca in launch metadata. The source diff is the two-line focus repair in 4e800c0."
+}

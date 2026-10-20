@@ -1,0 +1,50 @@
+{
+  "snapshot": {
+    "id": "350DE9F8-0CD9-4C10-B8FC-177BCC7FCDE5",
+    "elementCount": 24,
+    "app": {
+      "name": "psycho",
+      "pid": 41705,
+      "bundleId": null
+    },
+    "treeText": "App=psycho (pid 41705)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button (disabled) スライド追加\n\t5 button (disabled) 挿入\n\t6 button (disabled) 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button (disabled) 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 VoiceOver retained draft, Secondary Actions: pick\n\t11 container スライドキャンバス\n\t12 text 文書や外部ファイルの問題を解決してください。\n\t13 button 診断 1件\n\t14 close button (disabled)\n\t15 zoom button\n\t16 minimize button\n\t17 text\n\t18 sheet alert\n\t\t19 text 未保存の編集があります。\n\t\t20 text 保存して続けるか、編集を破棄するか選んでください。\n\t\t21 button 保存\n\t\t22 button 破棄\n\t\t23 button キャンセル\n\nThe focused UI element is 22 button 破棄.",
+    "focusedElementId": 22,
+    "window": {
+      "screenIndex": 0,
+      "title": "",
+      "width": 1280,
+      "id": 10669,
+      "platform": {
+        "layer": 0
+      },
+      "height": 892,
+      "x": 320,
+      "isOffscreen": false,
+      "y": 185,
+      "isMinimized": false
+    },
+    "coordinateSpace": "window",
+    "truncation": {
+      "maxNodes": 1200,
+      "truncated": false,
+      "maxDepth": 64,
+      "maxDepthReached": false
+    }
+  },
+  "screenshot": {
+    "height": 892,
+    "scale": 1,
+    "width": 1280,
+    "format": "png",
+    "path": "/var/folders/6g/qj4rcjpx09z04k4b50hrzs9w0000gn/T/orca-computer-use/09af00c6-146f-477e-97cc-785e755e5f2e-screenshot.png",
+    "dataOmitted": true,
+    "expiresAt": "2026-10-19T12:06:45.687Z"
+  },
+  "screenshotStatus": {
+    "metadata": {
+      "windowId": 10669,
+      "engine": "screenCaptureKit"
+    },
+    "state": "captured"
+  }
+}

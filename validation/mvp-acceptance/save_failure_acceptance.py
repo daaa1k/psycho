@@ -29,6 +29,7 @@ try:
         os.chmod(gui.fixture.parent,0o500)
         gui.press('保存')
         assert gui.fixture.read_bytes()==gui.original
+        gui.button('キャンセル')
     finally:
         os.chmod(gui.fixture.parent,mode)
     text=gui.text('save-failure-keeps-draft')
