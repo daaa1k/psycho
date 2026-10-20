@@ -1,0 +1,50 @@
+{
+  "final_product_revision": "b493b6a",
+  "mapping": [
+    {
+      "original_revision": "16382ab",
+      "branch_revision": "5b607ab",
+      "source_blobs": {
+        "src/main.rs": "8d1a96cd30dbb25aa3bdee87ceb925668dcefde9",
+        "src/editor_actions.rs": "78c73ed14b9519be24f8c1271722164e733dce8e",
+        "src/editor_view.rs": "f26e94270076f0278c753823a82399150234389a"
+      }
+    },
+    {
+      "original_revision": "c659ed8",
+      "branch_revision": "e9352eb",
+      "source_blobs": {
+        "src/main.rs": "a272176c7a066758452a06708ef84108c05dc06e",
+        "src/editor_actions.rs": "f3c81a24489c53e56250b8993bb5a3ef6be3a523",
+        "src/editor_view.rs": "05ca4b7037649c50e46b6608d976d8c975113a6f"
+      }
+    },
+    {
+      "original_revision": "59eee9b",
+      "branch_revision": "682445e",
+      "source_blobs": {
+        "src/main.rs": "a1def000282d418b1f3f19d5bb69ef773366d42d",
+        "src/editor_actions.rs": "f3c81a24489c53e56250b8993bb5a3ef6be3a523",
+        "src/editor_view.rs": "05ca4b7037649c50e46b6608d976d8c975113a6f"
+      }
+    },
+    {
+      "original_revision": "4e800c0",
+      "branch_revision": "b493b6a",
+      "source_blobs": {
+        "src/main.rs": "3dfc8aaa1dfe4086aa1ef8921ec4f28664d45dcc",
+        "src/editor_actions.rs": "f3c81a24489c53e56250b8993bb5a3ef6be3a523",
+        "src/editor_view.rs": "05ca4b7037649c50e46b6608d976d8c975113a6f"
+      }
+    }
+  ],
+  "note": "Original worktree revisions remain in raw launch metadata; equivalent public branch revisions are listed here.",
+  "artifact_path_mapping": [
+    {
+      "record": "input-repair/ime-baseline/build-provenance.json",
+      "field": "build_log",
+      "original_value": "../issue-55-ime-baseline-build.log",
+      "included_path": "input-repair/baseline-build.log"
+    }
+  ]
+}

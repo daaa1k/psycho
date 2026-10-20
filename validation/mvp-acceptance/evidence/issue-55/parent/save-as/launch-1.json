@@ -1,0 +1,8 @@
+{
+  "pid": 30944,
+  "revision": "ac102b94c68781dfa3297a802d099758a5d8c9f0",
+  "macos": "26.5.2",
+  "binary_sha256": "82bba7b46411cc54352061648a9b5b7ccc6fc96a1747d5e721d7ac5a4ce653e0",
+  "fixture": "/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-parent-save-as-1/presentation.kdl",
+  "untitled": false
+}

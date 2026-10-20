@@ -1,4 +1,3 @@
-"""Save native Japanese composition and compare the complete document bytes."""
 import argparse
 import json
 from pathlib import Path

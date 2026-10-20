@@ -1,0 +1,3 @@
+PASS invalid draft close/cancel, save rejection, input focus, repair/save
+PASS missing image on noncurrent slide blocks presentation and diagnostic selects target
+PASS independent acceptance

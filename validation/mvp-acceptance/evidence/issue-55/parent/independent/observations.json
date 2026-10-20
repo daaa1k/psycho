@@ -1,0 +1,132 @@
+[
+  {
+    "name": "invalid-close-modal",
+    "tree": "App=psycho (pid 90852)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button (disabled) スライド追加\n\t5 button (disabled) 挿入\n\t6 button (disabled) 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button (disabled) 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 Keep source, Secondary Actions: pick\n\t11 container スライドキャンバス\n\t12 text 文書や外部ファイルの問題を解決してください。\n\t13 button 診断 0件\n\t14 close button (disabled)\n\t15 zoom button\n\t16 minimize button\n\t17 text\n\t18 sheet alert\n\t\t19 text 未保存の編集があります。\n\t\t20 text 保存して続けるか、編集を破棄するか選んでください。\n\t\t21 button 保存\n\t\t22 button 破棄\n\t\t23 button キャンセル\n\nThe focused UI element is 18 sheet alert.",
+    "text": "presentation.kdl 未保存A田スライド追加田挿入日 表示スライド> 1 Keep sourceKeep sourceスライド 1/1・63%・全体に合わせるKDLファイルを開いて編集できます。文書や外部ファイルの問題を解決してください。未保存の編集があります。保存して続けるか、編集を破棄するか選んでください。保存キャンセル診断 0件コプレゼンテーション発表メニューInspector外部ファイルの問題を解決するまで編集できません。保持中の入力",
+    "input": {
+      "text": "",
+      "selected": [
+        0,
+        0
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1013.0,
+        517.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "disk": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022496e76616c6964206472616674223b207d3b20736c696465207b2068656164696e6720224b65657020736f75726365223b207d3b207d0a"
+  },
+  {
+    "name": "invalid-save-refusal",
+    "tree": "App=psycho (pid 90852)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t\t2 text 保存できませんでした\n\t3 button (disabled) 元に戻す\n\t4 button (disabled) やり直す\n\t5 button (disabled) スライド追加\n\t6 button (disabled) 挿入\n\t7 button (disabled) 表示\n\t8 button (disabled) プレゼンテーション\n\t9 button (disabled) 発表メニュー\n\t10 text value was rejected: タイトルを入力してください\n\t11 list スライド一覧\n\t\t12 text (selected) スライド 1 Keep source, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t14 text 文書や外部ファイルの問題を解決してください。\n\t15 button 診断 0件\n\t16 close button (disabled)\n\t17 zoom button\n\t18 minimize button\n\t19 text\n\t20 sheet alert\n\t\t21 image psycho critical alert\n\t\t22 text 保存できませんでした。\n\t\t23 text value was rejected: タイトルを入力してください\n\t\t24 button キャンセル\n\t\t25 button 再試行\n\nThe focused UI element is 20 sheet alert.",
+    "text": "presentation.kdl 未保存 保存できませんでしたA田 スライド追加田 挿入II 表示value was rejected： タイトルを入力してくださいスライド> 1 Keep sourceKeep sourceスライド 1/1・63%・全体に合わせるKDLファイルを開いて編集できます。文書や外部ファイルの問題を解決してください。保存できませんでした。value was rejected： タイトルを入力してくださいキャンセル再試行診断 0件1 プレゼンテーション発表メニューInspector外部ファイルの問題を解決するまで編集できません。保持中の入力",
+    "input": {
+      "text": "",
+      "selected": [
+        0,
+        0
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1013.0,
+        517.0,
+        26.0
+      ],
+      "undo": 1,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "disk": "70726573656e746174696f6e207b206d65746164617461207b207469746c652022496e76616c6964206472616674223b207d3b20736c696465207b2068656164696e6720224b65657020736f75726365223b207d3b207d0a"
+  },
+  {
+    "name": "invalid-repaired-and-saved",
+    "tree": "App=psycho (pid 90852)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 保存済み\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 Keep source, Secondary Actions: pick\n\t11 container スライドキャンバス\n\t12 list スライドの構造一覧\n\t\t13 text Element 1 · 見出し, Secondary Actions: pick\n\t14 button Presentation title\n\t15 button (disabled) 入力を取り消す\n\t16 text field (settable) Presentation のタイトル, Value: Recovered title\n\t17 button 適用\n\t18 button 要素を追加…\n\t19 button 診断 0件\n\t20 close button\n\t21 full screen button, Secondary Actions: zoom the window\n\t22 minimize button\n\t23 text\n\nThe focused UI element is 0 standard window.",
+    "text": "presentation.kdl保存済み四 スライド追加田 挿入II 表示日プレゼンテーション発表メニュースライドMAsPB2ICeInspectorスライドの構造Element 1・見出し> 1 Keep sourceKeep sourcePresentation titlePresentation のタイトル入力を取り消すPresentation のタイトルRecovered title適用要素を追加...スライド 1/1・63%・全体に合わせる保存しました。診断 0件",
+    "input": {
+      "text": "Recovered title",
+      "selected": [
+        15,
+        15
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1121.3594,
+        487.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": true
+    },
+    "disk": "70726573656e746174696f6e207b206d65746164617461207b207469746c6520225265636f7665726564207469746c65223b207d3b20736c696465207b2068656164696e6720224b65657020736f75726365223b207d3b207d0a"
+  },
+  {
+    "name": "image-diagnostics",
+    "tree": "App=psycho (pid 92705)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 保存済み\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text (selected) スライド 1 First, Secondary Actions: pick\n\t\t11 text スライド 2, Secondary Actions: pick\n\t12 container スライドキャンバス\n\t13 list スライドの構造一覧\n\t\t14 text Element 1 · 見出し, Secondary Actions: pick\n\t15 button Presentation title\n\t16 button (disabled) 入力を取り消す\n\t17 text field (settable) Presentation のタイトル, Value: Noncurrent image\n\t18 button 適用\n\t19 button 要素を追加…\n\t20 text 画像の問題を修正してください。\n\t21 button 診断 1件\n\t22 container 診断\n\t\t23 button 画像 · Slide 2 · missing-image.png · 画像ファイルがありません\n\t24 close button\n\t25 full screen button, Secondary Actions: zoom the window\n\t26 minimize button\n\t27 text\n\nThe focused UI element is 0 standard window.",
+    "text": "presentation.kdl保存済み田スライド追加田 挿入II 表示1 プレゼンテーション発表メニュースライドFmt画像・Slide 2・missing-image.png・画像ファイルがありませんInspectorスライドの構造Element 1・見出し> 1 FirstFirst2 スライド 2Presentation titlePresentation のタイトル入力を取り消すPresentation のタイトルNoncurrent image適用要素を追加...スライド 1/2・63%・全体に合わせるKDL ファイルを開いて編集できます。画像の問題を修正してください。診断 1件",
+    "input": {
+      "text": "Noncurrent image",
+      "selected": [
+        16,
+        16
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1143.4453,
+        487.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "disk": "70726573656e746174696f6e207b206d65746164617461207b207469746c6520224e6f6e63757272656e7420696d616765223b207d3b20736c696465207b2068656164696e6720224669727374223b207d3b20736c696465207b20696d61676520226d697373696e672d696d6167652e706e67223b207d3b207d0a"
+  },
+  {
+    "name": "image-target",
+    "tree": "App=psycho (pid 92705)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 保存済み\n\t2 button (disabled) 元に戻す\n\t3 button (disabled) やり直す\n\t4 button スライド追加\n\t5 button 挿入\n\t6 button 表示\n\t7 button (disabled) プレゼンテーション\n\t8 button 発表メニュー\n\t9 list スライド一覧\n\t\t10 text スライド 1 First, Secondary Actions: pick\n\t\t11 text (selected) スライド 2, Secondary Actions: pick\n\t12 container スライドキャンバス\n\t13 list スライドの構造一覧\n\t\t14 text (selected) Element 1 · 画像, Secondary Actions: pick\n\t15 button Presentation title\n\t16 button (disabled) 入力を取り消す\n\t17 text field (settable) 画像パス、文書からの相対パス, Value: missing-image.png\n\t18 button 適用\n\t19 button 画像パス\n\t20 button Caption\n\t21 button 画像を再読み込み\n\t22 button Element を削除\n\t23 button 要素を追加…\n\t24 text 画像の問題を修正してください。\n\t25 button 診断 1件\n\t26 close button\n\t27 full screen button, Secondary Actions: zoom the window\n\t28 minimize button\n\t29 text\n\nThe focused UI element is 0 standard window.",
+    "text": "presentation.kdl保存済み四 スライド追加田 挿入II 表示スライドFmt1 First> 2 スライド 2＋キャプションを追加スライド 2/2・63%・全体に合わせる画像を読み込めません：missing-image.png・画像ファイルがありません画像の問題を修正してください。画像を読み込めません：missing-image.png診断 1件1プレゼンテーション発表メニューInspectorスライドの構造Element 1・画像くPresentation title画像入力を取り消す画像バス、文害からの相対バス1行で舞集しますmissing-image.png適用画像バスCaption画像を再読み込みElement を削除要素を追加…..",
+    "input": {
+      "text": "missing-image.png",
+      "selected": [
+        17,
+        17
+      ],
+      "marked": [
+        -1,
+        -1
+      ],
+      "cursor": [
+        1151.9375,
+        509.0,
+        26.0
+      ],
+      "undo": 0,
+      "redo": 0,
+      "composing": false,
+      "focused": false
+    },
+    "disk": "70726573656e746174696f6e207b206d65746164617461207b207469746c6520224e6f6e63757272656e7420696d616765223b207d3b20736c696465207b2068656164696e6720224669727374223b207d3b20736c696465207b20696d61676520226d697373696e672d696d6167652e706e67223b207d3b207d0a"
+  }
+]

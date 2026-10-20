@@ -1,0 +1,12 @@
+[
+  {
+    "name": "failure",
+    "text": "●●presentation.kdl 未保存 別名保存できませんでしたか→田 スライド追加田 挿入II 表示1プレゼンテーションI/O error: Permission denied （os error 13） at path \"/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-parent-save-as-1/archivel.tmpOxE3aA\"スライドInspectorスライドの構造発表メニューElement 1・見出しく> 1 Retained after failureRetained after failurePresentation title見出し入力を取り消すキャンバス上で編集中全文をInspector で編集Element を削除要素を追加....スライド 1/1・63%・全体に合わせる編集内容をKDLに反映しました。診断 0件",
+    "tree": "App=psycho (pid 30944)\nWindow: \"\", App: psycho.\n\n0 standard window\n\t1 container presentation.kdl · 未保存\n\t\t2 text 別名保存できませんでした\n\t3 button 元に戻す\n\t4 button (disabled) やり直す\n\t5 button スライド追加\n\t6 button 挿入\n\t7 button 表示\n\t8 button プレゼンテーション\n\t9 button 発表メニュー\n\t10 text I/O error: Permission denied (os error 13) at path \"/Users/daichikinoshita/orca/workspaces/psycho/issue-55/target/issue-55-parent-save-as-1/archive/.tmpOxE3aA\"\n\t11 list スライド一覧\n\t\t12 text (selected) スライド 1 Retained after failure, Secondary Actions: pick\n\t13 container スライドキャンバス\n\t\t14 text field (settable) 見出し, Value: Retained after failure\n\t15 list スライドの構造一覧\n\t\t16 text (selected) Element 1 · 見出し, Secondary Actions: pick\n\t17 button Presentation title\n\t18 button 入力を取り消す\n\t19 button 全文をInspectorで編集\n\t20 button Element を削除\n\t21 button 要素を追加…\n\t22 button 診断 0件\n\t23 close button\n\t24 full screen button, Secondary Actions: zoom the window\n\t25 minimize button\n\t26 text\n\nThe focused UI element is 0 standard window."
+  },
+  {
+    "name": "retry",
+    "source": "presentation { metadata { title \"Save As retry\" }; slide { heading \"Retained after failure\"; }; }\n",
+    "text": "presentation.kdl←→スライドptsead starticoa保存済み田スライド追加田 挿入II 表示日プレゼンテーション発表メニューInspectorスライドの構造Element 1・見出しく> 1 Retained after failureRetained after failurePresentation title見出し入力を取り消すキャンバス上で集中全文をInspectorで編集Element を削除要素を追加…スライド 1/1・63%・全体に合わせる保存しました。診断 0件"
+  }
+]
