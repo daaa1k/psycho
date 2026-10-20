@@ -1,0 +1,56 @@
+{
+  "unitTestRevision": "c8c3f8304efa9c7483b0261696ff3e420092041b",
+  "runtimeRevision": "f1ef547dd18f509a9744dc2a9de18e7cb498717b",
+  "identical": true,
+  "command": "git diff --exit-code c8c3f8304efa9c7483b0261696ff3e420092041b f1ef547dd18f509a9744dc2a9de18e7cb498717b -- Cargo.toml Cargo.lock src",
+  "files": [
+    {
+      "path": "Cargo.lock",
+      "blob": "e2b7e0f422797a25fa2f3315ef721ff32ae92018"
+    },
+    {
+      "path": "Cargo.toml",
+      "blob": "eaca7ea31129a43ac7d7091c87fa0030354a363d"
+    },
+    {
+      "path": "src/editor_actions.rs",
+      "blob": "4fa2e887cc830d6f564b79944803b45026f05fa3"
+    },
+    {
+      "path": "src/editor_insert.rs",
+      "blob": "1d075c3b24cc406b1f8ad4ce7d9fd785ffdc517b"
+    },
+    {
+      "path": "src/editor_validation.rs",
+      "blob": "903d33ff53bf1d9347a70a0c6227d312191014db"
+    },
+    {
+      "path": "src/editor_view.rs",
+      "blob": "8d6bb7ccf7ee57734d803aa23d408b02297d2945"
+    },
+    {
+      "path": "src/ime.rs",
+      "blob": "12225dec43da746a5a4c31464ab1c5a0e4d412ee"
+    },
+    {
+      "path": "src/input.rs",
+      "blob": "bf53192fd9e875a07dc38d8e7f7ea0edf5c77af1"
+    },
+    {
+      "path": "src/lib.rs",
+      "blob": "28aedff5bb502921202f5119094bbeda90914e39"
+    },
+    {
+      "path": "src/main.rs",
+      "blob": "6dd15875a0836f79f8b5fa4aa6c3512e76e4ac5f"
+    },
+    {
+      "path": "src/navigator.rs",
+      "blob": "c5978589f8b43b35e8bc4334f9ce73266901db06"
+    },
+    {
+      "path": "src/text.rs",
+      "blob": "78b7bd04ef98aa8b3ed0936dea0c39a396f4ad69"
+    }
+  ]
+}

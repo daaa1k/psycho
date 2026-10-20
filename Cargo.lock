@@ -3864,6 +3864,7 @@ dependencies = [
 name = "psycho"
 version = "0.1.0"
 dependencies = [
+ "accesskit_macos",
  "gpui",
  "gpui_platform",
  "image",

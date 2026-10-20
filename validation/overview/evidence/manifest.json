@@ -1,0 +1,309 @@
+{
+  "cases": [
+    {
+      "name": "main",
+      "status": "passed",
+      "revision": "8f9d90016cc45a25a9774aec5a4d7ea480fb7245",
+      "binarySha256": "ef92717fd60935e374b819cce0ca02b19c7b0641d3425fa9ee91f1e909483a9c",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/overview/acceptance.py",
+        "--section",
+        "main",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-native-recipes-8f9d900/main",
+        "--revision",
+        "8f9d90016cc45a25a9774aec5a4d7ea480fb7245"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-native-recipes-8f9d900/main"
+    },
+    {
+      "name": "guards",
+      "status": "passed",
+      "revision": "811dd3284abb3ac603038a1adbf3fc1dd8649043",
+      "binarySha256": "7a30e6497fbd62209e7edd3d20a4f03b39c313b1a621905c52b13da71d23ee6a",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/overview/acceptance.py",
+        "--section",
+        "guards",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-inspector-811dd32/guards",
+        "--revision",
+        "811dd3284abb3ac603038a1adbf3fc1dd8649043"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-inspector-811dd32/guards"
+    },
+    {
+      "name": "empty",
+      "status": "passed",
+      "revision": "fe10c380f96fce692eba45ee4e3a1bfdd3aba6a5",
+      "binarySha256": "d884722ae065b88bf6d724ec3f1bc303272c8f3941afa353579b7d30eeada5aa",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/overview/acceptance.py",
+        "--section",
+        "empty",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-complete-fe10c38/empty",
+        "--revision",
+        "fe10c380f96fce692eba45ee4e3a1bfdd3aba6a5"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-complete-fe10c38/empty"
+    },
+    {
+      "name": "invalid",
+      "status": "passed",
+      "revision": "fbb2a634b266e352c8eb042e0fef62f56a60df72",
+      "binarySha256": "1baef560beb7eb63ab2ec6d57b860223a93dc3ce3dc22a7f33035301405a5f2d",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/overview/acceptance.py",
+        "--section",
+        "invalid",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-integrated-fbb2a63/invalid",
+        "--revision",
+        "fbb2a634b266e352c8eb042e0fef62f56a60df72"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-integrated-fbb2a63/invalid"
+    },
+    {
+      "name": "representative",
+      "status": "passed",
+      "revision": "fbb2a634b266e352c8eb042e0fef62f56a60df72",
+      "binarySha256": "1baef560beb7eb63ab2ec6d57b860223a93dc3ce3dc22a7f33035301405a5f2d",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/overview/acceptance.py",
+        "--section",
+        "representative",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-integrated-fbb2a63/representative",
+        "--revision",
+        "fbb2a634b266e352c8eb042e0fef62f56a60df72"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-integrated-fbb2a63/representative"
+    },
+    {
+      "name": "drag",
+      "status": "passed",
+      "revision": "fe10c380f96fce692eba45ee4e3a1bfdd3aba6a5",
+      "binarySha256": "d884722ae065b88bf6d724ec3f1bc303272c8f3941afa353579b7d30eeada5aa",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/overview/acceptance.py",
+        "--section",
+        "drag",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-complete-fe10c38/drag",
+        "--revision",
+        "fe10c380f96fce692eba45ee4e3a1bfdd3aba6a5"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-complete-fe10c38/drag"
+    },
+    {
+      "name": "resize",
+      "status": "passed",
+      "revision": "fe10c380f96fce692eba45ee4e3a1bfdd3aba6a5",
+      "binarySha256": "d884722ae065b88bf6d724ec3f1bc303272c8f3941afa353579b7d30eeada5aa",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/overview/acceptance.py",
+        "--section",
+        "resize",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-complete-fe10c38/resize",
+        "--revision",
+        "fe10c380f96fce692eba45ee4e3a1bfdd3aba6a5"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-complete-fe10c38/resize"
+    },
+    {
+      "name": "layout-light",
+      "status": "passed",
+      "revision": "fe10c380f96fce692eba45ee4e3a1bfdd3aba6a5",
+      "binarySha256": "d884722ae065b88bf6d724ec3f1bc303272c8f3941afa353579b7d30eeada5aa",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/overview/acceptance.py",
+        "--section",
+        "layout",
+        "--appearance",
+        "light",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-complete-fe10c38/layout-light",
+        "--revision",
+        "fe10c380f96fce692eba45ee4e3a1bfdd3aba6a5"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-complete-fe10c38/layout-light"
+    },
+    {
+      "name": "layout-dark",
+      "status": "passed",
+      "revision": "fe10c380f96fce692eba45ee4e3a1bfdd3aba6a5",
+      "binarySha256": "d884722ae065b88bf6d724ec3f1bc303272c8f3941afa353579b7d30eeada5aa",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/overview/acceptance.py",
+        "--section",
+        "layout",
+        "--appearance",
+        "dark",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-complete-fe10c38/layout-dark",
+        "--revision",
+        "fe10c380f96fce692eba45ee4e3a1bfdd3aba6a5"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-complete-fe10c38/layout-dark"
+    },
+    {
+      "name": "voiceover",
+      "status": "passed",
+      "revision": "c8c3f8304efa9c7483b0261696ff3e420092041b",
+      "binarySha256": "40d47e6cc67aad949bd804eec6796f831f2d5daa91a5bc0616f471869f371ce9",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/overview/voiceover.py",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-final-c8c3f83/voiceover",
+        "--revision",
+        "c8c3f8304efa9c7483b0261696ff3e420092041b"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-final-c8c3f83/voiceover"
+    },
+    {
+      "name": "ime",
+      "status": "passed",
+      "revision": "fbb2a634b266e352c8eb042e0fef62f56a60df72",
+      "binarySha256": "1baef560beb7eb63ab2ec6d57b860223a93dc3ce3dc22a7f33035301405a5f2d",
+      "command": [
+        "xcrun",
+        "swift",
+        "/private/tmp/psycho-issue-54-implementation/validation/mvp-acceptance/with_japanese_ime.swift",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/overview/ime.py",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-integrated-fbb2a63/ime",
+        "--revision",
+        "fbb2a634b266e352c8eb042e0fef62f56a60df72"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-integrated-fbb2a63/ime"
+    },
+    {
+      "name": "navigator",
+      "status": "passed",
+      "revision": "f1ef547dd18f509a9744dc2a9de18e7cb498717b",
+      "binarySha256": "0ca97cbe41376e85cba1067fd6bb1d11658ee3ad07697b73b4e0e3b5c75390dc",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/navigator/acceptance.py",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-regression-f1ef547/navigator",
+        "--revision",
+        "f1ef547dd18f509a9744dc2a9de18e7cb498717b"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-regression-f1ef547/navigator"
+    },
+    {
+      "name": "navigator-light",
+      "status": "passed",
+      "revision": "35d976d8cc17867f3fdf6c4d51a9fa6c69299d81",
+      "binarySha256": "cd1c3bd2767de35aef518c70eb4e5281ff088248a94ee9ee0986ee1397bf5f40",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/navigator/layout.py",
+        "--appearance",
+        "light",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-remainder-35d976d/navigator-light",
+        "--revision",
+        "35d976d8cc17867f3fdf6c4d51a9fa6c69299d81"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-remainder-35d976d/navigator-light"
+    },
+    {
+      "name": "navigator-dark",
+      "status": "passed",
+      "revision": "35d976d8cc17867f3fdf6c4d51a9fa6c69299d81",
+      "binarySha256": "cd1c3bd2767de35aef518c70eb4e5281ff088248a94ee9ee0986ee1397bf5f40",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/navigator/layout.py",
+        "--appearance",
+        "dark",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-remainder-35d976d/navigator-dark",
+        "--revision",
+        "35d976d8cc17867f3fdf6c4d51a9fa6c69299d81"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-remainder-35d976d/navigator-dark"
+    },
+    {
+      "name": "slide-organization",
+      "status": "passed",
+      "revision": "35d976d8cc17867f3fdf6c4d51a9fa6c69299d81",
+      "binarySha256": "cd1c3bd2767de35aef518c70eb4e5281ff088248a94ee9ee0986ee1397bf5f40",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/slide-organization/acceptance.py",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-remainder-35d976d/slide-organization",
+        "--revision",
+        "35d976d8cc17867f3fdf6c4d51a9fa6c69299d81"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-remainder-35d976d/slide-organization"
+    },
+    {
+      "name": "slide-guards",
+      "status": "passed",
+      "revision": "f1ef547dd18f509a9744dc2a9de18e7cb498717b",
+      "binarySha256": "0ca97cbe41376e85cba1067fd6bb1d11658ee3ad07697b73b4e0e3b5c75390dc",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/slide-organization/guards.py",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-regression-f1ef547/slide-guards",
+        "--revision",
+        "f1ef547dd18f509a9744dc2a9de18e7cb498717b"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-regression-f1ef547/slide-guards"
+    },
+    {
+      "name": "diagnostics",
+      "status": "passed",
+      "revision": "811dd3284abb3ac603038a1adbf3fc1dd8649043",
+      "binarySha256": "7a30e6497fbd62209e7edd3d20a4f03b39c313b1a621905c52b13da71d23ee6a",
+      "command": [
+        "/private/tmp/psycho-issue-54-implementation/target/overview-env/bin/python",
+        "/private/tmp/psycho-issue-54-implementation/validation/overview/acceptance.py",
+        "--section",
+        "diagnostics",
+        "--output",
+        "/private/tmp/psycho-issue-54-implementation/target/overview-inspector-811dd32/diagnostics",
+        "--revision",
+        "811dd3284abb3ac603038a1adbf3fc1dd8649043"
+      ],
+      "returncode": 0,
+      "source": "/private/tmp/psycho-issue-54-implementation/target/overview-inspector-811dd32/diagnostics"
+    }
+  ],
+  "pending": [],
+  "note": "Serial native acceptance across the actual revisions listed per case. This is not one all-green suite at one revision. Failed trials are separate; issue 73 remains open."
+}

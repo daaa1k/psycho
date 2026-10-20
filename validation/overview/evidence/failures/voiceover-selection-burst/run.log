@@ -1,0 +1,8 @@
+true
+{"name": "initial-overview-focus", "cursor": "スライド 1 Heading 001", "phrase": "VoiceOverオン psycho ウインドウ スライド 1 Heading 001 text （1 / 16） がキーボードの操作対象になっています"}
+{"name": "navigate-to-second", "cursor": "スライド 2 Heading 002", "phrase": "スライド 2 Heading 002 text （2 / 16）"}
+{"name": "activated-selected-second", "cursor": "Overviewのスライド一覧 list", "phrase": "操作終了 Overviewのスライド一覧 list 1項目が選択されています。 スライド 2 Heading 002 text （2 / 16）"}
+{"name": "keyboard-reorder-with-voiceover", "cursor": "スライド 3 Heading 002", "phrase": "操作開始 Overviewのスライド一覧 list 1項目が選択されています。 スライド 2 Heading 002 text （2 / 16） スライド 2 Heading 002 text （2 / 16）"}
+{"name": "virtualized-tail-keyboard-focus", "cursor": "スライド 100 Heading 100", "phrase": "スライド 100 Heading 100 text （16 / 16）"}
+{"name": "virtualized-tail-selection", "cursor": "Overviewのスライド一覧 list", "phrase": "操作終了 Overviewのスライド一覧 list 1項目が選択されています。 スライド 100 Heading 100 text （16 / 16）"}
+PASS native VoiceOver speech, activation, selected state, reorder and Return

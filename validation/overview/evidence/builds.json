@@ -1,0 +1,7 @@
+{
+  "finalRuntimeRevision": "f1ef547dd18f509a9744dc2a9de18e7cb498717b",
+  "command": "PSYCHO_BUILD_REVISION=$(git rev-parse HEAD) CARGO_TARGET_AARCH64_APPLE_DARWIN_LINKER=/usr/bin/clang CC=/usr/bin/clang cargo build --locked --features gui --bin psycho",
+  "returncode": 0,
+  "log": "final-build.log",
+  "sha256": "0ca97cbe41376e85cba1067fd6bb1d11658ee3ad07697b73b4e0e3b5c75390dc"
+}
