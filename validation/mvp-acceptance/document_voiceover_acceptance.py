@@ -71,7 +71,11 @@ try:
     assert gui.state()['text'] == 'VoiceOver retained draft'
     assert gui.state()['focused'], gui.state()
     assert gui.fixture.read_bytes() == gui.original
-    gui.menu('表示', '診断一覧')
+    gui.hotkey('Ctrl+Alt+Shift+Up')
+    observe('leave-restored-input')
+    vo('tell vo cursor to move to first item')
+    move_to('診断 1件', button=True)
+    vo('tell vo cursor to perform action')
     gui.snapshot('voiceover-diagnostics')
     issue = move_to('画像', button=True)
     assert 'missing.png' in issue['cursor'] + issue['phrase'], issue
@@ -95,6 +99,9 @@ try:
     move_to('再読み込み', button=True)
     vo('tell vo cursor to perform action')
     gui.key('Return')
+    deadline = time.monotonic() + 2
+    while gui.state()['text'] != 'Recovered document' and time.monotonic() < deadline:
+        time.sleep(.05)
     assert gui.state()['text'] == 'Recovered document', gui.state()
     gui.snapshot('voiceover-reloaded')
     vo('tell vo cursor to move to first item')

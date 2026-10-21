@@ -147,6 +147,22 @@ try:
     tail = observe('virtualized-tail-selection')
     assert '100' in tail['phrase'] and 'Heading' in tail['phrase'] and '選択' in tail['phrase'], tail
     gui.hotkey('Ctrl+Alt+Shift+Down')
+    before_add = bytes.fromhex(state()['sourceHex'])
+    gui.hotkey('CmdOrCtrl+Shift+N')
+    added = state()
+    added_source = bytes.fromhex(added['sourceHex'])
+    assert added['currentSlide'] == 100 and added['overviewFocused'], added
+    assert len(re.findall(rb'\bslide\b', added_source)) == 101, added_source
+    added_speech = observe('keyboard-add-slide-with-voiceover')
+    assert '101' in added_speech['phrase'], added_speech
+    gui.hotkey('CmdOrCtrl+S')
+    deadline = time.monotonic() + 2
+    while gui.fixture.read_bytes() != added_source and time.monotonic() < deadline:
+        time.sleep(.05)
+    assert gui.fixture.read_bytes() == added_source
+    gui.hotkey('CmdOrCtrl+Z')
+    assert bytes.fromhex(state()['sourceHex']) == before_add
+    assert state()['currentSlide'] == 99 and state()['overviewFocused']
     gui.key('Return')
     assert not state()['overview'] and state()['currentSlide'] == 99 and state()['canvasFocused']
     gui.snapshot('voiceover-return-to-edit')

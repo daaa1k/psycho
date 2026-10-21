@@ -39,7 +39,10 @@ def ax(label, settings=True):
         value = tree()
         match = re.search(r'^\s*(\d+) (?:button|text|text field) (?:\([^)]*\) )?' + re.escape(label) + r'(?: ✓)?(?:, .*)?$', value, re.M)
         if match:
-            gui.act('click', '--element-index', match[1], '--no-screenshot')
+            if 'text field' in match.group(0):
+                gui.focus_input(label)
+            else:
+                gui.act('click', '--element-index', match[1], '--no-screenshot')
             return
         if settings:
             scroll(580, 'down')
@@ -232,6 +235,9 @@ try:
     assert '外部ファイルの問題' in gui.text(), blocked
     assert gui.state()['text'] == 'Pending conflict'
     record('external-conflict-stops-editing')
+except Exception:
+    gui.snapshot('failure')
+    raise
 finally:
     (gui.out / 'observations.json').write_text(json.dumps(records, ensure_ascii=False, indent=2) + '\n')
     gui.stop()

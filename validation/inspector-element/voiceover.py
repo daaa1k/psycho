@@ -42,6 +42,24 @@ def observe(name):
     print(json.dumps(record, ensure_ascii=False), flush=True)
     return record
 
+def save_containing(expected):
+    gui.hotkey('CmdOrCtrl+S')
+    deadline = time.monotonic() + 2
+    while expected not in gui.fixture.read_bytes() and time.monotonic() < deadline:
+        time.sleep(.05)
+    saved = gui.fixture.read_bytes()
+    assert expected in saved, saved
+    return saved
+
+def focus_field(label):
+    for _ in range(40):
+        if gui.state()['focused']:
+            record = observe('keyboard-field-focus')
+            assert label in record['cursor'] + record['phrase'], record
+            return record
+        gui.key('Tab')
+    raise AssertionError((label, gui.state()))
+
 def move_to(label, direction='right', button=False):
     previous = None
     for _ in range(45):
@@ -49,7 +67,10 @@ def move_to(label, direction='right', button=False):
         matched = record['cursor'].startswith(label + ' ') and 'radio button' not in record['cursor'] if button else label in record['cursor']
         if matched:
             return record
-        if record['cursor'] == previous:
+        outline = re.match(r'^(Element \d+ ·|2列 \d+ ·)', record['cursor'])
+        if outline and re.match(r'^(Element \d+ ·|2列 \d+ ·)', label):
+            gui.key('Down' if direction == 'right' else 'Up')
+        elif outline or record['cursor'] == previous:
             gui.hotkey('Ctrl+Alt+Shift+Up')
             vo('tell vo cursor to move ' + direction)
         elif record['cursor'].endswith(' group') or record['cursor'].endswith(' list'):
@@ -93,11 +114,10 @@ try:
         move_to('2列 21 · 右列 · 本文 1')
         vo('tell vo cursor to perform action')
         assert '(selected) 2列 21 · 右列 · 本文 1' in gui.act('get-app-state')['snapshot']['treeText']
-        move_to('本文 text field')
-        gui.hotkey('Ctrl+Alt+Shift+Down')
+        focus_field('本文')
         assert gui.state()['focused'], gui.state()
         gui.replace('VoiceOver offscreen edited')
-        assert b'text "VoiceOver offscreen edited"' in gui.save()
+        save_containing(b'text "VoiceOver offscreen edited"')
         gui.snapshot('voiceover-offscreen-edit-saved')
         print('PASS native VoiceOver offscreen nested selection, edit and Save', flush=True)
     elif args.width_only:
@@ -106,12 +126,11 @@ try:
         assert '(selected) Element 1 · 2列' in gui.act('get-app-state')['snapshot']['treeText']
         move_to('左列幅を数値入力', button=True)
         vo('tell vo cursor to perform action')
-        width = move_to('左列幅、1〜99の整数', 'left')
+        width = focus_field('左列幅、1〜99の整数')
         assert '1' in width['phrase'] and '99' in width['phrase'], width
-        gui.hotkey('Ctrl+Alt+Shift+Down')
         assert gui.state()['focused'], gui.state()
         gui.replace('60')
-        saved = gui.save()
+        saved = save_containing(b'column width=60')
         assert b'column width=60' in saved and b'column width=40' in saved
         gui.snapshot('voiceover-width-constraint-and-edit')
         print('PASS native VoiceOver width constraint, numeric edit and saved complementary widths', flush=True)
@@ -131,32 +150,34 @@ try:
         control = move_to('言語をrustに変更', button=True)
         assert any(word in control['phrase'] for word in ('ボタン', 'button')), control
         vo('tell vo cursor to perform action')
-        assert b'language="rust"' in gui.save()
+        save_containing(b'language="rust"')
         gui.snapshot('voiceover-change-language')
         print('PASS native VoiceOver speech, distinct Columns parents, selection and language operation', flush=True)
     else:
         move_to('コード言語', button=True)
         vo('tell vo cursor to perform action')
-        language = move_to('コード言語、任意の文字列', 'left')
+        language = focus_field('コード言語、任意の文字列')
         assert 'コード言語、任意の文字列' in language['phrase'], language
-        gui.hotkey('Ctrl+Alt+Shift+Down')
         assert gui.state()['focused'], gui.state()
         gui.replace('voiceover-custom')
-        saved = gui.save()
+        saved = save_containing(b'language="voiceover-custom"')
         assert b'language="voiceover-custom"' in saved
         gui.snapshot('voiceover-language-constraint-and-edit')
         gui.hotkey('Ctrl+Alt+Shift+Up')
         move_to('コード全文', button=True)
         vo('tell vo cursor to perform action')
-        full = move_to('コード全文 text field', 'left')
+        full = focus_field('コード全文')
         assert 'コード全文' in full['phrase'], full
-        gui.hotkey('Ctrl+Alt+Shift+Down')
         assert gui.state()['focused'], gui.state()
         gui.replace('voiceover_code();\nsecond_line();')
-        assert b'voiceover_code();\\nsecond_line();' in gui.save()
+        save_containing(b'voiceover_code();\\nsecond_line();')
         gui.snapshot('voiceover-full-code-edited-and-saved')
         gui.hotkey('Ctrl+Alt+Shift+Up')
         print('PASS native VoiceOver arbitrary language constraint, full code edit and saved values', flush=True)
+except Exception:
+    if gui:
+        gui.snapshot('failure')
+    raise
 finally:
     cleanup_errors = []
 

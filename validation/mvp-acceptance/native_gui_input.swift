@@ -117,16 +117,14 @@ func focusInput(_ label: String, pid: pid_t, executable: URL) throws {
     guard matches.count == 1, let target = matches.first else {
         throw InputError("Expected one enabled visible AXTextField '\(label)' for PID \(pid), found \(matches.count)")
     }
-    let events = try (1...2).flatMap { count in
-        try [CGEventType.leftMouseDown, .leftMouseUp].map { kind in
-            guard let event = CGEvent(mouseEventSource: nil, mouseType: kind,
-                                      mouseCursorPosition: target.point, mouseButton: .left) else {
-                throw InputError("Cannot create mouse event for '\(label)'")
-            }
-            event.flags = []
-            event.setIntegerValueField(.mouseEventClickState, value: Int64(count))
-            return event
+    let events = try [CGEventType.leftMouseDown, .leftMouseUp].map { kind in
+        guard let event = CGEvent(mouseEventSource: nil, mouseType: kind,
+                                  mouseCursorPosition: target.point, mouseButton: .left) else {
+            throw InputError("Cannot create mouse event for '\(label)'")
         }
+        event.flags = []
+        event.setIntegerValueField(.mouseEventClickState, value: 1)
+        return event
     }
     try validateTarget(pid, executable: executable)
     for event in events {
@@ -165,15 +163,41 @@ func run() throws {
         receipt["label"] = label
         receipt["focused"] = true
     case .key(let chord):
-        let events = try [true, false].map { down in
+        let modifiers: [(CGKeyCode, CGEventFlags)] = [
+            (55, .maskCommand), (59, .maskControl), (58, .maskAlternate), (56, .maskShift),
+        ].filter { chord.flags.contains($0.1) }
+        var events: [CGEvent] = []
+        var held: CGEventFlags = []
+        for (key, flag) in modifiers {
+            held.insert(flag)
+            guard let event = CGEvent(keyboardEventSource: nil, virtualKey: key, keyDown: true) else {
+                throw InputError("Cannot create modifier event for '\(chord.name)'")
+            }
+            event.type = .flagsChanged
+            event.flags = held
+            events.append(event)
+        }
+        events += try [true, false].map { down in
             guard let event = CGEvent(keyboardEventSource: nil, virtualKey: chord.key, keyDown: down) else {
                 throw InputError("Cannot create keyboard event for '\(chord.name)'")
             }
             event.flags = chord.flags
             return event
         }
+        for (key, flag) in modifiers.reversed() {
+            held.remove(flag)
+            guard let event = CGEvent(keyboardEventSource: nil, virtualKey: key, keyDown: false) else {
+                throw InputError("Cannot create modifier release for '\(chord.name)'")
+            }
+            event.type = .flagsChanged
+            event.flags = held
+            events.append(event)
+        }
         try validateTarget(pid, executable: executable)
-        for event in events { event.postToPid(pid) }
+        for event in events {
+            event.post(tap: .cghidEventTap)
+            Thread.sleep(forTimeInterval: 0.04)
+        }
         receipt["chord"] = chord.name
     }
     let data = try JSONSerialization.data(withJSONObject: receipt, options: [.sortedKeys])

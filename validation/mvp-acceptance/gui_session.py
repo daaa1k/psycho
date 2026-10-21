@@ -167,6 +167,13 @@ class Gui:
         }
         if label in actions:
             return self.menu(*actions[label])
+        state = self.act('get-app-state')
+        match = re.search(r'^\s*(\d+) button (\(disabled\) )?' + re.escape(label) + r'$',
+                          state['snapshot']['treeText'], re.M)
+        if match:
+            if match[2]:
+                return state
+            return self.act('click', '--element-index', match[1], '--no-screenshot')
         for attempt in range(5 if scroll else 1):
             state,rows=self.snapshot()
             normalize=lambda text:unicodedata.normalize('NFKC',''.join(text.split())).replace('−','-').replace('–','-').replace('・','').replace('·','')
@@ -202,7 +209,9 @@ class Gui:
                 self.inspector_scroll(265, direction)
         raise AssertionError((label, tree))
 
-    def key(self,key):return self.act('press-key','--key',key,'--no-screenshot')
+    def key(self,key):
+        self.native_input('key', key)
+        time.sleep(.25)
     def select_slide(self,number):
         for _ in range(20):
             tree = self.act('get-app-state')['snapshot']['treeText']
@@ -215,7 +224,7 @@ class Gui:
             window = self.act('get-app-state')['snapshot']['window']
             self.scroll_at(80, window['height'] * .4, direction)
         raise AssertionError((number, tree))
-    def hotkey(self,key):return self.act('hotkey','--key',key,'--no-screenshot')
+    def hotkey(self,key):return self.key(key)
     def click(self,x,y,count=1):return self.act('click','--x',str(x),'--y',str(y),'--click-count',str(count),'--no-screenshot')
 
     def state(self):
@@ -225,13 +234,12 @@ class Gui:
 
     def replace(self,text):
         assert self.state()['focused'],'No focused scratch text input'
-        self.menu('編集', 'すべてを選択')
-        if text and ('\n' in text or '\t' in text):
+        self.hotkey('CmdOrCtrl+A')
+        if text:
             # Keep our known scratch payload on the native clipboard until the
             # asynchronous GPUI Cmd+V handler has consumed it.
             subprocess.run(['pbcopy'],input=text.encode(),check=True)
             self.hotkey('CmdOrCtrl+V')
-        elif text:self.act('type-text','--text',text,'--no-screenshot')
         else:self.key('Backspace')
         deadline=time.monotonic()+10
         while time.monotonic()<deadline:
@@ -252,6 +260,31 @@ class Gui:
             subprocess.run(['xcrun', 'swiftc', str(Path(__file__).with_name('native_double_click.swift')),
                             '-o', str(helper)], check=True)
         subprocess.run([str(helper), str(self.app.pid), str(x), str(y)], check=True)
+
+    def focus_input(self, label):
+        self.native_input('focus-input', label)
+        deadline = time.monotonic() + 2
+        while time.monotonic() < deadline:
+            state = self.state()
+            if state['focused']:
+                return
+        raise AssertionError((label, state))
+
+    def native_input(self, operation, value):
+        assert self.app.poll() is None, 'Owned scratch process exited'
+        helper = self.out / 'native-gui-input'
+        if not helper.exists():
+            source = Path(__file__).with_name('native_gui_input.swift')
+            subprocess.run(['xcrun', 'swiftc', str(source),
+                            '-o', str(helper)], check=True)
+            (self.out / 'native-input-build.json').write_text(json.dumps(dict(
+                source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
+                helper_sha256=hashlib.sha256(helper.read_bytes()).hexdigest()), indent=2))
+        receipt = json.loads(subprocess.check_output([str(helper), str(self.app.pid),
+                            str(root / 'target/debug/psycho'), operation, value], text=True))
+        with (self.out / 'native-input.jsonl').open('a') as log:
+            log.write(json.dumps(receipt, ensure_ascii=False) + '\n')
+        return receipt
 
     def save(self):self.press('保存');return self.fixture.read_bytes()
 

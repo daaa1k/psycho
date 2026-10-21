@@ -55,7 +55,7 @@ def observe(mode, slide, trace_start):
 
 try:
     gui.click(900, 750)
-    for mode, width, height in [('compact', 1024, 700), ('small', 1280, 892), ('large', 1440, int(os.environ.get('PSYCHO_ACCEPTANCE_LARGE_HEIGHT','992')))]:
+    for mode, width, height in [('compact', 1024, 732), ('small', 1280, 892), ('large', 1440, int(os.environ.get('PSYCHO_ACCEPTANCE_LARGE_HEIGHT','992')))]:
         subprocess.run(['xcrun', 'swift', str(Path(__file__).with_name('move_window.swift')),
                         str(gui.app.pid), '10', '33'], check=True, capture_output=True)
         subprocess.run(['xcrun', 'swift', str(Path(__file__).with_name('resize_window.swift')),

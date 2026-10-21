@@ -16,6 +16,7 @@ from gui_session import Gui, root
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', type=Path, required=True)
 parser.add_argument('--appearance', choices=['light', 'dark'], required=True)
+parser.add_argument('--revision', default=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip())
 args = parser.parse_args()
 args.output = args.output.resolve()
 os.environ['PSYCHO_EDITOR_STATE'] = str(args.output / 'editor-state.json')
@@ -59,14 +60,14 @@ try:
     helper = gui.out / 'resize-window'
     subprocess.run(['xcrun', 'swiftc', str(root / 'validation/mvp-acceptance/resize_window.swift'), '-o', str(helper)], check=True)
     before = state()
-    assert before['revision'] == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip(), before
+    assert before['revision'] == args.revision, before
     assert before['dark'] == (args.appearance == 'dark'), before
     for width, height in [(1024, 700), (1280, 860), (1440, 960)]:
         subprocess.run([str(helper), str(gui.app.pid), str(width), str(height + 32)], check=True)
         time.sleep(.4)
         record = observe(f'{args.appearance}-{width}x{height}-fit')
         tree = record['tree']
-        for label in ['スライド追加', '挿入', '表示', '発表']:
+        for label in ['スライド追加', '挿入', '表示', 'プレゼンテーション', '発表メニュー']:
             assert f'button {label}' in tree, tree
         editor = record['editor']
         assert abs(editor['canvasWidth'] - (width - editor['navigatorWidth'] - editor['inspectorWidth'] - 32)) < 1, record
@@ -120,7 +121,7 @@ try:
     gui.press('Redo')
     assert gui.save() == edited
     observe('document-undo-redo')
-    button('発表')
+    button('プレゼンテーション')
     assert state()['presenting']
     observe('presentation')
     gui.key('Escape')

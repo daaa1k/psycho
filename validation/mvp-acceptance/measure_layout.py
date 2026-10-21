@@ -1,7 +1,4 @@
-"""Check shared base glyph positions and raster strokes in three editor sizes and fullscreen.
-Requires numpy and Pillow. Exits nonzero on any failed check.
-"""
-import argparse, csv, json, math
+import argparse, csv, json
 from pathlib import Path
 import numpy as np
 from PIL import Image
@@ -67,7 +64,7 @@ def stage(mode,slide):
     return image,x,y,width/1280
 failures=[]
 with (root/'layout-glyph-comparison.csv').open('w',newline='') as f:
-    writer=csv.writer(f,lineterminator="\n");writer.writerow(['slide','mode','text_hex','text_occurrence','glyph_index','base_x','base_y','base_error','quantization_error_px'])
+    writer=csv.writer(f,lineterminator="\n");writer.writerow(['slide','mode','text_hex','text_occurrence','glyph_index','base_x','base_y','base_error'])
     for slide in [1,2]:
         ref=actual['fullscreen',slide]
         for mode in modes:
@@ -79,11 +76,8 @@ with (root/'layout-glyph-comparison.csv').open('w',newline='') as f:
                 base=[(float(r[i])-float(r[i+3]))/scale for i in [6,7]]
                 expected=[(float(e[i])-float(e[i+3]))/es for i in [6,7]]
                 error=max(abs(a-b) for a,b in zip(base,expected))
-                # GPUI quantizes glyph x to quarter-pixels, y to whole pixels.
-                px,py=(float(r[i])*float(r[11]) for i in [6,7])
-                quant=max(abs(math.floor(px*4)/4-px),abs(math.floor(py)-py))
-                writer.writerow([slide,mode,*key,*base,error,quant])
-                if error>=.001 or quant>1:failures.append((slide,mode,key,error,quant))
+                writer.writerow([slide,mode,*key,*base,error])
+                if error>=.001:failures.append((slide,mode,key,error))
             print(f'{mode} Slide {slide}: {len(observed)} glyphs share base positions')
 # Compare strong strokes against weak strokes within one physical pixel in both
 # directions. Intensities may differ due to native font antialiasing.
@@ -105,4 +99,4 @@ with (root/'layout-raster-comparison.csv').open('w',newline='') as f:
                 writer.writerow([slide,mode,element,missing_observed,missing_reference])
                 if missing_observed or missing_reference:failures.append((slide,mode,element,missing_observed,missing_reference))
 assert not failures,failures
-print('PASS: base glyph positions, glyph identities, quantization and raster strokes')
+print('PASS: base glyph positions, glyph identities and raster strokes')

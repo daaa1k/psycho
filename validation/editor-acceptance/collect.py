@@ -15,17 +15,24 @@ STRUCTURED = {
     'results.json', 'result.json', 'run.json', 'restoration.json',
     'native-input-build.json', 'native-input.jsonl', 'editor-state.json',
     'state.json', 'binary.json', 'image-ratios.json', 'visible-ranges.json',
-    'voiceover-diagnostics.json', 'speech.json',
+    'voiceover-diagnostics.json', 'speech.json', 'observation-recovery.jsonl',
+    'editor.json', 'keyboard-transitions.json', 'activated-native.json',
+    'tail-native.json', 'after-burst.json',
 }
 TRACES = {
     'glyph-origins.csv', 'presentation-glyphs.csv',
     'layout-glyph-comparison.csv', 'layout-raster-comparison.csv',
+    'presentation-input.csv',
 }
 ROOT = {
     'issue.json', 'spec.json', 'build-provenance.json', 'displays.txt',
     'build.log', 'baseline-build.log', 'baseline-tests.log', 'integration.log',
     'integrated-tests.log', 'integration-repair-tests.log',
     'overview-suite.log', 'workflow-suite.log', 'final-suite.log', 'accepted-suite.log',
+    'layout-readonly-review.log',
+    'recheck-suite.log',
+    'confirm-suite.log', 'keyboard-voiceover-suite.log',
+    'voiceover-final-suite.log',
 }
 SKIP = {'env', 'venv', '.venv', '__pycache__', 'node_modules'}
 
@@ -38,7 +45,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, default=Path('target/issue-56'))
     parser.add_argument('--output', type=Path, default=Path('validation/editor-acceptance/evidence'))
-    parser.add_argument('--runs', nargs='+', default=['overview', 'workflows', 'final', 'accepted'])
+    parser.add_argument('--runs', nargs='+', default=[
+        'overview', 'workflows', 'final', 'accepted', 'recheck', 'confirm', 'keyboard-voiceover',
+        'voiceover-final',
+    ])
     parser.add_argument('--images', nargs='*', default=[], metavar='CASE')
     args = parser.parse_args()
     repo = Path(__file__).resolve().parents[2]
@@ -74,8 +84,10 @@ def main():
                 relative = path.relative_to(source)
                 selected_image = any(relative.is_relative_to(p) for p in prefixes)
                 asset = 'assets' in relative.parts
-                structured = name in STRUCTURED or name.endswith(('-observations.json', '-comparison.json')) or name == 'observations.json'
-                if (path.suffix == '.kdl' or name in TRACES or structured
+                structured = (name in STRUCTURED or name.endswith(('-observations.json', '-comparison.json'))
+                              or name == 'observations.json' or name.startswith('launch-') and path.suffix == '.json')
+                selected_snapshot = selected_image and path.suffix == '.json' and path.with_suffix('.png').is_file()
+                if (path.suffix == '.kdl' or name in TRACES or structured or selected_snapshot
                         or path.suffix == '.log' and len(relative.parts) == 2
                         or path.suffix in IMAGES and (selected_image or asset)):
                     files.add(path)

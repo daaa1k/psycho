@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import re
 import shutil
 from pathlib import Path
@@ -8,7 +9,9 @@ from gui_session import Gui, root
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--output', type=Path, required=True)
-gui = Gui(parser.parse_args().output,
+out = parser.parse_args().output.resolve()
+os.environ['PSYCHO_EDITOR_STATE'] = str(out / 'editor-state.json')
+gui = Gui(out,
           'presentation { metadata { title "Unused placeholder" }; }\n',
           name='unused-placeholder', untitled=True)
 records = []
@@ -34,7 +37,8 @@ def add(label, parent=None):
 def observe(step):
     state, _ = gui.snapshot(step)
     records.append(dict(step=step, window=state['snapshot']['window'],
-                        editor=gui.state(), tree=state['snapshot']['treeText'],
+                        editor=json.loads((gui.out / 'editor-state.json').read_text()),
+                        input=gui.state(), tree=state['snapshot']['treeText'],
                         kdl=saved_file.read_text() if saved_file.exists() else None))
 
 
@@ -49,16 +53,22 @@ try:
     empty = gui.act('get-app-state')['snapshot']['treeText']
     assert not re.search(r'text (?:\([^)]*\) )?スライド \d+', empty), empty
     observe('zero-slides')
+    gui.press('Presentation title')
+    gui.focus_input('Presentation のタイトル')
+    gui.replace('Authored presentation')
+    gui.press('適用')
     gui.press('＋ Slide')
     for label, value in [('見出し', 'Authored heading'), ('本文', 'Authored body'),
                          ('箇条書き', 'Authored bullet'), ('コード', 'println!("Authored code");')]:
         add(label)
         gui.replace(value)
         gui.key('Escape')
+    gui.press('＋ Slide')
     add('画像')
-    gui.replace('assets/image.png')
+    gui.replace(os.path.relpath(assets / 'image.png', root / 'examples'))
     gui.press('適用', scroll=True)
     gui.press('Caption', scroll=True)
+    gui.focus_input('画像のCaption')
     gui.replace('Authored image caption')
     gui.press('適用', scroll=True)
     gui.key('Escape')
@@ -71,13 +81,17 @@ try:
         gui.replace(value)
         gui.key('Escape')
     gui.press('保存')
+    gui.button('退避先を選ぶ')
     gui.hotkey('CmdOrCtrl+Shift+G')
+    panel = gui.act('get-app-state')['snapshot']['treeText']
+    assert re.search(r'The focused UI element is \d+ text field \(settable\), Value:', panel), panel
     gui.hotkey('CmdOrCtrl+A')
     gui.act('type-text', '--text', str(gui.out), '--no-screenshot')
     gui.key('Return')
     gui.button('Save')
     saved = saved_file.read_bytes()
-    assert len(re.findall(rb'\bslide\b', saved)) == 2, saved
+    assert len(re.findall(rb'\bslide\b', saved)) == 3, saved
+    assert b'title "Authored presentation"' in saved
     for kind in ('heading', 'text', 'bullets', 'code', 'image', 'columns'):
         assert re.search(rb'\b' + kind.encode() + rb'\b', saved), (kind, saved)
     for value in ('Authored heading', 'Authored body', 'Authored bullet', 'Authored code',
@@ -90,11 +104,10 @@ try:
     observe('saved-all-six-kinds')
     gui.fixture = saved_file
     gui.press('Undo')
-    undone = gui.save()
-    assert b'Authored right column' not in undone and undone != saved, undone
+    assert gui.save() == saved, 'Save As clears document history'
     gui.press('Redo')
     assert gui.save() == saved
-    observe('exact-redo-after-save-as')
+    observe('history-cleared-after-save-as')
     gui.stop()
     gui.untitled = False
     gui.start()
@@ -111,6 +124,11 @@ try:
     assert state['snapshot']['window']['width'] != 1280
     text = ''.join(''.join(row['text'].split()) for row in rows)
     assert 'Authoredheading' in text and 'Authoredbody' in text, text
+    assert saved_file.read_bytes() == saved
+    gui.key('Right')
+    state, rows = gui.snapshot('presenting-authored-image')
+    text = ''.join(''.join(row['text'].split()) for row in rows)
+    assert 'Authoredimagecaption' in text, text
     assert saved_file.read_bytes() == saved
     gui.key('Right')
     state, rows = gui.snapshot('presenting-authored-columns')

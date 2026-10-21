@@ -34,13 +34,14 @@ try:
  assert gui.fixture.read_bytes()==gui.original
  gui.press('全文をInspectorで編集')
  capture('inspector-editor-before-tab')
- gui.click(900,750)
+ gui.hotkey('Shift+Tab')
  for number in range(40):
   gui.key('Tab')
   gui.act('type-text','--text','x','--no-screenshot')
   capture(f'tab-{number:02d}')
   if gui.state()['focused']:break
  else:raise AssertionError('Tab did not reach the edit field')
+ assert 'text field (settable) 本文' in gui.act('get-app-state')['snapshot']['treeText']
  gui.replace('Keyboard body')
  gui.hotkey('CmdOrCtrl+S')
  assert b'text "Keyboard body"' in gui.fixture.read_bytes()

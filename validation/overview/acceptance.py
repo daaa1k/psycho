@@ -289,6 +289,7 @@ def main(gui):
     observe(gui, 'direct-heading-after')
     gui.replace('Edited from Overview')
     gui.menu('ファイル', '保存')
+    observe(gui, 'after-save-command')
     saved = gui.fixture.read_text()
     assert 'heading "Edited from Overview"' in saved and 'id="s1"' in saved
     observe(gui, 'edited-saved')
@@ -359,7 +360,7 @@ def drag_edges(gui):
     assert columns == 3
     cell = width / columns
     row_height = (cell - 26) * 9 / 16 + 42
-    bottom = record['window']['height'] - 75
+    bottom = 116 + state()['canvasHeight'] - 12
     start = (176 + cell * .3, 220)
     tail = (176 + cell * .9, bottom)
     drag(gui, start, tail)
@@ -512,9 +513,11 @@ def diagnostics(gui):
     overview = observe(gui, 'diagnostic-overview')
     assert overview['editor']['overview'] and overview['editor']['overviewFocused']
     unchanged(before)
+    gui.diagnostics()
+    diagnostic_popup = observe(gui, 'diagnostic-popup')
     match = re.search(r'^\s*(\d+) button 画像 · Slide 2 · missing-overview.png · .+$',
-                      overview['tree'], re.M)
-    assert match, overview['tree']
+                      diagnostic_popup['tree'], re.M)
+    assert match, diagnostic_popup['tree']
     gui.act('click', '--element-index', match[1], '--no-screenshot')
     selected = observe(gui, 'diagnostic-selected-image')
     assert not state()['overview'] and state()['currentSlide'] == 1
