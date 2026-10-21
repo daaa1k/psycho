@@ -1,0 +1,23 @@
+presentation {
+    metadata {
+        title "Authored presentation"
+    }
+    slide {
+        heading "Authored heading"
+        text "Authored body"
+        bullets { item "Authored bullet" }
+        code "println!(\"Authored code\");"
+    }
+    slide {
+        image "target/issue-56/final/blank/assets/image.png" {
+            caption "Authored image caption"
+        }
+    }
+    slide {
+        columns { column width=50 {
+            text "Authored left column"
+        }; column width=50  {
+            text "Authored right column"
+        }}
+    }
+}

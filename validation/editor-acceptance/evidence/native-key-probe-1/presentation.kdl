@@ -1,0 +1,1 @@
+presentation { metadata { title "Native key probe"; }; slide { heading "First slide"; code language="rust" "let\tx = 1;\nassert!(x == 1);"; }; slide { heading "Second slide"; }; }

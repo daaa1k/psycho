@@ -1,0 +1,1125 @@
+[
+  {
+    "stage": "overview",
+    "result": {
+      "name": "main",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/acceptance.py",
+        "--section",
+        "main",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/main",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 1
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "guards",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/acceptance.py",
+        "--section",
+        "guards",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/guards",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "empty",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/acceptance.py",
+        "--section",
+        "empty",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/empty",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "invalid",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/acceptance.py",
+        "--section",
+        "invalid",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/invalid",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "representative",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/acceptance.py",
+        "--section",
+        "representative",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/representative",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "drag",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/acceptance.py",
+        "--section",
+        "drag",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/drag",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 1
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "resize",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/acceptance.py",
+        "--section",
+        "resize",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/resize",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "layout-light",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/acceptance.py",
+        "--section",
+        "layout",
+        "--appearance",
+        "light",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/layout-light",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "layout-dark",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/acceptance.py",
+        "--section",
+        "layout",
+        "--appearance",
+        "dark",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/layout-dark",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "navigator",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/navigator/acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/navigator",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 1
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "navigator-light",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/navigator/layout.py",
+        "--appearance",
+        "light",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/navigator-light",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "navigator-dark",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/navigator/layout.py",
+        "--appearance",
+        "dark",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/navigator-dark",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "slide-organization",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/slide-organization/acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/slide-organization",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0
+    }
+  },
+  {
+    "stage": "overview",
+    "result": {
+      "name": "slide-guards",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/slide-organization/guards.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/overview/slide-guards",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "sample",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/sample_workflow_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/sample"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "blank",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/blank_authoring_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/blank"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "document-status",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/document_status_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/document-status"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "document-present",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/document_present_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/document-present"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "overview-diagnostics",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/overview-diagnostics",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa",
+        "--section",
+        "diagnostics"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "overview-main",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/overview-main",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa",
+        "--section",
+        "main"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "overview-drag",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/overview-drag",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa",
+        "--section",
+        "drag"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "navigator",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/navigator/acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/navigator",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "shell-light",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/editor-shell/acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/shell-light",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa",
+        "--appearance",
+        "light"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "shell-dark",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/editor-shell/acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/shell-dark",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa",
+        "--appearance",
+        "dark"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "scroll-light",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/editor-shell/scroll.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/scroll-light",
+        "--appearance",
+        "light"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "scroll-dark",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/editor-shell/scroll.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/scroll-dark",
+        "--appearance",
+        "dark"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "document-layout",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/document_layout_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/document-layout"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "workflows",
+    "result": {
+      "name": "shared-layout",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/presentation_layout_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/workflows/shared-layout",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "sample",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/sample_workflow_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/sample"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "blank",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/blank_authoring_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/blank"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "document-status",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/document_status_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/document-status"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "document-present",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/document_present_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/document-present"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "inspector",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/inspector_element_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/inspector"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "shell-light",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/editor-shell/acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/shell-light",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa",
+        "--appearance",
+        "light"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "shell-dark",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/editor-shell/acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/shell-dark",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa",
+        "--appearance",
+        "dark"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "scroll-dark",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/editor-shell/scroll.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/scroll-dark",
+        "--appearance",
+        "dark"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "shared-layout",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/presentation_layout_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/shared-layout",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "keyboard-focus",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/editor-shell/focus.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/keyboard-focus"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "ime-overview",
+      "command": [
+        "xcrun",
+        "swift",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/with_japanese_ime.swift",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/ime.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/ime-overview",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "ime-save-menu",
+      "command": [
+        "xcrun",
+        "swift",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/with_japanese_ime.swift",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/ime_save_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/ime-save-menu",
+        "--entry",
+        "menu"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "ime-save-confirmed",
+      "command": [
+        "xcrun",
+        "swift",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/with_japanese_ime.swift",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/ime_save_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/ime-save-confirmed",
+        "--entry",
+        "confirmed-shortcut"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "ime-save-shortcut",
+      "command": [
+        "xcrun",
+        "swift",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/with_japanese_ime.swift",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/ime_save_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/ime-save-shortcut",
+        "--entry",
+        "shortcut"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "ime-reconversion",
+      "command": [
+        "xcrun",
+        "swift",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/with_japanese_ime.swift",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/ime_reconversion_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/ime-reconversion"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "ime-present",
+      "command": [
+        "xcrun",
+        "swift",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/with_japanese_ime.swift",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/presentation_ime_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/ime-present"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "voiceover-overview",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/voiceover.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/voiceover-overview",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "voiceover-document",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/document_voiceover_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/voiceover-document"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "voiceover-insertion",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/insertion_voiceover_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/voiceover-insertion"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "final",
+    "result": {
+      "name": "voiceover-inspector",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/inspector-element/voiceover.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/final/voiceover-inspector"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "accepted",
+    "result": {
+      "name": "sample",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/sample_workflow_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/accepted/sample"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "accepted",
+    "result": {
+      "name": "blank",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/blank_authoring_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/accepted/blank"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "accepted",
+    "result": {
+      "name": "document-status",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/document_status_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/accepted/document-status"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "accepted",
+    "result": {
+      "name": "document-present",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/document_present_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/accepted/document-present"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "accepted",
+    "result": {
+      "name": "keyboard-focus",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/editor-shell/focus.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/accepted/keyboard-focus"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "accepted",
+    "result": {
+      "name": "inspector",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/inspector_element_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/accepted/inspector"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "accepted",
+    "result": {
+      "name": "voiceover-overview",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/voiceover.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/accepted/voiceover-overview",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "accepted",
+    "result": {
+      "name": "voiceover-document",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/document_voiceover_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/accepted/voiceover-document"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "accepted",
+    "result": {
+      "name": "voiceover-insertion",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/insertion_voiceover_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/accepted/voiceover-insertion"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "accepted",
+    "result": {
+      "name": "voiceover-inspector",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/inspector-element/voiceover.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/accepted/voiceover-inspector"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "accepted",
+    "result": {
+      "name": "voiceover-settings",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/inspector-element/voiceover.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/accepted/voiceover-settings",
+        "--settings-only"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "accepted",
+    "result": {
+      "name": "voiceover-offscreen",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/inspector-element/voiceover.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/accepted/voiceover-offscreen",
+        "--offscreen-only"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "recheck",
+    "result": {
+      "name": "voiceover-document",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/document_voiceover_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/recheck/voiceover-document"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "recheck",
+    "result": {
+      "name": "voiceover-inspector",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/inspector-element/voiceover.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/recheck/voiceover-inspector"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "recheck",
+    "result": {
+      "name": "voiceover-settings",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/inspector-element/voiceover.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/recheck/voiceover-settings",
+        "--settings-only"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "recheck",
+    "result": {
+      "name": "voiceover-width",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/inspector-element/voiceover.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/recheck/voiceover-width",
+        "--width-only"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "confirm",
+    "result": {
+      "name": "voiceover-offscreen",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/inspector-element/voiceover.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/confirm/voiceover-offscreen",
+        "--offscreen-only"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "keyboard-voiceover",
+    "result": {
+      "name": "voiceover-overview",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/overview/voiceover.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/keyboard-voiceover/voiceover-overview",
+        "--revision",
+        "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "keyboard-voiceover",
+    "result": {
+      "name": "voiceover-document",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/document_voiceover_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/keyboard-voiceover/voiceover-document"
+      ],
+      "returncode": 1,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  },
+  {
+    "stage": "voiceover-final",
+    "result": {
+      "name": "voiceover-document",
+      "command": [
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/env/bin/python",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/validation/mvp-acceptance/document_voiceover_acceptance.py",
+        "--output",
+        "/Users/daichikinoshita/orca/workspaces/psycho/issue-56/target/issue-56/voiceover-final/voiceover-document"
+      ],
+      "returncode": 0,
+      "binary_sha256": "9b9d5ba711f53cafb18d88600079938845c30ca6c5e93053c1e05414b0e10a93",
+      "revision": "06eb12ed8592fb17bbe14a49b669d0e5fc9acffa"
+    }
+  }
+]

@@ -1,0 +1,24 @@
+ts	phase	decision	why	evidence	result
+2026-10-20T11:18:50Z	frame	受け入れの各条件を現在の製品で再実行し証跡へ対応づける	過去の合格と今回の実行結果を区別する	https://github.com/daaa1k/psycho/issues/56	open
+2026-10-20T11:20:21Z	prerequisites	PR76のOverviewがmainに未統合のため独立worktreeで統合する	Issue54の完了状態だけでは実装の存在を保証できなかった	target/issue-56/baseline/tree.txt;https://github.com/daaa1k/psycho/pull/76	open
+2026-10-20T11:23:35Z	integration	Overviewと文書復旧を統合し診断引数の不足を修正した	mainへ未統合だった必須導線を同じ製品で検証するため	64fa4b9;06eb12e;target/issue-56/integration-repair-tests.log	tests green
+2026-10-20T11:29:13Z	acceptance	初回Overviewの保存照合と端スクロールを不合格として保持した	失敗を通過へ読み替えず観測方法と製品動作を切り分ける	target/issue-56/overview/main.log;target/issue-56/overview/drag.log	NOT VERIFIED
+2026-10-20T11:29:13Z	recipe	白紙の全種類作成を3枚に分け保存先選択と履歴消去を検査する	発表の配置制限とSave Asの既存契約へ合わせる	validation/mvp-acceptance/blank_authoring_acceptance.py	open
+2026-10-20T11:46:51Z	driver	Orcaの焦点判定を製品の操作成功と同一視しない	入力欄とモーダル・全画面・Tabの異なるケースで検証境界が停止した	target/issue-56/focus-census.json;target/issue-56/focus-census.py	NOT VERIFIED
+2026-10-20T11:46:51Z	design	独立比較でsol案を基礎にし対象欄と実キーの配送をネイティブ境界へ集約する	AXWindowとCGWindowの座標混在と一般focusedだけの誤判定を避ける	/tmp/issue56-driver-arena/judge.md	open
+2026-10-20T11:58:57Z	driver	実キー配送の小さな実機確認が4項目とも通過した	送信後すぐ終了するヘルパーを既存のイベント間隔へ合わせ通常のOS入力経路で確認した	target/issue-56/native-key-probe-3.log	VERIFIED
+2026-10-20T12:09:46Z	ime	変換中CmdSの未保存を既知77と同じ入力状態で再現し不合格にする	composingとmarkedが残り保存した全バイト列が期待値と異なった	target/issue-56/final/ime-save-shortcut/observations.json	NOT VERIFIED
+2026-10-20T12:09:46Z	rendering	単一画面の3編集寸法と全画面で共有配置と描画を照合した	旧ペイン幅の定数からの推測をやめ実際のキャンバスと倍率を記録した	target/issue-56/final/shared-layout.log;target/issue-56/final/shared-layout/layout-observations.json	VERIFIED
+2026-10-20T12:21:12.012147+00:00	workflow	代表例と白紙の通し操作が実機で通過	保存期待値・全バイト履歴復元・再起動・発表を独立照合	target/issue-56/accepted/sample;target/issue-56/accepted/blank	pass
+2026-10-20T12:21:12.012288+00:00	recovery	保存失敗・競合・不正・削除からの復旧と発表が通過	実ファイルと専用ディレクトリーを使い下書きと保存内容を照合	target/issue-56/accepted/document-status;target/issue-56/accepted/document-present	pass
+2026-10-20T12:21:12.012292+00:00	keyboard	旧Canvas背景クリックをShift+Tabへ変更し本文へのTab到達を確認	背景クリックは選択解除するため元の期待は現行仕様と異なる	target/issue-56/accepted/keyboard-focus	pass
+2026-10-20T12:21:12.012295+00:00	independent-review	検証ドライバーの独立レビューを受け起動記録の収集漏れを修正	配送を合格扱いせず保存実体を確認。画像と量子化の主張を実証範囲へ限定	validation/editor-acceptance/review/driver.md	no new major false positive; scope limitations recorded
+2026-10-20T12:21:12.012299+00:00	forge	Origin CLIが利用できないためGitHub CLIを使用	command -v originの終了コード1	docs/agents/issue-tracker.md	gh selected
+2026-10-20T12:21:12.012302+00:00	comment-review	処理を説明するだけのdocstring3行を削除	no-commentsの独立レビュー。公開CLI説明は保持	validation/mvp-acceptance/measure_layout.py	3 lines removed; no MUST KILL; no restore
+2026-10-21T11:11:32.002178+00:00	voiceover	検査区間をキーボードとVoiceOverの操作へ揃えて全対象が通過	一覧は上下キー、入力はTab、保存はCmdS。101枚目追加と診断ボタン操作も実行	target/issue-56/voiceover-final;target/issue-56/keyboard-voiceover;target/issue-56/recheck;target/issue-56/confirm	pass; original settings restored
+2026-10-21T11:11:32.002319+00:00	voiceover-navigation	同じcursorの反復を一覧脱出と解釈する前提を破棄	選択行と第二列のAX公開は正常。一覧180pxはon_focusのscroll_to_itemと裸Downで移動する	src/main.rs:3334;src/main.rs:3400;target/issue-56/accepted/voiceover-inspector/gui/voiceover-select-first-left.json	script fixed; product unchanged
+2026-10-21T11:11:32.002325+00:00	layout-review	常に成立する量子化検査を除去して保存済み画像とtraceで再照合	floorの定義から元の範囲チェックは失敗できない。glyphとrasterの有効な検査は維持	target/issue-56/layout-readonly-review.log	pass; no quantization claim
+2026-10-21T11:11:32.002328+00:00	evidence	828元ファイルと68実行記録を固定し全ハッシュとgzip復元を照合	失敗した試行を書き換えず公開するため	validation/editor-acceptance/evidence/manifest.json;validation/editor-acceptance/evidence/runs.json	pass; 20346465 archived bytes
+2026-10-21T11:11:32.002332+00:00	overall-verdict	総合受け入れは未達として残す	必須IME変換中CmdSの既知77が再現。31・46・73も本作業で修正していない	target/issue-56/final/ime-save-shortcut;https://github.com/daaa1k/psycho/issues/77	NOT VERIFIED
+2026-10-21T11:11:32.002336+00:00	independent-review	最終レビューの静的確認結果を保持し証跡照合は別レビュアーへ渡す	gpt-6-astraが統合・検証差分の重大問題なしと報告後に使用量制限で停止した	/root/final_evidence_review messages	static review retained; artifact verdict pending
+2026-10-21T11:14:20.826383+00:00	final-review	gpt-6.1-solが独立に全証跡を照合し公開可と判定	828資料のハッシュ・復元と606入力receiptのPIDを確認。未達と未実施を保持	validation/editor-acceptance/review/verdict.md	approved for evidence publication; product NOT VERIFIED

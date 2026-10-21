@@ -1,0 +1,1 @@
+presentation { metadata { title "Inspector VoiceOver" }; slide { columns { column width=50 { text "Same"; }; column width=50 { text "Same"; }; }; columns { column width=50 { text "Same"; }; column width=50 { text "Same"; }; }; code "print();" language="unknown"; }; }

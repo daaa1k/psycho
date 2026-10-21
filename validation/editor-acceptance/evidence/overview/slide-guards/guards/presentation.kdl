@@ -1,0 +1,1 @@
+presentation { metadata { title "External title"; }; slide { columns { column width=50 { text "Left"; }; column width=50 { text "Right"; }; }; }; slide { heading "Second"; }; }

@@ -1,0 +1,1 @@
+presentation { metadata { title "Editor shell" }; slide id="first" { heading "Heading"; text "Edited body"; }; slide id="second" { heading "Second slide"; }; }

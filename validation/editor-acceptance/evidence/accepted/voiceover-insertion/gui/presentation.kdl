@@ -1,0 +1,6 @@
+presentation {
+ metadata { title "VoiceOver" }
+ slide { columns { column width=50 {
+  text "voiceover-left"
+ }; column width=50 } }
+}
