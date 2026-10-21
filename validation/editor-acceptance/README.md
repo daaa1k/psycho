@@ -77,3 +77,7 @@ shasum -a 256 -c SHA256SUMS
 ```
 
 [設計比較](review/driver-design.md)、[入力・保存の独立レビュー](review/driver.md)、[最終証跡レビュー](review/verdict.md)、[判断の記録](decisions.tsv)を併せて公開する。Prove It Worksに従い、実画面と保存値の両方を根拠にした。Build the Leverに従い、証跡の収集とハッシュ対応を `collect.py` で再実行できるようにした。
+
+## 公開先
+
+[前提統合 #79](https://github.com/daaa1k/psycho/pull/79) → [検証手順 #80](https://github.com/daaa1k/psycho/pull/80) → [実行証跡 #81](https://github.com/daaa1k/psycho/pull/81) の順に親ブランチを指定した。いずれもレビュー用に公開し、公開時点のCIは実行中。#56は#77が再現した未受け入れ状態として記録した。
