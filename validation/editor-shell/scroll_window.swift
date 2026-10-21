@@ -18,7 +18,8 @@ import ScreenCaptureKit
    let p=CGPoint(x:w.frame.minX+600,y:w.frame.minY+400)
    CGEvent(mouseEventSource:nil,mouseType:.mouseMoved,mouseCursorPosition:p,mouseButton:.left)!.post(tap:.cghidEventTap)
    try await Task.sleep(for:.milliseconds(300))
-   precondition(NSWorkspace.shared.frontmostApplication?.processIdentifier == pid)
+   precondition(NSWorkspace.shared.frontmostApplication?.processIdentifier == pid,
+                "Scroll target lost foreground to \(NSWorkspace.shared.frontmostApplication?.localizedName ?? "unknown") pid \(NSWorkspace.shared.frontmostApplication?.processIdentifier ?? -1)")
    for type in [CGEventType.leftMouseDown, .leftMouseUp] { CGEvent(mouseEventSource:nil,mouseType:type,mouseCursorPosition:p,mouseButton:.left)!.post(tap:.cghidEventTap) }
    try await Task.sleep(for:.milliseconds(300))
    precondition(NSWorkspace.shared.frontmostApplication?.processIdentifier == pid)
