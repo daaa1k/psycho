@@ -1,0 +1,6 @@
+{'name': 'focused-50', 'input': {'text': '50', 'selected': [2, 2], 'marked': [-1, -1], 'cursor': [1032.3438, 520.0, 26.0], 'undo': 0, 'redo': 0, 'composing': False, 'focused': True}}
+{'name': 'orca-cmd-a', 'input': {'text': '50', 'selected': [2, 2], 'marked': [-1, -1], 'cursor': [1032.3438, 520.0, 26.0], 'undo': 0, 'redo': 0, 'composing': False, 'focused': True}}
+{'name': 'orca-type-0', 'input': {'text': '500', 'selected': [3, 3], 'marked': [-1, -1], 'cursor': [1042.1094, 576.0, 26.0], 'undo': 1, 'redo': 0, 'composing': False, 'focused': True}}
+{'name': 'undo', 'input': {'text': '50', 'selected': [2, 2], 'marked': [-1, -1], 'cursor': [1032.3438, 520.0, 26.0], 'undo': 0, 'redo': 1, 'composing': False, 'focused': True}}
+{'name': 'system-cmd-a', 'input': {'text': '50', 'selected': [0, 2], 'marked': [-1, -1], 'cursor': [1032.3438, 520.0, 26.0], 'undo': 0, 'redo': 1, 'composing': False, 'focused': True}}
+{'name': 'system-type-0', 'input': {'text': '0', 'selected': [1, 1], 'marked': [-1, -1], 'cursor': [1022.7656, 576.0, 26.0], 'undo': 1, 'redo': 0, 'composing': False, 'focused': True}}

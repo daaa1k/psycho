@@ -46,3 +46,5 @@ in this order: `Sub-features`, `How to get to it (user POV)`, `Driving it with <
 - [Diagnostic navigation](./diagnostic-navigation.md) — syntax/schema errors and jump-to-source.
 
 - [Inspector element editing](./inspector-element.md) covers element settings, structure scrolling, and input transfer.
+
+- [Slide Overview](./slide-overview.md) covers grid navigation, organization, mode switching, and editing return.

@@ -1,0 +1,7 @@
+{
+  "revision": "8f9d90016cc45a25a9774aec5a4d7ea480fb7245",
+  "source": "/private/tmp/psycho-issue-54-implementation/target/inspector-focus-probe-8f9d900",
+  "result": "PASS native focus and exact replacement; OrCa coordinate route remained unfocused",
+  "scriptSha256": "ca71b3d6e13e75350b0b3d424b8d6718e97555dcebce5347b368f2d472a127a3",
+  "acceptance": false
+}

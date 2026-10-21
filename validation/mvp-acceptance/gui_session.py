@@ -146,7 +146,7 @@ class Gui:
                     yield from nodes(child)
             title = next(node['title'] for node in nodes(metadata['menuBar'])
                          if node.get('title', '').startswith(title))
-        subprocess.run([str(helper), str(self.app.pid), title], check=True, stdout=subprocess.DEVNULL)
+        subprocess.run([str(helper), str(self.app.pid), category, title], check=True, stdout=subprocess.DEVNULL)
         self.act('get-app-state')
 
     def press(self,label,scroll=False,aliases=()):

@@ -3,13 +3,77 @@ use gpui::{ScrollStrategy, UniformListScrollHandle, uniform_list};
 
 actions!(
     psycho,
-    [SelectPreviousSlide, SelectNextSlide, FocusSlideCanvas]
+    [
+        SelectPreviousSlide,
+        SelectNextSlide,
+        SelectAboveSlide,
+        SelectBelowSlide,
+        FocusSlideCanvas
+    ]
 );
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(super) enum CollectionHost {
+    Navigator,
+    Overview,
+}
+impl CollectionHost {
+    fn prefix(self) -> &'static str {
+        match self {
+            Self::Navigator => "navigator",
+            Self::Overview => "overview",
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+struct CollectionGeometry {
+    columns: usize,
+    cell_width: f32,
+    row_height: f32,
+    count: usize,
+}
+impl CollectionGeometry {
+    fn new(host: CollectionHost, width: f32, count: usize) -> Self {
+        let columns = match host {
+            CollectionHost::Navigator => 1,
+            CollectionHost::Overview => ((width / 240.).floor() as usize).max(1),
+        };
+        let cell_width = width / columns as f32;
+        Self {
+            columns,
+            cell_width,
+            row_height: (cell_width - 26.).max(1.) * 9. / 16. + 42.,
+            count,
+        }
+    }
+    fn rows(self) -> usize {
+        self.count.div_ceil(self.columns)
+    }
+    fn selection(self, from: usize, delta: isize) -> Option<usize> {
+        if self.count == 0 {
+            return None;
+        }
+        if delta < -1 && from < delta.unsigned_abs() {
+            return Some(from);
+        }
+        if delta > 1 && from / self.columns == (self.count - 1) / self.columns {
+            return Some(from);
+        }
+        Some(from.saturating_add_signed(delta).min(self.count - 1))
+    }
+    fn insertion(self, x: f32, y: f32) -> usize {
+        let row = (y.max(0.) / self.row_height).floor() as usize;
+        let column = ((x / self.cell_width).round().max(0.) as usize).min(self.columns);
+        (row * self.columns + column).min(self.count)
+    }
+}
 
 pub(super) struct NavigatorState {
     focus: FocusHandle,
     scroll: UniformListScrollHandle,
     exposure: Option<Exposure>,
+    geometry: Option<CollectionGeometry>,
     drag: Option<SlideDrag>,
     drag_generation: u64,
 }
@@ -38,8 +102,8 @@ struct SlideDrag {
     item: DraggedSlide,
     pointer: gpui::Point<gpui::Pixels>,
     bounds: gpui::Bounds<gpui::Pixels>,
-    row_height: f32,
-    count: usize,
+    geometry: CollectionGeometry,
+    window_size: gpui::Size<gpui::Pixels>,
     insertion: Option<usize>,
 }
 
@@ -57,9 +121,14 @@ impl NavigatorState {
             focus,
             scroll: UniformListScrollHandle::new(),
             exposure: None,
+            geometry: None,
             drag: None,
             drag_generation: 0,
         }
+    }
+
+    pub(super) fn columns(&self) -> usize {
+        self.geometry.map_or(1, |g| g.columns)
     }
 
     pub(super) fn focus_handle(&self) -> FocusHandle {
@@ -73,7 +142,10 @@ impl NavigatorState {
     fn expose(&mut self, exposure: Exposure) {
         if self.exposure.as_ref() != Some(&exposure) && exposure.visible && self.drag.is_none() {
             if let Some(index) = exposure.selected {
-                self.scroll.scroll_to_item(index, ScrollStrategy::Nearest);
+                self.scroll.scroll_to_item(
+                    index / self.geometry.map_or(1, |g| g.columns),
+                    ScrollStrategy::Nearest,
+                );
             }
         }
         self.exposure = Some(exposure);
@@ -81,43 +153,165 @@ impl NavigatorState {
 }
 
 impl PsychoApp {
+    fn collection(&self, host: CollectionHost) -> &NavigatorState {
+        match host {
+            CollectionHost::Navigator => &self.navigator,
+            CollectionHost::Overview => &self.overview,
+        }
+    }
+    fn collection_mut(&mut self, host: CollectionHost) -> &mut NavigatorState {
+        match host {
+            CollectionHost::Navigator => &mut self.navigator,
+            CollectionHost::Overview => &mut self.overview,
+        }
+    }
+    pub(super) fn collection_return_focus(&self, window: &Window) -> Option<FocusHandle> {
+        if self.navigator.focused(window) {
+            Some(self.navigator.focus_handle())
+        } else if self.overview.focused(window) || self.view.mode == EditorMode::Overview {
+            Some(self.overview.focus_handle())
+        } else {
+            None
+        }
+    }
+    pub(super) fn cancel_slide_drags(&mut self) {
+        self.navigator.drag = None;
+        self.overview.drag = None;
+    }
+    pub(super) fn set_editor_mode(
+        &mut self,
+        mode: EditorMode,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> bool {
+        if self.view.mode == mode {
+            return true;
+        }
+        if self.external_edit_blocked() && self.has_uncommitted_draft(cx) {
+            self.status = "外部変更との競合があるため入力を確定できません。表示を切り替える前に競合を解決してください。".into();
+            cx.notify();
+            return false;
+        }
+        if !self.external_edit_blocked() {
+            if let Err(error) = self.commit_draft(window, cx) {
+                self.status = error;
+                cx.notify();
+                return false;
+            }
+        }
+        self.cancel_slide_drags();
+        cx.stop_active_drag(window);
+        self.view.popup = None;
+        self.view.resize = None;
+        self.view.mode = mode;
+        let focus = if mode == EditorMode::Overview {
+            self.overview.focus_handle()
+        } else {
+            self.canvas_focus.clone()
+        };
+        window.focus(&focus, cx);
+        cx.notify();
+        true
+    }
     pub(super) fn render_slide_list(
         &mut self,
         model: Option<Arc<PresentationModel>>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> gpui::AnyElement {
+        self.render_slide_collection(CollectionHost::Navigator, model, window, cx)
+    }
+    pub(super) fn render_slide_collection(
+        &mut self,
+        host: CollectionHost,
+        model: Option<Arc<PresentationModel>>,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> gpui::AnyElement {
         let count = model.as_ref().map_or(0, |model| model.slides.len());
-        let width = self.view.widths(f32::from(window.viewport_size().width)).0;
-        self.navigator.expose(Exposure {
-            selected: (self.current_slide < count).then_some(self.current_slide),
+        let width = if host == CollectionHost::Navigator {
+            self.view.widths(f32::from(window.viewport_size().width)).0
+        } else {
+            f32::from(self.view.canvas_area.width).max(1.)
+        };
+        let geometry = CollectionGeometry::new(host, width, count);
+        if self.collection(host).geometry != Some(geometry) {
+            if self.collection_mut(host).drag.take().is_some() {
+                cx.stop_active_drag(window);
+            }
+            cx.notify();
+        }
+        self.collection_mut(host).geometry = Some(geometry);
+        let selected = self.current_slide;
+        let visible = host == CollectionHost::Overview || self.view.navigator.visible;
+        self.collection_mut(host).expose(Exposure {
+            selected: (selected < count).then_some(selected),
             count,
             width,
-            visible: self.view.navigator.visible,
+            visible,
         });
+        if self.collection(host).drag.as_ref().is_some_and(|drag| {
+            drag.item.source.as_ref() != self.document.source()
+                || drag.window_size != window.viewport_size()
+        }) {
+            self.collection_mut(host).drag = None;
+            cx.stop_active_drag(window);
+        }
         let source: Arc<str> = self.document.source().into();
         let mut list = div()
-            .id("navigator")
+            .id(host.prefix())
             .flex_1()
             .min_h_0()
             .overflow_hidden()
-            .track_focus(&self.navigator.focus)
-            .key_context("SlideNavigator")
+            .track_focus(&self.collection(host).focus)
+            .key_context(if host == CollectionHost::Overview {
+                "SlideOverview"
+            } else {
+                "SlideNavigator"
+            })
             .role(gpui::Role::ListBox)
-            .aria_label("スライド一覧")
-            .aria_description("上下キーで選択、Returnでキャンバスへ移動")
-            .on_action(cx.listener(|this, _: &SelectPreviousSlide, window, cx| {
-                this.navigate_slide(-1, window, cx)
+            .aria_label(if host == CollectionHost::Overview {
+                "Overviewのスライド一覧"
+            } else {
+                "スライド一覧"
+            })
+            .aria_description(if host == CollectionHost::Overview {
+                "左右上下キーで選択、Returnで選択したスライドの編集へ戻る"
+            } else {
+                "上下キーで選択、Returnでキャンバスへ移動"
+            })
+            .on_action(
+                cx.listener(move |this, _: &SelectPreviousSlide, window, cx| {
+                    this.navigate_slide(host, -1, window, cx)
+                }),
+            )
+            .on_action(cx.listener(move |this, _: &SelectNextSlide, window, cx| {
+                this.navigate_slide(host, 1, window, cx)
             }))
-            .on_action(cx.listener(|this, _: &SelectNextSlide, window, cx| {
-                this.navigate_slide(1, window, cx)
+            .on_action(cx.listener(move |this, _: &SelectAboveSlide, window, cx| {
+                let columns = this.collection(host).geometry.map_or(1, |g| g.columns);
+                this.navigate_slide(host, -(columns as isize), window, cx);
             }))
-            .on_action(cx.listener(|this, _: &FocusSlideCanvas, window, cx| {
-                window.focus(&this.canvas_focus, cx);
+            .on_action(cx.listener(move |this, _: &SelectBelowSlide, window, cx| {
+                let columns = this.collection(host).geometry.map_or(1, |g| g.columns);
+                this.navigate_slide(host, columns as isize, window, cx);
+            }))
+            .on_action(cx.listener(move |this, _: &FocusSlideCanvas, window, cx| {
+                if host == CollectionHost::Overview && count == 0 {
+                    return;
+                }
+                if this.view.mode == EditorMode::Overview {
+                    if count == 0 {
+                        return;
+                    }
+                    this.set_editor_mode(EditorMode::Edit, window, cx);
+                } else {
+                    window.focus(&this.canvas_focus, cx);
+                }
                 cx.notify();
             }))
-            .on_action(cx.listener(|this, _: &ClosePopup, window, cx| {
-                if this.navigator.drag.take().is_some() {
+            .on_action(cx.listener(move |this, _: &ClosePopup, window, cx| {
+                if this.collection_mut(host).drag.take().is_some() {
                     cx.stop_active_drag(window);
                     cx.notify();
                     cx.stop_propagation();
@@ -136,28 +330,31 @@ impl PsychoApp {
                     .px(px(8.))
                     .py(px(8.))
                     .font_weight(gpui::FontWeight::BOLD)
-                    .child("スライド"),
+                    .child(if host == CollectionHost::Overview {
+                        "Overview"
+                    } else {
+                        "スライド"
+                    }),
             );
         if let Some(model) = model {
-            let thumbnail_width = (width - 26.).max(1.);
+            let thumbnail_width = (geometry.cell_width - 26.).max(1.);
             let scale = thumbnail_width / 1280.;
-            let row_height = thumbnail_width * 9. / 16. + 42.;
+            let row_height = geometry.row_height;
             let drag_source = source.clone();
             list = list.child(
                 uniform_list(
-                    "navigator-rows",
-                    count,
+                    gpui::SharedString::from(format!("{}-rows", host.prefix())),
+                    geometry.rows(),
                     cx.processor(move |this, range: std::ops::Range<usize>, window, cx| {
-                        editor_validation::record_navigator_range(
-                            range.clone(),
-                            scale,
-                            this.current_slide,
-                        );
+                        if host == CollectionHost::Navigator { editor_validation::record_navigator_range(range.clone(), scale, this.current_slide); }
+                        editor_validation::record_collection_range(host.prefix(), range.clone(), geometry.columns, count, this.current_slide);
+                        let last_visible_row = range.end.saturating_sub(1);
                         range
-                            .map(|index| {
+                            .map(|row| {
+                                let cards = (row * geometry.columns..((row + 1) * geometry.columns).min(count)).map(|index| {
                                 let slide = &model.slides[index];
                                 let selected = index == this.current_slide;
-                                let focused = selected && this.navigator.focused(window);
+                                let focused = selected && this.collection(host).focused(window);
                                 let heading =
                                     slide.elements.iter().find_map(|element| match element {
                                         Element::Heading(text) if !text.trim().is_empty() => {
@@ -184,9 +381,8 @@ impl PsychoApp {
                                     source: drag_source.clone(),
                                 };
                                 let insertion =
-                                    this.navigator.drag.as_ref().and_then(|drag| drag.insertion);
-                                let dragging = this
-                                    .navigator
+                                    this.collection(host).drag.as_ref().and_then(|drag| drag.insertion);
+                                let dragging = this.collection(host)
                                     .drag
                                     .as_ref()
                                     .is_some_and(|drag| drag.item.from == index);
@@ -201,45 +397,41 @@ impl PsychoApp {
                                 );
                                 div()
                                     .id(gpui::SharedString::from(format!(
-                                        "navigator-slide-{identity}"
+                                        "{}-slide-{identity}", host.prefix()
                                     )))
-                                    .accessibility_id(format!("navigator-slide-{identity}"))
+                                    .accessibility_id(format!("{}-slide-{identity}", host.prefix()))
                                     .role(gpui::Role::ListBoxOption)
                                     .aria_label(label)
                                     .aria_selected(selected)
                                     .when(selected, |row| row.aria_active_descendant())
                                     .h(px(row_height))
-                                    .w_full()
+                                    .w(px(geometry.cell_width))
                                     .px(px(8.))
                                     .py(px(4.))
                                     .cursor_pointer()
                                     .when(dragging, |row| row.opacity(0.45))
                                     .when(insertion == Some(index), |row| {
-                                        row.border_t_2().border_color(this.palette.focus)
+                                        if host == CollectionHost::Overview { row.border_l_2().border_color(this.palette.focus) } else { row.border_t_2().border_color(this.palette.focus) }
                                     })
-                                    .when(index + 1 == count && insertion == Some(count), |row| {
-                                        row.border_b_2().border_color(this.palette.focus)
+                                    .when(insertion == Some(index + 1) && (index + 1 == count || (host == CollectionHost::Overview && row == last_visible_row && (index + 1) % geometry.columns == 0)), |row| {
+                                        if host == CollectionHost::Overview { row.border_r_2().border_color(this.palette.focus) } else { row.border_b_2().border_color(this.palette.focus) }
                                     })
                                     .on_drag(dragged, move |dragged, _, window, cx| {
                                         weak_drag
                                             .update(cx, |this, cx| {
-                                                window.focus(&this.navigator.focus, cx);
-                                                this.navigator.drag_generation += 1;
-                                                this.navigator.drag = Some(SlideDrag {
+                                                window.focus(&this.collection(host).focus, cx);
+                                                this.navigator.drag = None; this.overview.drag = None;
+                                                this.collection_mut(host).drag_generation += 1;
+                                                let bounds = this.collection(host).scroll.0.borrow().base_handle.bounds();
+                                                this.collection_mut(host).drag = Some(SlideDrag {
                                                     item: dragged.clone(),
                                                     pointer: window.mouse_position(),
-                                                    bounds: this
-                                                        .navigator
-                                                        .scroll
-                                                        .0
-                                                        .borrow()
-                                                        .base_handle
-                                                        .bounds(),
-                                                    row_height,
-                                                    count,
+                                                    bounds,
+                                                    geometry,
+                                                    window_size: window.viewport_size(),
                                                     insertion: None,
                                                 });
-                                                this.schedule_slide_drag(window, cx);
+                                                this.schedule_slide_drag(host, window, cx);
                                                 cx.notify();
                                             })
                                             .ok();
@@ -249,7 +441,7 @@ impl PsychoApp {
                                         MouseButton::Right,
                                         cx.listener(
                                             move |this, event: &MouseDownEvent, window, cx| {
-                                                if this.select_navigator_slide(index, window, cx) {
+                                                if this.select_collection_slide(host, index, window, cx) {
                                                     this.show_popup(
                                                         Popup::Slide(event.position),
                                                         window,
@@ -313,15 +505,15 @@ impl PsychoApp {
                                     .on_mouse_down(MouseButton::Left, |_, window, _| {
                                         window.prevent_default()
                                     })
-                                    .on_click(cx.listener(move |this, _, window, cx| {
-                                        this.select_navigator_slide(index, window, cx);
+                                    .on_click(cx.listener(move |this, event: &gpui::ClickEvent, window, cx| {
+                                        if this.select_collection_slide(host, index, window, cx) && host == CollectionHost::Overview && event.click_count() >= 2 { this.set_editor_mode(EditorMode::Edit, window, cx); }
                                     }))
                                     .on_a11y_action(
                                         gpui::AccessibleAction::Click,
                                         move |_, window, cx| {
                                             weak_click
                                                 .update(cx, |this, cx| {
-                                                    this.select_navigator_slide(index, window, cx);
+                                                    this.select_collection_slide(host, index, window, cx);
                                                 })
                                                 .ok();
                                         },
@@ -331,39 +523,45 @@ impl PsychoApp {
                                         move |_, window, cx| {
                                             weak_focus
                                                 .update(cx, |this, cx| {
-                                                    this.select_navigator_slide(index, window, cx);
+                                                    this.select_collection_slide(host, index, window, cx);
                                                 })
                                                 .ok();
                                         },
                                     )
+                                }).collect::<Vec<_>>();
+                                div().flex().h(px(row_height)).children(cards)
                             })
                             .collect::<Vec<_>>()
                     }),
                 )
-                .track_scroll(&self.navigator.scroll)
+                .track_scroll(&self.collection(host).scroll)
                 .on_mouse_up_out(
                     MouseButton::Left,
-                    cx.listener(|_, _, window, cx| {
-                        cx.defer_in(window, |this, _, cx| {
-                            if this.navigator.drag.take().is_some() {
+                    cx.listener(move |_, _, window, cx| {
+                        cx.defer_in(window, move |this, _, cx| {
+                            if this.collection_mut(host).drag.take().is_some() {
                                 cx.notify();
                             }
                         });
                     }),
                 )
                 .on_drag_move(
-                    cx.listener(|this, event: &DragMoveEvent<DraggedSlide>, _, cx| {
-                        if let Some(drag) = this.navigator.drag.as_mut() {
+                    cx.listener(move |this, event: &DragMoveEvent<DraggedSlide>, _, cx| {
+                        if let Some(drag) = this.collection_mut(host).drag.as_mut() {
                             drag.pointer = event.event.position;
                             drag.bounds = event.bounds;
                         }
-                        this.update_slide_drag(false, cx);
+                        this.update_slide_drag(host, false, cx);
                     }),
                 )
-                .on_drop(cx.listener(|this, _: &DraggedSlide, window, cx| {
-                    let Some(drag) = this.navigator.drag.take() else {
+                .on_drop(cx.listener(move |this, _: &DraggedSlide, window, cx| {
+                    let Some(drag) = this.collection_mut(host).drag.take() else {
                         return;
                     };
+                    if drag.window_size != window.viewport_size() {
+                        cx.notify();
+                        return;
+                    }
                     if let Some(boundary) = drag.insertion {
                         let to = boundary.saturating_sub(usize::from(boundary > drag.item.from));
                         if to != drag.item.from {
@@ -384,19 +582,52 @@ impl PsychoApp {
             );
         }
         if count == 0 {
-            list = list.child(self.action_button(AddSlide, false, window, cx));
+            if host == CollectionHost::Overview && self.document.model().is_none() {
+                list = list.child(diagnostics_view(
+                    self.document.diagnostics(),
+                    self.source_selection.as_ref(),
+                    &[],
+                    cx,
+                ));
+            } else {
+                list = list.child(self.action_button(AddSlide, false, window, cx));
+            }
+        }
+        if host == CollectionHost::Overview {
+            let weak = cx.entity().downgrade();
+            list = list.relative().child(
+                gpui::canvas(
+                    move |bounds, _, cx| {
+                        cx.defer(move |cx| {
+                            weak.update(cx, |this, cx| {
+                                if this.view.canvas_area != bounds.size {
+                                    this.view.canvas_area = bounds.size;
+                                    cx.notify();
+                                }
+                            })
+                            .ok();
+                        });
+                    },
+                    |_, _, _, _| {},
+                )
+                .absolute()
+                .inset_0(),
+            );
         }
         list.into_any_element()
     }
 
     pub(super) fn update_slide_drag_pointer(&mut self, pointer: gpui::Point<gpui::Pixels>) {
-        if let Some(drag) = self.navigator.drag.as_mut() {
-            drag.pointer = pointer;
+        for state in [&mut self.navigator, &mut self.overview] {
+            if let Some(drag) = state.drag.as_mut() {
+                drag.pointer = pointer;
+            }
         }
     }
 
-    fn update_slide_drag(&mut self, scroll: bool, cx: &mut Context<Self>) {
-        let Some(drag) = self.navigator.drag.as_mut() else {
+    fn update_slide_drag(&mut self, host: CollectionHost, scroll: bool, cx: &mut Context<Self>) {
+        let state = self.collection_mut(host);
+        let Some(drag) = state.drag.as_mut() else {
             return;
         };
         if !drag.bounds.contains(&drag.pointer) {
@@ -404,7 +635,7 @@ impl PsychoApp {
             cx.notify();
             return;
         }
-        let handle = self.navigator.scroll.0.borrow().base_handle.clone();
+        let handle = state.scroll.0.borrow().base_handle.clone();
         let y = f32::from(drag.pointer.y - drag.bounds.origin.y);
         if scroll {
             let height = f32::from(drag.bounds.size.height);
@@ -416,18 +647,28 @@ impl PsychoApp {
                 0.
             };
             let mut offset = handle.offset();
-            let minimum = (height - drag.row_height * drag.count as f32).min(0.);
+            let minimum = (height - drag.geometry.row_height * drag.geometry.rows() as f32).min(0.);
             offset.y = px((f32::from(offset.y) + delta).clamp(minimum, 0.));
             handle.set_offset(offset);
         }
         let content_y = y - f32::from(handle.offset().y);
-        drag.insertion = Some((content_y / drag.row_height).round().max(0.) as usize);
-        drag.insertion = drag.insertion.map(|position| position.min(drag.count));
+        drag.insertion = Some(if host == CollectionHost::Navigator {
+            ((content_y / drag.geometry.row_height).round().max(0.) as usize)
+                .min(drag.geometry.count)
+        } else {
+            drag.geometry
+                .insertion(f32::from(drag.pointer.x - drag.bounds.origin.x), content_y)
+        });
         cx.notify();
     }
 
-    fn schedule_slide_drag(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        let generation = self.navigator.drag_generation;
+    fn schedule_slide_drag(
+        &mut self,
+        host: CollectionHost,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        let generation = self.collection(host).drag_generation;
         let view = cx.entity().downgrade();
         window
             .spawn(cx, async move |cx| {
@@ -438,12 +679,12 @@ impl PsychoApp {
                     let keep = cx
                         .update(|_, cx| {
                             view.update(cx, |this, cx| {
-                                if this.navigator.drag.is_none()
-                                    || this.navigator.drag_generation != generation
+                                if this.collection(host).drag.is_none()
+                                    || this.collection(host).drag_generation != generation
                                 {
                                     return false;
                                 }
-                                this.update_slide_drag(true, cx);
+                                this.update_slide_drag(host, true, cx);
                                 true
                             })
                         })
@@ -458,20 +699,25 @@ impl PsychoApp {
             .detach();
     }
 
-    fn navigate_slide(&mut self, delta: isize, window: &mut Window, cx: &mut Context<Self>) {
-        let count = self.document.model().map_or(0, |model| model.slides.len());
-        if count == 0 {
+    fn navigate_slide(
+        &mut self,
+        host: CollectionHost,
+        delta: isize,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) {
+        let Some(geometry) = self.collection(host).geometry else {
             return;
-        }
-        let index = self
-            .current_slide
-            .saturating_add_signed(delta)
-            .min(count - 1);
-        self.select_navigator_slide(index, window, cx);
+        };
+        let Some(index) = geometry.selection(self.current_slide, delta) else {
+            return;
+        };
+        self.select_collection_slide(host, index, window, cx);
     }
 
-    fn select_navigator_slide(
+    fn select_collection_slide(
         &mut self,
+        host: CollectionHost,
         index: usize,
         window: &mut Window,
         cx: &mut Context<Self>,
@@ -502,11 +748,49 @@ impl PsychoApp {
             });
         }
         self.current_slide = index;
-        self.navigator
-            .scroll
-            .scroll_to_item(index, ScrollStrategy::Nearest);
-        window.focus(&self.navigator.focus, cx);
+        let state = self.collection(host);
+        state.scroll.scroll_to_item(
+            index / state.geometry.map_or(1, |g| g.columns),
+            ScrollStrategy::Nearest,
+        );
+        window.focus(&state.focus, cx);
         cx.notify();
         true
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn grid_navigation_stays_in_edge_rows_and_clamps_short_final_row() {
+        let grid = CollectionGeometry::new(CollectionHost::Overview, 960., 10);
+        assert_eq!(grid.rows(), 3);
+        assert_eq!(grid.selection(2, -4), Some(2));
+        assert_eq!(grid.selection(3, 4), Some(7));
+        assert_eq!(grid.selection(7, 4), Some(9));
+        assert_eq!(grid.selection(8, 4), Some(8));
+        assert_eq!(grid.selection(9, -4), Some(5));
+        assert_eq!(grid.selection(4, -1), Some(3));
+        assert_eq!(grid.selection(3, 1), Some(4));
+        assert_eq!(
+            CollectionGeometry::new(CollectionHost::Overview, 100., 0).selection(0, 1),
+            None
+        );
+    }
+    #[test]
+    fn grid_insertion_uses_card_centers_and_clamps_final_row_space() {
+        let grid = CollectionGeometry::new(CollectionHost::Overview, 960., 10);
+        assert_eq!(grid.insertion(10., 10.), 0);
+        assert_eq!(grid.insertion(130., 10.), 1);
+        assert_eq!(grid.insertion(239., 10.), 1);
+        assert_eq!(grid.insertion(241., 10.), 1);
+        assert_eq!(grid.insertion(950., 10.), 4);
+        assert_eq!(grid.insertion(10., grid.row_height + 1.), 4);
+        assert_eq!(grid.insertion(950., grid.row_height * 2. + 1.), 10);
+        assert_eq!(
+            CollectionGeometry::new(CollectionHost::Overview, 470., 10).rows(),
+            10
+        );
     }
 }

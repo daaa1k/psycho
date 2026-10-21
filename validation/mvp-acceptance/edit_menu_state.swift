@@ -16,7 +16,7 @@ func describe(_ element: AXUIElement, depth: Int = 0) -> [String: Any] {
     }
     return result
 }
-guard [2, 3].contains(CommandLine.arguments.count), let pid = Int32(CommandLine.arguments[1]), pid > 0 else {
+guard [2, 3, 4].contains(CommandLine.arguments.count), let pid = Int32(CommandLine.arguments[1]), pid > 0 else {
     fatalError("Usage: edit-menu-state OWNED_PID")
 }
 let app = AXUIElementCreateApplication(pid)
@@ -27,7 +27,7 @@ guard AXUIElementCopyAttributeValue(app, kAXMenuBarAttribute as CFString, &bar) 
 }
 let menuBar = unsafeBitCast(bar, to: AXUIElement.self)
 let editMenus = attribute(menuBar, kAXChildrenAttribute) as? [AXUIElement] ?? []
-if CommandLine.arguments.count == 3 {
+if CommandLine.arguments.count >= 3 {
     guard NSWorkspace.shared.frontmostApplication?.processIdentifier == pid else {
         fatalError("Owned process must be foreground for native menu actions")
     }
@@ -39,7 +39,17 @@ if CommandLine.arguments.count == 3 {
         }
         return result
     }
-    let matches = editMenus.flatMap { matching($0, title: CommandLine.arguments[2]) }
+    let categories = editMenus.filter { attribute($0, kAXTitleAttribute) as? String == CommandLine.arguments[2] }
+    let matches: [AXUIElement]
+    if CommandLine.arguments.count == 4 {
+        guard categories.count == 1 else { fatalError("Menu category must uniquely match") }
+        let children = attribute(categories[0], kAXChildrenAttribute) as? [AXUIElement] ?? []
+        matches = children.flatMap { matching($0, title: CommandLine.arguments[3]) }
+    } else if !categories.isEmpty {
+        matches = categories
+    } else {
+        matches = editMenus.flatMap { matching($0, title: CommandLine.arguments[2]) }
+    }
     guard matches.count == 1, attribute(matches[0], kAXEnabledAttribute) as? Bool == true,
           AXUIElementPerformAction(matches[0], kAXPressAction as CFString) == .success else {
         fatalError("Native menu action must uniquely match an enabled owned item")

@@ -16,7 +16,7 @@ use std::time::Duration;
 
 use editor_actions::*;
 use editor_insert::{ColumnSide, InsertElement, InsertMenuState, InsertParent};
-use editor_view::{EditorPalette, EditorViewState, Pane, PaneResize, Popup, ZoomMode};
+use editor_view::{EditorMode, EditorPalette, EditorViewState, Pane, PaneResize, Popup, ZoomMode};
 use gpui::{
     App, Bounds, Context, DragMoveEvent, FocusHandle, Focusable, InteractiveElement, KeyBinding,
     Menu, MenuItem, MouseButton, MouseDownEvent, MouseMoveEvent, MouseUpEvent, Window,
@@ -174,6 +174,7 @@ struct PsychoApp {
     root_focus: FocusHandle,
     canvas_focus: FocusHandle,
     navigator: navigator::NavigatorState,
+    overview: navigator::NavigatorState,
     ime_geometry: ime::Geometry,
     current_slide: usize,
     outline_scroll: gpui::ScrollHandle,
@@ -210,6 +211,7 @@ struct GuiPresentation {
     session: PresentationSession,
     render_images: HashMap<String, Arc<gpui::RenderImage>>,
     editor_was_fullscreen: bool,
+    return_focus: Option<FocusHandle>,
 }
 
 impl PsychoApp {
@@ -254,6 +256,7 @@ impl PsychoApp {
             later: edit && self.current_slide + 1 < count,
             present: present_reason.is_none(),
             present_reason,
+            inspector_view: view && self.view.mode == EditorMode::Edit,
             view,
         }
     }
@@ -265,6 +268,10 @@ impl PsychoApp {
         cx: &mut Context<Self>,
     ) {
         if !action.enabled(self.availability(window, cx)) {
+            return;
+        }
+        if let Some(mode) = action.mode() {
+            self.set_editor_mode(mode, window, cx);
             return;
         }
         let popup = self.view.popup.take();
@@ -343,6 +350,14 @@ impl PsychoApp {
     }
 
     fn show_popup(&mut self, popup: Popup, window: &mut Window, cx: &mut Context<Self>) {
+        if matches!(popup, Popup::View)
+            && self.external_edit_blocked()
+            && self.has_uncommitted_draft(cx)
+        {
+            self.status = "外部変更との競合があるため入力を確定できません。表示を切り替える前に競合を解決してください。".into();
+            cx.notify();
+            return;
+        }
         self.popup_return_focus = window.focused(cx);
         if !matches!(popup, Popup::Diagnostics(_) | Popup::Present) {
             if let Err(error) = self.commit_draft(window, cx) {
@@ -421,6 +436,9 @@ impl PsychoApp {
         true
     }
     fn toggle_pane(&mut self, pane: Pane, window: &mut Window, cx: &mut Context<Self>) {
+        if pane == Pane::Inspector && self.view.mode == EditorMode::Overview {
+            return;
+        }
         let validate =
             pane == Pane::Navigator || (self.view.inspector.visible && !self.canvas_editing);
         if validate && !self.prepare_view_change(window, cx) {
@@ -434,6 +452,9 @@ impl PsychoApp {
         cx.notify();
     }
     fn change_pane_width(&mut self, pane: Pane, delta: f32, cx: &mut Context<Self>) {
+        if pane == Pane::Inspector && self.view.mode == EditorMode::Overview {
+            return;
+        }
         let state = self.view.pane(pane);
         let (min, max) = match pane {
             Pane::Navigator => (120., 360.),
@@ -551,6 +572,7 @@ impl PsychoApp {
             root_focus: cx.focus_handle(),
             canvas_focus: cx.focus_handle().tab_stop(true),
             navigator: navigator::NavigatorState::new(cx.focus_handle().tab_stop(true)),
+            overview: navigator::NavigatorState::new(cx.focus_handle().tab_stop(true)),
             ime_geometry: ime_rect,
             current_slide: 0,
             outline_scroll: gpui::ScrollHandle::new(),
@@ -699,6 +721,11 @@ impl PsychoApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        if self.view.mode == EditorMode::Overview
+            && !self.set_editor_mode(EditorMode::Edit, window, cx)
+        {
+            return;
+        }
         let target = EditTarget::Element {
             slide,
             index,
@@ -782,6 +809,11 @@ impl PsychoApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        if self.view.mode == EditorMode::Overview
+            && !self.set_editor_mode(EditorMode::Edit, window, cx)
+        {
+            return;
+        }
         let target = EditTarget::NestedElement {
             slide,
             columns,
@@ -861,6 +893,11 @@ impl PsychoApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
+        if self.view.mode == EditorMode::Overview
+            && !self.set_editor_mode(EditorMode::Edit, window, cx)
+        {
+            return;
+        }
         let target = EditTarget::Columns { slide, index };
         if self.target == target {
             window.focus(&self.root_focus, cx);
@@ -924,7 +961,8 @@ impl PsychoApp {
     }
 
     fn commit_draft(&mut self, window: &mut Window, cx: &mut Context<Self>) -> Result<(), String> {
-        if !matches!(self.document.external_state(), ExternalState::Current)
+        if (!matches!(self.document.external_state(), ExternalState::Current)
+            || self.document.model().is_none())
             && !self.has_uncommitted_draft(cx)
         {
             return Ok(());
@@ -1431,7 +1469,7 @@ impl PsychoApp {
     }
 
     fn add_slide(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
-        let navigator_focused = self.navigator.focused(window);
+        let collection_focus = self.collection_return_focus(window);
         if let Err(error) = self.document.check_external_change() {
             self.status = format!("外部変更があるためスライド操作を取り消しました: {error}");
             cx.notify();
@@ -1454,8 +1492,8 @@ impl PsychoApp {
             self.status = format!("Slide を追加できませんでした: {error}");
         } else {
             self.reset_editor_to_title(cx);
-            if navigator_focused {
-                window.focus(&self.navigator.focus_handle(), cx);
+            if let Some(focus) = collection_focus {
+                window.focus(&focus, cx);
             } else {
                 window.focus(&self.root_focus, cx);
             }
@@ -1465,7 +1503,7 @@ impl PsychoApp {
     }
 
     fn delete_slide(&mut self, _: &MouseUpEvent, window: &mut Window, cx: &mut Context<Self>) {
-        let navigator_focused = self.navigator.focused(window);
+        let collection_focus = self.collection_return_focus(window);
         if let Err(error) = self.document.check_external_change() {
             self.status = format!("外部変更があるためスライド操作を取り消しました: {error}");
             cx.notify();
@@ -1485,8 +1523,8 @@ impl PsychoApp {
             let count = self.document.model().map_or(0, |model| model.slides.len());
             self.current_slide = self.current_slide.min(count.saturating_sub(1));
             self.reset_editor_to_title(cx);
-            if navigator_focused {
-                window.focus(&self.navigator.focus_handle(), cx);
+            if let Some(focus) = collection_focus {
+                window.focus(&focus, cx);
             } else {
                 window.focus(&self.root_focus, cx);
             }
@@ -1560,7 +1598,7 @@ impl PsychoApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        let navigator_focused = self.navigator.focused(window);
+        let collection_focus = self.collection_return_focus(window);
         if let Err(error) = self.document.check_external_change() {
             self.status = format!("外部変更があるためスライド操作を取り消しました: {error}");
             cx.notify();
@@ -1586,8 +1624,8 @@ impl PsychoApp {
         }
         self.current_slide = to;
         self.reset_editor_to_title(cx);
-        if navigator_focused {
-            window.focus(&self.navigator.focus_handle(), cx);
+        if let Some(focus) = collection_focus {
+            window.focus(&focus, cx);
         } else {
             window.focus(&self.root_focus, cx);
         }
@@ -2026,11 +2064,15 @@ impl PsychoApp {
                 return;
             }
         }
+        let collection_focus = self.collection_return_focus(window);
         let previous_model = self.document.model().cloned();
         let active_slide_id = self.current_slide_id();
         if self.document.undo() {
             self.status = "元に戻しました。".into();
             self.restore_editor_after_history(previous_model.as_ref(), active_slide_id, window, cx);
+            if let Some(focus) = collection_focus {
+                window.focus(&focus, cx);
+            }
         } else {
             self.status = "戻せる編集はありません。".into();
             self.refresh_editor_value(cx);
@@ -2055,11 +2097,15 @@ impl PsychoApp {
                 return;
             }
         }
+        let collection_focus = self.collection_return_focus(window);
         let previous_model = self.document.model().cloned();
         let active_slide_id = self.current_slide_id();
         if self.document.redo() {
             self.status = "やり直しました。".into();
             self.restore_editor_after_history(previous_model.as_ref(), active_slide_id, window, cx);
+            if let Some(focus) = collection_focus {
+                window.focus(&focus, cx);
+            }
         } else {
             self.status = "やり直せる編集はありません。".into();
             self.refresh_editor_value(cx);
@@ -2538,6 +2584,7 @@ impl PsychoApp {
             session,
             render_images,
             editor_was_fullscreen,
+            return_focus: self.collection_return_focus(window),
         });
         self.status = "発表中です。Escape で編集へ戻ります。".into();
         if !editor_was_fullscreen {
@@ -2589,6 +2636,9 @@ impl PsychoApp {
             window.toggle_fullscreen();
         }
         window.focus(&self.root_focus, cx);
+        if let Some(focus) = presentation.return_focus {
+            window.focus(&focus, cx);
+        }
         self.refresh_assets();
         self.status = "発表を終了しました。".into();
         self.poll_external_change(window, cx);
@@ -2770,7 +2820,14 @@ impl PsychoApp {
         }
 
         let side = self.render_slide_list(model.clone(), window, cx);
-        let canvas = if let Some(model) = model.as_ref() {
+        let canvas = if self.view.mode == EditorMode::Overview {
+            self.render_slide_collection(
+                navigator::CollectionHost::Overview,
+                model.clone(),
+                window,
+                cx,
+            )
+        } else if let Some(model) = model.as_ref() {
             self.render_canvas(model, self.current_slide, true, window, cx)
         } else {
             diagnostics_view(
@@ -2781,8 +2838,9 @@ impl PsychoApp {
             )
             .into_any_element()
         };
-        let inspector = if let ExternalState::Invalid(diagnostics) = self.document.external_state()
-        {
+        let inspector = if !self.view.inspector_visible() {
+            div().into_any_element()
+        } else if let ExternalState::Invalid(diagnostics) = self.document.external_state() {
             div()
                 .id("external-diagnostics")
                 .w_full()
@@ -2828,17 +2886,26 @@ impl PsychoApp {
             .bg(palette.surface)
             .text_size(px(12.))
             .text_color(palette.secondary)
-            .child(format!(
-                "スライド {} / {} · {}% · {}",
-                self.current_slide + 1,
-                model.as_ref().map_or(0, |model| model.slides.len()),
-                (self.view.scale() * 100.).round(),
-                if self.view.zoom == ZoomMode::Fit {
-                    "全体に合わせる"
-                } else {
-                    "100%表示"
-                }
-            ))
+            .child(if self.view.mode == EditorMode::Overview {
+                format!(
+                    "スライド {} / {} · Overview · {}列",
+                    self.current_slide + 1,
+                    model.as_ref().map_or(0, |model| model.slides.len()),
+                    self.overview.columns()
+                )
+            } else {
+                format!(
+                    "スライド {} / {} · {}% · {}",
+                    self.current_slide + 1,
+                    model.as_ref().map_or(0, |model| model.slides.len()),
+                    (self.view.scale() * 100.).round(),
+                    if self.view.zoom == ZoomMode::Fit {
+                        "全体に合わせる"
+                    } else {
+                        "100%表示"
+                    }
+                )
+            })
             .child(self.status.clone());
         if let Some(reason) = self.availability(window, cx).present_reason {
             footer = footer.child(
@@ -2874,51 +2941,56 @@ impl PsychoApp {
         let (navigator_width, inspector_width) =
             self.view.widths(f32::from(window.viewport_size().width));
         let weak = cx.entity().downgrade();
-        let viewport = div()
-            .id("canvas-viewport")
-            .track_focus(&self.canvas_focus)
-            .role(gpui::Role::Group)
-            .aria_label("スライドキャンバス")
-            .focus(|style| style.border_2().border_color(palette.focus))
-            .relative()
-            .flex_1()
-            .min_w_0()
-            .min_h_0()
-            .h_full()
-            .overflow_x_scroll()
-            .overflow_y_scroll()
-            .child(
-                gpui::canvas(
-                    move |bounds, _, cx| {
-                        cx.defer(move |cx| {
-                            weak.update(cx, |this, cx| {
-                                if this.view.canvas_area != bounds.size {
-                                    this.view.canvas_area = bounds.size;
-                                    cx.notify();
-                                }
-                            })
-                            .ok();
-                        });
-                    },
-                    |_, _, _, _| {},
+        let viewport = if self.view.mode == EditorMode::Overview {
+            canvas
+        } else {
+            div()
+                .id("canvas-viewport")
+                .track_focus(&self.canvas_focus)
+                .role(gpui::Role::Group)
+                .aria_label("スライドキャンバス")
+                .focus(|style| style.border_2().border_color(palette.focus))
+                .relative()
+                .flex_1()
+                .min_w_0()
+                .min_h_0()
+                .h_full()
+                .overflow_x_scroll()
+                .overflow_y_scroll()
+                .child(
+                    gpui::canvas(
+                        move |bounds, _, cx| {
+                            cx.defer(move |cx| {
+                                weak.update(cx, |this, cx| {
+                                    if this.view.canvas_area != bounds.size {
+                                        this.view.canvas_area = bounds.size;
+                                        cx.notify();
+                                    }
+                                })
+                                .ok();
+                            });
+                        },
+                        |_, _, _, _| {},
+                    )
+                    .absolute()
+                    .inset_0(),
                 )
-                .absolute()
-                .inset_0(),
-            )
-            .child(
-                div()
-                    .flex()
-                    .items_center()
-                    .justify_center()
-                    .when(model.is_some(), |element| {
-                        element
-                            .w(px(1280. * self.view.scale()))
-                            .h(px(720. * self.view.scale()))
-                    })
-                    .min_w_full()
-                    .min_h_full()
-                    .child(canvas),
-            );
+                .child(
+                    div()
+                        .flex()
+                        .items_center()
+                        .justify_center()
+                        .when(model.is_some(), |element| {
+                            element
+                                .w(px(1280. * self.view.scale()))
+                                .h(px(720. * self.view.scale()))
+                        })
+                        .min_w_full()
+                        .min_h_full()
+                        .child(canvas),
+                )
+                .into_any_element()
+        };
         let mut workspace = div()
             .flex()
             .flex_row()
@@ -2943,7 +3015,7 @@ impl PsychoApp {
                 .child(self.render_pane_resizer(Pane::Navigator, navigator_width, cx));
         }
         workspace = workspace.child(viewport);
-        if self.view.inspector.visible {
+        if self.view.inspector_visible() {
             workspace = workspace
                 .child(self.render_pane_resizer(Pane::Inspector, inspector_width, cx))
                 .child(
@@ -3112,6 +3184,8 @@ impl PsychoApp {
                 }
                 Popup::View => {
                     panel = panel
+                        .child(self.action_button(EditView, false, window, cx))
+                        .child(self.action_button(OverviewView, false, window, cx))
                         .child(self.action_button(ToggleNavigator, false, window, cx))
                         .child(self.action_button(ToggleInspector, false, window, cx))
                         .child(self.action_button(FitCanvas, false, window, cx))
@@ -3182,6 +3256,12 @@ impl PsychoApp {
                 this.execute_action(action, window, cx)
             }))
             .on_action(cx.listener(|this, action: &ShowViewMenu, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &EditView, window, cx| {
+                this.execute_action(action, window, cx)
+            }))
+            .on_action(cx.listener(|this, action: &OverviewView, window, cx| {
                 this.execute_action(action, window, cx)
             }))
             .on_action(cx.listener(|this, action: &ToggleNavigator, window, cx| {
@@ -5298,6 +5378,8 @@ impl Render for PsychoApp {
                 action_menu(MoveSlideLater, available),
             ]),
             Menu::new("表示").items([
+                action_menu(EditView, available),
+                action_menu(OverviewView, available),
                 MenuItem::action(
                     if self.view.navigator.visible {
                         "Navigatorを隠す"
@@ -5315,7 +5397,7 @@ impl Render for PsychoApp {
                     },
                     ToggleInspector,
                 )
-                .disabled(!available.view),
+                .disabled(!available.inspector_view),
                 action_menu(NarrowNavigator, available),
                 action_menu(WidenNavigator, available),
                 action_menu(NarrowInspector, available),
@@ -6817,6 +6899,12 @@ fn main() {
     application()
         .with_assets(editor_view::IconAssets)
         .run(|cx: &mut App| {
+            #[cfg(target_os = "macos")]
+            unsafe {
+                // GPUI focuses a child view; AccessKit attaches to its content view.
+                // GPUIWindow is registered before main, and the adapter is statically linked.
+                accesskit_macos::add_focus_forwarder_to_window_class("GPUIWindow");
+            }
             cx.on_action(|_: &HideApp, cx| cx.hide());
             cx.bind_keys([
                 KeyBinding::new("cmd-h", HideApp, None),
@@ -6840,6 +6928,20 @@ fn main() {
                 KeyBinding::new("cmd-up", MoveSlideEarlier, Some("SlideNavigator")),
                 KeyBinding::new("cmd-down", MoveSlideLater, Some("SlideNavigator")),
                 KeyBinding::new("cmd-shift-n", AddSlide, Some("SlideNavigator")),
+                KeyBinding::new("backspace", DeleteSlide, Some("SlideOverview")),
+                KeyBinding::new("delete", DeleteSlide, Some("SlideOverview")),
+                KeyBinding::new("cmd-up", MoveSlideEarlier, Some("SlideOverview")),
+                KeyBinding::new("cmd-down", MoveSlideLater, Some("SlideOverview")),
+                KeyBinding::new("cmd-shift-n", AddSlide, Some("SlideOverview")),
+                KeyBinding::new(
+                    "left",
+                    navigator::SelectPreviousSlide,
+                    Some("SlideOverview"),
+                ),
+                KeyBinding::new("right", navigator::SelectNextSlide, Some("SlideOverview")),
+                KeyBinding::new("up", navigator::SelectAboveSlide, Some("SlideOverview")),
+                KeyBinding::new("down", navigator::SelectBelowSlide, Some("SlideOverview")),
+                KeyBinding::new("enter", navigator::FocusSlideCanvas, Some("SlideOverview")),
                 KeyBinding::new("up", navigator::SelectPreviousSlide, Some("SlideNavigator")),
                 KeyBinding::new("down", navigator::SelectNextSlide, Some("SlideNavigator")),
                 KeyBinding::new("enter", navigator::FocusSlideCanvas, Some("SlideNavigator")),

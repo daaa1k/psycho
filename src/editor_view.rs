@@ -1,6 +1,12 @@
 use gpui::{Hsla, Pixels, Size, WindowAppearance, px, rgb, size};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum EditorMode {
+    Edit,
+    Overview,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ZoomMode {
     Fit,
     Actual,
@@ -31,6 +37,7 @@ pub enum Popup {
 }
 
 pub struct EditorViewState {
+    pub mode: EditorMode,
     pub navigator: PaneView,
     pub inspector: PaneView,
     pub zoom: ZoomMode,
@@ -41,6 +48,7 @@ pub struct EditorViewState {
 impl Default for EditorViewState {
     fn default() -> Self {
         Self {
+            mode: EditorMode::Edit,
             navigator: PaneView {
                 visible: true,
                 preferred_width: 160.,
@@ -63,13 +71,16 @@ impl EditorViewState {
             Pane::Inspector => &mut self.inspector,
         }
     }
+    pub fn inspector_visible(&self) -> bool {
+        self.mode == EditorMode::Edit && self.inspector.visible
+    }
     pub fn widths(&self, available: f32) -> (f32, f32) {
         let navigator = if self.navigator.visible {
             self.navigator.preferred_width.clamp(120., 360.)
         } else {
             0.
         };
-        let inspector = if self.inspector.visible {
+        let inspector = if self.inspector_visible() {
             self.inspector.preferred_width.clamp(220., 440.)
         } else {
             0.

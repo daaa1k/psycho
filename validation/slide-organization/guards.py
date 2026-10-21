@@ -68,7 +68,7 @@ def empty(gui, state, observe, button):
 
 
 def guards(gui, state, observe, button):
-    button('Element 1 · 2列')
+    gui.outline_select('Element 1 · 2列')
     button('左列幅を数値入力')
     gui.replace('0')
     invalid = observe('invalid-width')
@@ -104,16 +104,25 @@ def guards(gui, state, observe, button):
         for field in ['sourceHex', 'dirty', 'undo', 'redo', 'draft', 'currentSlide']:
             assert result['editor'][field] == invalid['editor'][field], (name, field)
         assert gui.state()['text'] == '0'
-    tree = gui.act('get-app-state')['snapshot']['treeText']
-    field = re.search(r'^\s*(\d+) text field.*編集値', tree, re.M).group(1)
-    gui.act('click', '--element-index', field, '--no-screenshot')
+    native_double_click = gui.out / 'native-double-click'
+    subprocess.run(['xcrun', 'swiftc', str(root / 'validation/mvp-acceptance/native_double_click.swift'),
+                    '-o', str(native_double_click)], check=True)
+    snapshot, rows = gui.snapshot()
+    matches = [row for row in rows if row['text'] == '0'
+               and row['x'] > snapshot['snapshot']['window']['width'] - 300]
+    assert len(matches) == 1, rows
+    subprocess.run([str(native_double_click), str(gui.app.pid),
+                    str(matches[0]['x']), str(matches[0]['y'])], check=True)
     gui.replace('50')
     gui.menu('スライド', 'スライド追加')
     observe('repaired-add')
     button('Presentation title')
-    tree = gui.act('get-app-state')['snapshot']['treeText']
-    field = re.search(r'^\s*(\d+) text field.*編集値', tree, re.M).group(1)
-    gui.act('click', '--element-index', field, '--no-screenshot')
+    snapshot, rows = gui.snapshot()
+    matches = [row for row in rows if row['text'] == 'Guard test'
+               and row['x'] > snapshot['snapshot']['window']['width'] - 300]
+    assert len(matches) == 1, rows
+    subprocess.run([str(native_double_click), str(gui.app.pid),
+                    str(matches[0]['x']), str(matches[0]['y'])], check=True)
     gui.replace('unsaved draft')
     before = observe('pending-draft')
     gui.fixture.write_text(gui.fixture.read_text().replace('Guard test', 'External title'))
@@ -124,9 +133,14 @@ def guards(gui, state, observe, button):
     tree = conflict['tree']
     assert 'button (disabled) スライド追加' in tree
     assert gui.state()['text'] == 'unsaved draft'
-    gui.key('Backspace')
-    observe('input-delete-priority')
-    assert state()['sourceHex'] == before['editor']['sourceHex']
+    native_keys = gui.out / 'native-keys'
+    subprocess.run(['xcrun', 'swiftc', str(root / 'validation/overview/keys.swift'),
+                    '-o', str(native_keys)], check=True)
+    subprocess.run([str(native_keys), str(gui.app.pid), 'backspace', '1'], check=True)
+    after = observe('frozen-delete-preserves-document')
+    for field in ['sourceHex', 'dirty', 'undo', 'redo', 'draft', 'currentSlide']:
+        assert after['editor'][field] == conflict['editor'][field], field
+    assert gui.state()['text'] == 'unsaved draft'
 
 
 run('empty', 'presentation { metadata { title "Empty"; }; }', empty)

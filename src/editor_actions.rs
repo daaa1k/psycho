@@ -22,6 +22,8 @@ actions!(
         MoveSlideLater,
         ShowInsertMenu,
         ShowViewMenu,
+        EditView,
+        OverviewView,
         ToggleNavigator,
         ToggleInspector,
         NarrowNavigator,
@@ -52,10 +54,14 @@ pub(super) struct EditorAvailability {
     pub(super) present: bool,
     pub(super) present_reason: Option<&'static str>,
     pub(super) view: bool,
+    pub(super) inspector_view: bool,
 }
 pub(super) trait EditorAction: gpui::Action + Clone {
     const LABEL: &'static str;
     const ICON: Option<&'static str> = None;
+    fn mode(&self) -> Option<EditorMode> {
+        None
+    }
     fn enabled(&self, available: EditorAvailability) -> bool;
     fn disabled_reason(&self, _: EditorAvailability) -> Option<&'static str> {
         None
@@ -168,7 +174,7 @@ editor_action!(
 editor_action!(
     ToggleInspector,
     "Inspectorの表示切り替え",
-    view,
+    inspector_view,
     |app, window, cx| {
         app.toggle_pane(Pane::Inspector, window, cx);
     }
@@ -192,7 +198,7 @@ editor_action!(
 editor_action!(
     NarrowInspector,
     "Inspectorを狭くする",
-    view,
+    inspector_view,
     |app, _window, cx| {
         app.change_pane_width(Pane::Inspector, -24., cx);
     }
@@ -200,7 +206,7 @@ editor_action!(
 editor_action!(
     WidenInspector,
     "Inspectorを広くする",
-    view,
+    inspector_view,
     |app, _window, cx| {
         app.change_pane_width(Pane::Inspector, 24., cx);
     }
@@ -241,3 +247,28 @@ editor_action!(
     },
     reason = present_reason
 );
+
+impl EditorAction for EditView {
+    const LABEL: &'static str = "編集";
+    fn enabled(&self, available: EditorAvailability) -> bool {
+        available.view
+    }
+    fn mode(&self) -> Option<EditorMode> {
+        Some(EditorMode::Edit)
+    }
+    fn execute(&self, app: &mut PsychoApp, window: &mut Window, cx: &mut Context<PsychoApp>) {
+        app.set_editor_mode(EditorMode::Edit, window, cx);
+    }
+}
+impl EditorAction for OverviewView {
+    const LABEL: &'static str = "Overview";
+    fn enabled(&self, available: EditorAvailability) -> bool {
+        available.view
+    }
+    fn mode(&self) -> Option<EditorMode> {
+        Some(EditorMode::Overview)
+    }
+    fn execute(&self, app: &mut PsychoApp, window: &mut Window, cx: &mut Context<PsychoApp>) {
+        app.set_editor_mode(EditorMode::Overview, window, cx);
+    }
+}

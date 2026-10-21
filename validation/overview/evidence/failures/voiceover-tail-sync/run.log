@@ -1,0 +1,19 @@
+true
+{"name": "navigate", "cursor": "元に戻す 淡色表示 button", "phrase": "VoiceOverオン psycho ウインドウ 元に戻す 淡色表示 button がキーボードの操作対象になっています"}
+{"name": "navigate", "cursor": "やり直す 淡色表示 button", "phrase": "やり直す 淡色表示 button"}
+{"name": "navigate", "cursor": "スライド追加 button", "phrase": "スライド追加 button"}
+{"name": "navigate", "cursor": "挿入 button", "phrase": "挿入 button"}
+{"name": "navigate", "cursor": "表示 button", "phrase": "表示 button"}
+{"name": "navigate", "cursor": "プレゼンテーション button", "phrase": "プレゼンテーション button"}
+{"name": "navigate", "cursor": "スライド一覧 list", "phrase": "スライド一覧 list 1項目が選択されています。 スライド 1 Heading 001 text （1 / 6）"}
+{"name": "navigate", "cursor": "Overviewのスライド一覧 list", "phrase": "Overviewのスライド一覧 list 1項目が選択されています。 スライド 1 Heading 001 text （1 / 16）"}
+{"name": "navigate", "cursor": "スライド 1 Heading 001", "phrase": "操作開始 Overviewのスライド一覧 list 1項目が選択されています。 スライド 1 Heading 001 text （1 / 16） スライド 1 Heading 001 text （1 / 16）"}
+{"name": "navigate", "cursor": "スライド 2 Heading 002", "phrase": "スライド 2 Heading 002 text （2 / 16）"}
+{"name": "activated-selected-second", "cursor": "Overviewのスライド一覧 list", "phrase": "操作終了 Overviewのスライド一覧 list 1項目が選択されています。 スライド 2 Heading 002 text （2 / 16）"}
+{"name": "keyboard-reorder-with-voiceover", "cursor": "スライド 3 Heading 002", "phrase": "操作開始 Overviewのスライド一覧 list 1項目が選択されています。 スライド 2 Heading 002 text （2 / 16） スライド 2 Heading 002 text （2 / 16）"}
+{"name": "virtualized-tail-before-sync", "cursor": "淡色表示", "phrase": "ウインドウ"}
+{"name": "virtualized-tail-selection", "cursor": "元に戻す button", "phrase": "元に戻す button がキーボードの操作対象になっています"}
+Traceback (most recent call last):
+  File "/private/tmp/psycho-issue-54-implementation/validation/overview/voiceover.py", line 132, in <module>
+    assert '100' in tail['phrase'] and 'Heading' in tail['phrase'] and '選択' in tail['phrase'], tail
+AssertionError: {'name': 'virtualized-tail-selection', 'cursor': '元に戻す button', 'phrase': '元に戻す button がキーボードの操作対象になっています'}
