@@ -80,4 +80,4 @@ shasum -a 256 -c SHA256SUMS
 
 ## 公開先
 
-[前提統合 #79](https://github.com/daaa1k/psycho/pull/79) → [検証手順 #80](https://github.com/daaa1k/psycho/pull/80) → [実行証跡 #81](https://github.com/daaa1k/psycho/pull/81) の順に親ブランチを指定した。いずれもレビュー用に公開し、公開時点のCIは実行中。#56は#77が再現した未受け入れ状態として記録した。
+[前提統合 #79](https://github.com/daaa1k/psycho/pull/79) → [検証手順 #80](https://github.com/daaa1k/psycho/pull/80) → [実行証跡 #81](https://github.com/daaa1k/psycho/pull/81) の順に親ブランチを指定した。いずれもレビュー用に公開し、公開時点のCIは実行中。[#56への報告](https://github.com/daaa1k/psycho/issues/56#issuecomment-6314626074)には、#77が再現した未受け入れ状態を記録した。
