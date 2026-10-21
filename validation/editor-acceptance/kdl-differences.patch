@@ -1,0 +1,80 @@
+--- sample/before.kdl
++++ sample/after.kdl
+@@ -1,31 +1,31 @@
+ presentation {
+     metadata {
+-        title "ビルド時間を38%短縮した話"
++        title "ビルド時間を40%短縮した話"
+     }
+     slide id="problem" {
+-        heading "CI のビルドが遅い"
+-        text "変更のたびに待ち時間が発生し、レビューの流れを止めていた。"
++        text "変更のたびの待ち時間を減らし、レビューを進める。"
++        heading "CI のビルドを改善"
+         bullets {
+-            item "平均 8 分 12 秒"
+-            item "キャッシュが依存関係の変化で無効になる"
++            item "平均 5 分 06 秒"
++
+         }
+     }
+     slide id="approach" {
+         heading "キャッシュの境界を見直す"
+         text "依存クレートとワークスペースの成果物を分けて保存する。"
+-        code language="rust" "let key = hash(lockfile, toolchain, target);"
++        code language="rust" "let\tkey = hash(lockfile, toolchain, target);\nassert!(cache_hit);"
+     }
+     slide id="changes" {
+         heading "依存と成果物を分ける"
+         columns {
+-            column width=45 {
++            column width=50 {
+                 heading "依存関係"
+                 bullets {
+                     item "Cargo.lock をキーにする"
+                     item "更新時だけ再構築する"
+                 }
+             }
+-            column width=55 {
++            column width=50 {
+                 heading "成果物"
+                 code language="yaml" "cache:\n  key: ${{ hashFiles('Cargo.lock') }}"
+             }
+@@ -38,8 +38,8 @@
+             item "同じ runner と toolchain を使用"
+             item "中央値と p95 を記録"
+         }
+-        image "assets/build-time.png" {
+-            caption "キャッシュ導入前後の CI 実行時間"
++        image "assets/updated.png" {
++            caption "キャッシュ導入前後の CI 実行時間を比較"
+         }
+     }
+     slide id="result" {
+--- blank/before.kdl
++++ blank/after.kdl
+@@ -1,5 +1,23 @@
+ presentation {
+     metadata {
+-        title "ビルド時間を38%短縮した話"
++        title "Authored presentation"
++    }
++    slide {
++        heading "Authored heading"
++        text "Authored body"
++        bullets { item "Authored bullet" }
++        code "println!(\"Authored code\");"
++    }
++    slide {
++        image "assets/image.png" {
++            caption "Authored image caption"
++        }
++    }
++    slide {
++        columns { column width=50 {
++            text "Authored left column"
++        }; column width=50  {
++            text "Authored right column"
++        }}
+     }
+ }
