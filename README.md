@@ -16,6 +16,18 @@ cargo run --features gui
 cargo run --features gui -- path/to/presentation.kdl
 ```
 
+### Linux
+
+Linux では X11 と Wayland のウィンドウで動きます。`WAYLAND_DISPLAY` があれば Wayland、なければ `DISPLAY` の X11 を使います。Ubuntu 24.04 では、ビルドに次のパッケージが必要です。
+
+```sh
+sudo apt-get install -y build-essential clang pkg-config libasound2-dev \
+  libfontconfig1-dev libssl-dev libwayland-dev libx11-dev libxcb-render0-dev \
+  libxcb-shape0-dev libxcb-xfixes0-dev libxkbcommon-dev libxkbcommon-x11-dev
+```
+
+描画には Vulkan を使います。GPU の Vulkan ドライバーがない環境では `libvulkan1` と `mesa-vulkan-drivers` を入れてください。
+
 ## 編集
 
 - 左側の Slide 一覧を選ぶと、中央にプレビューが表示されます。
