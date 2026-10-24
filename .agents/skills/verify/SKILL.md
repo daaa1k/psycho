@@ -36,6 +36,10 @@ Every subcommand prints a one-line JSON summary on success and exits non-zero on
 4. Ready when Orca lists the scratch `psycho` PID and `psycho-verify doctor --run-id <id>` reports `ok`.
 5. Teardown: `psycho-verify cleanup --run-id <id>` (terminates only that PID). Do not `pkill psycho`.
 
+**Linux GUI**
+
+`psycho-verify launch` starts the same scratch process when `DISPLAY` or `WAYLAND_DISPLAY` is set. `doctor --run-id` then checks that the recorded PID is alive (`gui` is `pid_alive`). Orca acceptance scripts stay on macOS. Prove the window with a screenshot. The `cmd-*` bindings use the Super key (save is Super+S). Teardown is the same `cleanup` command.
+
 **Core library (headless, all platforms)**
 
 No long-lived process. For a single core recipe:
@@ -100,7 +104,7 @@ and leaves evidence untouched. After cleanup, confirm artifacts still exist unde
 | --- | --- |
 | `psycho-verify map-lint` | Feature map index hygiene (required H2s, links). |
 | `psycho-verify doctor` | Preconditions for driving. |
-| `psycho-verify launch` | macOS scratch `psycho` instance. |
+| `psycho-verify launch` | Scratch `psycho` instance (macOS, or Linux with a display). |
 | `psycho-verify drive-core --feature <id>` | Headless cargo test for one map entry. |
 | `psycho-verify maintain-verification-skill` | Weekly/CI pass: `map-lint` + core tests (+ macOS extras when available). |
 | `psycho-verify cleanup` | Tear down one run. |

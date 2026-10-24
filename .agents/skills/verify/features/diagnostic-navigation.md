@@ -17,7 +17,7 @@ Diagnostic navigation lets a user see KDL syntax/schema problems (and related as
 
 Preconditions:
 
-- Fixture KDL with intentional syntax or schema errors under `validation/mvp-acceptance/`.
+- `diagnostic_navigation_acceptance.py` writes syntax and schema fixtures at runtime under its `--output` directory. They are not checked-in files under `validation/mvp-acceptance/`.
 - Scratch `psycho` launched on that fixture.
 
 - **Navigation suite (GUI).** `python3 validation/mvp-acceptance/diagnostic_navigation_acceptance.py --output target/psycho-verify/<id>/diagnostics`

@@ -12,7 +12,7 @@ Edit slide content lets a user select a slide, change title/body/elements on the
 
 - Click a slide in the left navigator.
 - Double-click heading, body, bullets, code, or caption text on the canvas.
-- Use **編集 → 元に戻す** / **やり直す** or `Cmd-Z` / `Cmd-Shift-Z` when focus is not in a single-line field.
+- Use **編集 → 元に戻す** / **やり直す** or `Cmd-Z` / `Cmd-Shift-Z` when focus is not in a text field.
 
 ## Driving it with psycho-verify
 
@@ -22,7 +22,7 @@ Preconditions:
 - `psycho-verify doctor --run-id <id>` is `ok`.
 
 - **Sample workflow (GUI).** Run `python3 validation/mvp-acceptance/sample_workflow_acceptance.py --output target/psycho-verify/<id>/sample-workflow`. Script edits title, heading, body, code, columns, image path, caption, and structure; asserts Save/Undo/Redo byte equality per step.
-- **Proof.** Keep `sample-workflow/sample-*.png` and `result.txt` under `evidence/<run_id>/edit-slide-content/`; stdout must show `PASS` lines for each named edit.
+- **Proof.** Keep `sample-*.png` and `sample-workflow-observations.json` under `evidence/<run_id>/edit-slide-content/`; stdout must show `PASS` lines for each named edit. The script does not write `result.txt`.
 
 ## Gotchas
 
