@@ -4,7 +4,7 @@ Overview displays the Presentation as responsive thumbnails and returns the sele
 
 ## Sub-features
 
-- Switch modes from the native View menu and toolbar popup.
+- Switch modes from the native **表示** menu and the toolbar **表示** popup.
 - Retain selection, document history, pane preferences, and pending input validation.
 - Navigate the grid, reorder, add, delete, Undo, and Redo through the existing Slide actions.
 - Reach the final Slide in a 100-Slide Presentation at three window sizes in both appearances.

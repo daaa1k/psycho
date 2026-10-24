@@ -5,13 +5,15 @@ Save document lets a user write edits back to KDL on disk, preserving unedited f
 ## Sub-features
 
 - `save` overwrites the current file with `Cmd-S` or **ファイル → 保存**.
-- `save-as` writes to a new path via **別名で保存…** (`Cmd-Shift-S`).
+- `save-as` writes to a new path via **別名保存** (`Cmd-Shift-S`).
+- `reload-external` picks up a file that changed on disk. A clean document reloads by itself. A dirty document shows **再読み込み** and **別名保存**.
 - `save-core` persists through `PresentationDocument::save` without the GUI.
 
 ## How to get to it (user POV)
 
 - Press `Cmd-S` or choose **ファイル → 保存**.
-- Press `Cmd-Shift-S` or choose **ファイル → 別名で保存…**.
+- Press `Cmd-Shift-S` or choose **ファイル → 別名保存**.
+- When the header says **外部ファイルに問題があります**, choose **再読み込み** (confirm **破棄して再読み込み**) or **別名保存**. A clean file reloads without that banner and the status reads 外部ファイルを再読み込みしました。
 
 ## Driving it with psycho-verify
 
@@ -29,4 +31,5 @@ Preconditions:
 
 - Save replaces only edited values in source; assert full bytes when testing formatting preservation.
 - Save-as to another folder rewrites relative image paths and clears undo history on success.
-- Conflict or external change blocks save until resolved.
+- Overwrite save stays blocked during an external conflict. **再読み込み** discards unsaved edits after confirmation. **別名保存** can still write a copy.
+- On Linux the `cmd-s` / `cmd-shift-s` bindings are the Super key, not Ctrl.

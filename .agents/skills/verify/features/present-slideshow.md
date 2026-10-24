@@ -11,6 +11,7 @@ Present slideshow lets a user enter fullscreen slide show from the current or fi
 ## How to get to it (user POV)
 
 - Click **プレゼンテーション** in the toolbar (current slide).
+- Open toolbar **発表メニュー** for **現在からプレゼンテーション** and **最初からプレゼンテーション**.
 - Choose **プレゼンテーション → 最初からプレゼンテーション** or **現在からプレゼンテーション** from the menu.
 - Press `Cmd-Option-P` for present from current.
 
@@ -19,7 +20,7 @@ Present slideshow lets a user enter fullscreen slide show from the current or fi
 Preconditions:
 
 - Document has no blocking diagnostics (assets valid, schema clean).
-- Single display; acceptance sets fullscreen width via `PSYCHO_ACCEPTANCE_FULLSCREEN_WIDTH` when needed.
+- Single display. `presentation_workflow_acceptance.py` reads `PSYCHO_ACCEPTANCE_FULLSCREEN_WIDTH` (default 1920). `fullscreen_acceptance.py` expects width 1920 and does not read that variable.
 
 - **Keys and snapshots (GUI).** `python3 validation/mvp-acceptance/presentation_workflow_acceptance.py --section keys --output target/psycho-verify/<id>/present-keys`
 - **Full present flow.** `fullscreen_acceptance.py --output target/psycho-verify/<id>/fullscreen` for repeated enter/exit cycles.

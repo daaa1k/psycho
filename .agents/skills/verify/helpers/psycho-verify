@@ -4,7 +4,7 @@
 Subcommands:
   map-lint                      Feature map structure and index links
   doctor                        Read-only preflight (map + toolchain + optional GUI run)
-  launch                        macOS: start scratch psycho for --kdl
+  launch                        Start scratch psycho for --kdl (macOS, or Linux with a display)
   drive-core --feature <id>     Headless cargo test mapped to a feature id
   maintain-verification-skill   map-lint + core tests (+ macOS sanity when available)
   cleanup --run-id <id>         Stop launched PID and remove scratch state only
@@ -133,13 +133,18 @@ def cmd_doctor(args: argparse.Namespace) -> None:
         state = _load_state(args.run_id)
         info["run_id"] = args.run_id
         info["kdl"] = state.get("kdl")
-        info["pid"] = state.get("pid")
+        pid = state.get("pid")
+        info["pid"] = pid
+        if pid is None:
+            _die("state missing pid")
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            _die(f"scratch pid {pid} is not running")
+        info["pid_alive"] = True
         if sys.platform != "darwin":
-            info["gui"] = "skipped_non_macos"
+            info["gui"] = "pid_alive"
         else:
-            pid = state.get("pid")
-            if pid is None:
-                _die("state missing pid")
             try:
                 subprocess.run(["orca", "computer", "list-apps", "--json"], check=True, capture_output=True, text=True)
             except (OSError, subprocess.CalledProcessError) as exc:
@@ -155,8 +160,8 @@ def cmd_doctor(args: argparse.Namespace) -> None:
 
 
 def cmd_launch(args: argparse.Namespace) -> None:
-    if sys.platform != "darwin":
-        _die("launch requires macOS")
+    if sys.platform == "linux" and not (os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY")):
+        _die("launch on Linux needs DISPLAY or WAYLAND_DISPLAY")
     run_id = _run_id(args)
     scratch = SCRATCH_ROOT / run_id
     if scratch.exists() and not args.force:
